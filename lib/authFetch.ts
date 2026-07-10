@@ -1,4 +1,4 @@
-import axios from "axios";
+import { redirect } from "next/navigation";
 import { getSession, refreshToken } from "./session";
 
 export interface FeatchOption extends RequestInit {
@@ -7,14 +7,13 @@ export interface FeatchOption extends RequestInit {
 
 export const authFetch = async (
   url: string | URL,
-  options: FeatchOption = {}
+  options: FeatchOption = {},
 ): Promise<Response> => {
   const session = await getSession();
 
   // Nếu không có accessToken, chuyển hướng sang login
   if (!session?.accessToken) {
-    await handleLogout(); // logout sạch sẽ rồi redirect
-    return Promise.reject(new Error("No access token available"));
+    throw new Error("NO_SESSION");
   }
 
   // Gán Authorization Header
@@ -43,28 +42,9 @@ export const authFetch = async (
         throw new Error("Failed to refresh token");
       }
     } catch (error) {
-      await handleLogout();
       return Promise.reject(error);
     }
   }
 
   return response;
-};
-
-// ✅ Hàm xử lý logout sạch sẽ
-const handleLogout = async () => {
-  try {
-    const currentPath = window.location.pathname;
-
-    await axios.get(
-      `/api/auth/logout?redirect=${encodeURIComponent(currentPath)}`
-    );
-
-    // 👇 Client tự redirect sau khi gọi xong API
-    window.location.href = `/auth/login?redirect=${encodeURIComponent(
-      currentPath
-    )}`;
-  } catch (error) {
-    console.error(error);
-  }
 };

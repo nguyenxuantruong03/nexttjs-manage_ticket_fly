@@ -92,7 +92,7 @@ export const refreshToken = async (oldrefreshToken: string) => {
     const { accessToken, refreshToken } = await response.json();
 
     const updateRes = await fetch(
-      `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/auth/update`,
+      `${process.env.NEXT_PUBLIC_FRONTEND_MANAGE_URL}/api/auth/update`,
       {
         method: "POST",
         body: JSON.stringify({

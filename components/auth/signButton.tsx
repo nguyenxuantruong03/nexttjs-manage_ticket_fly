@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import axios from "axios";
+import { handleLogout } from "@/lib/logout";
 
 const SignButton = () => {
   const pathname = usePathname();
@@ -19,23 +20,6 @@ const SignButton = () => {
 
     fetchSession();
   }, []);
-
-  const handleLogout = async () => {
-    try {
-      const currentPath = window.location.pathname;
-
-      await axios.get(
-        `/api/auth/logout?redirect=${encodeURIComponent(currentPath)}`
-      );
-
-      // 👇 Client tự redirect sau khi gọi xong API
-      window.location.href = `/auth/login?redirect=${encodeURIComponent(
-        currentPath
-      )}`;
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const loginUrl = pathname
     ? `/auth/login?redirect=${encodeURIComponent(pathname)}`
