@@ -5,15 +5,21 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { toast } from "react-hot-toast";
-
+import { CircleHelp } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 interface FormProps {
   children: React.ReactNode;
   label: string;
   title: string;
+  description: string;
   link: string;
   action: string;
   apiPath?: string;
-  updateapiIdPath?: string;
 }
 
 const FormPage = ({
@@ -23,16 +29,13 @@ const FormPage = ({
   action,
   link,
   apiPath,
-  updateapiIdPath,
+  description,
 }: FormProps) => {
   const backend = "http://backend:3000";
 
   const apiUrl = apiPath ? `${backend}/${apiPath}` : null;
 
-  const apiUrlID =
-    apiPath && updateapiIdPath
-      ? `${backend}/${apiPath}/${updateapiIdPath}`
-      : null;
+  const apiUrlID = apiPath ? `${backend}/${apiPath}/{id}` : null;
 
   const copyToClipboard = async (text: string) => {
     try {
@@ -49,9 +52,24 @@ const FormPage = ({
       <header className="flex items-center justify-between border-b pb-4">
         <div>
           <Label className="text-2xl font-bold">{label}</Label>
-          <p className="text-sm text-muted-foreground">{title}</p>
-        </div>
+          <div className="mt-1 flex items-center gap-2">
+            <p className="text-sm text-muted-foreground">{title}</p>
 
+            <div className="mt-1 flex items-center gap-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <CircleHelp className="h-4 w-4 text-muted-foreground transition-colors hover:text-foreground" />
+                  </TooltipTrigger>
+
+                  <TooltipContent className="max-w-sm">
+                    <p>{description}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </div>
+        </div>
         <Link href={link}>
           <Button>{action}</Button>
         </Link>
@@ -101,7 +119,7 @@ const FormPage = ({
                   variant="destructive"
                   className="cursor-pointer font-mono"
                 >
-                  API: {apiPath}/{updateapiIdPath}
+                  API: {apiPath}/{"{id}"}
                 </Badge>
               </Link>
 

@@ -3,7 +3,7 @@ import { SignJWT } from "jose/jwt/sign";
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import { redirect } from "next/navigation";
-import { Role } from "@/type";
+import { Role } from "@/types/bookings/auth/users";
 
 export type Session = {
   user: {
@@ -82,7 +82,7 @@ export const refreshToken = async (oldrefreshToken: string) => {
         body: JSON.stringify({
           refresh: oldrefreshToken,
         }),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -99,7 +99,7 @@ export const refreshToken = async (oldrefreshToken: string) => {
           accessToken,
           refreshToken,
         }),
-      }
+      },
     );
 
     if (!updateRes.ok) throw new Error("Failed to update tokens");

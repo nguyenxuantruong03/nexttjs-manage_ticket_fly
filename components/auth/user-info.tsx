@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { User } from "@/type";
+import { User } from "@/types/bookings/auth/users";
 import { Badge } from "../ui/badge";
 import { FormUploadImage } from "../from-image/from-up-load-image";
 interface UserInfoPorps {

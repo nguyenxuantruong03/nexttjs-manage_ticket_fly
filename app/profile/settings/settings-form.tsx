@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-notification/form-error";
 import FormSuccess from "@/components/form-notification/form-success";
 import { postUser } from "@/lib/post-user";
-import { User } from "@/type";
+import { User } from "@/types/bookings/auth/users";
 import { SettingSchema } from "@/schemas/user";
 
 interface SettingFormProps {

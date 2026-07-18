@@ -7,6 +7,7 @@ import {
   PlaneLanding,
   Ship,
   User,
+  UserCog,
 } from "lucide-react";
 import { SidebarTopic } from "./types";
 
@@ -19,6 +20,7 @@ export const SIDEBARCONTENTICONS = {
   yacht: Ship,
   plane_landing: PlaneLanding,
   chart_pie: ChartPie,
+  user_cog: UserCog,
 } as const;
 export const SIDEBARCONTENTITEMS: SidebarTopic[] = [
   {
@@ -69,6 +71,52 @@ export const SIDEBARCONTENTITEMS: SidebarTopic[] = [
 
   {
     id: 3,
+    topic: "Provider-Booking",
+
+    items: [
+      {
+        id: 59,
+        title: "Provider",
+        icon: "user_cog",
+
+        categories: [
+          {
+            id: 1,
+            name: "Provider Hotel",
+            link: "/provider_booking/hotel",
+          },
+          {
+            id: 2,
+            name: "Provider Ticket Fly",
+            link: "/provider_booking/ticket_fly",
+          },
+          {
+            id: 3,
+            name: "Provider Ticket Bus",
+            link: "/provider_booking/ticket_bus",
+          },
+          {
+            id: 4,
+            name: "Provider Car Rental",
+            link: "/provider_booking/car_rental",
+          },
+          {
+            id: 5,
+            name: "Provider Yacht",
+            link: "/provider_booking/yacht",
+          },
+          {
+            id: 6,
+            name: "Provider Airport Transfer",
+            link: "/provider_booking/airport_transfer",
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: 4,
     topic: "Booking",
 
     items: [

@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation";
 import { getDefaultOpenItem, SIDEBARCONTENTITEMS } from "./items";
 import { Label } from "../ui/label";
 import SidebarNode from "./components/sidebarNode";
-import { User } from "@/type";
+import { User } from "@/types/bookings/auth/users";
 import { UserMenu } from "@/components/menuUser/userMenu";
 import { UserButton } from "@/components/menuUser/userButton";
 import { handleLogout } from "@/lib/logout";

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { User } from "@/type";
+import { User } from "@/types/bookings/auth/users";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

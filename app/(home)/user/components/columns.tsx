@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { User } from "@/type";
+import { User } from "@/types/bookings/auth/users";
 import { ActionMenu } from "../../../../components/form/action-menu";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
