@@ -21,7 +21,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { User } from "@/type";
+import { User } from "@/types/bookings/auth/users";
 import { UserMenu } from "@/components/menuUser/userMenu";
 import { UserButton } from "../menuUser/userButton";
 import { handleLogout } from "@/lib/logout";

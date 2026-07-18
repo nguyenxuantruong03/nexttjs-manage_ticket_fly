@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@/type";
+import { User } from "@/types/bookings/auth/users";
 
 import {
   DropdownMenu,

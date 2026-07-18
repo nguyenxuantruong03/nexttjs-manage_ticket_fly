@@ -5,7 +5,7 @@ import { usersColumns } from "./components/columns";
 
 const UserPage = async () => {
   const users = await getUsers();
-  console.log("users", users);
+  
   return (
     <FormPage
       label="User"
@@ -13,7 +13,7 @@ const UserPage = async () => {
       link="/user/create"
       action="Create"
       apiPath="users"
-      updateapiIdPath="aiuhfauhfawe"
+      description="Manage User"
     >
       <div className="flex-1 min-w-0 overflow-x-hidden">
         <DataTable columns={usersColumns} data={users} />
