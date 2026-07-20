@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { FlySeat } from "../aircraft/cabin.types";
 import { FlyPassenger } from "./passenger.types";
 
@@ -16,8 +15,6 @@ export interface FlySeatAssignment {
   paid: boolean;
 
   amount?: number;
-
-  currency?: Currency;
 
   assignedAt: Date;
 }

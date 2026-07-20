@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { FlyPassenger } from "./passenger.types";
 
 export interface FlyFastTrack {
@@ -12,5 +11,4 @@ export interface FlyFastTrack {
 
   amount?: number;
 
-  currency?: Currency;
 }

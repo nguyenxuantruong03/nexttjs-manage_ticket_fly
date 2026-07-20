@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { RentalDurationType } from "../enums";
 import { CarRentalPriceBreakdown } from "./price-breakdown.types";
 import { CarRentalPriceRule } from "./price-rule.types";
@@ -26,7 +25,6 @@ export interface CarRentalPrice {
   // PRICE
   // =====================
 
-  currency: Currency;
 
   pricePerHour?: number;
 

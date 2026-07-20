@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { FlyPassenger } from "./passenger.types";
 import { FlyAirport } from "../airport/airport.types";
 
@@ -19,7 +18,6 @@ export interface FlyLounge {
 
   passengers?: FlyPassengerLounge[];
 
-  currency?: Currency;
 }
 
 // ======================================================
@@ -39,5 +37,4 @@ export interface FlyPassengerLounge {
 
   amount?: number;
 
-  currency?: Currency;
 }

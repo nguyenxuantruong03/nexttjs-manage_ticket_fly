@@ -1,4 +1,4 @@
-import { authFetch } from "@/lib/authFetch";
+import { authFetch } from "@/lib/http/authFetch";
 import { deleteSession } from "@/lib/session";
 import { NextRequest, NextResponse } from "next/server";
 

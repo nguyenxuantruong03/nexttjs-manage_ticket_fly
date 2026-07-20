@@ -41,11 +41,9 @@ export interface Address {
   region?: string | null;
 
   postcode?: string | null;
-
   countryCode: string;
 
   cityId: string;
-
   city?: City;
 
   // ======================================================
@@ -79,7 +77,6 @@ export interface Address {
   carRentalLocations?: CarRentalLocation[];
   carRentalVehicleLocation?: CarRentalVehicleLocation | null;
   airportTransferRouteStop?: AirportTransferRouteStop[];
-  invoicePayment?: Invoice | null;
   hotelNearbyPlace?: HotelNearbyPlace | null;
   providerBooking?: ProviderBooking | null;
 

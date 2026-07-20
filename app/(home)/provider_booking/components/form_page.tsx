@@ -17,94 +17,14 @@ import {
   SubmitButton,
 } from "@/components/form/form-data";
 
-import { useAppForm } from "@/hooks/useAppForm";
-import { User } from "@/types/bookings/auth/users";
 import FormCheckboxGroup from "@/components/form/form-data/FormCheckbokGroup";
-
-/* =========================
-   SCHEMA
-========================= */
-export const schema = z.object({
-  // =====================
-  // BASIC INFORMATION
-  // =====================
-  officialName: z.string().optional(),
-  displayName: z.string().min(1, "Display name is required"),
-  shortName: z.string().optional(),
-
-  logo: z.string().url().optional().or(z.literal("")),
-  banner: z.string().url().optional().or(z.literal("")),
-
-  subtitle: z.string().optional(),
-  description: z.string().optional(),
-
-  // =====================
-  // COMPANY
-  // =====================
-  companyType: z.string().optional(),
-
-  registrationNumber: z.string().optional(),
-  taxCode: z.string().optional(),
-
-  foundedYear: z.coerce.number().optional(),
-  employeeCount: z.coerce.number().optional(),
-
-  // =====================
-  // CONTACT
-  // =====================
-  email: z.string().email().optional().or(z.literal("")),
-  phone: z.string().optional(),
-  hotline: z.string().optional(),
-  website: z.string().url().optional().or(z.literal("")),
-
-  // =====================
-  // ADDRESS
-  // =====================
-  address: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  country: z.string().optional(),
-  postalCode: z.string().optional(),
-
-  latitude: z.coerce.number().optional(),
-  longitude: z.coerce.number().optional(),
-
-  // =====================
-  // SOCIAL
-  // =====================
-  facebook: z.string().url().optional().or(z.literal("")),
-  instagram: z.string().url().optional().or(z.literal("")),
-  youtube: z.string().url().optional().or(z.literal("")),
-  linkedin: z.string().url().optional().or(z.literal("")),
-
-  // =====================
-  // TRUST
-  // =====================
-  verified: z.boolean(),
-
-  licenseNumber: z.string().optional(),
-
-  // =====================
-  // OWNER
-  // =====================
-  userId: z.string().min(1),
-
-  // =====================
-  // SERVICE
-  // =====================
-  service: z
-    .array(
-      z.enum([
-        "HOTEL",
-        "CARRENTAL",
-        "AIRPORTTRANSFER",
-        "TICKETFLY",
-        "TICKETBUS",
-        "YACHT",
-      ]),
-    )
-    .default([]),
-});
+import { schema } from "./schema";
+import {
+  ProviderOperatingStatus,
+  ProviderStatus,
+  typeServiceBooking,
+} from "@/types/bookings/provider-bookings";
+import { useAppForm } from "@/hooks/useAppForm";
 
 export type FormValues = z.infer<typeof schema>;
 
@@ -131,36 +51,30 @@ export type FormValues = z.infer<typeof schema>;
 
 interface ProviderBookingFormProps {
   initialData?: any;
-  users: User[];
 }
 
 export const ProviderBookingForm = ({
   initialData,
-  users,
 }: ProviderBookingFormProps) => {
-  const userOptions = users.map((user) => ({
-    label: `${user.name} (${user.email})`,
-    value: user.id,
-  }));
-
   const { form, mode, isUpdate } = useAppForm<FormValues>({
     schema,
     mode: initialData ? "update" : "create",
-    defaultValues: initialData ?? {
+    defaultValues: {
       officialName: "",
       displayName: "",
       shortName: "",
 
-      logo: "",
-      banner: "",
-
       subtitle: "",
       description: "",
+
+      logo: "",
+      banner: "",
 
       companyType: "",
 
       registrationNumber: "",
       taxCode: "",
+      licenseNumber: "",
 
       foundedYear: undefined,
       employeeCount: undefined,
@@ -186,7 +100,9 @@ export const ProviderBookingForm = ({
 
       verified: false,
 
-      licenseNumber: "",
+      status: ProviderStatus.PENDING,
+
+      operatingStatus: ProviderOperatingStatus.OPEN,
 
       userId: "",
 
@@ -214,118 +130,152 @@ export const ProviderBookingForm = ({
 
       <AppForm form={form} onSubmit={onSubmit}>
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<FormValues> name="displayName" label="Tên hiển thị" />
+          <FormInput name="displayName" label="Display Name" />
 
-          <FormInput<FormValues> name="officialName" label="Tên pháp lý" />
+          <FormInput name="officialName" label="Official Name" />
 
-          <FormInput<FormValues> name="shortName" label="Tên viết tắt" />
+          <FormInput name="shortName" label="Short Name" />
 
-          <FormTextarea<FormValues> name="subtitle" label="Tiêu đề" />
+          <FormTextarea name="subtitle" label="Subtitle" />
 
-          <FormTextarea<FormValues> name="description" label="Mô tả" />
+          <FormTextarea name="description" label="Description" />
 
-          <FormImageUpload<FormValues> name="logo" label="Logo" />
+          <FormImageUpload name="logo" label="Logo" />
 
-          <FormImageUpload<FormValues> name="banner" label="Banner" />
-          <FormInput<FormValues> name="companyType" label="Loại công ty" />
+          <FormImageUpload name="banner" label="Banner" />
 
-          <FormInput<FormValues>
-            name="registrationNumber"
-            label="Mã đăng ký doanh nghiệp"
-          />
+          <FormInput name="companyType" label="Company Type" />
 
-          <FormInput<FormValues> name="taxCode" label="Mã số thuế" />
+          <FormInput name="registrationNumber" label="Registration Number" />
 
-          <FormInput<FormValues> name="licenseNumber" label="Giấy phép" />
+          <FormInput name="taxCode" label="Tax Code" />
 
-          <FormInput<FormValues>
-            name="foundedYear"
-            type="number"
-            label="Năm thành lập"
-          />
+          <FormInput name="licenseNumber" label="License Number" />
 
-          <FormInput<FormValues>
+          <FormInput name="foundedYear" type="number" label="Founded Year" />
+
+          <FormInput
             name="employeeCount"
             type="number"
-            label="Số nhân viên"
+            label="Employee Count"
           />
 
-          <FormInput<FormValues> name="email" label="Email" />
+          <FormInput name="email" label="Email" />
 
-          <FormInput<FormValues> name="phone" label="Số điện thoại" />
+          <FormInput name="phone" label="Phone" />
 
-          <FormInput<FormValues> name="hotline" label="Hotline" />
+          <FormInput name="hotline" label="Hotline" />
 
-          <FormInput<FormValues> name="website" label="Website" />
+          <FormInput name="website" label="Website" />
 
-          <FormInput<FormValues> name="address" label="Địa chỉ" />
+          <FormInput name="address" label="Address" />
 
-          <FormInput<FormValues> name="city" label="Thành phố" />
+          <FormInput name="city" label="City" />
 
-          <FormInput<FormValues> name="state" label="Tỉnh" />
+          <FormInput name="state" label="State" />
 
-          <FormInput<FormValues> name="country" label="Quốc gia" />
+          <FormInput name="country" label="Country" />
 
-          <FormInput<FormValues> name="postalCode" label="Postal Code" />
+          <FormInput name="postalCode" label="Postal Code" />
 
-          <FormInput<FormValues>
-            name="latitude"
-            type="number"
-            label="Latitude"
-          />
+          <FormInput name="latitude" type="number" label="Latitude" />
 
-          <FormInput<FormValues>
-            name="longitude"
-            type="number"
-            label="Longitude"
-          />
+          <FormInput name="longitude" type="number" label="Longitude" />
 
-          <FormInput<FormValues> name="facebook" label="Facebook" />
+          <FormInput name="facebook" label="Facebook" />
 
-          <FormInput<FormValues> name="instagram" label="Instagram" />
+          <FormInput name="instagram" label="Instagram" />
 
-          <FormInput<FormValues> name="youtube" label="Youtube" />
+          <FormInput name="youtube" label="Youtube" />
 
-          <FormInput<FormValues> name="linkedin" label="LinkedIn" />
+          <FormInput name="linkedin" label="LinkedIn" />
 
-          <FormCombobox<FormValues>
-            name="userId"
-            label="Owner"
-            options={userOptions}
-          />
-
-          <FormCheckboxGroup<FormValues>
+          <FormCheckboxGroup
             name="service"
             label="Services"
             options={[
               {
                 label: "Hotel",
-                value: "HOTEL",
+                value: typeServiceBooking.HOTEL,
               },
               {
                 label: "Car Rental",
-                value: "CARRENTAL",
+                value: typeServiceBooking.CARRENTAL,
               },
               {
                 label: "Airport Transfer",
-                value: "AIRPORTTRANSFER",
+                value: typeServiceBooking.AIRPORTTRANSFER,
               },
               {
                 label: "Flight",
-                value: "TICKETFLY",
+                value: typeServiceBooking.TICKETFLY,
               },
               {
                 label: "Bus",
-                value: "TICKETBUS",
+                value: typeServiceBooking.TICKETBUS,
               },
               {
                 label: "Yacht",
-                value: "YACHT",
+                value: typeServiceBooking.YACHT,
               },
             ]}
           />
 
-          <FormSwitch<FormValues> name="verified" label="Verified" />
+          <FormSelect
+            name="status"
+            label="Status"
+            options={[
+              {
+                label: "Pending",
+                value: ProviderStatus.PENDING,
+              },
+              {
+                label: "Active",
+                value: ProviderStatus.ACTIVE,
+              },
+              {
+                label: "Inactive",
+                value: ProviderStatus.INACTIVE,
+              },
+              {
+                label: "Blocked",
+                value: ProviderStatus.BLOCKED,
+              },
+            ]}
+          />
+
+          <FormSelect
+            name="operatingStatus"
+            label="Operating Status"
+            options={[
+              {
+                label: "Open",
+                value: ProviderOperatingStatus.OPEN,
+              },
+              {
+                label: "Temporarily Closed",
+                value: ProviderOperatingStatus.TEMPORARILY_CLOSED,
+              },
+              {
+                label: "Closed",
+                value: ProviderOperatingStatus.CLOSED,
+              },
+              {
+                label: "Maintenance",
+                value: ProviderOperatingStatus.MAINTENANCE,
+              },
+              {
+                label: "Holiday",
+                value: ProviderOperatingStatus.HOLIDAY,
+              },
+              {
+                label: "Sold Out",
+                value: ProviderOperatingStatus.SOLD_OUT,
+              },
+            ]}
+          />
+
+          <FormSwitch name="verified" label="Verified" />
         </div>
         <div className="mt-8 flex justify-end gap-3">
           <SubmitButton>{isUpdate ? "Cập nhật" : "Lưu dữ liệu"}</SubmitButton>

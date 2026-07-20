@@ -115,10 +115,6 @@ export const carRentalColumns: ColumnDef<CarRental>[] = [
 
   // Price
   {
-    accessorKey: "price.currency",
-    header: "Currency",
-  },
-  {
     accessorKey: "price.pricePerHour",
     header: "Price / Hour",
   },

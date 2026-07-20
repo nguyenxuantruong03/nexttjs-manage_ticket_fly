@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { YachtPackageExtra } from "./package-extra.types";
 import { YachtPackageImage } from "./package-image.types";
 import { YachtDurationType } from "../enums";
@@ -23,7 +22,6 @@ export interface YachtPackage {
 
   price: number;
 
-  currency: Currency;
   includedItems: string[];
   extras: YachtPackageExtra[];
   images: YachtPackageImage[];

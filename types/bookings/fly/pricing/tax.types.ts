@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { FlyFare } from "./fare.types";
 
 export interface FlyFareTax {
@@ -12,7 +11,6 @@ export interface FlyFareTax {
 
   amount: number;
 
-  currency: Currency;
 
   createdAt: Date;
 }

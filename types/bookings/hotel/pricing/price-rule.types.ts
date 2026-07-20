@@ -1,4 +1,4 @@
-import { Currency, WeekDay } from "@/types/common/enums";
+import { WeekDay } from "@/types/common/enums";
 import { HotelPriceAdjustmentType, HotelPriceRuleType } from "../enum/enums";
 
 export interface HotelRoomPriceRule {
@@ -13,8 +13,6 @@ export interface HotelRoomPriceRule {
   adjustmentType: HotelPriceAdjustmentType;
 
   value: number;
-
-  currency?: Currency | null;
 
   minimumNights?: number | null;
 

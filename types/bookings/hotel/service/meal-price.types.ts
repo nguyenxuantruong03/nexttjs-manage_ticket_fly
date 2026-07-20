@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { MealPriceUnit } from "../enum/enums";
 
 
@@ -9,7 +8,6 @@ export interface HotelMealPrice {
 
   price: number;
 
-  currency: Currency;
 
   unit: MealPriceUnit;
 

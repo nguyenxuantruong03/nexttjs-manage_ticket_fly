@@ -1,3 +1,4 @@
+import { ProviderBooking } from "../../provider-bookings";
 import { AirportTransferBooking } from "../booking/booking.types";
 import { AirportTransferServiceType } from "../enums";
 import { AirportTransferFavorite } from "../favorite/favorite.types";
@@ -23,6 +24,7 @@ export interface AirportTransfer {
   id: string;
 
   providerBookingId: string;
+  providerBooking: ProviderBooking;
 
   availability?: AirportTransferAvailability;
   capacity?: AirportTransferCapacity;

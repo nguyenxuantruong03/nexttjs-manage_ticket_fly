@@ -3,8 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { User } from "@/types/bookings/auth/users";
 import { ActionMenu } from "../../../../components/form/action-menu";
-import { ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 

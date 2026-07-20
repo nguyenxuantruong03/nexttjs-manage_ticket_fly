@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 
 export interface HotelBookingExtra {
   id: string;
@@ -15,7 +14,6 @@ export interface HotelBookingExtra {
 
   total: number;
 
-  currency: Currency;
 
   createdAt: Date;
 }

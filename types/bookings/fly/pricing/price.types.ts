@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { FlyFare } from "./fare.types";
 import { FlyPriceRule } from "./rule.types";
 import { Fly } from "../core/fly.types";
@@ -10,7 +9,6 @@ export interface FlyPrice {
 
   fly?: Fly;
 
-  currency: Currency;
 
   fromPrice: number;
 

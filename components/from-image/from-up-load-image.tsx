@@ -13,8 +13,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import UploadImage from "./upload-image";
-import { postUser } from "@/lib/post-user";
+// import { postUser } from "@/lib/post-user";
 import { UpdateImageSchema } from "@/schemas/user";
+import { useUpdateUser } from "@/hooks/user";
 
 interface FormUploadImageProps {
   image?: string | null | undefined;
@@ -30,16 +31,16 @@ export const FormUploadImage = ({ image, name }: FormUploadImageProps) => {
     },
   });
 
+  const { mutateAsync: updateMe } = useUpdateUser();
+
   const onSubmit = async (values: z.infer<typeof UpdateImageSchema>) => {
     try {
-      const response = await postUser(values);
+      await updateMe({
+        image: values.image,
+      });
 
-      if (response.message) {
-        toast.success("Cập nhật ảnh thành công");
-        router.refresh(); // Tự động làm mới dữ liệu toàn trang
-      } else {
-        toast.error("Cập nhật thất bại");
-      }
+      toast.success("Cập nhật ảnh thành công");
+      router.refresh();
     } catch {
       toast.error("Đã có lỗi xảy ra");
     }

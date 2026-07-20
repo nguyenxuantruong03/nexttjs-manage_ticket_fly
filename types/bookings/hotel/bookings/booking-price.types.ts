@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 
 export interface HotelBookingPriceSnapshot {
   id: string;
@@ -23,7 +22,6 @@ export interface HotelBookingPriceSnapshot {
 
   payableLater: number;
 
-  currency: Currency;
 
   createdAt: Date;
 }

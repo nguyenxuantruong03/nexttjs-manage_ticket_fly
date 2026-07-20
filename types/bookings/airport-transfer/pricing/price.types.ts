@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { AirportTransferRoutePrice } from "./route-price.types";
 import { AirportTransferTripPrice } from "./trip-price.types";
 import { AirportTransferPriceRule } from "./price-rule.types";
@@ -8,7 +7,6 @@ export interface AirportTransferPrice {
 
   transferId: string;
 
-  currency: Currency;
 
   fromPrice: number;
 
