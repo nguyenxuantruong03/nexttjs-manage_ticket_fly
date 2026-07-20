@@ -17,8 +17,8 @@ interface FormProps {
   label: string;
   title: string;
   description: string;
-  link: string;
-  action: string;
+  link?: string;
+  action?: string;
   apiPath?: string;
 }
 
@@ -70,9 +70,11 @@ const FormPage = ({
             </div>
           </div>
         </div>
-        <Link href={link}>
-          <Button>{action}</Button>
-        </Link>
+        {action && link && (
+          <Link href={link}>
+            <Button>{action}</Button>
+          </Link>
+        )}
       </header>
 
       {/* Content */}

@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { FlyAirline } from "../airline/airline.types";
 import { FlyMealType } from "../enums";
 import { FlyPassenger } from "./passenger.types";
@@ -18,7 +17,6 @@ export interface FlyMealSelection {
 
   amount?: number;
 
-  currency?: Currency;
 }
 
 
@@ -38,8 +36,6 @@ export interface FlyMeal {
   image?: string;
 
   price?: number;
-
-  currency?: Currency;
 
   selections?: FlyMealSelection[];
 

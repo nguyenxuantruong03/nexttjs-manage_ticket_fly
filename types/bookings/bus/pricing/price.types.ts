@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { BusPriceBreakdown } from "./breakdown.types";
 import { BusPriceRule } from "./rule.types";
 
@@ -7,7 +6,6 @@ export interface BusPrice {
 
   busId: string;
 
-  currency: Currency;
 
   fromPrice: number;
 

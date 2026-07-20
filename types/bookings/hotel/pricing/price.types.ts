@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { HotelRoomPriceBreakdown } from "./price-breakdown.types";
 import { HotelRoomPriceRule } from "./price-rule.types";
 
@@ -7,7 +6,6 @@ export interface HotelRoomPrice {
 
   ratePlanId: string;
 
-  currency: Currency;
 
   originalPrice?: number | null;
 

@@ -61,10 +61,6 @@ export const hotelColumns: ColumnDef<Hotel>[] = [
 
   // Price
   {
-    accessorKey: "inventory.0.price.currency",
-    header: "Currency",
-  },
-  {
     accessorKey: "inventory.0.price.originalPrice",
     header: "Original Price",
   },

@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { YachtBookingExtra } from "../booking/booking-extra.types";
 import { YachtExtraCategory, YachtExtraPricingType } from "../enums";
 import { YachtPackageExtra } from "../pricing/package-extra.types";
@@ -19,7 +18,6 @@ export interface YachtExtra {
   packageExtras: YachtPackageExtra[];
 
   price: number;
-  currency: Currency;
 
   active: boolean;
   images: YachtExtraImage[];

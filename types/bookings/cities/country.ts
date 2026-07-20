@@ -2,7 +2,6 @@
 // COUNTRY TYPES
 // ======================================================
 
-import { Currency } from "@/types/common/enums";
 import { City, Continent } from "./cities";
 
 
@@ -42,7 +41,6 @@ export interface Country {
 
   timezone?: string;
 
-  currency?: Currency;
 
   languages: string[];
 

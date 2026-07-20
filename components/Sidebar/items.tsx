@@ -1,8 +1,11 @@
 import {
+  Building2,
   Bus,
   CarTaxiFront,
   ChartPie,
+  CircleDollarSign,
   Hotel,
+  MapPinHouseIcon,
   Plane,
   PlaneLanding,
   Ship,
@@ -21,6 +24,9 @@ export const SIDEBARCONTENTICONS = {
   plane_landing: PlaneLanding,
   chart_pie: ChartPie,
   user_cog: UserCog,
+  circle_dollar_sign: CircleDollarSign,
+  building_2: Building2,
+  map_pin_house: MapPinHouseIcon,
 } as const;
 export const SIDEBARCONTENTITEMS: SidebarTopic[] = [
   {
@@ -82,33 +88,8 @@ export const SIDEBARCONTENTITEMS: SidebarTopic[] = [
         categories: [
           {
             id: 1,
-            name: "Provider Hotel",
-            link: "/provider_booking/hotel",
-          },
-          {
-            id: 2,
-            name: "Provider Ticket Fly",
-            link: "/provider_booking/ticket_fly",
-          },
-          {
-            id: 3,
-            name: "Provider Ticket Bus",
-            link: "/provider_booking/ticket_bus",
-          },
-          {
-            id: 4,
-            name: "Provider Car Rental",
-            link: "/provider_booking/car_rental",
-          },
-          {
-            id: 5,
-            name: "Provider Yacht",
-            link: "/provider_booking/yacht",
-          },
-          {
-            id: 6,
-            name: "Provider Airport Transfer",
-            link: "/provider_booking/airport_transfer",
+            name: "Provider",
+            link: "/provider_booking",
           },
         ],
       },
@@ -117,6 +98,54 @@ export const SIDEBARCONTENTITEMS: SidebarTopic[] = [
 
   {
     id: 4,
+    topic: "Service",
+
+    items: [
+      {
+        id: 50,
+        title: "Currency",
+        icon: "circle_dollar_sign",
+
+        categories: [
+          {
+            id: 31,
+            name: "currency",
+            link: "/currency",
+          },
+        ],
+      },
+
+      {
+        id: 51,
+        title: "City",
+        icon: "building_2",
+
+        categories: [
+          {
+            id: 31,
+            name: "City",
+            link: "/city",
+          },
+        ],
+      },
+      {
+        id: 52,
+        title: "Country",
+        icon: "map_pin_house",
+
+        categories: [
+          {
+            id: 31,
+            name: "country",
+            link: "/country",
+          },
+        ],
+      },
+    ],
+  },
+
+  {
+    id: 5,
     topic: "Booking",
 
     items: [

@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { AirportTransferBookingStatus } from "../enums";
 import { PaymentStatus } from "@/types/common/payment";
 import { AirportTransferBookingPassenger } from "./booking-passenger.types";
@@ -23,8 +22,6 @@ export interface AirportTransferBooking {
   pickupTime: string;
 
   totalAmount: number;
-
-  currency: Currency;
 
   paymentStatus: PaymentStatus;
 

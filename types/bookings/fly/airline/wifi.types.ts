@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { FlyPassengerWifi } from "../booking/wifi.types";
 import { FlyAirline } from "./airline.types";
 
@@ -20,5 +19,4 @@ export interface FlyWifiPackage {
 
   passengers?: FlyPassengerWifi[];
 
-  currency: Currency;
 }

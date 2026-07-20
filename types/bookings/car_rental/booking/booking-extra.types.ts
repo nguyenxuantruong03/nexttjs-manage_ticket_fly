@@ -1,4 +1,3 @@
-import { Currency } from "../../../common/enums";
 import { CarRentalExtraType } from "../enums";
 
 export interface CarRentalBookingExtra {
@@ -17,8 +16,6 @@ export interface CarRentalBookingExtra {
   unitPrice: number;
 
   totalPrice: number;
-
-  currency: Currency;
 
   createdAt: string;
 }

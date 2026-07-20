@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { FlyPassenger } from "../booking/passenger.types";
 import { FlyAddonType } from "../enums";
 import { FlyAirline } from "./airline.types";
@@ -24,7 +23,6 @@ export interface FlyAddon {
 
   amount: number;
 
-  currency: Currency;
 
   active: boolean;
 
@@ -52,7 +50,6 @@ export interface FlyPassengerAddon {
 
   totalPrice: number;
 
-  currency: Currency;
 
   metadata?: unknown;
 

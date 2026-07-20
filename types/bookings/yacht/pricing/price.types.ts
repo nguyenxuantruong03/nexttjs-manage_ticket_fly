@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { YachtPricingType } from "../enums";
 import { YachtPriceFee } from "./price-fee.types";
 import { YachtPriceOption } from "./price-option.types";
@@ -9,7 +8,6 @@ export interface YachtPrice {
 
   yachtId: string;
 
-  currency: Currency;
   pricingType: YachtPricingType;
   basePrices: YachtPriceOption[];
   fees: YachtPriceFee[];

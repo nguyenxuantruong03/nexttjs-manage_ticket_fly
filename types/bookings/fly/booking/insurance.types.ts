@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { FlyPassenger } from "./passenger.types";
 import { FlyAirline } from "../airline/airline.types";
 
@@ -18,8 +17,6 @@ export interface FlyInsurance {
   coverage?: string;
 
   amount: number;
-
-  currency: Currency;
 
   active: boolean;
 
@@ -46,8 +43,6 @@ export interface FlyPassengerInsurance {
   unitPrice: number;
 
   totalPrice: number;
-
-  currency: Currency;
 
   createdAt: Date;
 }

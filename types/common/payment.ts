@@ -2,7 +2,6 @@
 
 import { Address } from "../bookings/cities/address";
 import { User } from "../bookings/auth/users";
-import { Currency } from "./enums";
 
 export enum PaymentStatus {
   pending = "pending",
@@ -65,8 +64,6 @@ export interface Payment {
 
   amount: number;
 
-  currency: Currency;
-
   status: PaymentStatus;
 
   method?: PaymentMethodType | null;
@@ -102,8 +99,6 @@ export interface PaymentTransaction {
   providerTransactionId?: string | null;
 
   amount: number;
-
-  currency: Currency;
 
   status: PaymentStatus;
 
@@ -144,8 +139,6 @@ export interface Refund {
   payment?: Payment;
 
   amount: number;
-
-  currency: Currency;
 
   status: RefundStatus;
 
@@ -189,8 +182,6 @@ export interface Invoice {
 
   total: number;
 
-  currency: Currency;
-
   pdfUrl?: string | null;
 
   createdAt: Date;
@@ -228,7 +219,6 @@ export interface PaymentUI {
 
   amount: {
     value: number;
-    currency: Currency;
   };
 
   status: PaymentStatus;
@@ -255,8 +245,6 @@ export interface PaymentTransactionUI {
 
   amount: number;
 
-  currency: Currency;
-
   status: PaymentStatus;
 
   createdAt: string;
@@ -266,8 +254,6 @@ export interface RefundUI {
   id: string;
 
   amount: number;
-
-  currency: Currency;
 
   status: RefundStatus;
 
@@ -298,7 +284,6 @@ export interface InvoiceUI {
 
     total: number;
 
-    currency: Currency;
   };
 
   pdfUrl?: string;
@@ -318,8 +303,6 @@ export interface CreatePaymentInput {
   referenceType: PaymentReferenceType;
 
   amount: number;
-
-  currency: Currency;
 
   method?: PaymentMethodType;
 }
@@ -341,8 +324,6 @@ export interface CreatePaymentTransactionInput {
 
   amount: number;
 
-  currency: Currency;
-
   status: PaymentStatus;
 
   rawResponse?: Record<string, any>;
@@ -352,8 +333,6 @@ export interface CreateRefundInput {
   paymentId: string;
 
   amount: number;
-
-  currency: Currency;
 
   reason?: string;
 
@@ -380,8 +359,6 @@ export interface CreateInvoiceInput {
   discount?: number;
 
   total: number;
-
-  currency: Currency;
 
   pdfUrl?: string;
 }

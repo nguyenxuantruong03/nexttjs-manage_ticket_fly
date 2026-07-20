@@ -16,7 +16,6 @@ import {
   FormTextarea,
   SubmitButton,
 } from "@/components/form/form-data";
-
 import { useAppForm } from "@/hooks/useAppForm";
 
 /* =========================
@@ -190,4 +189,4 @@ export const UserFormPage = ({ initialData }: UserFormPageProps) => {
     </div>
   );
 };
-export default UserFormPage
+export default UserFormPage;

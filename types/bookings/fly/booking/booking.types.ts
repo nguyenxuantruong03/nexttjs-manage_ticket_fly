@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { FlySeatInventoryLock } from "../aircraft/inventory-lock.types";
 import { FlyInterline } from "../alliance/interline.types";
 import { FlyItinerary } from "../alliance/itinerary.types";
@@ -30,8 +29,6 @@ export interface FlyBooking {
   totalPassengers: number;
 
   totalAmount: number;
-
-  currency: Currency;
 
   note?: string;
 

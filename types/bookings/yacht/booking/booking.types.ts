@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { YachtInventoryLock } from "../trips/inventory-lock.types";
 import { YachtBookingContact } from "./booking-contact.types";
 import { YachtBookingExtra } from "./booking-extra.types";
@@ -33,7 +32,6 @@ export interface YachtBooking {
 
   reviews: YachtReview[];
 
-  currency: Currency;
 
   subtotal: number;
 

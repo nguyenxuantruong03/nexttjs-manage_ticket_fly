@@ -1,12 +1,16 @@
+// app/(home)/layout.tsx
+
 import NavbarMobile from "@/components/navbar";
 import SidebarClient from "@/components/Sidebar/components/sidebarClient";
-import { getUser } from "@/lib/user";
+import { UserServerService } from "@/services/users/server";
+
 export default async function LayoutHome({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
-  const user = await getUser();
+}) {
+  const user = await UserServerService.getMe();
+
   return (
     <SidebarClient user={user}>
       <NavbarMobile user={user} />

@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { BusSeatAvailabilityStatus } from "../enums";
 import { BusSeat } from "../vehicle/seat.types";
 import { BusTrip } from "./trip.types";
@@ -24,7 +23,6 @@ export interface BusSeatAvailability {
 
   currentPrice: number;
 
-  currency: Currency;
 
   createdAt: Date;
 

@@ -4,11 +4,6 @@ export enum Role {
   USER = "USER",
 }
 
-export enum Currency {
-  VND = "VND",
-  USD = "USD",
-}
-
 export enum ReviewStatus {
   PENDING = "pending",
   APPROVED = "approved",

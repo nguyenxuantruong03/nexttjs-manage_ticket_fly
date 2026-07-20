@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { CarRentalBookingInsurance } from "./booking-insurance.types";
 import { CarRentalInsuranceBenefit } from "./insurance-benefit.types";
 import { CarRentalInsuranceType } from "../enums";
@@ -21,7 +20,6 @@ export interface CarRentalInsurance {
 
   fixedPrice?: number;
 
-  currency: Currency;
 
   // Benefits
   benefits: CarRentalInsuranceBenefit[];

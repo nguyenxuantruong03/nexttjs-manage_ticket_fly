@@ -20,9 +20,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-notification/form-error";
 import FormSuccess from "@/components/form-notification/form-success";
-import { postUser } from "@/lib/post-user";
 import { User } from "@/types/bookings/auth/users";
 import { SettingSchema } from "@/schemas/user";
+import { useUpdateUser } from "@/hooks/user";
 
 interface SettingFormProps {
   user: User;
@@ -43,17 +43,18 @@ const SettingForm: React.FC<SettingFormProps> = ({ user }) => {
     },
   });
 
+  const { mutateAsync: updateMe } = useUpdateUser();
+
   const onSubmit = async (values: z.infer<typeof SettingSchema>) => {
     setSuccess("");
     setError("");
     try {
-      const response = await postUser(values);
-
-      if (response.message) {
-        setSuccess(response.message);
-      } else {
-        setError("Cập nhật thất bại");
-      }
+      await updateMe({
+        password: values.password,
+        name: values.name,
+        isTwoFactorEnabled: values.isTwoFactorEnabled,
+      });
+      setSuccess("Thay đổi thành công!");
     } catch {
       setError("Cập nhật thất bại");
     } finally {

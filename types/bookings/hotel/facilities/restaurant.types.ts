@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { RetaurentCategory } from "../enum/enums";
 
 
@@ -25,7 +24,6 @@ export interface HotelRestaurant {
   images: HotelRestaurantImage[];
 
   price: number;
-  currency: Currency;
 }
 
 export interface HotelRestaurantImage {

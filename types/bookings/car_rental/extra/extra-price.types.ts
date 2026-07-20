@@ -1,4 +1,3 @@
-import { Currency } from "@/types/common/enums";
 import { CarRentalExtraPricingType } from "../enums";
 
 export interface CarRentalExtraPrice {
@@ -10,7 +9,6 @@ export interface CarRentalExtraPrice {
 
   amount: number;
 
-  currency: Currency;
 
   minimumQuantity?: number;
 
