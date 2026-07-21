@@ -1,4 +1,4 @@
-import ProviderBookingForm from "../components/form_page";
+import ProviderBookingForm from "../components/ProviderBookingForm.tsx";
 
 const ProviderBookingsCreate = async () => {
   return <ProviderBookingForm />;

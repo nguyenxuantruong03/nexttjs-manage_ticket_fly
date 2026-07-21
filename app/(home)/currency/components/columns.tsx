@@ -1,96 +1,107 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Currency } from "@/types/bookings/cities/currency";
+import { Currency } from "@/types/bookings/location/currency";
+import { RowActions } from "@/components/ui/data-table/row-actions";
+import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 
-export const currencyColumns: ColumnDef<Currency>[] = [
-  {
-    accessorKey: "id",
-    header: "ID",
-  },
+export function currencyColumns(
+  actions: (row: Currency) => ActionMenuItem<Currency>[],
+): ColumnDef<Currency>[] {
+  return [
+    {
+      accessorKey: "id",
+      header: "ID",
+    },
 
-  // ======================================================
-  // BASIC
-  // ======================================================
+    // ======================================================
+    // BASIC
+    // ======================================================
 
-  {
-    accessorKey: "code",
-    header: "Code",
-  },
-  {
-    accessorKey: "numericCode",
-    header: "Numeric Code",
-  },
-  {
-    accessorKey: "symbol",
-    header: "Symbol",
-  },
-  {
-    accessorKey: "symbolNative",
-    header: "Native Symbol",
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-  {
-    accessorKey: "nativeName",
-    header: "Native Name",
-  },
-  {
-    accessorKey: "decimalDigits",
-    header: "Decimal Digits",
-  },
-  {
-    accessorKey: "rounding",
-    header: "Rounding",
-  },
+    {
+      accessorKey: "code",
+      header: "Code",
+    },
+    {
+      accessorKey: "numericCode",
+      header: "Numeric Code",
+    },
+    {
+      accessorKey: "symbol",
+      header: "Symbol",
+    },
+    {
+      accessorKey: "symbolNative",
+      header: "Native Symbol",
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
+    },
+    {
+      accessorKey: "nativeName",
+      header: "Native Name",
+    },
+    {
+      accessorKey: "decimalDigits",
+      header: "Decimal Digits",
+    },
+    {
+      accessorKey: "rounding",
+      header: "Rounding",
+    },
 
-  // ======================================================
-  // DISPLAY
-  // ======================================================
+    // ======================================================
+    // DISPLAY
+    // ======================================================
 
-  {
-    accessorKey: "flagEmoji",
-    header: "Flag",
-  },
-  {
-    accessorKey: "locale",
-    header: "Locale",
-  },
+    {
+      accessorKey: "flagEmoji",
+      header: "Flag",
+    },
+    {
+      accessorKey: "locale",
+      header: "Locale",
+    },
 
-  // ======================================================
-  // STATUS
-  // ======================================================
+    // ======================================================
+    // STATUS
+    // ======================================================
 
-  {
-    accessorKey: "active",
-    header: "Active",
-  },
-  {
-    accessorKey: "isDefault",
-    header: "Default",
-  },
+    {
+      accessorKey: "active",
+      header: "Active",
+    },
+    {
+      accessorKey: "isDefault",
+      header: "Default",
+    },
 
-  // ======================================================
-  // RELATIONS
-  // ======================================================
+    // ======================================================
+    // RELATIONS
+    // ======================================================
 
-  {
-    accessorKey: "countries",
-    header: "Countries",
-  },
+    {
+      accessorKey: "countries",
+      header: "Countries",
+    },
 
-  // ======================================================
-  // TIMESTAMPS
-  // ======================================================
+    // ======================================================
+    // TIMESTAMPS
+    // ======================================================
 
-  {
-    accessorKey: "createdAt",
-    header: "Created At",
-  },
-  {
-    accessorKey: "updatedAt",
-    header: "Updated At",
-  },
-];
+    {
+      accessorKey: "createdAt",
+      header: "Created At",
+    },
+    {
+      accessorKey: "updatedAt",
+      header: "Updated At",
+    },
+    {
+      id: "actions",
+      header: "",
+      cell: ({ row }) => <RowActions row={row.original} actions={actions} />,
+    },
+  ];
+}

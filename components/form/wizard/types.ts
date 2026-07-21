@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { LucideIcon } from "lucide-react";
 
 export interface FormWizardStep {
   id: string;
@@ -7,7 +7,7 @@ export interface FormWizardStep {
 
   description?: string;
 
-  icon?: ReactNode;
+  icon?: LucideIcon;
 
   optional?: boolean;
 }

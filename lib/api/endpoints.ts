@@ -9,7 +9,7 @@ export const API = {
 
   CITY: "/city",
 
-  COUNTRIES: "/countries",
+  COUNTRY: "/country",
 
   CURRENCY: "/currency",
 

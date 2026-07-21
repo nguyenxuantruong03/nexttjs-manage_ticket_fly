@@ -1,11 +1,29 @@
-"use client"
-import FormPage from "@/components/form/form";
+"use client";
 import { airportTransferColumns } from "./components/columns";
 import { DataTable } from "@/components/ui/data-table";
-import { useAirportTransfers } from "@/hooks/airport-transfer";
+import {
+  useAirportTransfers,
+  useDeleteAirportTransfer,
+} from "@/hooks/airport-transfer";
+import { useRouter } from "next/navigation";
+import { createAirportTransferActions } from "./features/actions";
+import { createAirportTransferHandlers } from "./features/handlers";
 
 const AirportTransferPage = () => {
-  const { data=[], isPending, error } = useAirportTransfers();
+  const deleteMutation = useDeleteAirportTransfer();
+  const { data = [], isPending, error } = useAirportTransfers();
+  const router = useRouter();
+
+  const handlers = createAirportTransferHandlers({
+    router,
+    deleteMutation,
+  });
+
+  const actions = createAirportTransferActions({
+    onView: handlers.view,
+    onEdit: handlers.edit,
+    onDelete: handlers.delete,
+  });
 
   if (isPending) {
     return <div>Loading...</div>;
@@ -14,20 +32,7 @@ const AirportTransferPage = () => {
   if (error) {
     return <div>Đã xảy ra lỗi.</div>;
   }
-  return (
-    <FormPage
-      label="airportTransferpage"
-      title="Manage Provider Booking"
-      link="/airport_transfer/create"
-      action="Create"
-      apiPath="airport-transfer"
-      description="airportPage"
-    >
-      <div className="flex-1 min-w-0 overflow-x-hidden">
-        <DataTable columns={airportTransferColumns} data={data} />
-      </div>
-    </FormPage>
-  );
+  return <DataTable columns={airportTransferColumns(actions)} data={data} />;
 };
 
 export default AirportTransferPage;

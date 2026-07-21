@@ -172,7 +172,7 @@ export const SIDEBARCONTENTITEMS: SidebarTopic[] = [
           {
             id: 31,
             name: "Ticket Bus",
-            link: "/ticket_bus",
+            link: "ticket-bus",
           },
         ],
       },

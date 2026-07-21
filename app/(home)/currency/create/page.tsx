@@ -1,7 +1,7 @@
 "use client";
-import Currency from "../components/form_page";
+import Currency from "../components/CurrencyForm";
 
-const ProviderBookingsCreate = () => {
+const CurrencyCreatePage = () => {
   // const { data, isPending, error } = useCurrencies();
 
   // if (isPending) {
@@ -14,4 +14,4 @@ const ProviderBookingsCreate = () => {
   return <Currency />;
 };
 
-export default ProviderBookingsCreate;
+export default CurrencyCreatePage;

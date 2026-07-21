@@ -1,4 +1,4 @@
-import { Address } from "../../cities/address";
+import { Address } from "../../location/address";
 import { Bus } from "../core/bus.types";
 import { BusBoardingPoint } from "./boarding-point.types";
 import { BusDropoffPoint } from "./dropoff-point.types";

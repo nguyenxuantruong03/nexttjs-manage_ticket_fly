@@ -18,7 +18,7 @@ export interface Bus {
 
   routes: BusRoute[];
   policies?: BusPolicies;
-  vehicle?: BusVehicle;
+  vehicles?: BusVehicle[]
   reviews: BusReview[];
   images: BusImage[];
   favorites: BusFavorite[];

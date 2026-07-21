@@ -1,4 +1,4 @@
-import { Address } from "../../cities/address";
+import { Address } from "../../location/address";
 import { CarRentalVehicle } from "./vehicle.types";
 
 export interface CarRentalVehicleLocation {

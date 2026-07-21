@@ -1,6 +1,6 @@
 // payment.types.ts
 
-import { Address } from "../bookings/cities/address";
+import { Address } from "../bookings/location/address";
 import { User } from "../bookings/auth/users";
 
 export enum PaymentStatus {
@@ -283,7 +283,6 @@ export interface InvoiceUI {
     discount: number;
 
     total: number;
-
   };
 
   pdfUrl?: string;

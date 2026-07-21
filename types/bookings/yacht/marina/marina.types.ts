@@ -2,13 +2,12 @@ import { Yacht } from "../core/yacht.types";
 import { YachtMarinaFacilities } from "../facilities/marina-facilities.types";
 import { YachtRoute } from "../routes/route.types";
 
-
 export interface YachtMarina {
   id: string;
 
   name: string;
 
-  yachts: Yacht[];
+  yachtId: string;
 
   addressId: string;
 

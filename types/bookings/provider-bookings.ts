@@ -1,7 +1,7 @@
 import { AirportTransfer } from "./airport-transfer/core/airport-transfer.types";
 import { Bus } from "./bus/core/bus.types";
 import { CarRental } from "./car_rental/core/car-rental.types";
-import { Fly } from "./fly/core/fly.types";
+import { TicketFly } from "./ticket-fly/core/fly.types";
 import { HotelInformation } from "./hotel/core/hotel-information.types";
 import { Yacht } from "./yacht/core/yacht.types";
 
@@ -103,7 +103,7 @@ export interface ProviderBooking {
   buses: Bus[];
   yacht: Yacht[];
   airportTransfer: AirportTransfer[];
-  fly: Fly[];
+  fly: TicketFly[];
 
   createdAt: Date;
   updatedAt: Date;

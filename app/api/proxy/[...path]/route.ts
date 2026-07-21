@@ -9,7 +9,7 @@ type Context = {
 async function proxy(request: Request, { params }: Context) {
   const { path } = await params;
 
-  const pathname = "/" + path.join("");
+  const pathname = "/" + path.join("/");
 
   const search = new URL(request.url).search;
 
