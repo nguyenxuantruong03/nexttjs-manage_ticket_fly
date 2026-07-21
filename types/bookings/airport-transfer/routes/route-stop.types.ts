@@ -1,4 +1,4 @@
-import { Address } from "../../cities/address";
+import { Address } from "../../location/address";
 import { AirportTransferRoute } from "./route.types";
 
 export interface AirportTransferRouteStop {

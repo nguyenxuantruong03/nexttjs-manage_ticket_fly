@@ -2,6 +2,7 @@ import { BusBooking } from "../booking/booking.types";
 import { BusBoardingStatus, BusTripStatus } from "../enums";
 import { BusTripPrice } from "../pricing/trip-price.types";
 import { BusReview } from "../reviews/review.types";
+import { BusVehicle } from "../vehicle/vehicle.types";
 import { BusSeatInventoryLock } from "./inventory-lock.types";
 import { BusRoute } from "./route.types";
 import { BusSeatAvailability } from "./seat-availability.types";
@@ -9,6 +10,9 @@ import { BusRouteStop } from "./stop.types";
 
 export interface BusTrip {
   id: string;
+
+  vehicleId: string;
+  vehicle: BusVehicle;
 
   routeId: string;
   route?: BusRoute;

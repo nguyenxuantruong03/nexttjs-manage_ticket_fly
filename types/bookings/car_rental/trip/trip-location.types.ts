@@ -1,4 +1,4 @@
-import { Address } from "../../cities/address";
+import { Address } from "../../location/address";
 import { CarRentalBooking } from "../booking/booking.types";
 import { RentalLocationType } from "../enums";
 import { CarRentalTrip } from "./trip.types";

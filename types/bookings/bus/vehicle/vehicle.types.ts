@@ -1,5 +1,6 @@
 import { BusVehicleStatus, BusVehicleType } from "../enums";
 import { BusSeatInventoryLock } from "../routes/inventory-lock.types";
+import { BusTrip } from "../routes/trip.types";
 import { BusVehicleCapacity } from "./capacity.types";
 import { BusVehicleFeatures } from "./features.types";
 import { BusVehicleImage } from "./image.types";
@@ -12,7 +13,7 @@ export interface BusVehicle {
   id: string;
 
   busId: string;
-
+  trips: BusTrip[];
   type: BusVehicleType;
 
   active: boolean;

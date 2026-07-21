@@ -1,4 +1,4 @@
-import { Address } from "../../cities/address";
+import { Address } from "../../location/address";
 import { AirportTransfer } from "../core/airport-transfer.types";
 import { AirportTransferRouteType } from "../enums";
 import { AirportTransferRoutePrice } from "../pricing/route-price.types";

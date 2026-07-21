@@ -1,34 +1,35 @@
 "use client";
-import FormPage from "@/components/form/form";
 import { DataTable } from "@/components/ui/data-table";
 import { usersColumns } from "./components/columns";
-import { useUsers } from "@/hooks/user";
+import { useDeleteUser, useUsers } from "@/hooks/user";
+import { useRouter } from "next/navigation";
+import { createUserActions } from "./features/actions";
+import { createUserHandlers } from "./features/handlers";
 
 const UserPage = () => {
+  const deleteMutation = useDeleteUser();
   const { data = [], isPending, error } = useUsers();
+  const router = useRouter();
+
+  const handlers = createUserHandlers({
+    router,
+    deleteMutation,
+  });
+
+  const actions = createUserActions({
+    onView: handlers.view,
+    onEdit: handlers.edit,
+    onDelete: handlers.delete,
+  });
   if (isPending) {
     return <div>Loading...</div>;
   }
 
   if (error) {
-    console.error(error);
-    return <pre>{JSON.stringify(error, null, 2)}</pre>;
+    return <div>Đã xảy ra lỗi!</div>;
   }
 
-  console.log("data", data);
-
-  return (
-    <FormPage
-      label="User"
-      title="Manage User"
-      apiPath="users"
-      description="Manage User"
-    >
-      <div className="flex-1 min-w-0 overflow-x-hidden">
-        <DataTable columns={usersColumns} data={data} />
-      </div>
-    </FormPage>
-  );
+  return <DataTable columns={usersColumns(actions)} data={data} />;
 };
 
 export default UserPage;

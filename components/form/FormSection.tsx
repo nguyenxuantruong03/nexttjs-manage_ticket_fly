@@ -1,25 +1,42 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ReactNode } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
-interface Props {
-  title: string;
-  description?: string;
-  children: React.ReactNode;
+interface FormSectionProps {
+  title: ReactNode;
+  description?: ReactNode;
+  children: ReactNode;
+
+  className?: string;
+  contentClassName?: string;
 }
 
-export default function FormSection({ title, description, children }: Props) {
+export default function FormSection({
+  title,
+  description,
+  children,
+  className,
+  contentClassName,
+}: FormSectionProps) {
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
 
-        {description && (
-          <p className="text-sm text-muted-foreground">{description}</p>
-        )}
+        {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
 
-      <CardContent className="space-y-6">{children}</CardContent>
+      <CardContent className={cn("space-y-6", contentClassName)}>
+        {children}
+      </CardContent>
     </Card>
   );
 }

@@ -2,6 +2,7 @@ import { YachtBooking } from "../booking/booking.types";
 import { YachtCrew } from "../crew/crew.types";
 import { YachtExtra } from "../extra/extra.types";
 import { YachtFavorite } from "../favorite/favorite.types";
+import { YachtMarina } from "../marina/marina.types";
 import { YachtPolicies } from "../policies/policies.types";
 import { YachtPackage } from "../pricing/package.types";
 import { YachtPrice } from "../pricing/price.types";
@@ -15,18 +16,16 @@ import { YachtVehicle } from "../vehicles/vehicle.types";
 import { YachtImage } from "./image.types";
 import { YachtNotice } from "./notice.tyoes";
 
-
 export interface Yacht {
   id: string;
 
   providerBookingId: string;
 
-  marinaId?: string | null;
-
+  marina?: YachtMarina[];
   vehicle?: YachtVehicle | null;
   routes: YachtRoute[];
   trips: YachtTrip[];
-  availability?: YachtAvailability  | null;
+  availability?: YachtAvailability | null;
   price?: YachtPrice | null;
   packages: YachtPackage[];
   extras: YachtExtra[];
