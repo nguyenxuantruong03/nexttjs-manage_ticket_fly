@@ -10,7 +10,7 @@ import {
   RentalDocument,
   UnitOption,
 } from "@/types/bookings/car_rental/enums";
-import { CarRentalFormValues } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
 
 const fuelPolicyOptions = Object.values(FuelPolicy).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -35,25 +35,25 @@ export default function PoliciesStep() {
         description="Driver and rental requirements"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.minimumDriverAge"
             label="Minimum Driver Age"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.minimumLicenseYears"
             label="Minimum License Years"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.depositAmount"
             label="Deposit Amount"
             type="number"
           />
 
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="policies.fuelPolicy"
             label="Fuel Policy"
             options={fuelPolicyOptions}
@@ -66,24 +66,24 @@ export default function PoliciesStep() {
         description="Mileage limitation rules"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.mileage.unlimited"
             label="Unlimited Mileage"
           />
 
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="policies.mileage.unit"
             label="Mileage Unit"
             options={unitOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.mileage.dailyLimitKm"
             label="Daily Limit KM"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.mileage.extraKmFee"
             label="Extra KM Fee"
             type="number"
@@ -96,34 +96,34 @@ export default function PoliciesStep() {
         description="Cancellation and refund rules"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.cancellation.refundable"
             label="Refundable"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.cancellation.freeCancellation"
             label="Free Cancellation"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.cancellation.freeCancellationBeforeHours"
             label="Free Cancellation Before Hours"
             type="number"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.cancellation.partialRefund"
             label="Partial Refund"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.cancellation.cancellationFee"
             label="Cancellation Fee"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.cancellation.noShowFee"
             label="No Show Fee"
             type="number"
@@ -136,18 +136,18 @@ export default function PoliciesStep() {
         description="Vehicle damage and deposit rules"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.damagePolicy.insuranceIncluded"
             label="Insurance Included"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.damagePolicy.excessAmount"
             label="Excess Amount"
             type="number"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.damagePolicy.depositRequired"
             label="Deposit Required"
           />
@@ -156,60 +156,60 @@ export default function PoliciesStep() {
 
       <FormSection title="Rental Rules" description="Usage restrictions">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.rules.minimumAge"
             label="Minimum Age"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.rules.maximumAge"
             label="Maximum Age"
             type="number"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.rules.requiresDriverLicense"
             label="Requires Driver License"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.rules.requiresInternationalLicense"
             label="Requires International License"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.rules.minimumDrivingExperienceYears"
             label="Minimum Driving Experience Years"
             type="number"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.rules.smokingAllowed"
             label="Smoking Allowed"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.rules.petsAllowed"
             label="Pets Allowed"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.rules.offRoadAllowed"
             label="Off Road Allowed"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.rules.crossBorderAllowed"
             label="Cross Border Allowed"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="policies.rules.additionalDriverAllowed"
             label="Additional Driver Allowed"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="policies.rules.lateReturnFeePerHour"
             label="Late Return Fee Per Hour"
             type="number"
@@ -222,7 +222,7 @@ export default function PoliciesStep() {
         description="Customer documents required"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="policies.requiredDocuments.documents.0"
             label="Document Type"
             options={documentOptions}

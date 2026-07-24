@@ -1,7 +1,7 @@
 import { Continent } from "@/types/bookings/location/city";
-import { CountryFormValues } from "./schema";
+import { CountryFormSchema } from "./schema";
 
-export const countryDefaultValues: CountryFormValues = {
+export const countryDefaultValues: CountryFormSchema = {
   // ======================================================
   // BASIC
   // ======================================================

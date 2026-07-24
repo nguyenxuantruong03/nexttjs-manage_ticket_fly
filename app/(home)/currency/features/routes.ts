@@ -1,4 +1,4 @@
 export const CurrencyRoutes = {
   detail: (id: string) => `/currency/${id}`,
-  edit: (id: string) => `/currency/${id}/edit`,
+  update: (id: string) => `/currency/${id}/update`,
 };

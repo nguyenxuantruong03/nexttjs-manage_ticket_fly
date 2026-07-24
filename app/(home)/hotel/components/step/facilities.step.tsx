@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
-import { HotelFormValues } from "../schema";
+import { HotelFormSchema } from "../schema";
 
 import { RetaurentCategory } from "@/types/bookings/hotel/enum/enums";
 
@@ -21,28 +21,28 @@ export default function FacilitiesStep() {
     <>
       <FormSection title="Wifi" description="Wifi facilities">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.wifi.available"
             label="Available"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.wifi.free"
             label="Free Wifi"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="facilitiesHotel.wifi.speedMbps"
             label="Speed (Mbps)"
             type="number"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.wifi.availableInRooms"
             label="Available In Rooms"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.wifi.availableInPublicAreas"
             label="Available In Public Areas"
           />
@@ -54,32 +54,32 @@ export default function FacilitiesStep() {
         description="Swimming pool information"
       >
         <div className="grid gap-6 md:grid-cols-3">
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.swimmingPool.available"
             label="Available"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.swimmingPool.indoor"
             label="Indoor"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.swimmingPool.outdoor"
             label="Outdoor"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.swimmingPool.infinity"
             label="Infinity Pool"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.swimmingPool.heated"
             label="Heated"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.swimmingPool.kidsPool"
             label="Kids Pool"
           />
@@ -88,17 +88,17 @@ export default function FacilitiesStep() {
 
       <FormSection title="Gym" description="Fitness facilities">
         <div className="grid gap-6 md:grid-cols-3">
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.gym.available"
             label="Available"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.gym.open24Hours"
             label="Open 24 Hours"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.gym.personalTrainer"
             label="Personal Trainer"
           />
@@ -107,49 +107,49 @@ export default function FacilitiesStep() {
 
       <FormSection title="Restaurant" description="Restaurant information">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.name"
             label="Restaurant Name"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.price"
             label="Average Price"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.capacity"
             label="Capacity"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.opening"
             label="Opening Hours"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.breakfast"
             label="Breakfast"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.lunch"
             label="Lunch"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.dinner"
             label="Dinner"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.buffet"
             label="Buffet"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.reservation"
             label="Reservation Required"
           />
@@ -158,24 +158,24 @@ export default function FacilitiesStep() {
 
       <FormSection title="Restaurant Images" description="Restaurant gallery">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.images.0.url"
             label="Image URL"
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.images.0.category"
             label="Category"
             options={restaurantCategoryOptions}
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.images.0.sortOrder"
             label="Sort Order"
             type="number"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.restaurants.0.images.0.isPrimary"
             label="Primary Image"
           />
@@ -187,61 +187,61 @@ export default function FacilitiesStep() {
         description="Other hotel facilities"
       >
         <div className="grid gap-6 md:grid-cols-3">
-          <FormSwitch<HotelFormValues> name="facilitiesHotel.bar" label="Bar" />
+          <FormSwitch<HotelFormSchema> name="facilitiesHotel.bar" label="Bar" />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.roomService"
             label="Room Service"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.laundry"
             label="Laundry"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.meetingRoom"
             label="Meeting Room"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.businessCenter"
             label="Business Center"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.familyRoom"
             label="Family Room"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.kidsClub"
             label="Kids Club"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.playground"
             label="Playground"
           />
 
-          <FormSwitch<HotelFormValues> name="facilitiesHotel.atm" label="ATM" />
+          <FormSwitch<HotelFormSchema> name="facilitiesHotel.atm" label="ATM" />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.currencyExchange"
             label="Currency Exchange"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.concierge"
             label="Concierge"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.beachAccess"
             label="Beach Access"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="facilitiesHotel.privateBeach"
             label="Private Beach"
           />

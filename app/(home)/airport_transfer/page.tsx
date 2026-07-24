@@ -8,10 +8,11 @@ import {
 import { useRouter } from "next/navigation";
 import { createAirportTransferActions } from "./features/actions";
 import { createAirportTransferHandlers } from "./features/handlers";
+import { useCrudTable } from "@/hooks/crud/useCrudTable";
 
 const AirportTransferPage = () => {
   const deleteMutation = useDeleteAirportTransfer();
-  const { data = [], isPending, error } = useAirportTransfers();
+  const { data, isPending, error } = useAirportTransfers();
   const router = useRouter();
 
   const handlers = createAirportTransferHandlers({
@@ -19,10 +20,11 @@ const AirportTransferPage = () => {
     deleteMutation,
   });
 
-  const actions = createAirportTransferActions({
-    onView: handlers.view,
-    onEdit: handlers.edit,
-    onDelete: handlers.delete,
+  const { actions, deleteDialog } = useCrudTable({
+    handlers,
+    createActions: createAirportTransferActions,
+    deleteTitle: "Delete airport-transfer",
+    deleteDescription: "Are you sure you want to delete this airport-transfer?",
   });
 
   if (isPending) {
@@ -32,7 +34,19 @@ const AirportTransferPage = () => {
   if (error) {
     return <div>Đã xảy ra lỗi.</div>;
   }
-  return <DataTable columns={airportTransferColumns(actions)} data={data} />;
+  return (
+    <>
+      {deleteDialog.dialog}
+      <DataTable
+        columns={airportTransferColumns(actions)}
+        data={data}
+        onRowClick={({ id }) => handlers.view(id)}
+        onRowDoubleClick={({ id }) => handlers.update(id)}
+        onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
+      />
+      ;
+    </>
+  );
 };
 
 export default AirportTransferPage;

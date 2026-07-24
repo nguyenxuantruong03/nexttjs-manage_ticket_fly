@@ -10,7 +10,7 @@ import FormWizardStep from "@/components/form/wizard/FormWizardStep";
 
 import { useAppForm } from "@/hooks/useAppForm";
 
-import { CountrySchema, CountryFormValues } from "./form/schema";
+import { CountrySchema, CountryFormSchema } from "./form/schema";
 
 import { countryDefaultValues } from "./form/default-values";
 
@@ -22,29 +22,80 @@ import MediaStep from "./step/media.step";
 import SearchStep from "./step/search.step";
 import StatusStep from "./step/status.step";
 
-import { useCreateCountry } from "@/hooks/location/country";
+import { useCreateCountry, useUpdateCountry } from "@/hooks/location/country";
 import { useSubmit } from "@/hooks/useSubmit";
+import { useEffect, useMemo } from "react";
+import { useFormPage } from "@/components/form/form-context";
+import { useFormDraft } from "@/hooks/useFormDraft";
+import { useSearchParams } from "next/navigation";
+import { DraftEntity } from "@/components/daft/draft-config";
+import { Country } from "@/types/bookings/location/country";
+import { initCountryFormValues } from "./form/init-value";
 
-export default function CountryForm() {
+interface CountryFormProps {
+  initialData?: Country;
+}
+
+export default function CountryForm({ initialData }: CountryFormProps) {
   const submit = useSubmit();
-
+  const { setDirty } = useFormPage();
   const createCountry = useCreateCountry();
+  const updatedCountry = useUpdateCountry();
 
-  const { form } = useAppForm<CountryFormValues>({
+  const searchParams = useSearchParams();
+
+  const currentDraftId = useMemo(() => {
+    if (initialData) {
+      return `edit-${initialData.id}`;
+    }
+
+    return searchParams.get("draft") ?? crypto.randomUUID();
+  }, [initialData, searchParams]);
+
+  const { form, mode, isUpdate } = useAppForm<CountryFormSchema>({
     schema: CountrySchema,
-    defaultValues: countryDefaultValues,
+    defaultValues: initialData
+      ? initCountryFormValues(initialData)
+      : countryDefaultValues,
   });
 
-  const onSubmit = (values: CountryFormValues) =>
+  const isSubmitting = form.formState.isSubmitting;
+
+  const { clearDraft } = useFormDraft({
+    form,
+    entity: DraftEntity.Country,
+    draftId: currentDraftId,
+  });
+
+  useEffect(() => {
+    setDirty(form.formState.isDirty);
+  }, [form.formState.isDirty]);
+
+  const onSubmit = (values: CountryFormSchema) => {
     submit({
-      mutation: createCountry.mutateAsync(values),
-      success: "Country created",
+      mutation: initialData
+        ? updatedCountry.mutateAsync({
+            id: initialData.id,
+            data: values,
+          })
+        : createCountry.mutateAsync(values),
+      success: isUpdate ? "Country updated" : "Country created",
       redirect: "/country",
     });
 
+    clearDraft();
+
+    form.reset(values);
+  };
+
   return (
-    <AppForm form={form} onSubmit={onSubmit}>
-      <FormWizard steps={countrySteps}>
+    <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
+      <FormWizard
+        form={form}
+        steps={countrySteps}
+        loading={isSubmitting}
+        unlockAll={!!initialData}
+      >
         <FormWizardHeader steps={countrySteps} />
 
         <FormWizardContent>
@@ -69,7 +120,7 @@ export default function CountryForm() {
           </FormWizardStep>
         </FormWizardContent>
 
-        <FormWizardFooter />
+        <FormWizardFooter form={form} onSubmit={onSubmit} />
       </FormWizard>
     </AppForm>
   );

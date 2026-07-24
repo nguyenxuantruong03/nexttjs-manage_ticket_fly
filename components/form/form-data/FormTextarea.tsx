@@ -6,6 +6,7 @@ import { FieldPath, FieldValues } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { FormField } from "./FormField";
 import { cn } from "@/lib/utils";
+import { useAppFormContext } from "./AppForm";
 
 export interface FormTextareaProps<
   TFieldValues extends FieldValues,
@@ -30,6 +31,8 @@ export function FormTextarea<TFieldValues extends FieldValues>({
   textareaClassName,
   ...props
 }: FormTextareaProps<TFieldValues>) {
+  const { loading } = useAppFormContext();
+
   return (
     <FormField<TFieldValues>
       name={name}
@@ -44,6 +47,7 @@ export function FormTextarea<TFieldValues extends FieldValues>({
           {...props}
           value={field.value ?? ""}
           className={cn(textareaClassName)}
+          disabled={loading}
         />
       )}
     </FormField>

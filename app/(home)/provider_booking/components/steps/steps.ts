@@ -1,5 +1,3 @@
-import { FormWizardStep } from "@/components/form/wizard/types";
-
 import {
   Building2,
   Contact,
@@ -9,46 +7,82 @@ import {
   User,
 } from "lucide-react";
 
-export const providerBookingSteps: FormWizardStep[] = [
-  {
-    id: "basic",
-    title: "Basic Information",
-    description: "Provider basic details",
-    icon: User,
-  },
+import { FormWizardStep } from "@/components/form/wizard/types";
 
-  {
-    id: "company",
-    title: "Company",
-    description: "Company information",
-    icon: Building2,
-  },
+import { ProviderBookingFormSchema } from "../form/schema";
+import { providerBookingFieldGroups } from "./field-groups";
 
-  {
-    id: "contact",
-    title: "Contact",
-    description: "Contact information",
-    icon: Contact,
-  },
+export const providerBookingSteps: FormWizardStep<ProviderBookingFormSchema>[] =
+  [
+    {
+      id: "basic",
 
-  {
-    id: "address",
-    title: "Address",
-    description: "Location information",
-    icon: MapPin,
-  },
+      title: "Basic Information",
 
-  {
-    id: "social",
-    title: "Social",
-    description: "Social links",
-    icon: Globe,
-  },
+      description: "Provider basic details",
 
-  {
-    id: "service",
-    title: "Service",
-    description: "Provider services",
-    icon: Settings,
-  },
-];
+      icon: User,
+
+      fields: providerBookingFieldGroups.basic,
+    },
+
+    {
+      id: "company",
+
+      title: "Company",
+
+      description: "Company information",
+
+      icon: Building2,
+
+      fields: providerBookingFieldGroups.company,
+    },
+
+    {
+      id: "contact",
+
+      title: "Contact",
+
+      description: "Contact information",
+
+      icon: Contact,
+
+      fields: providerBookingFieldGroups.contact,
+    },
+
+    {
+      id: "address",
+
+      title: "Address",
+
+      description: "Provider address information",
+
+      icon: MapPin,
+
+      fields: providerBookingFieldGroups.address,
+    },
+
+    {
+      id: "social",
+
+      title: "Social",
+
+      description: "Social media links",
+
+      icon: Globe,
+
+      fields: providerBookingFieldGroups.social,
+    },
+
+    {
+      id: "service",
+
+      title: "Service",
+
+      description: "Provider services configuration",
+
+      icon: Settings,
+
+      fields: providerBookingFieldGroups.service,
+    },
+  ];

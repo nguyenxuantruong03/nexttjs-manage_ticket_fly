@@ -14,8 +14,8 @@ export function createTicketFlyHandlers({ router, deleteMutation }: Props) {
       router.push(TicketFlyRoutes.detail(id));
     },
 
-    edit(id: string) {
-      router.push(TicketFlyRoutes.edit(id));
+    update(id: string) {
+      router.push(TicketFlyRoutes.update(id));
     },
 
     async delete(id: string) {

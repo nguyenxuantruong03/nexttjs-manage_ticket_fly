@@ -1,4 +1,4 @@
 export const YachtRoutes = {
   detail: (id: string) => `/yacht/${id}`,
-  edit: (id: string) => `/yacht/${id}/edit`,
+  update: (id: string) => `/yacht/${id}/update`,
 };

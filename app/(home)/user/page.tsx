@@ -5,6 +5,7 @@ import { useDeleteUser, useUsers } from "@/hooks/user";
 import { useRouter } from "next/navigation";
 import { createUserActions } from "./features/actions";
 import { createUserHandlers } from "./features/handlers";
+import { useCrudTable } from "@/hooks/crud/useCrudTable";
 
 const UserPage = () => {
   const deleteMutation = useDeleteUser();
@@ -16,11 +17,13 @@ const UserPage = () => {
     deleteMutation,
   });
 
-  const actions = createUserActions({
-    onView: handlers.view,
-    onEdit: handlers.edit,
-    onDelete: handlers.delete,
+  const { actions, deleteDialog } = useCrudTable({
+    handlers,
+    createActions: createUserActions,
+    deleteTitle: "Delete user",
+    deleteDescription: "Are you sure you want to delete this user?",
   });
+
   if (isPending) {
     return <div>Loading...</div>;
   }
@@ -29,7 +32,19 @@ const UserPage = () => {
     return <div>Đã xảy ra lỗi!</div>;
   }
 
-  return <DataTable columns={usersColumns(actions)} data={data} />;
+  return (
+    <>
+      {deleteDialog.dialog}
+
+      <DataTable
+        columns={usersColumns(actions)}
+        data={data}
+        onRowClick={({ id }) => handlers.view(id)}
+        onRowDoubleClick={({ id }) => handlers.update(id)}
+        onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
+      />
+    </>
+  );
 };
 
 export default UserPage;

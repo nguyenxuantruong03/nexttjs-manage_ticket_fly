@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch } from "@/components/form/form-data";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
 export default function BasicStep() {
   return (
@@ -19,18 +19,18 @@ export default function BasicStep() {
         description="Basic yacht information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="providerBookingId"
             label="Provider Booking ID"
           />
 
-          <FormInput<YachtFormValues> name="name" label="Yacht Name" />
+          <FormInput<YachtFormSchema> name="name" label="Yacht Name" />
 
-          <FormInput<YachtFormValues> name="slug" label="Slug" />
+          <FormInput<YachtFormSchema> name="slug" label="Slug" />
 
-          <FormInput<YachtFormValues> name="searchText" label="Search Text" />
+          <FormInput<YachtFormSchema> name="searchText" label="Search Text" />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="searchPriority"
             label="Search Priority"
             type="number"
@@ -47,11 +47,11 @@ export default function BasicStep() {
         description="Search engine optimization fields"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues> name="aliases.0" label="Alias" />
+          <FormInput<YachtFormSchema> name="aliases.0" label="Alias" />
 
-          <FormInput<YachtFormValues> name="keywords.0" label="Keyword" />
+          <FormInput<YachtFormSchema> name="keywords.0" label="Keyword" />
 
-          <FormInput<YachtFormValues> name="tags.0" label="Tag" />
+          <FormInput<YachtFormSchema> name="tags.0" label="Tag" />
         </div>
       </FormSection>
 
@@ -64,22 +64,22 @@ export default function BasicStep() {
         description="Important information shown to customers"
       >
         <div className="grid gap-6">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="notice.important"
             label="Important Notice"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="notice.beforeBooking"
             label="Before Booking Notice"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="notice.afterBooking"
             label="After Booking Notice"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="notice.safetyNotice"
             label="Safety Notice"
           />
@@ -92,11 +92,11 @@ export default function BasicStep() {
 
       <FormSection title="Visibility" description="Yacht publishing settings">
         <div className="grid gap-6 md:grid-cols-3">
-          <FormSwitch<YachtFormValues> name="active" label="Active" />
+          <FormSwitch<YachtFormSchema> name="active" label="Active" />
 
-          <FormSwitch<YachtFormValues> name="featured" label="Featured" />
+          <FormSwitch<YachtFormSchema> name="featured" label="Featured" />
 
-          <FormSwitch<YachtFormValues> name="searchable" label="Searchable" />
+          <FormSwitch<YachtFormSchema> name="searchable" label="Searchable" />
         </div>
       </FormSection>
 
@@ -106,26 +106,26 @@ export default function BasicStep() {
 
       <FormSection title="Marina" description="Linked departure marina">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.name"
             label="Marina Name"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.addressId"
             label="Address ID"
           />
 
-          <FormInput<YachtFormValues> name="marina.0.city" label="City" />
+          <FormInput<YachtFormSchema> name="marina.0.city" label="City" />
 
-          <FormInput<YachtFormValues> name="marina.0.country" label="Country" />
+          <FormInput<YachtFormSchema> name="marina.0.country" label="Country" />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.contactPhone"
             label="Contact Phone"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.operatingHours"
             label="Operating Hours"
           />

@@ -1,7 +1,7 @@
-import { CityFormValues } from "./schema";
+import { CityFormSchema } from "./schema";
 import { CityStatus } from "@/types/bookings/location/city";
 
-export const cityDefaultValues: CityFormValues = {
+export const cityDefaultValues: CityFormSchema = {
   // ======================================================
   // BASIC
   // ======================================================

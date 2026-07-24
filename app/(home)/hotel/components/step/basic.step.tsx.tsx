@@ -7,7 +7,7 @@ import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
 import { HotelStatus } from "@/types/bookings/hotel/enum/enums";
 
-import { HotelFormValues } from "../schema";
+import { HotelFormSchema } from "../schema";
 
 const statusOptions = Object.values(HotelStatus).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -22,25 +22,25 @@ export default function BasicStep() {
         description="General hotel information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="name"
             label="Hotel Name"
             placeholder="Hotel name"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="slug"
             label="Slug"
             placeholder="hotel-slug"
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="status"
             label="Status"
             options={statusOptions}
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="searchPriority"
             label="Search Priority"
             type="number"
@@ -50,19 +50,13 @@ export default function BasicStep() {
 
       <FormSection title="Visibility" description="Control hotel visibility">
         <div className="grid gap-6 md:grid-cols-3">
-          <FormSwitch<HotelFormValues>
-            name="active"
-            label="Active"
-            description="Hotel is active"
-          />
-
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="featured"
             label="Featured"
             description="Show as featured"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="searchable"
             label="Searchable"
             description="Visible in search"

@@ -74,4 +74,4 @@ export const AirportTransferSchema = z.object({
   searchPriority: z.number(),
 });
 
-export type AirportTransferFormValues = z.infer<typeof AirportTransferSchema>;
+export type AirportTransferFormSchema = z.infer<typeof AirportTransferSchema>;

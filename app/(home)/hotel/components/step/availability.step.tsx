@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch, FormSelect } from "@/components/form/form-data";
 
-import { HotelFormValues } from "../schema";
+import { HotelFormSchema } from "../schema";
 
 import { InventoryLockStatus } from "@/types/common/enums";
 
@@ -21,18 +21,18 @@ export default function AvailabilityStep() {
     <>
       <FormSection title="Availability" description="Current room availability">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.availability.isAvailable"
             label="Available"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.availability.availableRooms"
             label="Available Rooms"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.availability.lastUpdated"
             label="Last Updated"
             type="datetime-local"
@@ -45,46 +45,46 @@ export default function AvailabilityStep() {
         description="Daily room availability"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.availability.calendar.0.date"
             label="Date"
             type="date"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.availability.calendar.0.available"
             label="Available"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.availability.calendar.0.remainingRooms"
             label="Remaining Rooms"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.availability.calendar.0.priceOverride"
             label="Price Override"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.availability.calendar.0.minimumStay"
             label="Minimum Stay"
             type="number"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.availability.calendar.0.stopSell"
             label="Stop Sell"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.availability.calendar.0.closedToArrival"
             label="Closed To Arrival"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.availability.calendar.0.closedToDeparture"
             label="Closed To Departure"
           />
@@ -96,52 +96,52 @@ export default function AvailabilityStep() {
         description="Temporary inventory reservation"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.locks.0.ratePlanId"
             label="Rate Plan ID"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.locks.0.userId"
             label="User ID"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.locks.0.bookingId"
             label="Booking ID"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.locks.0.quantity"
             label="Quantity"
             type="number"
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="inventory.0.locks.0.status"
             label="Status"
             options={inventoryLockStatusOptions}
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.locks.0.startTime"
             label="Start Time"
             type="datetime-local"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.locks.0.endTime"
             label="End Time"
             type="datetime-local"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.locks.0.expiresAt"
             label="Expires At"
             type="datetime-local"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.locks.0.releasedAt"
             label="Released At"
             type="datetime-local"

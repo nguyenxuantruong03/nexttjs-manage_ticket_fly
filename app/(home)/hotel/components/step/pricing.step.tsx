@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
-import { HotelFormValues } from "../schema";
+import { HotelFormSchema } from "../schema";
 
 import {
   HotelRatePlanType,
@@ -48,28 +48,28 @@ export default function PricingStep() {
     <>
       <FormSection title="Rate Plan" description="Rate plan configuration">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.name"
             label="Name"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.code"
             label="Code"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.description"
             label="Description"
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="inventory.0.ratePlans.0.type"
             label="Rate Plan Type"
             options={ratePlanTypeOptions}
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="inventory.0.ratePlans.0.mealPlan"
             label="Meal Plan"
             options={mealPlanOptions}
@@ -77,12 +77,12 @@ export default function PricingStep() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 mt-6">
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.ratePlans.0.refundable"
             label="Refundable"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.ratePlans.0.active"
             label="Active"
           />
@@ -94,18 +94,18 @@ export default function PricingStep() {
         description="Rate plan cancellation policy"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.ratePlans.0.cancellationPolicy.freeCancellation"
             label="Free Cancellation"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.cancellationPolicy.beforeHours"
             label="Before Hours"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.cancellationPolicy.cancellationFee"
             label="Cancellation Fee"
             type="number"
@@ -115,24 +115,24 @@ export default function PricingStep() {
 
       <FormSection title="Room Price" description="Base room pricing">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.originalPrice"
             label="Original Price"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.averageNightlyPrice"
             label="Average Nightly Price"
             type="number"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.taxesIncluded"
             label="Taxes Included"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.payAtHotel"
             label="Pay At Hotel"
           />
@@ -141,49 +141,49 @@ export default function PricingStep() {
 
       <FormSection title="Price Breakdown" description="Detailed pricing">
         <div className="grid gap-6 md:grid-cols-3">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.breakdown.roomRate"
             label="Room Rate"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.breakdown.nights"
             label="Nights"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.breakdown.taxes"
             label="Taxes"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.breakdown.serviceFee"
             label="Service Fee"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.breakdown.resortFee"
             label="Resort Fee"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.breakdown.cleaningFee"
             label="Cleaning Fee"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.breakdown.extraFee"
             label="Extra Fee"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.breakdown.discount"
             label="Discount"
             type="number"
@@ -193,48 +193,48 @@ export default function PricingStep() {
 
       <FormSection title="Price Rule" description="Dynamic pricing rules">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.rules.0.name"
             label="Rule Name"
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.rules.0.type"
             label="Rule Type"
             options={priceRuleTypeOptions}
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.rules.0.adjustmentType"
             label="Adjustment Type"
             options={adjustmentTypeOptions}
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.rules.0.value"
             label="Value"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.rules.0.minimumNights"
             label="Minimum Nights"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.rules.0.maximumNights"
             label="Maximum Nights"
             type="number"
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.rules.0.daysOfWeek.0"
             label="Day Of Week"
             options={weekDayOptions}
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.rules.0.priority"
             label="Priority"
             type="number"
@@ -242,12 +242,12 @@ export default function PricingStep() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-3 mt-6">
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.rules.0.combinable"
             label="Combinable"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="inventory.0.ratePlans.0.price.rules.0.active"
             label="Active"
           />

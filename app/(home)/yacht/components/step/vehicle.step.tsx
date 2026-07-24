@@ -7,7 +7,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
 import { YachtCondition, YachtFuelType } from "@/types/bookings/yacht/enums";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
 const fuelTypeOptions = Object.values(YachtFuelType).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -31,51 +31,51 @@ export default function VehicleStep() {
         description="Basic yacht vehicle information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues> name="vehicle.name" label="Yacht Name" />
+          <FormInput<YachtFormSchema> name="vehicle.name" label="Yacht Name" />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.manufacturer"
             label="Manufacturer"
           />
 
-          <FormInput<YachtFormValues> name="vehicle.model" label="Model" />
+          <FormInput<YachtFormSchema> name="vehicle.model" label="Model" />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.year"
             label="Manufacture Year"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.registrationNumber"
             label="Registration Number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.lengthMeter"
             label="Length Meter"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.widthMeter"
             label="Width Meter"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.speedKnots"
             label="Speed Knots"
             type="number"
           />
 
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="vehicle.fuelType"
             label="Fuel Type"
             options={fuelTypeOptions}
           />
 
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="vehicle.condition"
             label="Condition"
             options={conditionOptions}
@@ -92,31 +92,31 @@ export default function VehicleStep() {
         description="Guest and accommodation capacity"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.capacity.guestCapacity"
             label="Guest Capacity"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.capacity.overnightCapacity"
             label="Overnight Capacity"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.capacity.cabinCount"
             label="Cabin Count"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.capacity.bathroomCount"
             label="Bathroom Count"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.capacity.crewCapacity"
             label="Crew Capacity"
             type="number"
@@ -133,31 +133,31 @@ export default function VehicleStep() {
         description="Engine and performance specifications"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.specification.enginePowerHp"
             label="Engine Power HP"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.specification.cruisingSpeedKnots"
             label="Cruising Speed Knots"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.specification.maxSpeedKnots"
             label="Maximum Speed Knots"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.specification.fuelCapacityLiter"
             label="Fuel Capacity Liter"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.specification.rangeNm"
             label="Range NM"
             type="number"
@@ -174,92 +174,92 @@ export default function VehicleStep() {
         description="Yacht onboard facilities"
       >
         <div className="grid gap-6 md:grid-cols-3">
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.wifi"
             label="WiFi"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.bluetooth"
             label="Bluetooth"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.tv"
             label="TV"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.soundSystem"
             label="Sound System"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.kitchen"
             label="Kitchen"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.refrigerator"
             label="Refrigerator"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.coffeeMachine"
             label="Coffee Machine"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.bar"
             label="Bar"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.jacuzzi"
             label="Jacuzzi"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.swimmingPlatform"
             label="Swimming Platform"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.sunDeck"
             label="Sun Deck"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.airConditioning"
             label="Air Conditioning"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.heating"
             label="Heating"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.shower"
             label="Shower"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.toilet"
             label="Toilet"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.fishingEquipment"
             label="Fishing Equipment"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.snorkelingEquipment"
             label="Snorkeling Equipment"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.facilities.divingEquipment"
             label="Diving Equipment"
           />
@@ -275,47 +275,47 @@ export default function VehicleStep() {
         description="Safety and emergency equipment"
       >
         <div className="grid gap-6 md:grid-cols-3">
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.safetyEquipment.lifeJacket"
             label="Life Jacket"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.safetyEquipment.lifeRaft"
             label="Life Raft"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.safetyEquipment.fireExtinguisher"
             label="Fire Extinguisher"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.safetyEquipment.fireAlarm"
             label="Fire Alarm"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.safetyEquipment.firstAidKit"
             label="First Aid Kit"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.safetyEquipment.gps"
             label="GPS"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.safetyEquipment.radar"
             label="Radar"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.safetyEquipment.emergencyRadio"
             label="Emergency Radio"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.safetyEquipment.insurance"
             label="Insurance"
           />
@@ -328,18 +328,18 @@ export default function VehicleStep() {
 
       <FormSection title="Vehicle Images" description="Yacht vehicle gallery">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.images.0.url"
             label="Image URL"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.images.0.sortOrder"
             label="Sort Order"
             type="number"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.images.0.isPrimary"
             label="Primary Image"
           />

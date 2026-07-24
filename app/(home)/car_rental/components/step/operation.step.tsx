@@ -13,7 +13,7 @@ import {
   DriverStatus,
   DriverOption,
 } from "@/types/bookings/car_rental/enums";
-import { CarRentalFormValues } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
 
 const weekDayOptions = Object.values(WeekDay).map((value) => ({
   label: value.toUpperCase(),
@@ -43,7 +43,7 @@ export default function OperationStep() {
         description="Rental driver configuration"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="driverOption"
             label="Driver Option"
             options={driverOptionOptions}
@@ -56,25 +56,25 @@ export default function OperationStep() {
         description="Rental operating schedule"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="businessHours.0.day"
             label="Day"
             options={weekDayOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="businessHours.0.openTime"
             label="Open Time"
             type="time"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="businessHours.0.closeTime"
             label="Close Time"
             type="time"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="businessHours.0.closed"
             label="Closed"
           />
@@ -86,28 +86,28 @@ export default function OperationStep() {
         description="Vehicle pickup guidance"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="pickupInstructions.0.type"
             label="Instruction Type"
             options={pickupTypeOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="pickupInstructions.0.title"
             label="Title"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="pickupInstructions.0.description"
             label="Description"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="pickupInstructions.0.location"
             label="Location"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="pickupInstructions.0.contactPhone"
             label="Contact Phone"
           />
@@ -116,40 +116,40 @@ export default function OperationStep() {
 
       <FormSection title="Drivers" description="Additional driver management">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="drivers.0.name"
             label="Driver Name"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="drivers.0.phone"
             label="Phone"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="drivers.0.experienceYears"
             label="Experience Years"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="drivers.0.rating"
             label="Rating"
             type="number"
           />
 
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="drivers.0.status"
             label="Status"
             options={driverStatusOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="drivers.0.image"
             label="Image"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="drivers.0.languages.0"
             label="Language"
           />

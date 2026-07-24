@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 
-import { HotelFormValues } from "../schema";
+import { HotelFormSchema } from "../schema";
 
 export default function SeoStep() {
   return (
@@ -15,37 +15,35 @@ export default function SeoStep() {
         description="SEO & search metadata"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues> name="slug" label="Slug" />
+          <FormInput<HotelFormSchema> name="slug" label="Slug" />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="searchPriority"
             label="Search Priority"
             type="number"
           />
         </div>
 
-        <FormInput<HotelFormValues> name="searchText" label="Search Text" />
+        <FormInput<HotelFormSchema> name="searchText" label="Search Text" />
       </FormSection>
 
       <FormSection title="Keywords" description="SEO keywords">
-        <FormInput<HotelFormValues> name="keywords.0" label="Keyword" />
+        <FormInput<HotelFormSchema> name="keywords.0" label="Keyword" />
       </FormSection>
 
       <FormSection title="Aliases" description="Alternative hotel names">
-        <FormInput<HotelFormValues> name="aliases.0" label="Alias" />
+        <FormInput<HotelFormSchema> name="aliases.0" label="Alias" />
       </FormSection>
 
       <FormSection title="Tags" description="Search tags">
-        <FormInput<HotelFormValues> name="tags.0" label="Tag" />
+        <FormInput<HotelFormSchema> name="tags.0" label="Tag" />
       </FormSection>
 
       <FormSection title="Visibility" description="Search visibility settings">
         <div className="grid gap-6 md:grid-cols-3">
-          <FormSwitch<HotelFormValues> name="searchable" label="Searchable" />
+          <FormSwitch<HotelFormSchema> name="searchable" label="Searchable" />
 
-          <FormSwitch<HotelFormValues> name="featured" label="Featured" />
-
-          <FormSwitch<HotelFormValues> name="active" label="Active" />
+          <FormSwitch<HotelFormSchema> name="featured" label="Featured" />
         </div>
       </FormSection>
     </>

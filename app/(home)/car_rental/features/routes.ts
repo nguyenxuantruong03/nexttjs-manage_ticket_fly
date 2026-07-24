@@ -1,5 +1,4 @@
 export const carRentalRoutes = {
   detail: (id: string) => `/car-rental/${id}`,
-
-  edit: (id: string) => `/car-rental/${id}/edit`,
+  update: (id: string) => `/car-rental/${id}/update`,
 };

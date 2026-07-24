@@ -17,8 +17,8 @@ export function createBusHandlers({
       router.push(BusRoutes.detail(id));
     },
 
-    edit(id: string) {
-      router.push(BusRoutes.edit(id));
+    update(id: string) {
+      router.push(BusRoutes.update(id));
     },
 
     async delete(id: string) {

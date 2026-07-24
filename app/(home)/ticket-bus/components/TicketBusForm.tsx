@@ -14,8 +14,8 @@ import { useSubmit } from "@/hooks/useSubmit";
 import { busDefaultValues } from "./form/default-values";
 import { busSteps } from "./step/steps";
 
-import { useCreateBus } from "@/hooks/bus";
-import { BusFormValues, BusSchema } from "./schema/core/bus.schema";
+import { useCreateBus, useUpdateBus } from "@/hooks/bus";
+import { BusFormSchema, BusSchema } from "./schema/core/bus.schema";
 import BasicStep from "./step/basic.step";
 import RoutesStep from "./step/routes.step";
 import VehiclesStep from "./step/vehicles.step";
@@ -24,26 +24,79 @@ import PricingStep from "./step/pricing.step";
 import PoliciesStep from "./step/policies.step";
 import ImagesStep from "./step/images.step";
 import ScheduleStep from "./step/schedule.step";
+import { useEffect, useMemo } from "react";
+import { useFormPage } from "@/components/form/form-context";
+import { useSearchParams } from "next/navigation";
+import { useFormDraft } from "@/hooks/useFormDraft";
+import { DraftEntity } from "@/components/daft/draft-config";
+import { Bus } from "@/types/bookings/bus/core/bus.types";
+import { initTicketBusFormValues } from "./form/init-value";
 
-export default function BusForm() {
+interface TicketBusFormProps {
+  initialData?: Bus;
+}
+
+export default function TicketBusForm({ initialData }: TicketBusFormProps) {
   const submit = useSubmit();
-  const createBus = useCreateBus();
+  const { setDirty } = useFormPage();
 
-  const { form } = useAppForm<BusFormValues>({
+  const createBus = useCreateBus();
+  const updateBus = useUpdateBus();
+
+  const searchParams = useSearchParams();
+
+  const currentDraftId = useMemo(() => {
+    if (initialData) {
+      return `edit-${initialData.id}`;
+    }
+
+    return searchParams.get("draft") ?? crypto.randomUUID();
+  }, [initialData, searchParams]);
+
+  const { form, mode, isUpdate } = useAppForm<BusFormSchema>({
     schema: BusSchema,
-    defaultValues: busDefaultValues,
+    defaultValues: initialData
+      ? initTicketBusFormValues(initialData)
+      : busDefaultValues,
   });
 
-  const onSubmit = (values: any) =>
+  const isSubmitting = form.formState.isSubmitting;
+
+  const { clearDraft } = useFormDraft({
+    form,
+    entity: DraftEntity.Ticketbus,
+    draftId: currentDraftId,
+  });
+
+  useEffect(() => {
+    setDirty(form.formState.isDirty);
+  }, [form.formState.isDirty]);
+
+  const onSubmit = (values: any) => {
     submit({
-      mutation: createBus.mutateAsync(values),
-      success: "Bus created",
+      mutation: initialData
+        ? updateBus.mutateAsync({
+            id: initialData.id,
+            data: values,
+          })
+        : createBus.mutateAsync(values),
+      success: isUpdate ? "Bus updated" : "Bus created",
       redirect: "/bus",
     });
 
+    clearDraft();
+
+    form.reset(values);
+  };
+
   return (
-    <AppForm form={form} onSubmit={onSubmit}>
-      <FormWizard steps={busSteps}>
+    <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
+      <FormWizard
+        form={form}
+        steps={busSteps}
+        loading={isSubmitting}
+        unlockAll={!!initialData}
+      >
         <FormWizardHeader steps={busSteps} />
 
         <FormWizardContent>
@@ -78,10 +131,9 @@ export default function BusForm() {
           <FormWizardStep index={7}>
             <ScheduleStep />
           </FormWizardStep>
-
         </FormWizardContent>
 
-        <FormWizardFooter />
+        <FormWizardFooter form={form} onSubmit={onSubmit} />
       </FormWizard>
     </AppForm>
   );

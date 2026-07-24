@@ -1,4 +1,4 @@
 export const UserRoutes = {
   detail: (id: string) => `/user/${id}`,
-  edit: (id: string) => `/user/${id}/edit`,
+  update: (id: string) => `/user/${id}/update`,
 };

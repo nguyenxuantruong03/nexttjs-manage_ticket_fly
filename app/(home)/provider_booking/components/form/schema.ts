@@ -9,47 +9,47 @@ export const schema = z.object({
   // ======================
   // BASIC
   // ======================
-  officialName: z.string().optional(),
+  officialName: z.string().nullable().optional(),
 
   displayName: z.string().min(1, "Display name is required"),
 
-  shortName: z.string().optional(),
+  shortName: z.string().nullable().optional(),
 
-  subtitle: z.string().optional(),
+  subtitle: z.string().nullable().optional(),
 
-  description: z.string().optional(),
+  description: z.string().nullable().optional(),
 
-  logo: z.string().url().optional().or(z.literal("")),
+  logo: z.string().url().nullable().optional().or(z.literal("")),
 
-  banner: z.string().url().optional().or(z.literal("")),
+  banner: z.string().url().nullable().optional().or(z.literal("")),
 
   // ======================
   // COMPANY
   // ======================
 
-  companyType: z.string().optional(),
+  companyType: z.string().nullable().optional(),
 
-  registrationNumber: z.string().optional(),
+  registrationNumber: z.string().nullable().optional(),
 
-  taxCode: z.string().optional(),
+  taxCode: z.string().nullable().optional(),
 
-  licenseNumber: z.string().optional(),
+  licenseNumber: z.string().nullable().optional(),
 
-  foundedYear: z.coerce.number().optional(),
+  foundedYear: z.coerce.number().nullable().optional(),
 
-  employeeCount: z.coerce.number().optional(),
+  employeeCount: z.coerce.number().nullable().optional(),
 
   // ======================
   // CONTACT
   // ======================
 
-  email: z.string().email().optional().or(z.literal("")),
+  email: z.string().email().nullable().optional().or(z.literal("")),
 
-  phone: z.string().optional(),
+  phone: z.string().nullable().optional(),
 
-  hotline: z.string().optional(),
+  hotline: z.string().nullable().optional(),
 
-  website: z.string().url().optional().or(z.literal("")),
+  website: z.string().url().nullable().optional().or(z.literal("")),
 
   // ======================
   // ADDRESS
@@ -57,29 +57,29 @@ export const schema = z.object({
 
   address: z.string().optional(),
 
-  city: z.string().optional(),
+  city: z.string().nullable().optional(),
 
-  state: z.string().optional(),
+  state: z.string().nullable().optional(),
 
-  country: z.string().optional(),
+  country: z.string().nullable().optional(),
 
-  postalCode: z.string().optional(),
+  postalCode: z.string().nullable().optional(),
 
-  latitude: z.coerce.number().optional(),
+  latitude: z.coerce.number().nullable().optional(),
 
-  longitude: z.coerce.number().optional(),
+  longitude: z.coerce.number().nullable().optional(),
 
   // ======================
   // SOCIAL
   // ======================
 
-  facebook: z.string().url().optional().or(z.literal("")),
+  facebook: z.string().url().nullable().optional().or(z.literal("")),
 
-  instagram: z.string().url().optional().or(z.literal("")),
+  instagram: z.string().url().nullable().optional().or(z.literal("")),
 
-  youtube: z.string().url().optional().or(z.literal("")),
+  youtube: z.string().url().nullable().optional().or(z.literal("")),
 
-  linkedin: z.string().url().optional().or(z.literal("")),
+  linkedin: z.string().url().nullable().optional().or(z.literal("")),
 
   // ======================
   // STATUS
@@ -104,4 +104,4 @@ export const schema = z.object({
   service: z.array(z.nativeEnum(typeServiceBooking)).default([]),
 });
 
-export type FormValues = z.infer<typeof schema>;
+export type ProviderBookingFormSchema = z.infer<typeof schema>;

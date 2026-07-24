@@ -4,9 +4,9 @@ import {
   FlyRouteType,
   FlyTripStatus,
 } from "@/types/bookings/ticket-fly/enums";
-import { TicketFlyFormValues } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../schema/core/fly.schema";
 
-export const FlyDefaultValues: TicketFlyFormValues = {
+export const FlyDefaultValues: FlyFormSchema = {
   airline: {
     name: "",
     legalName: "",

@@ -50,7 +50,7 @@ export const CarRentalSchema = z.object({
 
   policies: CarRentalPoliciesSchema.optional(),
 
-  vehicle: z.array(CarRentalVehicleSchema).default([]),
+  vehicle: z.array(CarRentalVehicleSchema).optional(),
 
   images: z.array(CarRentalImageSchema).default([]),
 
@@ -65,5 +65,4 @@ export const CarRentalSchema = z.object({
   pickupInstructions: z.array(CarRentalPickupInstructionSchema).default([]),
 });
 
-
-export type CarRentalFormValues = z.infer<typeof CarRentalSchema>;
+export type CarRentalFormSchema = z.infer<typeof CarRentalSchema>;

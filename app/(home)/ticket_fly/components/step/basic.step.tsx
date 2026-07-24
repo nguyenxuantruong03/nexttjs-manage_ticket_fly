@@ -4,7 +4,7 @@
 
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch } from "@/components/form/form-data";
-import { TicketFlyFormValues } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../schema/core/fly.schema";
 
 export default function BasicStep() {
   return (
@@ -14,29 +14,23 @@ export default function BasicStep() {
         description="Basic flight information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<TicketFlyFormValues> name="name" label="Flight Name" />
+          <FormInput<FlyFormSchema> name="name" label="Flight Name" />
 
-          <FormInput<TicketFlyFormValues> name="slug" label="Slug" />
+          <FormInput<FlyFormSchema> name="slug" label="Slug" />
 
-          <FormInput<TicketFlyFormValues>
-            name="searchText"
-            label="Search Text"
-          />
+          <FormInput<FlyFormSchema> name="searchText" label="Search Text" />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="searchPriority"
             label="Search Priority"
             type="number"
           />
 
-          <FormSwitch<TicketFlyFormValues> name="active" label="Active" />
+          <FormSwitch<FlyFormSchema> name="active" label="Active" />
 
-          <FormSwitch<TicketFlyFormValues> name="featured" label="Featured" />
+          <FormSwitch<FlyFormSchema> name="featured" label="Featured" />
 
-          <FormSwitch<TicketFlyFormValues>
-            name="searchable"
-            label="Searchable"
-          />
+          <FormSwitch<FlyFormSchema> name="searchable" label="Searchable" />
         </div>
       </FormSection>
 
@@ -45,11 +39,11 @@ export default function BasicStep() {
         description="Search aliases keywords and tags"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<TicketFlyFormValues> name="aliases.0" label="Alias" />
+          <FormInput<FlyFormSchema> name="aliases.0" label="Alias" />
 
-          <FormInput<TicketFlyFormValues> name="keywords.0" label="Keyword" />
+          <FormInput<FlyFormSchema> name="keywords.0" label="Keyword" />
 
-          <FormInput<TicketFlyFormValues> name="tags.0" label="Tag" />
+          <FormInput<FlyFormSchema> name="tags.0" label="Tag" />
         </div>
       </FormSection>
     </>

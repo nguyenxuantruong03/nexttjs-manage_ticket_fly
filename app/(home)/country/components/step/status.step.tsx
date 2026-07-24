@@ -3,17 +3,17 @@
 import FormSection from "@/components/form/FormSection";
 
 import { FormSwitch } from "@/components/form/form-data";
-import { CountryFormValues } from "../form/schema";
+import { CountryFormSchema } from "../form/schema";
 
 export default function StatusStep() {
   return (
     <FormSection title="Status" description="Visibility settings">
       <div className="grid gap-6 md:grid-cols-2">
-        <FormSwitch<CountryFormValues> name="featured" label="Featured" />
+        <FormSwitch<CountryFormSchema> name="featured" label="Featured" />
 
-        <FormSwitch<CountryFormValues> name="searchable" label="Searchable" />
+        <FormSwitch<CountryFormSchema> name="searchable" label="Searchable" />
 
-        <FormSwitch<CountryFormValues> name="active" label="Active" />
+        <FormSwitch<CountryFormSchema> name="active" label="Active" />
       </div>
     </FormSection>
   );

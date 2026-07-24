@@ -10,7 +10,7 @@ import {
   CarRentalExtraPricingType,
 } from "@/types/bookings/car_rental/enums";
 
-import { CarRentalFormValues } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
 
 const durationTypeOptions = Object.values(RentalDurationType).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -43,61 +43,61 @@ export default function PricingStep() {
 
       <FormSection title="Vehicle Pricing" description="Vehicle rental pricing">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="vehicle.0.price.0.pricingType"
             label="Pricing Type"
             options={durationTypeOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.startDate"
             label="Start Date"
             type="date"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.endDate"
             label="End Date"
             type="date"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.pricePerHour"
             label="Price Per Hour"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.pricePerDay"
             label="Price Per Day"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.pricePerWeek"
             label="Price Per Week"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.pricePerMonth"
             label="Price Per Month"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.originalPrice"
             label="Original Price"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.minimumDays"
             label="Minimum Days"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.maximumDays"
             label="Maximum Days"
             type="number"
@@ -109,84 +109,84 @@ export default function PricingStep() {
 
       <FormSection title="Price Breakdown" description="Price components">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.priceId"
             label="Price ID"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.rentalRate"
             label="Rental Rate"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.duration"
             label="Duration"
             type="number"
           />
 
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.durationType"
             label="Duration Type"
             options={durationTypeOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.taxes"
             label="Taxes"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.serviceFee"
             label="Service Fee"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.insuranceFee"
             label="Insurance Fee"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.deliveryFee"
             label="Delivery Fee"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.extraDriverFee"
             label="Extra Driver Fee"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.childSeatFee"
             label="Child Seat Fee"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.gpsFee"
             label="GPS Fee"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.helmetFee"
             label="Helmet Fee"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.discount"
             label="Discount"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.breakdown.includedItems"
             label="Included Items"
           />
@@ -200,31 +200,31 @@ export default function PricingStep() {
         description="Seasonal or custom rules"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="vehicle.0.price.0.priceRules.0.type"
             label="Rule Type"
             options={priceRuleTypeOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.priceRules.0.percentage"
             label="Percentage"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.priceRules.0.amount"
             label="Amount"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.priceRules.0.startDate"
             label="Start Date"
             type="date"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.price.0.priceRules.0.endDate"
             label="End Date"
             type="date"
@@ -236,62 +236,62 @@ export default function PricingStep() {
 
       <FormSection title="Rental Extras" description="Additional services">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="extras.0.type"
             label="Extra Type"
             options={extraTypeOptions}
           />
 
-          <FormInput<CarRentalFormValues> name="extras.0.name" label="Name" />
+          <FormInput<CarRentalFormSchema> name="extras.0.name" label="Name" />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="extras.0.description"
             label="Description"
           />
 
-          <FormInput<CarRentalFormValues> name="extras.0.image" label="Image" />
+          <FormInput<CarRentalFormSchema> name="extras.0.image" label="Image" />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="extras.0.required"
             label="Required"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="extras.0.available"
             label="Available"
           />
 
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="extras.0.prices.0.pricingType"
             label="Extra Pricing Type"
             options={extraPricingTypeOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="extras.0.prices.0.amount"
             label="Amount"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="extras.0.prices.0.minimumQuantity"
             label="Minimum Quantity"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="extras.0.prices.0.maximumQuantity"
             label="Maximum Quantity"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="extras.0.prices.0.startDate"
             label="Start Date"
             type="date"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="extras.0.prices.0.endDate"
             label="End Date"
             type="date"

@@ -8,7 +8,7 @@ import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
 
 import { YachtRefundType } from "@/types/bookings/yacht/enums";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
 const refundTypeOptions = Object.values(YachtRefundType).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -27,24 +27,24 @@ export default function PoliciesStep() {
         description="Booking confirmation and modification rules"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.booking.instantConfirmation"
             label="Instant Confirmation"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.booking.advanceBookingHours"
             label="Advance Booking Hours"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.booking.minimumBookingDuration"
             label="Minimum Booking Duration"
             type="number"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.booking.modificationAllowed"
             label="Modification Allowed"
           />
@@ -60,41 +60,41 @@ export default function PoliciesStep() {
         description="Refund and cancellation rules"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.cancellation.refundable"
             label="Refundable"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.cancellation.freeCancellation"
             label="Free Cancellation"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.cancellation.freeCancellationBeforeHours"
             label="Free Cancellation Before Hours"
             type="number"
           />
 
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="policies.cancellation.cancellationType"
             label="Cancellation Type"
             options={refundTypeOptions}
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.cancellation.refundPercentage"
             label="Refund Percentage"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.cancellation.cancellationFee"
             label="Cancellation Fee"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.cancellation.noShowFee"
             label="No Show Fee"
             type="number"
@@ -111,38 +111,38 @@ export default function PoliciesStep() {
         description="Passenger restrictions and requirements"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.passenger.minimumAge"
             label="Minimum Age"
             type="number"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.passenger.passportRequired"
             label="Passport Required"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.passenger.identityRequired"
             label="Identity Required"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.passenger.nationalityRestriction.0"
             label="Nationality Restriction"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.passenger.childAllowed"
             label="Child Allowed"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.passenger.infantAllowed"
             label="Infant Allowed"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.passenger.pregnantPassengerAllowed"
             label="Pregnant Passenger Allowed"
           />
@@ -155,29 +155,29 @@ export default function PoliciesStep() {
 
       <FormSection title="Luggage Policy" description="Passenger luggage rules">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.luggage.allowed"
             label="Luggage Allowed"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.luggage.maxWeightKg"
             label="Maximum Weight Kg"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.luggage.maxPieces"
             label="Maximum Pieces"
             type="number"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.luggage.oversizedAllowed"
             label="Oversized Allowed"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.luggage.note"
             label="Note"
           />
@@ -190,19 +190,19 @@ export default function PoliciesStep() {
 
       <FormSection title="Waiting Policy" description="Waiting time rules">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.waiting.freeWaitingMinutes"
             label="Free Waiting Minutes"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.waiting.extraWaitingFeePerHour"
             label="Extra Waiting Fee Per Hour"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.waiting.maximumWaitingHours"
             label="Maximum Waiting Hours"
             type="number"
@@ -219,22 +219,22 @@ export default function PoliciesStep() {
         description="Passenger pickup support"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.meetAndGreet.available"
             label="Available"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.meetAndGreet.pickupSign"
             label="Pickup Sign"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.meetAndGreet.staffLanguage.0"
             label="Staff Language"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="policies.meetAndGreet.meetingPoint"
             label="Meeting Point"
           />
@@ -250,17 +250,17 @@ export default function PoliciesStep() {
         description="Airport and flight assistance"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.flightSupport.airportPickup"
             label="Airport Pickup"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.flightSupport.flightNumberRequired"
             label="Flight Number Required"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="policies.flightSupport.flightDelayMonitoring"
             label="Flight Delay Monitoring"
           />

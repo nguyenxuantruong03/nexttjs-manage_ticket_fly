@@ -8,314 +8,83 @@ import {
   ShieldCheck,
   Settings,
   Clock,
-  Search,
   FileText,
   Package,
 } from "lucide-react";
 
-export const carRentalSteps: (FormWizardStep & {
-  sections: {
-    id: string;
-    title: string;
-  }[];
-})[] = [
-  // =========================
-  // BASIC
-  // =========================
+import { carRentalFieldGroups } from "./field-groups";
+import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
 
+export const carRentalSteps: FormWizardStep<CarRentalFormSchema>[] = [
   {
     id: "basic",
-
     title: "Basic",
-
     description: "General rental information",
-
     icon: Info,
-
-    sections: [
-      {
-        id: "rental",
-        title: "Car Rental",
-      },
-
-      {
-        id: "driverOption",
-        title: "Driver Option",
-      },
-    ],
+    fields: carRentalFieldGroups.basic,
   },
-
-  // =========================
-  // VEHICLE
-  // =========================
 
   {
     id: "vehicles",
-
     title: "Vehicles",
-
     description: "Vehicle fleet management",
-
     icon: Car,
-
-    sections: [
-      {
-        id: "vehicle",
-        title: "Vehicle Information",
-      },
-
-      {
-        id: "capacity",
-        title: "Vehicle Capacity",
-      },
-
-      {
-        id: "features",
-        title: "Vehicle Features",
-      },
-
-      {
-        id: "specification",
-        title: "Vehicle Specification",
-      },
-
-      {
-        id: "maintenance",
-        title: "Vehicle Maintenance",
-      },
-
-      {
-        id: "documents",
-        title: "Vehicle Documents",
-      },
-
-      {
-        id: "vehicleLocation",
-        title: "Vehicle Location",
-      },
-    ],
+    fields: carRentalFieldGroups.vehicles,
   },
-
-  // =========================
-  // IMAGES
-  // =========================
 
   {
     id: "images",
-
     title: "Images",
-
     description: "Rental & vehicle gallery",
-
     icon: Images,
-
-    sections: [
-      {
-        id: "rentalImages",
-        title: "Rental Images",
-      },
-
-      {
-        id: "vehicleImages",
-        title: "Vehicle Images",
-      },
-    ],
+    fields: carRentalFieldGroups.images,
   },
-
-  // =========================
-  // TRIP
-  // =========================
 
   {
     id: "trip",
-
     title: "Trip",
-
     description: "Pickup, dropoff and schedule",
-
     icon: Route,
-
-    sections: [
-      {
-        id: "locations",
-        title: "Locations",
-      },
-
-      {
-        id: "schedule",
-        title: "Schedule",
-      },
-
-      {
-        id: "tripFee",
-        title: "Trip Fees",
-      },
-    ],
+    fields: carRentalFieldGroups.trip,
   },
-
-  // =========================
-  // PRICING / EXTRA
-  // =========================
 
   {
     id: "pricing",
-
     title: "Pricing",
-
     description: "Rental prices and extras",
-
     icon: Package,
-
-    sections: [
-      {
-        id: "prices",
-        title: "Vehicle Prices",
-      },
-
-      {
-        id: "priceRules",
-        title: "Price Rules",
-      },
-
-      {
-        id: "priceBreakdown",
-        title: "Price Breakdown",
-      },
-
-      {
-        id: "extras",
-        title: "Extras",
-      },
-    ],
+    fields: carRentalFieldGroups.pricing,
   },
-
-  // =========================
-  // INSURANCE
-  // =========================
 
   {
     id: "insurance",
-
     title: "Insurance",
-
     description: "Insurance plans and benefits",
-
     icon: ShieldCheck,
-
-    sections: [
-      {
-        id: "insurance",
-        title: "Insurance",
-      },
-
-      {
-        id: "benefits",
-        title: "Insurance Benefits",
-      },
-    ],
+    fields: carRentalFieldGroups.insurance,
   },
-
-  // =========================
-  // POLICIES
-  // =========================
 
   {
     id: "policies",
-
     title: "Policies",
-
     description: "Rental rules and restrictions",
-
     icon: FileText,
-
-    sections: [
-      {
-        id: "generalPolicies",
-        title: "General Policies",
-      },
-
-      {
-        id: "mileage",
-        title: "Mileage Policy",
-      },
-
-      {
-        id: "cancellation",
-        title: "Cancellation Policy",
-      },
-
-      {
-        id: "damage",
-        title: "Damage Policy",
-      },
-
-      {
-        id: "rules",
-        title: "Rental Rules",
-      },
-
-      {
-        id: "documents",
-        title: "Required Documents",
-      },
-    ],
+    fields: carRentalFieldGroups.policies,
   },
-
-  // =========================
-  // OPERATION
-  // =========================
 
   {
     id: "operation",
-
     title: "Operation",
-
     description: "Business operation settings",
-
     icon: Settings,
-
-    sections: [
-      {
-        id: "businessHours",
-        title: "Business Hours",
-      },
-
-      {
-        id: "pickupInstructions",
-        title: "Pickup Instructions",
-      },
-
-      {
-        id: "drivers",
-        title: "Drivers",
-      },
-    ],
+    fields: carRentalFieldGroups.operation,
   },
-
-  // =========================
-  // AVAILABILITY
-  // =========================
 
   {
     id: "availability",
-
     title: "Availability",
-
     description: "Vehicle availability management",
-
     icon: Clock,
-
-    sections: [
-      {
-        id: "calendar",
-        title: "Availability Calendar",
-      },
-
-      {
-        id: "inventoryLocks",
-        title: "Inventory Locks",
-      },
-    ],
+    fields: carRentalFieldGroups.availability,
   },
-
 ];

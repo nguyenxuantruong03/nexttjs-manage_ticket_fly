@@ -6,6 +6,7 @@ import { useFormContext } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAppFormContext } from "./AppForm";
 
 export interface SubmitButtonProps extends React.ComponentProps<typeof Button> {
   loading?: boolean;
@@ -24,11 +25,12 @@ export function SubmitButton({
 
   const isSubmitting = methods?.formState?.isSubmitting ?? false;
   const isLoading = loading ?? isSubmitting;
+  const { loading: blocked } = useAppFormContext();
 
   return (
     <Button
       type="submit"
-      disabled={disabled || isLoading}
+      disabled={blocked || disabled || isLoading}
       className={cn(className)}
       {...props}
     >

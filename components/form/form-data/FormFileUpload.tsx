@@ -6,6 +6,7 @@ import { FileText, Trash2, Upload } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { FormField } from "./FormField";
+import { useAppFormContext } from "./AppForm";
 
 export interface FormFileUploadProps<TFieldValues extends FieldValues> {
   name: FieldPath<TFieldValues>;
@@ -28,6 +29,8 @@ export function FormFileUpload<TFieldValues extends FieldValues>({
   className,
   accept = "*",
 }: FormFileUploadProps<TFieldValues>) {
+    const { loading } = useAppFormContext();
+  
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   return (
@@ -48,7 +51,7 @@ export function FormFileUpload<TFieldValues extends FieldValues>({
               hidden
               type="file"
               accept={accept}
-              disabled={disabled}
+              disabled={loading || disabled}
               onChange={(e) => {
                 const selected = e.target.files?.[0];
 
@@ -63,7 +66,7 @@ export function FormFileUpload<TFieldValues extends FieldValues>({
                 type="button"
                 variant="outline"
                 className="h-32 w-full border-dashed"
-                disabled={disabled}
+                disabled={loading || disabled}
                 onClick={() => inputRef.current?.click()}
               >
                 <div className="flex flex-col items-center gap-2">

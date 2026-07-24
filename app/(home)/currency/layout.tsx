@@ -1,4 +1,6 @@
 import FormPage from "@/components/form/form";
+import { FormPageProvider } from "@/components/form/form-context";
+import { DraftEntity } from "@/components/daft/draft-config";
 
 export default function LayoutCurrency({
   children,
@@ -6,15 +8,20 @@ export default function LayoutCurrency({
   children: React.ReactNode;
 }) {
   return (
-    <FormPage
-      label="Currency"
-      title="Manage Currency"
-      link="/currency/create"
-      action="Create"
-      apiPath="currency"
-      description="Currency"
-    >
-      <div className="flex-1 min-w-0 overflow-x-hidden">{children}</div>
-    </FormPage>
+    <FormPageProvider>
+      <FormPage
+        label="Currency"
+        title="Manage Currency"
+        link="/currency"
+        action="Create"
+        apiPath="currency"
+        description="Currency"
+        draft={{
+          entity: DraftEntity.Currency,
+        }}
+      >
+        {children}
+      </FormPage>
+    </FormPageProvider>
   );
 }

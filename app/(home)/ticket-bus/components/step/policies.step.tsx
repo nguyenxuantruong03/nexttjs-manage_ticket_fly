@@ -11,7 +11,7 @@ import {
   BusTicketChangeType,
 } from "@/types/bookings/bus/enums";
 
-import { BusFormValues } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../schema/core/bus.schema";
 
 const refundTypeOptions = Object.values(BusRefundType).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -35,24 +35,24 @@ export default function PoliciesStep() {
     <>
       <FormSection title="Boarding Policy" description="Boarding requirements">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.boarding.checkInBeforeMinutes"
             label="Check-in Before (Minutes)"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.boarding.boardingGateCloseMinutes"
             label="Gate Close Before (Minutes)"
             type="number"
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="policies.boarding.digitalTicketAccepted"
             label="Digital Ticket Accepted"
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="policies.boarding.printedTicketRequired"
             label="Printed Ticket Required"
           />
@@ -64,35 +64,35 @@ export default function PoliciesStep() {
         description="Refund & cancellation"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="policies.cancellation.refundable"
             label="Refundable"
           />
 
-          <FormSelect<BusFormValues>
+          <FormSelect<BusFormSchema>
             name="policies.cancellation.refundType"
             label="Refund Type"
             options={refundTypeOptions}
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="policies.cancellation.freeCancellation"
             label="Free Cancellation"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.cancellation.freeCancellationBeforeHours"
             label="Free Cancellation Before (Hours)"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.cancellation.cancellationFee"
             label="Cancellation Fee"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.cancellation.noShowFee"
             label="No Show Fee"
             type="number"
@@ -105,25 +105,25 @@ export default function PoliciesStep() {
         description="Ticket modification rules"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<BusFormValues>
+          <FormSelect<BusFormSchema>
             name="policies.change.type"
             label="Change Type"
             options={ticketChangeTypeOptions}
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.change.changeFee"
             label="Change Fee"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.change.maxChanges"
             label="Maximum Changes"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.change.changeBeforeDepartureHours"
             label="Change Before Departure (Hours)"
             type="number"
@@ -133,24 +133,24 @@ export default function PoliciesStep() {
 
       <FormSection title="Luggage Policy" description="Luggage allowance">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.luggage.includedLuggage"
             label="Included Luggage"
             type="number"
           />
 
-          <FormSelect<BusFormValues>
+          <FormSelect<BusFormSchema>
             name="policies.luggage.unit"
             label="Unit"
             options={luggageUnitOptions}
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="policies.luggage.extraLuggageAllowed"
             label="Extra Luggage Allowed"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.luggage.extraLuggageFee"
             label="Extra Luggage Fee"
             type="number"
@@ -160,25 +160,25 @@ export default function PoliciesStep() {
 
       <FormSection title="Child Policy" description="Child ticket policy">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.child.freeAgeUnder"
             label="Free Age Under"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.child.childTicketAgeFrom"
             label="Child Ticket Age From"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.child.childTicketAgeTo"
             label="Child Ticket Age To"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="policies.child.childDiscountPercent"
             label="Child Discount (%)"
             type="number"
@@ -191,32 +191,32 @@ export default function PoliciesStep() {
         description="Passenger restrictions"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="policies.passenger.petsAllowed"
             label="Pets Allowed"
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="policies.passenger.smokingAllowed"
             label="Smoking Allowed"
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="policies.passenger.foodAllowed"
             label="Food Allowed"
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="policies.passenger.alcoholAllowed"
             label="Alcohol Allowed"
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="policies.passenger.wheelchairAccessible"
             label="Wheelchair Accessible"
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="policies.passenger.specialAssistanceAvailable"
             label="Special Assistance Available"
           />

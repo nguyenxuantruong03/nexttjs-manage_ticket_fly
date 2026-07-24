@@ -12,7 +12,7 @@ import {
   BusVehicleType,
 } from "@/types/bookings/bus/enums";
 
-import { BusFormValues } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../schema/core/bus.schema";
 
 const vehicleTypeOptions = Object.values(BusVehicleType).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -41,61 +41,61 @@ export default function VehiclesStep() {
     <>
       <FormSection title="Vehicle" description="General vehicle information">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<BusFormValues>
+          <FormSelect<BusFormSchema>
             name="vehicles.0.type"
             label="Vehicle Type"
             options={vehicleTypeOptions}
           />
 
-          <FormSelect<BusFormValues>
+          <FormSelect<BusFormSchema>
             name="vehicles.0.status"
             label="Status"
             options={vehicleStatusOptions}
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.name"
             label="Vehicle Name"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.manufacturer"
             label="Manufacturer"
           />
 
-          <FormInput<BusFormValues> name="vehicles.0.model" label="Model" />
+          <FormInput<BusFormSchema> name="vehicles.0.model" label="Model" />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.year"
             label="Year"
             type="number"
           />
 
-          <FormSwitch<BusFormValues> name="vehicles.0.active" label="Active" />
+          <FormSwitch<BusFormSchema> name="vehicles.0.active" label="Active" />
         </div>
       </FormSection>
 
       <FormSection title="Capacity" description="Vehicle capacity">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.capacity.totalSeats"
             label="Total Seats"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.capacity.sleeperBeds"
             label="Sleeper Beds"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.capacity.cabinRooms"
             label="Cabin Rooms"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.capacity.luggageCapacityKg"
             label="Luggage Capacity (Kg)"
             type="number"
@@ -105,64 +105,64 @@ export default function VehiclesStep() {
 
       <FormSection title="Features" description="Vehicle amenities">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.airConditioner"
             label="Air Conditioner"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.wifi"
             label="WiFi"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.usbCharger"
             label="USB Charger"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.powerOutlet"
             label="Power Outlet"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.readingLight"
             label="Reading Light"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.blanket"
             label="Blanket"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.pillow"
             label="Pillow"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.drinkingWater"
             label="Drinking Water"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.snack"
             label="Snack"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.toilet"
             label="Toilet"
           />
-          <FormSwitch<BusFormValues> name="vehicles.0.features.tv" label="TV" />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema> name="vehicles.0.features.tv" label="TV" />
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.entertainment"
             label="Entertainment"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.gpsTracking"
             label="GPS Tracking"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.recliningSeat"
             label="Reclining Seat"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.massageSeat"
             label="Massage Seat"
           />
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.features.wheelchairAccessible"
             label="Wheelchair Accessible"
           />
@@ -171,38 +171,38 @@ export default function VehiclesStep() {
 
       <FormSection title="Specification" description="Vehicle specifications">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.specification.engineType"
             label="Engine Type"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.specification.transmission"
             label="Transmission"
           />
 
-          <FormSelect<BusFormValues>
+          <FormSelect<BusFormSchema>
             name="vehicles.0.specification.fuelType"
             label="Fuel Type"
             options={fuelTypeOptions}
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.specification.suspension"
             label="Suspension"
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.specification.airConditioning"
             label="Air Conditioning"
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.specification.wifiAvailable"
             label="WiFi Available"
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.specification.toiletAvailable"
             label="Toilet Available"
           />
@@ -211,29 +211,29 @@ export default function VehiclesStep() {
 
       <FormSection title="Vehicle Images" description="Vehicle gallery">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.images.0.url"
             label="Image URL"
           />
 
-          <FormSelect<BusFormValues>
+          <FormSelect<BusFormSchema>
             name="vehicles.0.images.0.category"
             label="Category"
             options={imageCategoryOptions}
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.images.0.alt"
             label="Alt Text"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.images.0.sortOrder"
             label="Sort Order"
             type="number"
           />
 
-          <FormSwitch<BusFormValues>
+          <FormSwitch<BusFormSchema>
             name="vehicles.0.images.0.isPrimary"
             label="Primary Image"
           />

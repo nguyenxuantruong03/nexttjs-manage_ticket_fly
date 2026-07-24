@@ -7,6 +7,7 @@ import {
 } from "@/components/form/form-data";
 
 import FormSection from "@/components/form/FormSection";
+import { ProviderBookingFormSchema } from "../form/schema";
 
 export default function BasicSection() {
   return (
@@ -15,42 +16,39 @@ export default function BasicSection() {
       description="Basic provider information"
     >
       <div className="grid gap-6 md:grid-cols-2">
-        <FormInput
+        <FormInput<ProviderBookingFormSchema>
           name="displayName"
           label="Display Name"
           placeholder="Enter display name"
         />
 
-        <FormInput
+        <FormInput<ProviderBookingFormSchema>
           name="officialName"
           label="Official Name"
           placeholder="Enter official business name"
         />
 
-        <FormInput
+        <FormInput<ProviderBookingFormSchema>
           name="shortName"
           label="Short Name"
           placeholder="Enter short name"
         />
 
-        <FormTextarea
+        <FormTextarea<ProviderBookingFormSchema>
           name="subtitle"
           label="Subtitle"
           placeholder="Enter a short subtitle"
         />
 
-        <FormTextarea
+        <FormTextarea<ProviderBookingFormSchema>
           name="description"
           label="Description"
           placeholder="Enter provider description"
         />
 
-        <FormImageUpload
-          name="logo"
-          label="Logo"
-        />
+        <FormImageUpload<ProviderBookingFormSchema> name="logo" label="Logo" />
 
-        <FormImageUpload
+        <FormImageUpload<ProviderBookingFormSchema>
           name="banner"
           label="Banner"
         />

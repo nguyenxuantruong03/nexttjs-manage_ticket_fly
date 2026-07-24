@@ -8,5 +8,5 @@ export const CarRentalVehicleDocumentSchema = z.object({
 
   url: z.string().url(),
 
-  expiryDate: z.string().optional(),
+  expiryDate: z.date().nullable().optional(),
 });

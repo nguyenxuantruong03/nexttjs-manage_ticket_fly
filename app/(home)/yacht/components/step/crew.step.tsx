@@ -7,7 +7,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect } from "@/components/form/form-data";
 
 import { YachtCrewRole } from "@/types/bookings/yacht/enums";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
 const crewRoleOptions = Object.values(YachtCrewRole).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -23,17 +23,17 @@ export default function CrewStep() {
 
       <FormSection title="Crew Information" description="Yacht crew members">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues> name="crew.0.name" label="Crew Name" />
+          <FormInput<YachtFormSchema> name="crew.0.name" label="Crew Name" />
 
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="crew.0.role"
             label="Crew Role"
             options={crewRoleOptions}
           />
 
-          <FormInput<YachtFormValues> name="crew.0.avatar" label="Avatar URL" />
+          <FormInput<YachtFormSchema> name="crew.0.avatar" label="Avatar URL" />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="crew.0.experienceYears"
             label="Experience Years"
             type="number"
@@ -47,7 +47,7 @@ export default function CrewStep() {
 
       <FormSection title="Languages" description="Languages supported by crew">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="crew.0.languages.0"
             label="Language"
           />

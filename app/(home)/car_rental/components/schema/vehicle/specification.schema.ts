@@ -4,17 +4,17 @@ import { z } from "zod";
 export const CarRentalVehicleSpecificationSchema = z.object({
   vehicleId: z.string(),
 
-  vin: z.string().optional(),
+  vin: z.string().nullable().optional(),
 
-  engineSizeCc: z.number().optional(),
+  engineSizeCc: z.number().nullable().optional(),
 
-  horsePower: z.number().optional(),
+  horsePower: z.number().nullable().optional(),
 
-  batteryCapacityKwh: z.number().optional(),
+  batteryCapacityKwh: z.number().nullable().optional(),
 
-  rangeKm: z.number().optional(),
+  rangeKm: z.number().nullable().optional(),
 
-  condition: z.nativeEnum(RentalVehicleCondition).optional(),
+  condition: z.nativeEnum(RentalVehicleCondition).nullable().optional(),
 
-  previousOwners: z.number().optional(),
+  previousOwners: z.number().nullable().optional(),
 });

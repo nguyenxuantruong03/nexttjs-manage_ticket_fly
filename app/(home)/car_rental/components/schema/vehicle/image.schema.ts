@@ -9,9 +9,9 @@ export const CarRentalVehicleImageSchema = z.object({
 
   category: z.nativeEnum(RentalVehicleImageCategory),
 
-  position: z.nativeEnum(RentalVehicleImagePosition).optional(),
+  position: z.nativeEnum(RentalVehicleImagePosition).nullable().optional(),
 
-  alt: z.string().optional(),
+  alt: z.string().nullable().optional(),
 
   isPrimary: z.boolean().default(false),
 

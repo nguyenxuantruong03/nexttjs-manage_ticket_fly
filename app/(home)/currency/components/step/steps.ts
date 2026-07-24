@@ -1,52 +1,44 @@
+import { Info, Monitor, Activity } from "lucide-react";
+
 import { FormWizardStep } from "@/components/form/wizard/types";
 
-import { Info, Images, Activity } from "lucide-react";
+import { CurrencyFormSchema } from "../form/schema";
+import { currencyFieldGroups } from "./field-groups";
 
-export const currencySteps: (FormWizardStep & {
-  sections: {
-    id: string;
-    title: string;
-  }[];
-})[] = [
+export const currencySteps: FormWizardStep<CurrencyFormSchema>[] = [
   {
     id: "basic",
+
     title: "Basic",
-    description: "Currency information",
+
+    description: "Currency basic information",
+
     icon: Info,
 
-    sections: [
-      {
-        id: "currency",
-        title: "Currency",
-      },
-    ],
+    fields: currencyFieldGroups.basic,
   },
 
   {
     id: "display",
-    title: "Display",
-    description: "Currency display settings",
-    icon: Images,
 
-    sections: [
-      {
-        id: "display",
-        title: "Display",
-      },
-    ],
+    title: "Display",
+
+    description: "Currency display settings",
+
+    icon: Monitor,
+
+    fields: currencyFieldGroups.display,
   },
 
   {
     id: "status",
+
     title: "Status",
-    description: "Currency availability",
+
+    description: "Currency status",
+
     icon: Activity,
 
-    sections: [
-      {
-        id: "status",
-        title: "Status",
-      },
-    ],
+    fields: currencyFieldGroups.status,
   },
 ];

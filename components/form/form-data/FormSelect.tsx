@@ -13,6 +13,7 @@ import {
 
 import { FormField } from "./FormField";
 import { cn } from "@/lib/utils";
+import { useAppFormContext } from "./AppForm";
 
 export interface SelectOption {
   label: React.ReactNode;
@@ -43,6 +44,8 @@ export function FormSelect<TFieldValues extends FieldValues>({
   triggerClassName,
   options,
 }: FormSelectProps<TFieldValues>) {
+    const { loading } = useAppFormContext();
+  
   return (
     <FormField<TFieldValues>
       name={name}
@@ -55,7 +58,7 @@ export function FormSelect<TFieldValues extends FieldValues>({
         <Select
           value={field.value ?? ""}
           onValueChange={field.onChange}
-          disabled={disabled}
+          disabled={loading || disabled}
         >
           <SelectTrigger className={cn(triggerClassName)}>
             <SelectValue placeholder={placeholder} />
@@ -66,7 +69,7 @@ export function FormSelect<TFieldValues extends FieldValues>({
               <SelectItem
                 key={option.value}
                 value={option.value}
-                disabled={option.disabled}
+                disabled={loading || option.disabled}
               >
                 {option.label}
               </SelectItem>

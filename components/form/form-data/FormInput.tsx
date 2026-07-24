@@ -6,6 +6,7 @@ import { FieldPath, FieldValues } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { FormField } from "./FormField";
 import { cn } from "@/lib/utils";
+import { useAppFormContext } from "./AppForm";
 
 export interface FormInputProps<TFieldValues extends FieldValues> extends Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -17,6 +18,7 @@ export interface FormInputProps<TFieldValues extends FieldValues> extends Omit<
   required?: boolean;
   className?: string;
   inputClassName?: string;
+  disabled?: boolean;
 }
 
 export function FormInput<TFieldValues extends FieldValues>({
@@ -26,8 +28,11 @@ export function FormInput<TFieldValues extends FieldValues>({
   required,
   className,
   inputClassName,
+  disabled,
   ...props
 }: FormInputProps<TFieldValues>) {
+  const { loading } = useAppFormContext();
+
   return (
     <FormField<TFieldValues>
       name={name}
@@ -42,6 +47,7 @@ export function FormInput<TFieldValues extends FieldValues>({
           {...props}
           value={field.value ?? ""}
           className={cn(inputClassName)}
+          disabled={loading || disabled}
         />
       )}
     </FormField>

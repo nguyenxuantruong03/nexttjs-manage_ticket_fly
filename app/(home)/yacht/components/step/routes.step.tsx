@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch } from "@/components/form/form-data";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
 
 export default function RoutesStep() {
@@ -20,28 +20,28 @@ export default function RoutesStep() {
         description="Yacht departure and destination route"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.departureMarinaId"
             label="Departure Marina ID"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.destinationMarinaId"
             label="Destination Marina ID"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.destinationName"
             label="Destination Name"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.distanceNm"
             label="Distance (NM)"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.durationMinutes"
             label="Duration Minutes"
             type="number"
@@ -55,7 +55,7 @@ export default function RoutesStep() {
 
       <FormSection title="Route Status" description="Route availability">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<YachtFormValues> name="routes.0.active" label="Active" />
+          <FormSwitch<YachtFormSchema> name="routes.0.active" label="Active" />
         </div>
       </FormSection>
 
@@ -68,23 +68,23 @@ export default function RoutesStep() {
         description="Intermediate stops during trip"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.stops.0.name"
             label="Stop Name"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.stops.0.addressId"
             label="Address ID"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.stops.0.stopDurationMinutes"
             label="Stop Duration Minutes"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.stops.0.order"
             label="Stop Order"
             type="number"
@@ -101,18 +101,18 @@ export default function RoutesStep() {
         description="Trip relation mapping"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.trip.0.routeId"
             label="Trip Route ID"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.trip.0.departureTime"
             label="Departure Time"
             type="datetime-local"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="routes.0.trip.0.arrivalTime"
             label="Arrival Time"
             type="datetime-local"

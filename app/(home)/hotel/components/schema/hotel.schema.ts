@@ -15,7 +15,6 @@ export const HotelSchema = z.object({
   information: HotelInformationSchema.nullable().optional(),
 
   hotelImage: z.array(HotelImageSchema).default([]),
-
   inventory: z.array(z.any()).default([]),
 
   roomTypes: z.array(z.any()).default([]),
@@ -41,7 +40,6 @@ export const HotelSchema = z.object({
   name: z.string().min(2),
 
   slug: z.string().min(2),
-  active: z.boolean().default(true),
   aliases: z.array(z.string()).default([]),
 
   keywords: z.array(z.string()).default([]),
@@ -61,4 +59,4 @@ export const HotelSchema = z.object({
   updatedAt: z.coerce.date(),
 });
 
-export type HotelFormValues = z.infer<typeof HotelSchema>;
+export type HotelFormSchema = z.infer<typeof HotelSchema>;

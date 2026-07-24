@@ -8,229 +8,74 @@ import {
   DollarSign,
   FileText,
   Images,
-  Search,
   CalendarRange,
 } from "lucide-react";
 
-export const busSteps: (FormWizardStep & {
-  sections: {
-    id: string;
-    title: string;
-  }[];
-})[] = [
-  // ======================================================
-  // BASIC
-  // ======================================================
+import { busFieldGroups } from "./field-groups";
+import { BusFormSchema } from "../schema/core/bus.schema";
+
+export const busSteps: FormWizardStep<BusFormSchema>[] = [
   {
     id: "basic",
     title: "Basic",
     description: "General bus information",
     icon: Info,
-    sections: [
-      {
-        id: "bus",
-        title: "Bus",
-      },
-    ],
+    fields: busFieldGroups.basic,
   },
 
-  // ======================================================
-  // ROUTES
-  // ======================================================
   {
     id: "routes",
     title: "Routes",
     description: "Routes, boarding & trips",
     icon: Route,
-    sections: [
-      {
-        id: "routes",
-        title: "Routes",
-      },
-      {
-        id: "boardingPoints",
-        title: "Boarding Points",
-      },
-      {
-        id: "dropoffPoints",
-        title: "Dropoff Points",
-      },
-      {
-        id: "stops",
-        title: "Route Stops",
-      },
-      {
-        id: "trips",
-        title: "Trips",
-      },
-    ],
+    fields: busFieldGroups.routes,
   },
 
-  // ======================================================
-  // VEHICLES
-  // ======================================================
   {
     id: "vehicles",
     title: "Vehicles",
     description: "Bus vehicles & specifications",
     icon: Bus,
-    sections: [
-      {
-        id: "vehicles",
-        title: "Vehicles",
-      },
-      {
-        id: "capacity",
-        title: "Capacity",
-      },
-      {
-        id: "features",
-        title: "Features",
-      },
-      {
-        id: "specification",
-        title: "Specifications",
-      },
-      {
-        id: "vehicleImages",
-        title: "Vehicle Images",
-      },
-    ],
+    fields: busFieldGroups.vehicles,
   },
 
-  // ======================================================
-  // SEATS
-  // ======================================================
   {
     id: "seats",
     title: "Seats",
     description: "Seat layouts & availability",
     icon: Armchair,
-    sections: [
-      {
-        id: "seatLayout",
-        title: "Seat Layout",
-      },
-      {
-        id: "seatMap",
-        title: "Seat Map",
-      },
-      {
-        id: "seats",
-        title: "Seats",
-      },
-      {
-        id: "seatAvailability",
-        title: "Seat Availability",
-      },
-      {
-        id: "inventoryLocks",
-        title: "Inventory Locks",
-      },
-    ],
+    fields: busFieldGroups.seats,
   },
 
-  // ======================================================
-  // PRICING
-  // ======================================================
   {
     id: "pricing",
     title: "Pricing",
     description: "Prices & pricing rules",
     icon: DollarSign,
-    sections: [
-      {
-        id: "prices",
-        title: "Prices",
-      },
-      {
-        id: "breakdowns",
-        title: "Price Breakdown",
-      },
-      {
-        id: "seatPrices",
-        title: "Seat Prices",
-      },
-      {
-        id: "tripPrices",
-        title: "Trip Prices",
-      },
-      {
-        id: "rules",
-        title: "Price Rules",
-      },
-    ],
+    fields: busFieldGroups.pricing,
   },
 
-  // ======================================================
-  // POLICIES
-  // ======================================================
   {
     id: "policies",
     title: "Policies",
     description: "Passenger & ticket policies",
     icon: FileText,
-    sections: [
-      {
-        id: "boarding",
-        title: "Boarding Policy",
-      },
-      {
-        id: "cancellation",
-        title: "Cancellation Policy",
-      },
-      {
-        id: "ticketChange",
-        title: "Ticket Change",
-      },
-      {
-        id: "luggage",
-        title: "Luggage Policy",
-      },
-      {
-        id: "child",
-        title: "Child Policy",
-      },
-      {
-        id: "passenger",
-        title: "Passenger Policy",
-      },
-    ],
+    fields: busFieldGroups.policies,
   },
 
-  // ======================================================
-  // IMAGES
-  // ======================================================
   {
     id: "images",
     title: "Images",
     description: "Bus gallery",
     icon: Images,
-    sections: [
-      {
-        id: "busImages",
-        title: "Bus Images",
-      },
-    ],
+    fields: busFieldGroups.images,
   },
 
-  // ======================================================
-  // SCHEDULE
-  // ======================================================
   {
     id: "schedule",
     title: "Schedule",
     description: "Trip schedules",
     icon: CalendarRange,
-    sections: [
-      {
-        id: "departureArrival",
-        title: "Departure & Arrival",
-      },
-      {
-        id: "tripStatus",
-        title: "Trip Status",
-      },
-    ],
+    fields: busFieldGroups.schedule,
   },
 ];

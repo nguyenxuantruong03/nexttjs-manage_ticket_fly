@@ -6,7 +6,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch, FormSelect } from "@/components/form/form-data";
 
 import { DriverOption } from "@/types/bookings/car_rental/enums";
-import { CarRentalFormValues } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
 
 const driverOptionOptions = Object.values(DriverOption).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -18,27 +18,27 @@ export default function BasicStep() {
     <>
       <FormSection title="Car Rental" description="General rental information">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormValues> name="name" label="Rental Name" />
+          <FormInput<CarRentalFormSchema> name="name" label="Rental Name" />
 
-          <FormInput<CarRentalFormValues> name="slug" label="Slug" />
+          <FormInput<CarRentalFormSchema> name="slug" label="Slug" />
 
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="driverOption"
             label="Driver Option"
             options={driverOptionOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="providerBookingId"
             label="Provider Booking ID"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="searchText"
             label="Search Text"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="searchPriority"
             label="Search Priority"
             type="number"
@@ -51,13 +51,13 @@ export default function BasicStep() {
         description="Search aliases and keywords"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="aliases"
             label="Aliases"
             placeholder="Enter aliases separated by comma"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="keywords"
             label="Keywords"
             placeholder="Enter keywords separated by comma"
@@ -70,9 +70,9 @@ export default function BasicStep() {
         description="Rental availability and display settings"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<CarRentalFormValues> name="active" label="Active" />
+          <FormSwitch<CarRentalFormSchema> name="active" label="Active" />
 
-          <FormSwitch<CarRentalFormValues> name="featured" label="Featured" />
+          <FormSwitch<CarRentalFormSchema> name="featured" label="Featured" />
         </div>
       </FormSection>
     </>

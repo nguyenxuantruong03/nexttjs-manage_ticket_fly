@@ -5,11 +5,11 @@ import { User } from "@/types/bookings/auth/users";
 
 interface Props {
   onView: (id: string) => void;
-  onEdit: (id: string) => void;
+  onUpdate: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export function createUserActions({ onView, onEdit, onDelete }: Props) {
+export function createUserActions({ onView, onUpdate, onDelete }: Props) {
   return (row: User): ActionMenuItem<User>[] => [
     {
       label: "View",
@@ -20,10 +20,10 @@ export function createUserActions({ onView, onEdit, onDelete }: Props) {
     },
 
     {
-      label: "Edit",
+      label: "Update",
       icon: Pencil,
       onClick() {
-        onEdit(row.id);
+        onUpdate(row.id);
       },
     },
 

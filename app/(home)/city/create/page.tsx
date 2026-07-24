@@ -1,4 +1,5 @@
 "use client";
+
 import CityForm from "../components/CityForm";
 
 const CityCreatePage = () => {

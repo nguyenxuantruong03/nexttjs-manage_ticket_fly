@@ -11,7 +11,7 @@ import {
   YachtExtraCategory,
   YachtExtraPricingType,
 } from "@/types/bookings/yacht/enums";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
 const extraCategoryOptions = Object.values(YachtExtraCategory).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -37,32 +37,32 @@ export default function ExtrasStep() {
         description="Additional yacht services"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues> name="extras.0.name" label="Extra Name" />
+          <FormInput<YachtFormSchema> name="extras.0.name" label="Extra Name" />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="extras.0.description"
             label="Description"
           />
 
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="extras.0.category"
             label="Category"
             options={extraCategoryOptions}
           />
 
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="extras.0.pricingType"
             label="Pricing Type"
             options={extraPricingTypeOptions}
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="extras.0.price"
             label="Price"
             type="number"
           />
 
-          <FormSwitch<YachtFormValues> name="extras.0.active" label="Active" />
+          <FormSwitch<YachtFormSchema> name="extras.0.active" label="Active" />
         </div>
       </FormSection>
 
@@ -75,12 +75,12 @@ export default function ExtrasStep() {
         description="Extra items available during booking"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="extras.0.bookingExtras.0.name"
             label="Booking Extra Name"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="extras.0.bookingExtras.0.price"
             label="Booking Extra Price"
             type="number"
@@ -97,12 +97,12 @@ export default function ExtrasStep() {
         description="Connect extra with package"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="extras.0.packageExtras.0.packageId"
             label="Package ID"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="extras.0.packageExtras.0.extraId"
             label="Extra ID"
           />
@@ -115,12 +115,12 @@ export default function ExtrasStep() {
 
       <FormSection title="Extra Images" description="Extra service images">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="extras.0.images.0.url"
             label="Image URL"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="extras.0.images.0.sortOrder"
             label="Sort Order"
             type="number"

@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 
-import { CityFormValues } from "../form/schema";
+import { CityFormSchema } from "../form/schema";
 
 export default function SearchStep() {
   return (
@@ -13,35 +13,35 @@ export default function SearchStep() {
       description="Search engine configuration"
     >
       <div className="grid gap-6 md:grid-cols-2">
-        <FormInput<CityFormValues>
+        <FormInput<CityFormSchema>
           name="priority"
           label="Priority"
           type="number"
         />
 
-        <FormInput<CityFormValues>
+        <FormInput<CityFormSchema>
           name="displayOrder"
           label="Display Order"
           type="number"
         />
 
-        <FormInput<CityFormValues>
+        <FormInput<CityFormSchema>
           name="popularityScore"
           label="Popularity Score"
           type="number"
         />
 
-        <FormSwitch<CityFormValues> name="featured" label="Featured" />
+        <FormSwitch<CityFormSchema> name="featured" label="Featured" />
 
-        <FormSwitch<CityFormValues> name="popular" label="Popular" />
+        <FormSwitch<CityFormSchema> name="popular" label="Popular" />
 
-        <FormSwitch<CityFormValues> name="searchable" label="Searchable" />
+        <FormSwitch<CityFormSchema> name="searchable" label="Searchable" />
 
-        <FormInput<CityFormValues> name="aliases.0" label="Alias" />
+        <FormInput<CityFormSchema> name="aliases.0" label="Alias" />
 
-        <FormInput<CityFormValues> name="keywords.0" label="Keyword" />
+        <FormInput<CityFormSchema> name="keywords.0" label="Keyword" />
 
-        <FormInput<CityFormValues> name="tags.0" label="Tag" />
+        <FormInput<CityFormSchema> name="tags.0" label="Tag" />
       </div>
     </FormSection>
   );

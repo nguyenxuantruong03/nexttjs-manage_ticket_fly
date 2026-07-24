@@ -26,7 +26,7 @@ import { YachtMarinaSchema } from "../marina/marina.schema";
 export const YachtSchema = z.object({
   providerBookingId: z.string(),
 
-  marina: z.array(YachtMarinaSchema).default([]),
+  marina: z.array(YachtMarinaSchema).default([]).optional(),
 
   vehicle: YachtVehicleSchema.nullable().optional(),
 
@@ -73,4 +73,4 @@ export const YachtSchema = z.object({
   searchPriority: z.number(),
 });
 
-export type YachtFormValues = z.infer<typeof YachtSchema>;
+export type YachtFormSchema = z.infer<typeof YachtSchema>;

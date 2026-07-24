@@ -13,9 +13,9 @@ import { useSubmit } from "@/hooks/useSubmit";
 
 import { yachtSteps } from "./step/steps";
 
-import { YachtFormValues, YachtSchema } from "./schema/core/yacht.schema";
+import { YachtFormSchema, YachtSchema } from "./schema/core/yacht.schema";
 import { defaultYachtValues } from "./form/default-values";
-import { useCreateYacht } from "@/hooks/yacht";
+import { useCreateYacht, useUpdateYacht } from "@/hooks/yacht";
 
 // STEPS
 import BasicStep from "./step/basic.step";
@@ -30,29 +30,78 @@ import PoliciesStep from "./step/policies.step";
 import CrewStep from "./step/crew.step";
 import ImagesStep from "./step/images.step";
 import SettingsStep from "./step/settings.step";
+import { useFormPage } from "@/components/form/form-context";
+import { useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import { useFormDraft } from "@/hooks/useFormDraft";
+import { DraftEntity } from "@/components/daft/draft-config";
+import { Yacht } from "@/types/bookings/yacht/core/yacht.types";
+import { initYachtFormValues } from "./form/init-value";
 
-export default function YachtForm() {
+interface YachtFormProps {
+  initialData?: Yacht;
+}
+
+export default function YachtForm({ initialData }: YachtFormProps) {
   const submit = useSubmit();
-
+  const { setDirty } = useFormPage();
   const createYacht = useCreateYacht();
+  const updateYacht = useUpdateYacht();
 
-  const { form, mode, isUpdate } = useAppForm<YachtFormValues>({
+  const searchParams = useSearchParams();
+
+  const currentDraftId = useMemo(() => {
+    if (initialData) {
+      return `edit-${initialData.id}`;
+    }
+
+    return searchParams.get("draft") ?? crypto.randomUUID();
+  }, [initialData, searchParams]);
+
+  const { form, mode, isUpdate } = useAppForm<YachtFormSchema>({
     schema: YachtSchema,
-    defaultValues: defaultYachtValues,
+    defaultValues: initialData
+      ? initYachtFormValues(initialData)
+      : defaultYachtValues,
   });
 
-  const onSubmit = (values: any) =>
+  const isSubmitting = form.formState.isSubmitting;
+
+  const { clearDraft } = useFormDraft({
+    form,
+    entity: DraftEntity.Yacht,
+    draftId: currentDraftId,
+  });
+
+  useEffect(() => {
+    setDirty(form.formState.isDirty);
+  }, [form.formState.isDirty]);
+
+  const onSubmit = (values: any) => {
     submit({
-      mutation: createYacht.mutateAsync(values),
-
+      mutation: initialData
+        ? updateYacht.mutateAsync({
+            id: initialData.id,
+            data: values,
+          })
+        : createYacht.mutateAsync(values),
       success: isUpdate ? "Yacht updated" : "Yacht created",
-
       redirect: "/yacht",
     });
 
+    clearDraft();
+
+    form.reset(values);
+  };
+
   return (
-    <AppForm form={form} onSubmit={onSubmit}>
-      <FormWizard steps={yachtSteps}>
+    <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
+      <FormWizard
+        form={form}
+        steps={yachtSteps}
+        loading={isSubmitting}
+        unlockAll={!!initialData}
+      >
         <FormWizardHeader steps={yachtSteps} />
 
         <FormWizardContent>
@@ -117,7 +166,7 @@ export default function YachtForm() {
           </FormWizardStep>
         </FormWizardContent>
 
-        <FormWizardFooter />
+        <FormWizardFooter form={form} onSubmit={onSubmit} />
       </FormWizard>
     </AppForm>
   );

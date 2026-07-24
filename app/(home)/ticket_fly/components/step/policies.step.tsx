@@ -6,7 +6,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch, FormSelect } from "@/components/form/form-data";
 
 import { FlyRefundType } from "@/types/bookings/ticket-fly/enums";
-import { TicketFlyFormValues } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../schema/core/fly.schema";
 
 const refundTypeOptions = Object.values(FlyRefundType).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -21,30 +21,30 @@ export default function PoliciesStep() {
         description="Flight cancellation rules"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.cancellation.refundable"
             label="Refundable"
           />
 
-          <FormSelect<TicketFlyFormValues>
+          <FormSelect<FlyFormSchema>
             name="policies.cancellation.refundType"
             label="Refund Type"
             options={refundTypeOptions}
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.cancellation.cancellationFee"
             label="Cancellation Fee"
             type="number"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.cancellation.noShowFee"
             label="No Show Fee"
             type="number"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.cancellation.freeCancellationBeforeHours"
             label="Free Cancellation Before Hours"
             type="number"
@@ -54,24 +54,24 @@ export default function PoliciesStep() {
 
       <FormSection title="Change Policy" description="Flight change rules">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.change.allowed"
             label="Change Allowed"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.change.changeFee"
             label="Change Fee"
             type="number"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.change.maxChanges"
             label="Maximum Changes"
             type="number"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.change.beforeDepartureHours"
             label="Before Departure Hours"
             type="number"
@@ -84,24 +84,24 @@ export default function PoliciesStep() {
         description="Passenger baggage allowance"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.baggage.cabinIncludedKg"
             label="Cabin Included KG"
             type="number"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.baggage.checkedIncludedKg"
             label="Checked Included KG"
             type="number"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.baggage.extraAllowed"
             label="Extra Baggage Allowed"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.baggage.extraPricePerKg"
             label="Extra Price Per KG"
             type="number"
@@ -111,24 +111,24 @@ export default function PoliciesStep() {
 
       <FormSection title="Boarding Policy" description="Boarding configuration">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.boarding.boardingBeforeMinutes"
             label="Boarding Before Minutes"
             type="number"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.boarding.gateCloseMinutes"
             label="Gate Close Minutes"
             type="number"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.boarding.onlineBoardingPass"
             label="Online Boarding Pass"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.boarding.printedBoardingPass"
             label="Printed Boarding Pass"
           />
@@ -140,32 +140,32 @@ export default function PoliciesStep() {
         description="Passenger restrictions"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.passenger.infantAllowed"
             label="Infant Allowed"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.passenger.childAllowed"
             label="Child Allowed"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.passenger.petsAllowed"
             label="Pets Allowed"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.passenger.unaccompaniedMinor"
             label="Unaccompanied Minor"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.passenger.wheelchairSupport"
             label="Wheelchair Support"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.passenger.pregnantPassengerAllowed"
             label="Pregnant Passenger Allowed"
           />
@@ -174,29 +174,29 @@ export default function PoliciesStep() {
 
       <FormSection title="Check In Policy" description="Check in rules">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.checkIn.onlineCheckIn"
             label="Online Check In"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.checkIn.opensBeforeHours"
             label="Opens Before Hours"
             type="number"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.checkIn.closesBeforeMinutes"
             label="Closes Before Minutes"
             type="number"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.checkIn.airportCheckIn"
             label="Airport Check In"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.checkIn.mobileBoardingPass"
             label="Mobile Boarding Pass"
           />
@@ -208,22 +208,22 @@ export default function PoliciesStep() {
         description="Transit and connection rules"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.transit.selfTransfer"
             label="Self Transfer"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.transit.baggageTransfer"
             label="Baggage Transfer"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.transit.visaRequiredDuringTransit"
             label="Visa Required During Transit"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.transit.minimumConnectionMinutes"
             label="Minimum Connection Minutes"
             type="number"
@@ -233,28 +233,28 @@ export default function PoliciesStep() {
 
       <FormSection title="Visa Policy" description="Visa requirements">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.visa.visaRequired"
             label="Visa Required"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.visa.passportRequired"
             label="Passport Required"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.visa.passportMinimumValidityMonths"
             label="Passport Minimum Validity Months"
             type="number"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="policies.visa.healthDocumentsRequired"
             label="Health Documents Required"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="policies.visa.note"
             label="Visa Note"
           />

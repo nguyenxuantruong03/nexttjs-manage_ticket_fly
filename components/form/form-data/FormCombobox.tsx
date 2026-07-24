@@ -21,6 +21,7 @@ import {
 
 import { FormField } from "./FormField";
 import { cn } from "@/lib/utils";
+import { useAppFormContext } from "./AppForm";
 
 export interface ComboboxOption {
   label: string;
@@ -54,7 +55,7 @@ export function FormCombobox<TFieldValues extends FieldValues>({
   options,
 }: FormComboboxProps<TFieldValues>) {
   const [open, setOpen] = React.useState(false);
-
+  const { loading } = useAppFormContext();
   return (
     <FormField<TFieldValues>
       name={name}
@@ -73,7 +74,7 @@ export function FormCombobox<TFieldValues extends FieldValues>({
                 type="button"
                 variant="outline"
                 role="combobox"
-                disabled={disabled}
+                disabled={loading || disabled}
                 className="w-full justify-between"
               >
                 <span className="truncate">
@@ -96,7 +97,7 @@ export function FormCombobox<TFieldValues extends FieldValues>({
                       <CommandItem
                         key={item.value}
                         value={item.label}
-                        disabled={item.disabled}
+                        disabled={loading || item.disabled}
                         onSelect={() => {
                           field.onChange(item.value);
                           setOpen(false);

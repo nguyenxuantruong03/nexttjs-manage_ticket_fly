@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormTextarea } from "@/components/form/form-data";
 
-import { HotelFormValues } from "../schema";
+import { HotelFormSchema } from "../schema";
 
 export default function LocationStep() {
   return (
@@ -15,19 +15,19 @@ export default function LocationStep() {
         description="Provider and address information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="information.hotelId"
             label="Hotel ID"
             placeholder="Hotel ID"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="information.providerBookingId"
             label="Provider Booking"
             placeholder="Provider Booking ID"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="information.addressId"
             label="Address"
             placeholder="Address ID"
@@ -39,7 +39,7 @@ export default function LocationStep() {
         title="Nearby Places"
         description="Nearby attractions and important places"
       >
-        <FormTextarea<HotelFormValues>
+        <FormTextarea<HotelFormSchema>
           name="nearbyPlaces"
           label="Nearby Places"
           placeholder="Nearby places (JSON)"
@@ -48,7 +48,7 @@ export default function LocationStep() {
       </FormSection>
 
       <FormSection title="Area Guides" description="Area guide information">
-        <FormTextarea<HotelFormValues>
+        <FormTextarea<HotelFormSchema>
           name="areaGuides"
           label="Area Guides"
           placeholder="Area guides (JSON)"

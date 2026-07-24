@@ -7,9 +7,9 @@ import {
   CarRentalExtraType,
 } from "@/types/bookings/car_rental/enums";
 import { WeekDay } from "@/types/common/enums";
-import { CarRentalFormValues } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
 
-export const defaultCarRentalValues: CarRentalFormValues = {
+export const defaultCarRentalValues: CarRentalFormSchema = {
   // =====================
   // BASIC
   // =====================
@@ -130,7 +130,7 @@ export const defaultCarRentalValues: CarRentalFormValues = {
 
       maintenance: [],
 
-      specification: [],
+      specification: undefined,
 
       document: [],
 

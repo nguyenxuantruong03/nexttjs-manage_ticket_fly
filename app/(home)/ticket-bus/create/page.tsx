@@ -1,5 +1,5 @@
-import BusForm from "../components/BusForm";
+import TicketBusForm from "../components/TicketBusForm";
 
 export default function Page() {
-  return <BusForm />;
+  return <TicketBusForm />;
 }

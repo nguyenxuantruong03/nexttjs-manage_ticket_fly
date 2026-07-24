@@ -29,4 +29,4 @@ export const BusSchema = z.object({
   searchPriority: z.number(),
 });
 
-export type BusFormValues = z.infer<typeof BusSchema>;
+export type BusFormSchema = z.infer<typeof BusSchema>;

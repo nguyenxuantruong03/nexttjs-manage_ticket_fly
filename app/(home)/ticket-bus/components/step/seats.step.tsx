@@ -11,7 +11,7 @@ import {
 } from "@/types/bookings/bus/enums";
 import { InventoryLockStatus } from "@/types/common/enums";
 
-import { BusFormValues } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../schema/core/bus.schema";
 
 const seatTypeOptions = Object.values(BusSeatType).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -37,18 +37,18 @@ export default function SeatsStep() {
     <>
       <FormSection title="Seat Layout" description="Seat layout configuration">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.seatLayout.0.name"
             label="Layout Name"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.seatLayout.0.seatRows"
             label="Seat Rows"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.seatLayout.0.seatColumns"
             label="Seat Columns"
             type="number"
@@ -58,17 +58,17 @@ export default function SeatsStep() {
 
       <FormSection title="Seat Map" description="Seat map configuration">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.seatMap.imageUrl"
             label="Image URL"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.seatMap.svgUrl"
             label="SVG URL"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.seatMap.jsonLayout"
             label="JSON Layout"
           />
@@ -77,30 +77,30 @@ export default function SeatsStep() {
 
       <FormSection title="Seats" description="Seat configuration">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.seats.0.seatNumber"
             label="Seat Number"
           />
 
-          <FormSelect<BusFormValues>
+          <FormSelect<BusFormSchema>
             name="vehicles.0.seats.0.type"
             label="Seat Type"
             options={seatTypeOptions}
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.seats.0.floor"
             label="Floor"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.seats.0.row"
             label="Row"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.seats.0.column"
             label="Column"
             type="number"
@@ -113,42 +113,42 @@ export default function SeatsStep() {
         description="Current seat inventory"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="routes.0.trips.0.seatAvailability.0.seatId"
             label="Seat ID"
           />
 
-          <FormSelect<BusFormValues>
+          <FormSelect<BusFormSchema>
             name="routes.0.trips.0.seatAvailability.0.status"
             label="Status"
             options={seatAvailabilityOptions}
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="routes.0.trips.0.seatAvailability.0.availableSeats"
             label="Available Seats"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="routes.0.trips.0.seatAvailability.0.soldSeats"
             label="Sold Seats"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="routes.0.trips.0.seatAvailability.0.reservedSeats"
             label="Reserved Seats"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="routes.0.trips.0.seatAvailability.0.totalSeats"
             label="Total Seats"
             type="number"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="routes.0.trips.0.seatAvailability.0.currentPrice"
             label="Current Price"
             type="number"
@@ -161,52 +161,52 @@ export default function SeatsStep() {
         description="Temporary seat reservation"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.locks.0.vehicleId"
             label="Vehicles ID"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.locks.0.tripId"
             label="Trip ID"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.locks.0.userId"
             label="User ID"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.locks.0.startTime"
             label="Start Time"
             type="datetime-local"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.locks.0.endTime"
             label="End Time"
             type="datetime-local"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.locks.0.expiresAt"
             label="Expires At"
             type="datetime-local"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.locks.0.releasedAt"
             label="Released At"
             type="datetime-local"
           />
 
-          <FormInput<BusFormValues>
+          <FormInput<BusFormSchema>
             name="vehicles.0.locks.0.quantity"
             label="Quantity"
             type="number"
           />
 
-          <FormSelect<BusFormValues>
+          <FormSelect<BusFormSchema>
             name="vehicles.0.locks.0.status"
             label="Lock Status"
             options={inventoryLockStatusOptions}

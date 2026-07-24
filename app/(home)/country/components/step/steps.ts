@@ -2,24 +2,16 @@ import { FormWizardStep } from "@/components/form/wizard/types";
 
 import { Info, MapPinned, Images, Search, Activity } from "lucide-react";
 
-export const countrySteps: (FormWizardStep & {
-  sections: {
-    id: string;
-    title: string;
-  }[];
-})[] = [
+import { CountryFormSchema } from "../form/schema";
+import { countryFieldGroups } from "./field-groups";
+
+export const countrySteps: FormWizardStep<CountryFormSchema>[] = [
   {
     id: "basic",
     title: "Basic",
     description: "Country basic information",
     icon: Info,
-
-    sections: [
-      {
-        id: "country",
-        title: "Country",
-      },
-    ],
+    fields: countryFieldGroups.basic,
   },
 
   {
@@ -27,17 +19,7 @@ export const countrySteps: (FormWizardStep & {
     title: "Location",
     description: "Geography information",
     icon: MapPinned,
-
-    sections: [
-      {
-        id: "location",
-        title: "Location",
-      },
-      {
-        id: "languages",
-        title: "Languages",
-      },
-    ],
+    fields: countryFieldGroups.location,
   },
 
   {
@@ -45,13 +27,7 @@ export const countrySteps: (FormWizardStep & {
     title: "Media",
     description: "Country images",
     icon: Images,
-
-    sections: [
-      {
-        id: "images",
-        title: "Images",
-      },
-    ],
+    fields: countryFieldGroups.media,
   },
 
   {
@@ -59,13 +35,7 @@ export const countrySteps: (FormWizardStep & {
     title: "Search",
     description: "Search metadata",
     icon: Search,
-
-    sections: [
-      {
-        id: "metadata",
-        title: "Search Metadata",
-      },
-    ],
+    fields: countryFieldGroups.search,
   },
 
   {
@@ -73,12 +43,6 @@ export const countrySteps: (FormWizardStep & {
     title: "Status",
     description: "Country visibility",
     icon: Activity,
-
-    sections: [
-      {
-        id: "status",
-        title: "Status",
-      },
-    ],
+    fields: countryFieldGroups.status,
   },
 ];

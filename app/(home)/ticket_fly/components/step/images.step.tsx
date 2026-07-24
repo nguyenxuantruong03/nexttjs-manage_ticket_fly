@@ -13,7 +13,7 @@ import {
 import {
   FlyImageCategory,
 } from "@/types/bookings/ticket-fly/enums";
-import { TicketFlyFormValues } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../schema/core/fly.schema";
 
 const imageCategoryOptions = Object.values(FlyImageCategory).map(
   (value) => ({
@@ -29,29 +29,29 @@ export default function ImagesStep() {
       description="Flight and airline images"
     >
       <div className="grid gap-6 md:grid-cols-2">
-        <FormInput<TicketFlyFormValues>
+        <FormInput<FlyFormSchema>
           name="images.0.url"
           label="Image URL"
         />
 
-        <FormSelect<TicketFlyFormValues>
+        <FormSelect<FlyFormSchema>
           name="images.0.category"
           label="Category"
           options={imageCategoryOptions}
         />
 
-        <FormInput<TicketFlyFormValues>
+        <FormInput<FlyFormSchema>
           name="images.0.alt"
           label="Alt Text"
         />
 
-        <FormInput<TicketFlyFormValues>
+        <FormInput<FlyFormSchema>
           name="images.0.sortOrder"
           label="Sort Order"
           type="number"
         />
 
-        <FormSwitch<TicketFlyFormValues>
+        <FormSwitch<FlyFormSchema>
           name="images.0.isPrimary"
           label="Primary Image"
         />

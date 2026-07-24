@@ -1,4 +1,4 @@
 export const TicketFlyRoutes = {
   detail: (id: string) => `/ticket-fly/${id}`,
-  edit: (id: string) => `/ticket-fly/${id}/edit`,
+  update: (id: string) => `/ticket-fly/${id}/update`,
 };
