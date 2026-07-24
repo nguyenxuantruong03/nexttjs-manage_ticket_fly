@@ -7,6 +7,7 @@ import { ImagePlus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FormField } from "./FormField";
 import { cn } from "@/lib/utils";
+import { useAppFormContext } from "./AppForm";
 
 export interface FormImageUploadProps<TFieldValues extends FieldValues> {
   name: FieldPath<TFieldValues>;
@@ -32,6 +33,7 @@ export function FormImageUpload<TFieldValues extends FieldValues>({
   accept = "image/*",
 }: FormImageUploadProps<TFieldValues>) {
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const { loading } = useAppFormContext();
 
   return (
     <FormField<TFieldValues>
@@ -54,7 +56,7 @@ export function FormImageUpload<TFieldValues extends FieldValues>({
               hidden
               type="file"
               accept={accept}
-              disabled={disabled}
+              disabled={loading || disabled}
               onChange={(e) => {
                 const file = e.target.files?.[0];
 
@@ -97,7 +99,7 @@ export function FormImageUpload<TFieldValues extends FieldValues>({
               <Button
                 type="button"
                 variant="outline"
-                disabled={disabled}
+                disabled={loading || disabled}
                 className="h-40 w-full border-dashed"
                 onClick={() => inputRef.current?.click()}
               >

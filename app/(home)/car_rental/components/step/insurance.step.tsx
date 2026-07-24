@@ -9,7 +9,7 @@ import {
   CarRentalInsuranceType,
   CarRentalInsuranceBenefitType,
 } from "@/types/bookings/car_rental/enums";
-import { CarRentalFormValues } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
 
 const insuranceTypeOptions = Object.values(CarRentalInsuranceType).map(
   (value) => ({
@@ -30,35 +30,35 @@ export default function InsuranceStep() {
     <>
       <FormSection title="Insurance" description="Rental insurance options">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="insurances.0.type"
             label="Insurance Type"
             options={insuranceTypeOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="insurances.0.name"
             label="Insurance Name"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="insurances.0.description"
             label="Description"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="insurances.0.pricePerDay"
             label="Price Per Day"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="insurances.0.fixedPrice"
             label="Fixed Price"
             type="number"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="insurances.0.active"
             label="Active"
           />
@@ -70,29 +70,29 @@ export default function InsuranceStep() {
         description="Insurance coverage details"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="insurances.0.benefits.0.type"
             label="Benefit Type"
             options={benefitTypeOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="insurances.0.benefits.0.title"
             label="Title"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="insurances.0.benefits.0.description"
             label="Description"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="insurances.0.benefits.0.coverageAmount"
             label="Coverage Amount"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="insurances.0.benefits.0.excessAmount"
             label="Excess Amount"
             type="number"

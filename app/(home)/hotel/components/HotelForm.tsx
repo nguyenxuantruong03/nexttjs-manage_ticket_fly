@@ -10,7 +10,7 @@ import FormWizardStep from "@/components/form/wizard/FormWizardStep";
 
 import { useAppForm } from "@/hooks/useAppForm";
 
-import { HotelSchema, HotelFormValues } from "./schema";
+import { HotelSchema, HotelFormSchema } from "./schema";
 import { hotelDefaultValues } from "./form/default-values";
 
 import { hotelSteps } from "./step/steps";
@@ -25,29 +25,80 @@ import PricingStep from "./step/pricing.step";
 import PoliciesStep from "./step/policies.step";
 import AvailabilityStep from "./step/availability.step";
 import SeoStep from "./step/seo.step";
-import { useCreateHotel } from "@/hooks/hotel";
+import { useCreateHotel, useUpdateHotel } from "@/hooks/hotel";
 import { useSubmit } from "@/hooks/useSubmit";
+import { useFormPage } from "@/components/form/form-context";
+import { useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import { useFormDraft } from "@/hooks/useFormDraft";
+import { DraftEntity } from "@/components/daft/draft-config";
+import { Hotel } from "@/types/bookings/hotel/core/hotel.types";
+import { initHotelFormValues } from "./form/init-value";
 
-export default function HotelForm() {
+interface HotelFormProps {
+  initialData?: Hotel;
+}
+
+export default function HotelForm({ initialData }: HotelFormProps) {
   const submit = useSubmit();
-    const createHotel = useCreateHotel();
-  const { form, mode, isUpdate } = useAppForm<HotelFormValues>({
+  const { setDirty } = useFormPage();
+  const createHotel = useCreateHotel();
+  const updateHotel = useUpdateHotel();
+
+  const searchParams = useSearchParams();
+
+  const currentDraftId = useMemo(() => {
+    if (initialData) {
+      return `edit-${initialData.id}`;
+    }
+
+    return searchParams.get("draft") ?? crypto.randomUUID();
+  }, [initialData, searchParams]);
+
+  const { form, mode, isUpdate } = useAppForm<HotelFormSchema>({
     schema: HotelSchema,
-    // mode: initialData ? "update" : "create",
-    defaultValues: hotelDefaultValues,
+    defaultValues: initialData
+      ? initHotelFormValues(initialData)
+      : hotelDefaultValues,
   });
 
+  const isSubmitting = form.formState.isSubmitting;
 
-   const onSubmit = (values: HotelFormValues) =>
+  const { clearDraft } = useFormDraft({
+    form,
+    entity: DraftEntity.Hotel,
+    draftId: currentDraftId,
+  });
+
+  useEffect(() => {
+    setDirty(form.formState.isDirty);
+  }, [form.formState.isDirty]);
+
+  const onSubmit = (values: HotelFormSchema) => {
     submit({
-      mutation: createHotel.mutateAsync(values),
-      success: "Hotel created",
+      mutation: initialData
+        ? updateHotel.mutateAsync({
+            id: initialData.id,
+            data: values,
+          })
+        : createHotel.mutateAsync(values),
+      success: isUpdate ? "Hotel updated" : "Hotel created",
       redirect: "/hotel",
     });
 
+    clearDraft();
+
+    form.reset(values);
+  };
+
   return (
-    <AppForm form={form} onSubmit={onSubmit}>
-      <FormWizard steps={hotelSteps}>
+    <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
+      <FormWizard
+        form={form}
+        steps={hotelSteps}
+        loading={isSubmitting}
+        unlockAll={!!initialData}
+      >
         <FormWizardHeader steps={hotelSteps} />
 
         <FormWizardContent>
@@ -92,8 +143,8 @@ export default function HotelForm() {
           </FormWizardStep>
         </FormWizardContent>
 
-        <FormWizardFooter />
+        <FormWizardFooter form={form} onSubmit={onSubmit} />
       </FormWizard>
     </AppForm>
-  )
+  );
 }

@@ -1,4 +1,6 @@
+import { DraftEntity } from "@/components/daft/draft-config";
 import FormPage from "@/components/form/form";
+import { FormPageProvider } from "@/components/form/form-context";
 
 export default function LayoutCity({
   children,
@@ -6,15 +8,20 @@ export default function LayoutCity({
   children: React.ReactNode;
 }) {
   return (
-    <FormPage
-      label="City"
-      title="Manage City"
-      link="/city/create"
-      action="Create"
-      apiPath="city"
-      description="city"
-    >
-      <div className="flex-1 min-w-0 overflow-x-hidden">{children}</div>
-    </FormPage>
+    <FormPageProvider>
+      <FormPage
+        label="City"
+        title="Manage City"
+        link="/city"
+        action="Create"
+        apiPath="city"
+        description="city"
+        draft={{
+          entity: DraftEntity.City,
+        }}
+      >
+        <div className="flex-1 min-w-0 overflow-x-hidden">{children}</div>
+      </FormPage>
+    </FormPageProvider>
   );
 }

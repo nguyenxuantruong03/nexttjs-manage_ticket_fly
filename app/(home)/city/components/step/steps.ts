@@ -10,24 +10,17 @@ import {
   Activity,
 } from "lucide-react";
 
-export const citySteps: (FormWizardStep & {
-  sections: {
-    id: string;
-    title: string;
-  }[];
-})[] = [
+import { cityFieldGroups } from "./field-groups";
+import { CityFormSchema } from "../form/schema";
+
+export const citySteps: FormWizardStep<CityFormSchema>[] = [
   {
     id: "basic",
     title: "Basic",
     description: "City basic information",
     icon: Info,
 
-    sections: [
-      {
-        id: "city",
-        title: "City",
-      },
-    ],
+    fields: cityFieldGroups.basic,
   },
 
   {
@@ -36,16 +29,7 @@ export const citySteps: (FormWizardStep & {
     description: "Geography & country information",
     icon: MapPinned,
 
-    sections: [
-      {
-        id: "country",
-        title: "Country",
-      },
-      {
-        id: "coordinates",
-        title: "Coordinates",
-      },
-    ],
+    fields: cityFieldGroups.location,
   },
 
   {
@@ -54,12 +38,7 @@ export const citySteps: (FormWizardStep & {
     description: "City images and videos",
     icon: Images,
 
-    sections: [
-      {
-        id: "images",
-        title: "Images",
-      },
-    ],
+    fields: cityFieldGroups.media,
   },
 
   {
@@ -68,12 +47,7 @@ export const citySteps: (FormWizardStep & {
     description: "Search configuration",
     icon: Search,
 
-    sections: [
-      {
-        id: "metadata",
-        title: "Search Metadata",
-      },
-    ],
+    fields: cityFieldGroups.search,
   },
 
   {
@@ -82,12 +56,7 @@ export const citySteps: (FormWizardStep & {
     description: "Travel information",
     icon: Plane,
 
-    sections: [
-      {
-        id: "season",
-        title: "Travel Season",
-      },
-    ],
+    fields: cityFieldGroups.travel,
   },
 
   {
@@ -96,12 +65,7 @@ export const citySteps: (FormWizardStep & {
     description: "Search engine optimization",
     icon: FileText,
 
-    sections: [
-      {
-        id: "seo",
-        title: "SEO Metadata",
-      },
-    ],
+    fields: cityFieldGroups.seo,
   },
 
   {
@@ -110,11 +74,6 @@ export const citySteps: (FormWizardStep & {
     description: "City visibility",
     icon: Activity,
 
-    sections: [
-      {
-        id: "status",
-        title: "Status",
-      },
-    ],
+    fields: cityFieldGroups.status,
   },
 ];

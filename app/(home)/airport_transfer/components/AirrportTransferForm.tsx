@@ -14,7 +14,10 @@ import { useAppForm } from "@/hooks/useAppForm";
 import { airportTransferDefaultValues } from "./form/default-values";
 
 import { useSubmit } from "@/hooks/useSubmit";
-import { useCreateAirportTransfer } from "@/hooks/airport-transfer";
+import {
+  useCreateAirportTransfer,
+  useUpdateAirportTransfer,
+} from "@/hooks/airport-transfer";
 import BasicStep from "./step/basic.step";
 import RouteStep from "./step/route.step";
 import VehicleStep from "./step/vehicle.step";
@@ -22,31 +25,85 @@ import ServiceStep from "./step/service.step";
 import PricingStep from "./step/pricing.step";
 import TripStep from "./step/trip.step";
 import {
-  AirportTransferFormValues,
+  AirportTransferFormSchema,
   AirportTransferSchema,
 } from "./schema/core/schema";
+import { useFormPage } from "@/components/form/form-context";
+import { useEffect, useMemo } from "react";
+import { useFormDraft } from "@/hooks/useFormDraft";
+import { useSearchParams } from "next/navigation";
+import { DraftEntity } from "@/components/daft/draft-config";
+import { AirportTransfer } from "@/types/bookings/airport-transfer/core/airport-transfer.types";
+import { initAirportTransferFormValues } from "./form/init-value";
 
-export default function AirportTransferForm() {
+interface AirportTransferFormProps {
+  initialData?: AirportTransfer;
+}
+
+export default function AirportTransferForm({
+  initialData,
+}: AirportTransferFormProps) {
   const submit = useSubmit();
 
   const createAirportTransfer = useCreateAirportTransfer();
+  const updateAirportTransfer = useUpdateAirportTransfer();
+  const { setDirty } = useFormPage();
 
-  const { form, mode, isUpdate } = useAppForm<AirportTransferFormValues>({
+  const searchParams = useSearchParams();
+
+  const currentDraftId = useMemo(() => {
+    if (initialData) {
+      return `edit-${initialData.id}`;
+    }
+
+    return searchParams.get("draft") ?? crypto.randomUUID();
+  }, [initialData, searchParams]);
+
+  const { form, mode, isUpdate } = useAppForm<AirportTransferFormSchema>({
     schema: AirportTransferSchema,
 
-    defaultValues: airportTransferDefaultValues,
+    defaultValues: initialData
+      ? initAirportTransferFormValues(initialData)
+      : airportTransferDefaultValues,
   });
 
-  const onSubmit = (values: any) =>
+  useEffect(() => {
+    setDirty(form.formState.isDirty);
+  }, [form.formState.isDirty]);
+
+  const isSubmitting = form.formState.isSubmitting;
+
+  const { clearDraft } = useFormDraft({
+    form,
+    entity: DraftEntity.AirportTransfer,
+    draftId: currentDraftId,
+  });
+
+  const onSubmit = (values: any) => {
     submit({
-      mutation: createAirportTransfer.mutateAsync(values),
-      success: "Airport Transfer created",
+      mutation: initialData
+        ? updateAirportTransfer.mutateAsync({
+            id: initialData.id,
+            data: values,
+          })
+        : createAirportTransfer.mutateAsync(values),
+      success: isUpdate ? "Airport Transfer updated" :"Airport Transfer created",
       redirect: "/airport-transfer",
     });
 
+    clearDraft();
+
+    form.reset(values);
+  };
+
   return (
-    <AppForm form={form} onSubmit={onSubmit}>
-      <FormWizard steps={airportTransferSteps}>
+    <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
+      <FormWizard
+        form={form}
+        steps={airportTransferSteps}
+        loading={isSubmitting}
+        unlockAll={!!initialData}
+      >
         <FormWizardHeader steps={airportTransferSteps} />
 
         <FormWizardContent>
@@ -75,7 +132,7 @@ export default function AirportTransferForm() {
           </FormWizardStep>
         </FormWizardContent>
 
-        <FormWizardFooter />
+        <FormWizardFooter form={form} onSubmit={onSubmit} />
       </FormWizard>
     </AppForm>
   );

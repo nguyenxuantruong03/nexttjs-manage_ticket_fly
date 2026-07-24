@@ -14,8 +14,8 @@ export function createUserHandlers({ router, deleteMutation }: Props) {
       router.push(UserRoutes.detail(id));
     },
 
-    edit(id: string) {
-      router.push(UserRoutes.edit(id));
+    update(id: string) {
+      router.push(UserRoutes.update(id));
     },
 
     async delete(id: string) {

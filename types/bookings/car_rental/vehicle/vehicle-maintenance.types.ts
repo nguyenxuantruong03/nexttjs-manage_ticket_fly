@@ -11,7 +11,7 @@ export interface CarRentalVehicleMaintenance {
 
   description?: string | null;
 
-  mileageKm?: number | null;
+  mileageKm?: number;
 
   serviceDate?: Date | null;
 

@@ -5,6 +5,7 @@ import { useDeleteTicketFly, useTicketsFly } from "@/hooks/ticket-fly";
 import { useRouter } from "next/navigation";
 import { createTicketFlyHandlers } from "./features/handlers";
 import { createTicketFlyActions } from "./features/actions";
+import { useCrudTable } from "@/hooks/crud/useCrudTable";
 
 const TicletFly = () => {
   const deleteMutation = useDeleteTicketFly();
@@ -16,10 +17,11 @@ const TicletFly = () => {
     deleteMutation,
   });
 
-  const actions = createTicketFlyActions({
-    onView: handlers.view,
-    onEdit: handlers.edit,
-    onDelete: handlers.delete,
+  const { actions, deleteDialog } = useCrudTable({
+    handlers,
+    createActions: createTicketFlyActions,
+    deleteTitle: "Delete ticket fly",
+    deleteDescription: "Are you sure you want to delete this ticket fly?",
   });
 
   if (isPending) {
@@ -29,7 +31,19 @@ const TicletFly = () => {
   if (error) {
     return <div>Đã xảy ra lỗi.</div>;
   }
-  return <DataTable columns={ticketFlyColumns(actions)} data={data} />;
+  return (
+    <>
+      {deleteDialog.dialog}
+
+      <DataTable
+        columns={ticketFlyColumns(actions)}
+        data={data}
+        onRowClick={({ id }) => handlers.view(id)}
+        onRowDoubleClick={({ id }) => handlers.update(id)}
+        onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
+      />
+    </>
+  );
 };
 
 export default TicletFly;

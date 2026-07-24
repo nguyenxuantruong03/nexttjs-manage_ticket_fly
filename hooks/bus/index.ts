@@ -1,5 +1,5 @@
-"use client"
-import { BusService } from "@/services/bus/client";
+"use client";
+import { TicketBusService } from "@/services/ticket-bus/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const QUERY_KEY = ["bus"] as const;
@@ -7,14 +7,14 @@ const QUERY_KEY = ["bus"] as const;
 export function useBuses() {
   return useQuery({
     queryKey: QUERY_KEY,
-    queryFn: () => BusService.getMany(),
+    queryFn: () => TicketBusService.getMany(),
   });
 }
 
 export function useBus(id: string) {
   return useQuery({
     queryKey: [...QUERY_KEY, id],
-    queryFn: () => BusService.getOne(id),
+    queryFn: () => TicketBusService.getOne(id),
     enabled: !!id,
   });
 }
@@ -23,7 +23,7 @@ export function useCreateBus() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: BusService.create,
+    mutationFn: TicketBusService.create,
 
     onSuccess() {
       queryClient.invalidateQueries({
@@ -42,8 +42,8 @@ export function useUpdateBus() {
       data,
     }: {
       id: string;
-      data: Parameters<typeof BusService.update>[1];
-    }) => BusService.update(id, data),
+      data: Parameters<typeof TicketBusService.update>[1];
+    }) => TicketBusService.update(id, data),
 
     onSuccess(_, variables) {
       queryClient.invalidateQueries({
@@ -61,7 +61,7 @@ export function useDeleteBus() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: BusService.delete,
+    mutationFn: TicketBusService.delete,
 
     onSuccess() {
       queryClient.invalidateQueries({

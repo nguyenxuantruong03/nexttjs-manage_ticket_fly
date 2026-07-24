@@ -5,11 +5,11 @@ import { Bus } from "@/types/bookings/bus/core/bus.types";
 
 interface Props {
   onView: (id: string) => void;
-  onEdit: (id: string) => void;
+  onUpdate: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export function createBusActions({ onView, onEdit, onDelete }: Props) {
+export function createBusActions({ onView, onUpdate, onDelete }: Props) {
   return (row: Bus): ActionMenuItem<Bus>[] => [
     {
       label: "View",
@@ -20,10 +20,10 @@ export function createBusActions({ onView, onEdit, onDelete }: Props) {
     },
 
     {
-      label: "Edit",
+      label: "Update",
       icon: Pencil,
       onClick() {
-        onEdit(row.id);
+        onUpdate(row.id);
       },
     },
 

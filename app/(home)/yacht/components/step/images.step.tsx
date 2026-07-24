@@ -8,7 +8,7 @@ import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
 
 import { YachtImageCategory } from "@/types/bookings/yacht/enums";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
 const imageCategoryOptions = Object.values(YachtImageCategory).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -24,20 +24,20 @@ export default function ImagesStep() {
 
       <FormSection title="Yacht Images" description="Main yacht gallery">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues> name="image.0.url" label="Image URL" />
+          <FormInput<YachtFormSchema> name="image.0.url" label="Image URL" />
 
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="image.0.category"
             label="Image Category"
             options={imageCategoryOptions}
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="image.0.isPrimary"
             label="Primary Image"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="image.0.sortOrder"
             label="Sort Order"
             type="number"
@@ -51,23 +51,23 @@ export default function ImagesStep() {
 
       <FormSection title="Vehicle Images" description="Yacht vessel gallery">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.images.0.url"
             label="Vehicle Image URL"
           />
 
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="vehicle.images.0.category"
             label="Vehicle Image Category"
             options={imageCategoryOptions}
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="vehicle.images.0.isPrimary"
             label="Primary Vehicle Image"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="vehicle.images.0.sortOrder"
             label="Sort Order"
             type="number"
@@ -81,22 +81,22 @@ export default function ImagesStep() {
 
       <FormSection title="Image Notice" description="Image related information">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="notice.important"
             label="Important Notice"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="notice.beforeBooking"
             label="Before Booking Notice"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="notice.afterBooking"
             label="After Booking Notice"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="notice.safetyNotice"
             label="Safety Notice"
           />

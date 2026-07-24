@@ -5,7 +5,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect } from "@/components/form/form-data";
 
 import { AirportTransferTripStatus } from "@/types/bookings/airport-transfer/enums";
-import { AirportTransferFormValues } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../schema/core/schema";
 
 const tripStatusOptions = Object.values(AirportTransferTripStatus).map(
   (value) => ({
@@ -23,45 +23,45 @@ export default function TripStep() {
         description="Transfer trip schedule and operation"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="trips.0.routeId"
             label="Route ID"
             placeholder="Enter route ID"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="trips.0.scheduleId"
             label="Schedule ID"
             placeholder="Enter schedule ID"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="trips.0.departureTime"
             label="Departure Time"
             type="datetime-local"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="trips.0.estimatedArrivalTime"
             label="Estimated Arrival Time"
             type="datetime-local"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="trips.0.totalSeats"
             label="Total Seats"
             type="number"
             placeholder="Enter total seats"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="trips.0.availableSeats"
             label="Available Seats"
             type="number"
             placeholder="Enter available seats"
           />
 
-          <FormSelect<AirportTransferFormValues>
+          <FormSelect<AirportTransferFormSchema>
             name="trips.0.status"
             label="Status"
             options={tripStatusOptions}
@@ -75,13 +75,13 @@ export default function TripStep() {
         description="Assign vehicle and driver to trip"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="trips.0.vehicleAssignment.0.vehicleId"
             label="Vehicle ID"
             placeholder="Enter vehicle ID"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="trips.0.vehicleAssignment.0.driverId"
             label="Driver ID"
             placeholder="Enter driver ID"
@@ -95,27 +95,27 @@ export default function TripStep() {
         description="Trip inventory availability"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.calendars.0.date"
             label="Date"
             type="date"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.calendars.0.totalVehicles"
             label="Total Vehicles"
             type="number"
             placeholder="Enter total vehicles"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.calendars.0.remainingVehicles"
             label="Remaining Vehicles"
             type="number"
             placeholder="Enter remaining vehicles"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.calendars.0.minimumNoticeMinutes"
             label="Minimum Notice Minutes"
             type="number"
@@ -130,50 +130,50 @@ export default function TripStep() {
         description="Temporary trip reservation"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.locks.0.tripId"
             label="Trip ID"
             placeholder="Enter trip ID"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.locks.0.vehicleId"
             label="Vehicle ID"
             placeholder="Enter vehicle ID"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.locks.0.bookingId"
             label="Booking ID"
             placeholder="Enter booking ID"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.locks.0.userId"
             label="User ID"
             placeholder="Enter user ID"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.locks.0.startTime"
             label="Start Time"
             type="datetime-local"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.locks.0.endTime"
             label="End Time"
             type="datetime-local"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.locks.0.quantity"
             label="Quantity"
             type="number"
             placeholder="Enter quantity"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.locks.0.expiresAt"
             label="Expires At"
             type="datetime-local"
@@ -184,13 +184,13 @@ export default function TripStep() {
       {/* Blackout Date */}
       <FormSection title="Blackout Dates" description="Unavailable dates">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.blackoutDates.0.date"
             label="Date"
             type="date"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="availability.blackoutDates.0.reason"
             label="Reason"
             placeholder="Enter blackout reason"
@@ -201,14 +201,14 @@ export default function TripStep() {
       {/* Capacity */}
       <FormSection title="Capacity" description="Operation limits">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="capacity.maxTripsPerDay"
             label="Maximum Trips Per Day"
             type="number"
             placeholder="Enter maximum trips per day"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="capacity.maxVehiclesPerDay"
             label="Maximum Vehicles Per Day"
             type="number"

@@ -23,30 +23,82 @@ import PricingStep from "./step/pricing.step";
 import PoliciesStep from "./step/policies.step";
 import ImagesStep from "./step/images.step";
 import ScheduleStep from "./step/schedule.step";
-import { useCreateTicketFly } from "@/hooks/ticket-fly";
-import { TicketFlyFormValues, TicketFlySchema } from "./schema/core/fly.schema";
+import { useCreateTicketFly, useUpdateTicketFly } from "@/hooks/ticket-fly";
+import { FlyFormSchema, TicketFlySchema } from "./schema/core/fly.schema";
 import { FlyDefaultValues } from "./form/default-values";
+import { useFormPage } from "@/components/form/form-context";
+import { useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+import { useFormDraft } from "@/hooks/useFormDraft";
+import { DraftEntity } from "@/components/daft/draft-config";
+import { TicketFly } from "@/types/bookings/ticket-fly/core/fly.types";
+import { initTicketFlyFormValues } from "./form/init-value";
 
-export default function TicketForm() {
+interface TicketFlyFormProps {
+  initialData?: TicketFly;
+}
+
+export default function TicketFlyForm({ initialData }: TicketFlyFormProps) {
   const submit = useSubmit();
+  const { setDirty } = useFormPage();
 
   const createTicket = useCreateTicketFly();
+  const updateTicket = useUpdateTicketFly();
 
-  const { form, isUpdate } = useAppForm<TicketFlyFormValues>({
+  const searchParams = useSearchParams();
+
+  const currentDraftId = useMemo(() => {
+    if (initialData) {
+      return `edit-${initialData.id}`;
+    }
+
+    return searchParams.get("draft") ?? crypto.randomUUID();
+  }, [initialData, searchParams]);
+
+  const { form, isUpdate } = useAppForm<FlyFormSchema>({
     schema: TicketFlySchema,
-    defaultValues: FlyDefaultValues,
+    defaultValues: initialData
+      ? initTicketFlyFormValues(initialData)
+      : FlyDefaultValues,
   });
 
-  const onSubmit = (values: any) =>
+  const isSubmitting = form.formState.isSubmitting;
+
+  const { clearDraft } = useFormDraft({
+    form,
+    entity: DraftEntity.Ticketflight,
+    draftId: currentDraftId,
+  });
+
+  useEffect(() => {
+    setDirty(form.formState.isDirty);
+  }, [form.formState.isDirty]);
+
+  const onSubmit = (values: any) => {
     submit({
-      mutation: createTicket.mutateAsync(values),
+      mutation: initialData
+        ? updateTicket.mutateAsync({
+            id: initialData.id,
+            data: values,
+          })
+        : createTicket.mutateAsync(values),
       success: isUpdate ? "Ticket updated" : "Ticket created",
       redirect: "/ticket",
     });
 
+    clearDraft();
+
+    form.reset(values);
+  };
+
   return (
-    <AppForm form={form} onSubmit={onSubmit}>
-      <FormWizard steps={flySteps}>
+    <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
+      <FormWizard
+        form={form}
+        steps={flySteps}
+        loading={isSubmitting}
+        unlockAll={!!initialData}
+      >
         <FormWizardHeader steps={flySteps} />
 
         <FormWizardContent>
@@ -101,7 +153,7 @@ export default function TicketForm() {
           </FormWizardStep>
         </FormWizardContent>
 
-        <FormWizardFooter />
+        <FormWizardFooter form={form} onSubmit={onSubmit} />
       </FormWizard>
     </AppForm>
   );

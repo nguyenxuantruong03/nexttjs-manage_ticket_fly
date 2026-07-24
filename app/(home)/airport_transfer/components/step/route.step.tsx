@@ -7,7 +7,7 @@ import { FormInput, FormSwitch, FormSelect } from "@/components/form/form-data";
 import { AirportTransferRouteType } from "@/types/bookings/airport-transfer/enums";
 
 import { WeekDay } from "@/types/common/enums";
-import { AirportTransferFormValues } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../schema/core/schema";
 
 const routeTypeOptions = Object.values(AirportTransferRouteType).map(
   (value) => ({
@@ -30,39 +30,39 @@ export default function RouteStep() {
         description="Airport transfer route information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<AirportTransferFormValues>
+          <FormSelect<AirportTransferFormSchema>
             name="routes.0.type"
             label="Route Type"
             options={routeTypeOptions}
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="routes.0.departureAddressId"
             label="Departure Address ID"
             placeholder="Enter departure address ID"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="routes.0.arrivalAddressId"
             label="Arrival Address ID"
             placeholder="Enter arrival address ID"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="routes.0.distanceKm"
             label="Distance KM"
             type="number"
             placeholder="Enter route distance in KM"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="routes.0.estimatedDuration"
             label="Estimated Duration (minutes)"
             type="number"
             placeholder="Enter estimated duration"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="routes.0.active"
             label="Active"
           />
@@ -72,27 +72,27 @@ export default function RouteStep() {
       {/* Route Stops */}
       <FormSection title="Route Stops" description="Intermediate stops">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="routes.0.stops.0.addressId"
             label="Stop Address ID"
             placeholder="Enter stop address ID"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="routes.0.stops.0.stopOrder"
             label="Stop Order"
             type="number"
             placeholder="Enter stop order"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="routes.0.stops.0.estimatedArrival"
             label="Estimated Arrival (minutes)"
             type="number"
             placeholder="Enter estimated arrival time"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="routes.0.stops.0.waitingMinutes"
             label="Waiting Minutes"
             type="number"
@@ -104,25 +104,25 @@ export default function RouteStep() {
       {/* Schedule */}
       <FormSection title="Schedule" description="Operating schedule">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="schedules.0.departureTime"
             label="Departure Time"
             type="time"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="schedules.0.startDate"
             label="Start Date"
             type="date"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="schedules.0.endDate"
             label="End Date"
             type="date"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="schedules.0.active"
             label="Active"
           />
@@ -130,7 +130,7 @@ export default function RouteStep() {
 
         <div className="grid gap-6 mt-6">
           {weekDayOptions.map((day, index) => (
-            <FormSwitch<AirportTransferFormValues>
+            <FormSwitch<AirportTransferFormSchema>
               key={day.value}
               name={`schedules.0.operatingDays.${index}` as any}
               label={day.label}

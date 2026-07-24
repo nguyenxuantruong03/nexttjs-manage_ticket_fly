@@ -7,51 +7,58 @@ import {
   DollarSign,
   CalendarRange,
   Settings,
-  ClipboardCheck,
 } from "lucide-react";
 
-export const airportTransferSteps: FormWizardStep[] = [
-  {
-    id: "basic",
-    title: "Basic",
-    description: "General information",
-    icon: Info,
-  },
+import { airportTransferFieldGroups } from "./field-groups";
+import { AirportTransferFormSchema } from "../schema/core/schema";
 
-  {
-    id: "route",
-    title: "Route",
-    description: "Departure and arrival routes",
-    icon: Route,
-  },
+export const airportTransferSteps: FormWizardStep<AirportTransferFormSchema>[] =
+  [
+    {
+      id: "basic",
+      title: "Basic",
+      description: "General information",
+      icon: Info,
+      fields: airportTransferFieldGroups.basic,
+    },
 
-  {
-    id: "vehicle",
-    title: "Vehicle",
-    description: "Vehicle information",
-    icon: Car,
-  },
+    {
+      id: "route",
+      title: "Route",
+      description: "Departure and arrival routes",
+      icon: Route,
+      fields: airportTransferFieldGroups.route,
+    },
 
-  {
-    id: "pricing",
-    title: "Pricing",
-    description: "Price configuration",
-    icon: DollarSign,
-  },
+    {
+      id: "vehicle",
+      title: "Vehicle",
+      description: "Vehicle information",
+      icon: Car,
+      fields: airportTransferFieldGroups.vehicle,
+    },
 
-  {
-    id: "trip",
-    title: "Trip & Availability",
-    description: "Trip schedule and inventory",
-    icon: CalendarRange,
-  },
+    {
+      id: "pricing",
+      title: "Pricing",
+      description: "Price configuration",
+      icon: DollarSign,
+      fields: airportTransferFieldGroups.pricing,
+    },
 
-  {
-    id: "service",
-    title: "Service",
-    description: "Additional services",
-    icon: Settings,
-  },
+    {
+      id: "trip",
+      title: "Trip & Availability",
+      description: "Trip schedule and inventory",
+      icon: CalendarRange,
+      fields: airportTransferFieldGroups.trip,
+    },
 
- 
-];
+    {
+      id: "service",
+      title: "Service",
+      description: "Additional services",
+      icon: Settings,
+      fields: airportTransferFieldGroups.service,
+    },
+  ];

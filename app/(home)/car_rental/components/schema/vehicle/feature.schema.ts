@@ -3,43 +3,43 @@ import { z } from "zod";
 export const CarRentalVehicleFeaturesSchema = z.object({
   vehicleId: z.string(),
 
-  airConditioner: z.boolean().optional(),
+  airConditioner: z.boolean().nullable().optional(),
 
-  bluetooth: z.boolean().optional(),
+  bluetooth: z.boolean().nullable().optional(),
 
-  gps: z.boolean().optional(),
+  gps: z.boolean().nullable().optional(),
 
-  usbCharger: z.boolean().optional(),
+  usbCharger: z.boolean().nullable().optional(),
 
-  wirelessCharging: z.boolean().optional(),
+  wirelessCharging: z.boolean().nullable().optional(),
 
-  appleCarPlay: z.boolean().optional(),
+  appleCarPlay: z.boolean().nullable().optional(),
 
-  androidAuto: z.boolean().optional(),
+  androidAuto: z.boolean().nullable().optional(),
 
-  cruiseControl: z.boolean().optional(),
+  cruiseControl: z.boolean().nullable().optional(),
 
-  reverseCamera: z.boolean().optional(),
+  reverseCamera: z.boolean().nullable().optional(),
 
-  parkingSensor: z.boolean().optional(),
+  parkingSensor: z.boolean().nullable().optional(),
 
-  dashCamera: z.boolean().optional(),
+  dashCamera: z.boolean().nullable().optional(),
 
-  sunroof: z.boolean().optional(),
+  sunroof: z.boolean().nullable().optional(),
 
-  leatherSeats: z.boolean().optional(),
+  leatherSeats: z.boolean().nullable().optional(),
 
-  heatedSeats: z.boolean().optional(),
+  heatedSeats: z.boolean().nullable().optional(),
 
-  childSeatAvailable: z.boolean().optional(),
+  childSeatAvailable: z.boolean().nullable().optional(),
 
-  phoneHolder: z.boolean().optional(),
+  phoneHolder: z.boolean().nullable().optional(),
 
-  helmetIncluded: z.boolean().optional(),
+  helmetIncluded: z.boolean().nullable().optional(),
 
-  raincoatIncluded: z.boolean().optional(),
+  raincoatIncluded: z.boolean().nullable().optional(),
 
-  luggageRack: z.boolean().optional(),
+  luggageRack: z.boolean().nullable().optional(),
 
-  skiRack: z.boolean().optional(),
+  skiRack: z.boolean().nullable().optional(),
 });

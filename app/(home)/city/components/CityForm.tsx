@@ -11,7 +11,7 @@ import FormWizardStep from "@/components/form/wizard/FormWizardStep";
 import { useAppForm } from "@/hooks/useAppForm";
 import { useSubmit } from "@/hooks/useSubmit";
 
-import { CitySchema, CityFormValues } from "./form/schema";
+import { CitySchema, CityFormSchema } from "./form/schema";
 
 import { cityDefaultValues } from "./form/default-values";
 
@@ -25,31 +25,79 @@ import TravelStep from "./step/travel.step";
 import SeoStep from "./step/seo.step";
 import StatusStep from "./step/status.step";
 
-import { useCreateCity } from "@/hooks/location/city";
+import { useCreateCity, useUpdateCity } from "@/hooks/location/city";
+import { useEffect, useMemo } from "react";
+import { useFormPage } from "@/components/form/form-context";
+import { useSearchParams } from "next/navigation";
+import { useFormDraft } from "@/hooks/useFormDraft";
+import { DraftEntity } from "@/components/daft/draft-config";
+import { City } from "@/types/bookings/location/city";
+import { initCityFormValues } from "./form/init-value";
 
-export default function CityForm() {
+interface CityFormProps {
+  initialData?: City;
+}
+
+export default function CityForm({ initialData }: CityFormProps) {
   const submit = useSubmit();
-
+  const { setDirty } = useFormPage();
   const createCity = useCreateCity();
+  const updateCity = useUpdateCity();
 
-  const { form, mode, isUpdate } = useAppForm<CityFormValues>({
+  const searchParams = useSearchParams();
+
+  const currentDraftId = useMemo(() => {
+    if (initialData) {
+      return `edit-${initialData.id}`;
+    }
+
+    return searchParams.get("draft") ?? crypto.randomUUID();
+  }, [initialData, searchParams]);
+
+  const { form, mode, isUpdate } = useAppForm<CityFormSchema>({
     schema: CitySchema,
-
-    defaultValues: cityDefaultValues,
+    defaultValues: initialData
+      ? initCityFormValues(initialData)
+      : cityDefaultValues,
   });
 
-  const onSubmit = (values: CityFormValues) =>
+  const isSubmitting = form.formState.isSubmitting;
+
+  const { clearDraft } = useFormDraft({
+    form,
+    entity: DraftEntity.City,
+    draftId: currentDraftId,
+  });
+
+  useEffect(() => {
+    setDirty(form.formState.isDirty);
+  }, [form.formState.isDirty]);
+
+  const onSubmit = (values: CityFormSchema) => {
     submit({
-      mutation: createCity.mutateAsync(values),
-
-      success: "City created",
-
+      mutation: initialData
+        ? updateCity.mutateAsync({
+            id: initialData.id,
+            data: values,
+          })
+        : createCity.mutateAsync(values),
+      success: isUpdate ? "City updated" : "City created",
       redirect: "/city",
     });
 
+    clearDraft();
+
+    form.reset(values);
+  };
+
   return (
-    <AppForm form={form} onSubmit={onSubmit}>
-      <FormWizard steps={citySteps}>
+    <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
+      <FormWizard
+        form={form}
+        steps={citySteps}
+        loading={isSubmitting}
+        unlockAll={!!initialData}
+      >
         <FormWizardHeader steps={citySteps} />
 
         <FormWizardContent>
@@ -82,7 +130,7 @@ export default function CityForm() {
           </FormWizardStep>
         </FormWizardContent>
 
-        <FormWizardFooter />
+        <FormWizardFooter form={form} onSubmit={onSubmit} />
       </FormWizard>
     </AppForm>
   );

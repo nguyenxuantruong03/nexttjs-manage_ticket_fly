@@ -1,10 +1,14 @@
 "use client";
 import { DataTable } from "@/components/ui/data-table";
 import { providerBookingColumns } from "./components/columns";
-import { useDeleteProviderBooking, useProviderBookings } from "@/hooks/provider-booking";
+import {
+  useDeleteProviderBooking,
+  useProviderBookings,
+} from "@/hooks/provider-booking";
 import { useRouter } from "next/navigation";
 import { createProviderBookingHandlers } from "./features/handlers";
 import { createProviderBookingActions } from "./features/actions";
+import { useCrudTable } from "@/hooks/crud/useCrudTable";
 
 const ProviderBooking = () => {
   const deleteMutation = useDeleteProviderBooking();
@@ -16,11 +20,13 @@ const ProviderBooking = () => {
     deleteMutation,
   });
 
-  const actions = createProviderBookingActions({
-    onView: handlers.view,
-    onEdit: handlers.edit,
-    onDelete: handlers.delete,
+  const { actions, deleteDialog } = useCrudTable({
+    handlers,
+    createActions: createProviderBookingActions,
+    deleteTitle: "Delete provider booking",
+    deleteDescription: "Are you sure you want to delete this provider booking?",
   });
+
   if (isPending) {
     return <div>Loading...</div>;
   }
@@ -28,7 +34,19 @@ const ProviderBooking = () => {
   if (error) {
     return <div>Đã xảy ra lỗi.</div>;
   }
-  return <DataTable columns={providerBookingColumns(actions)} data={data} />;
+  return (
+    <>
+      {deleteDialog.dialog}
+
+      <DataTable
+        columns={providerBookingColumns(actions)}
+        data={data}
+        onRowClick={({ id }) => handlers.view(id)}
+        onRowDoubleClick={({ id }) => handlers.update(id)}
+        onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
+      />
+    </>
+  );
 };
 
 export default ProviderBooking;

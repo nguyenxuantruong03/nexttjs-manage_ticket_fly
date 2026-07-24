@@ -4,7 +4,7 @@
 
 import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
-import { TicketFlyFormValues } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../schema/core/fly.schema";
 
 export default function NoticeStep() {
   return (
@@ -13,31 +13,31 @@ export default function NoticeStep() {
       description="Passenger notifications and important information"
     >
       <div className="grid gap-6 md:grid-cols-2">
-        <FormInput<TicketFlyFormValues> name="notice.title" label="Title" />
+        <FormInput<FlyFormSchema> name="notice.title" label="Title" />
 
-        <FormInput<TicketFlyFormValues> name="notice.content" label="Content" />
+        <FormInput<FlyFormSchema> name="notice.content" label="Content" />
 
-        <FormInput<TicketFlyFormValues>
+        <FormInput<FlyFormSchema>
           name="notice.baggageNotice"
           label="Baggage Notice"
         />
 
-        <FormInput<TicketFlyFormValues>
+        <FormInput<FlyFormSchema>
           name="notice.checkInNotice"
           label="Check In Notice"
         />
 
-        <FormInput<TicketFlyFormValues>
+        <FormInput<FlyFormSchema>
           name="notice.visaNotice"
           label="Visa Notice"
         />
 
-        <FormInput<TicketFlyFormValues>
+        <FormInput<FlyFormSchema>
           name="notice.covidNotice"
           label="Covid Notice"
         />
 
-        <FormInput<TicketFlyFormValues>
+        <FormInput<FlyFormSchema>
           name="notice.refundNotice"
           label="Refund Notice"
         />

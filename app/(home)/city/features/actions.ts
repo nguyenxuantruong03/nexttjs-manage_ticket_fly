@@ -5,11 +5,11 @@ import { City } from "@/types/bookings/location/city";
 
 interface Props {
   onView: (id: string) => void;
-  onEdit: (id: string) => void;
+  onUpdate: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export function createCityActions({ onView, onEdit, onDelete }: Props) {
+export function createCityActions({ onView, onUpdate, onDelete }: Props) {
   return (row: City): ActionMenuItem<City>[] => [
     {
       label: "View",
@@ -20,10 +20,10 @@ export function createCityActions({ onView, onEdit, onDelete }: Props) {
     },
 
     {
-      label: "Edit",
+      label: "Update",
       icon: Pencil,
       onClick() {
-        onEdit(row.id);
+        onUpdate(row.id);
       },
     },
 

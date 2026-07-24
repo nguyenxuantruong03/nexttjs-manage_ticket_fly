@@ -4,6 +4,7 @@ import FormSection from "@/components/form/FormSection";
 import FormCheckboxGroup from "@/components/form/form-data/FormCheckbokGroup";
 
 import { typeServiceBooking } from "@/types/bookings/provider-bookings";
+import { ProviderBookingFormSchema } from "../form/schema";
 
 export default function ServiceSection() {
   return (
@@ -11,7 +12,7 @@ export default function ServiceSection() {
       title="Services"
       description="Select all services provided by this provider"
     >
-      <FormCheckboxGroup
+      <FormCheckboxGroup<ProviderBookingFormSchema>
         name="service"
         label="Services"
         options={[

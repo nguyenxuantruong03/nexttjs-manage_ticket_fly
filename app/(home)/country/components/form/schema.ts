@@ -65,4 +65,4 @@ export const CountrySchema = z.object({
   active: z.boolean().default(true),
 });
 
-export type CountryFormValues = z.infer<typeof CountrySchema>;
+export type CountryFormSchema = z.infer<typeof CountrySchema>;

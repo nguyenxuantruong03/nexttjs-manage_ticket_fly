@@ -6,6 +6,7 @@ import { FieldPath, FieldValues } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import { FormField } from "./FormField";
 import { cn } from "@/lib/utils";
+import { useAppFormContext } from "./AppForm";
 
 export interface FormSwitchProps<TFieldValues extends FieldValues> {
   name: FieldPath<TFieldValues>;
@@ -26,6 +27,8 @@ export function FormSwitch<TFieldValues extends FieldValues>({
   className,
   switchClassName,
 }: FormSwitchProps<TFieldValues>) {
+      const { loading } = useAppFormContext();
+  
   return (
     <FormField<TFieldValues>
       name={name}
@@ -53,7 +56,7 @@ export function FormSwitch<TFieldValues extends FieldValues>({
           <Switch
             id={field.name}
             checked={!!field.value}
-            disabled={disabled}
+            disabled={loading || disabled}
             onCheckedChange={field.onChange}
             className={cn(switchClassName)}
           />

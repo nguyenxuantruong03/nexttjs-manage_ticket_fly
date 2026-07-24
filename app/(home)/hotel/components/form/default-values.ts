@@ -20,9 +20,9 @@ import {
 
 import { InventoryLockStatus, WeekDay } from "@/types/common/enums";
 
-import { HotelFormValues } from "../schema";
+import { HotelFormSchema } from "../schema";
 
-export const hotelDefaultValues: HotelFormValues = {
+export const hotelDefaultValues: HotelFormSchema = {
   id: "",
 
   information: {
@@ -475,8 +475,6 @@ export const hotelDefaultValues: HotelFormValues = {
 
   name: "",
   slug: "",
-
-  active: true,
 
   aliases: [""],
   keywords: [""],

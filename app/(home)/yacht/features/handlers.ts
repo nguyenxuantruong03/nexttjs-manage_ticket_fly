@@ -14,8 +14,8 @@ export function createYachtHandlers({ router, deleteMutation }: Props) {
       router.push(YachtRoutes.detail(id));
     },
 
-    edit(id: string) {
-      router.push(YachtRoutes.edit(id));
+    update(id: string) {
+      router.push(YachtRoutes.update(id));
     },
 
     async delete(id: string) {

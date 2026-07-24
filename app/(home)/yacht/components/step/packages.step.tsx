@@ -11,7 +11,7 @@ import {
 } from "@/components/form/form-data";
 
 import { YachtDurationType } from "@/types/bookings/yacht/enums";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
 
 const durationTypeOptions = Object.values(YachtDurationType).map(
@@ -37,47 +37,47 @@ export default function PackagesStep() {
         <div className="grid gap-6 md:grid-cols-2">
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.name"
             label="Package Name"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.description"
             label="Description"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.duration"
             label="Duration"
             type="number"
           />
 
 
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="packages.0.durationType"
             label="Duration Type"
             options={durationTypeOptions}
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.maxGuests"
             label="Maximum Guests"
             type="number"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.price"
             label="Package Price"
             type="number"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="packages.0.active"
             label="Active"
           />
@@ -101,7 +101,7 @@ export default function PackagesStep() {
         <div className="grid gap-6 md:grid-cols-2">
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.includedItems.0"
             label="Included Item"
           />
@@ -126,13 +126,13 @@ export default function PackagesStep() {
         <div className="grid gap-6 md:grid-cols-2">
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.extras.0.packageId"
             label="Package ID"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.extras.0.extraId"
             label="Extra ID"
           />
@@ -157,13 +157,13 @@ export default function PackagesStep() {
         <div className="grid gap-6 md:grid-cols-2">
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.images.0.url"
             label="Image URL"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.images.0.sortOrder"
             label="Sort Order"
             type="number"

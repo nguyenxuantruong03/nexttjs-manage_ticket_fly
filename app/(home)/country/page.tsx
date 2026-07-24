@@ -6,6 +6,7 @@ import { countryColumns } from "./components/columns";
 import { useRouter } from "next/navigation";
 import { createCountryHandlers } from "./features/handlers";
 import { createCountryActions } from "./features/actions";
+import { useCrudTable } from "@/hooks/crud/useCrudTable";
 
 const CountryPage = () => {
   const deleteMutation = useDeleteCountry();
@@ -17,10 +18,11 @@ const CountryPage = () => {
     deleteMutation,
   });
 
-  const actions = createCountryActions({
-    onView: handlers.view,
-    onEdit: handlers.edit,
-    onDelete: handlers.delete,
+  const { actions, deleteDialog } = useCrudTable({
+    handlers,
+    createActions: createCountryActions,
+    deleteTitle: "Delete Country",
+    deleteDescription: "Are you sure you want to delete this Country?",
   });
 
   if (isPending) {
@@ -31,7 +33,18 @@ const CountryPage = () => {
     return <div>Đã xảy ra lỗi.</div>;
   }
 
-  return <DataTable columns={countryColumns(actions)} data={data} />;
+  return (
+    <>
+      {deleteDialog.dialog}
+      <DataTable
+        columns={countryColumns(actions)}
+        data={data}
+        onRowClick={({ id }) => handlers.view(id)}
+        onRowDoubleClick={({ id }) => handlers.update(id)}
+        onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
+      />
+    </>
+  );
 };
 
 export default CountryPage;

@@ -23,5 +23,5 @@ export const API = {
 
   YACHT: "/yacht",
 
-  FLY: "/fly",
+  FLY: "/ticket-fly",
 } as const;

@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch } from "@/components/form/form-data";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
 
 export default function SettingsStep() {
@@ -20,13 +20,13 @@ export default function SettingsStep() {
         description="General yacht configuration"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<YachtFormValues> name="active" label="Active" />
+          <FormSwitch<YachtFormSchema> name="active" label="Active" />
 
-          <FormSwitch<YachtFormValues> name="featured" label="Featured" />
+          <FormSwitch<YachtFormSchema> name="featured" label="Featured" />
 
-          <FormSwitch<YachtFormValues> name="searchable" label="Searchable" />
+          <FormSwitch<YachtFormSchema> name="searchable" label="Searchable" />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="searchPriority"
             label="Search Priority"
             type="number"
@@ -43,17 +43,17 @@ export default function SettingsStep() {
         description="Search engine optimization data"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues> name="name" label="Yacht Name" />
+          <FormInput<YachtFormSchema> name="name" label="Yacht Name" />
 
-          <FormInput<YachtFormValues> name="slug" label="Slug" />
+          <FormInput<YachtFormSchema> name="slug" label="Slug" />
 
-          <FormInput<YachtFormValues> name="searchText" label="Search Text" />
+          <FormInput<YachtFormSchema> name="searchText" label="Search Text" />
 
-          <FormInput<YachtFormValues> name="aliases.0" label="Alias" />
+          <FormInput<YachtFormSchema> name="aliases.0" label="Alias" />
 
-          <FormInput<YachtFormValues> name="keywords.0" label="Keyword" />
+          <FormInput<YachtFormSchema> name="keywords.0" label="Keyword" />
 
-          <FormInput<YachtFormValues> name="tags.0" label="Tag" />
+          <FormInput<YachtFormSchema> name="tags.0" label="Tag" />
         </div>
       </FormSection>
 
@@ -66,7 +66,7 @@ export default function SettingsStep() {
         description="External booking provider information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="providerBookingId"
             label="Provider Booking ID"
           />

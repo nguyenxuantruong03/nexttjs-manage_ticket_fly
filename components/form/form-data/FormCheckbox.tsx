@@ -6,6 +6,7 @@ import { FieldPath, FieldValues } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormField } from "./FormField";
 import { cn } from "@/lib/utils";
+import { useAppFormContext } from "./AppForm";
 
 export interface FormCheckboxProps<TFieldValues extends FieldValues> {
   name: FieldPath<TFieldValues>;
@@ -26,6 +27,7 @@ export function FormCheckbox<TFieldValues extends FieldValues>({
   className,
   checkboxClassName,
 }: FormCheckboxProps<TFieldValues>) {
+  const { loading } = useAppFormContext();
   return (
     <FormField<TFieldValues>
       name={name}
@@ -37,7 +39,7 @@ export function FormCheckbox<TFieldValues extends FieldValues>({
         <div className="flex items-start space-x-3">
           <Checkbox
             checked={!!field.value}
-            disabled={disabled}
+            disabled={loading || disabled}
             onCheckedChange={field.onChange}
             className={cn(checkboxClassName)}
           />

@@ -11,7 +11,7 @@ import {
   AirportTransferVehicleType,
 } from "@/types/bookings/airport-transfer/enums";
 
-import { AirportTransferFormValues } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../schema/core/schema";
 
 const vehicleTypeOptions = Object.values(AirportTransferVehicleType).map(
   (value) => ({
@@ -45,62 +45,62 @@ export default function VehicleStep() {
       {/* Vehicle Information */}
       <FormSection title="Vehicle Information" description="Vehicle details">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<AirportTransferFormValues>
+          <FormSelect<AirportTransferFormSchema>
             name="vehicle.0.type"
             label="Vehicle Type"
             options={vehicleTypeOptions}
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.name"
             label="Vehicle Name"
             placeholder="Enter vehicle name"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.manufacturer"
             label="Manufacturer"
             placeholder="Enter manufacturer"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.model"
             label="Model"
             placeholder="Enter vehicle model"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.year"
             label="Year"
             type="number"
             placeholder="Enter manufacturing year"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.color"
             label="Color"
             placeholder="Enter vehicle color"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.licensePlate"
             label="License Plate"
             placeholder="Enter license plate"
           />
 
-          <FormSelect<AirportTransferFormValues>
+          <FormSelect<AirportTransferFormSchema>
             name="vehicle.0.transmission"
             label="Transmission"
             options={transmissionOptions}
           />
 
-          <FormSelect<AirportTransferFormValues>
+          <FormSelect<AirportTransferFormSchema>
             name="vehicle.0.fuelType"
             label="Fuel Type"
             options={fuelTypeOptions}
           />
 
-          <FormSelect<AirportTransferFormValues>
+          <FormSelect<AirportTransferFormSchema>
             name="vehicle.0.status"
             label="Status"
             options={statusOptions}
@@ -114,28 +114,28 @@ export default function VehicleStep() {
         description="Passenger and luggage capacity"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.capacity.passengerCount"
             label="Passenger Count"
             type="number"
             placeholder="Enter passenger capacity"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.capacity.luggageCount"
             label="Luggage Count"
             type="number"
             placeholder="Enter luggage capacity"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.capacity.cabinBaggageCount"
             label="Cabin Baggage Count"
             type="number"
             placeholder="Enter cabin baggage capacity"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.capacity.oversizedLuggage"
             label="Oversized Luggage"
             type="number"
@@ -147,52 +147,52 @@ export default function VehicleStep() {
       {/* Features */}
       <FormSection title="Vehicle Features" description="Vehicle amenities">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.features.airConditioner"
             label="Air Conditioner"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.features.wifi"
             label="WiFi"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.features.usbCharger"
             label="USB Charger"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.features.bottledWater"
             label="Bottled Water"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.features.childSeat"
             label="Child Seat"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.features.wheelchairAccessible"
             label="Wheelchair Accessible"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.features.petFriendly"
             label="Pet Friendly"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.features.phoneCharger"
             label="Phone Charger"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.features.music"
             label="Music"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.features.gpsTracking"
             label="GPS Tracking"
           />
@@ -205,28 +205,28 @@ export default function VehicleStep() {
         description="Technical specification"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.specification.engineSizeCc"
             label="Engine Size CC"
             type="number"
             placeholder="Enter engine size"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.specification.fuelCapacity"
             label="Fuel Capacity"
             type="number"
             placeholder="Enter fuel capacity"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.specification.mileageKm"
             label="Mileage KM"
             type="number"
             placeholder="Enter mileage"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.specification.vin"
             label="VIN"
             placeholder="Enter VIN number"
@@ -240,31 +240,31 @@ export default function VehicleStep() {
         description="Vehicle image information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.images.0.url"
             label="Image URL"
             placeholder="Enter image URL"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.images.0.category"
             label="Image Category"
             placeholder="Enter image category"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.images.0.isPrimary"
             label="Primary Image"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.images.0.sortOrder"
             label="Sort Order"
             type="number"
             placeholder="Enter sort order"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.images.0.alt"
             label="Alt Text"
             placeholder="Enter image description"
@@ -278,24 +278,24 @@ export default function VehicleStep() {
         description="Vehicle operating availability"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.availability.0.startDate"
             label="Start Date"
             type="date"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.availability.0.endDate"
             label="End Date"
             type="date"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.availability.0.available"
             label="Available"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.availability.0.note"
             label="Note"
             placeholder="Enter availability note"
@@ -306,70 +306,70 @@ export default function VehicleStep() {
       {/* Driver */}
       <FormSection title="Driver" description="Driver information">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.drivers.0.firstName"
             label="First Name"
             placeholder="Enter first name"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.drivers.0.lastName"
             label="Last Name"
             placeholder="Enter last name"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.drivers.0.avatar"
             label="Avatar"
             placeholder="Enter avatar URL"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.drivers.0.phone"
             label="Phone"
             placeholder="Enter phone number"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.drivers.0.email"
             label="Email"
             placeholder="Enter email address"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.drivers.0.licenseNumber"
             label="License Number"
             placeholder="Enter license number"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.drivers.0.licenseExpiry"
             label="License Expiry"
             type="date"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.drivers.0.experienceYears"
             label="Experience Years"
             type="number"
             placeholder="Enter experience years"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.drivers.0.rating"
             label="Rating"
             type="number"
             placeholder="Enter driver rating"
           />
 
-          <FormInput<AirportTransferFormValues>
+          <FormInput<AirportTransferFormSchema>
             name="vehicle.0.drivers.0.totalTrips"
             label="Total Trips"
             type="number"
             placeholder="Enter total trips"
           />
 
-          <FormSwitch<AirportTransferFormValues>
+          <FormSwitch<AirportTransferFormSchema>
             name="vehicle.0.drivers.0.active"
             label="Active"
           />

@@ -17,8 +17,8 @@ export function createCarrentalHandlers({
       router.push(carRentalRoutes.detail(id));
     },
 
-    edit(id: string) {
-      router.push(carRentalRoutes.edit(id));
+    update(id: string) {
+      router.push(carRentalRoutes.update(id));
     },
 
     async delete(id: string) {

@@ -14,8 +14,8 @@ export function createHotelHandlers({ router, deleteMutation }: Props) {
       router.push(HotelRoutes.detail(id));
     },
 
-    edit(id: string) {
-      router.push(HotelRoutes.edit(id));
+    update(id: string) {
+      router.push(HotelRoutes.update(id));
     },
 
     async delete(id: string) {

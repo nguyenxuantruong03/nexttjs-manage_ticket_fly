@@ -15,8 +15,8 @@ export function createCountryHandlers({ router, deleteMutation }: Props) {
       router.push(CountryRoutes.detail(id));
     },
 
-    edit(id: string) {
-      router.push(CountryRoutes.edit(id));
+    update(id: string) {
+      router.push(CountryRoutes.update(id));
     },
 
     async delete(id: string) {

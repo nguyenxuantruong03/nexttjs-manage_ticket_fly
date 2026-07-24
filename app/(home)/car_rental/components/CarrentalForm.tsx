@@ -13,9 +13,9 @@ import { useSubmit } from "@/hooks/useSubmit";
 
 import { carRentalSteps } from "./step/steps";
 
-import { useCreateCarRental } from "@/hooks/car-rental";
+import { useCreateCarRental, useUpdateCarRental } from "@/hooks/car-rental";
 import {
-  CarRentalFormValues,
+  CarRentalFormSchema,
   CarRentalSchema,
 } from "./schema/core/car-rental.schema";
 import { defaultCarRentalValues } from "./form/default-values";
@@ -28,27 +28,78 @@ import InsuranceStep from "./step/insurance.step";
 import PoliciesStep from "./step/policies.step";
 import OperationStep from "./step/operation.step";
 import AvailabilityStep from "./step/availability.step";
+import { useFormPage } from "@/components/form/form-context";
+import { useEffect, useMemo } from "react";
+import { useFormDraft } from "@/hooks/useFormDraft";
+import { useSearchParams } from "next/navigation";
+import { DraftEntity } from "@/components/daft/draft-config";
+import { CarRental } from "@/types/bookings/car_rental/core/car-rental.types";
+import { initCarRentalFormValues } from "./form/init-value";
 
-export default function CarRentalForm() {
+interface CarRentalFormProps {
+  initialData?: CarRental;
+}
+
+export default function CarRentalForm({ initialData }: CarRentalFormProps) {
   const submit = useSubmit();
-
+  const { setDirty } = useFormPage();
   const createCarRental = useCreateCarRental();
+  const updateCarRental = useUpdateCarRental();
 
-  const { form, mode, isUpdate } = useAppForm<CarRentalFormValues>({
+  const searchParams = useSearchParams();
+
+  const currentDraftId = useMemo(() => {
+    if (initialData) {
+      return `edit-${initialData.id}`;
+    }
+
+    return searchParams.get("draft") ?? crypto.randomUUID();
+  }, [initialData, searchParams]);
+
+  const { form, mode, isUpdate } = useAppForm<CarRentalFormSchema>({
     schema: CarRentalSchema,
-    defaultValues: defaultCarRentalValues,
+    defaultValues: initialData
+      ? initCarRentalFormValues(initialData)
+      : defaultCarRentalValues,
   });
 
-  const onSubmit = (values: any) =>
+  const isSubmitting = form.formState.isSubmitting;
+
+  const { clearDraft } = useFormDraft({
+    form,
+    entity: DraftEntity.CarRental,
+    draftId: currentDraftId,
+  });
+
+  useEffect(() => {
+    setDirty(form.formState.isDirty);
+  }, [form.formState.isDirty]);
+
+  const onSubmit = (values: any) => {
     submit({
-      mutation: createCarRental.mutateAsync(values),
-      success: "Car Rental created",
+      mutation: initialData
+        ? updateCarRental.mutateAsync({
+            id: initialData.id,
+            data: values,
+          })
+        : createCarRental.mutateAsync(values),
+      success: isUpdate ? "Car Rental updated" : "Car Rental created",
       redirect: "/car-rental",
     });
 
+    clearDraft();
+
+    form.reset(values);
+  };
+
   return (
-    <AppForm form={form} onSubmit={onSubmit}>
-      <FormWizard steps={carRentalSteps}>
+    <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
+      <FormWizard
+        form={form}
+        steps={carRentalSteps}
+        loading={isSubmitting}
+        unlockAll={!!initialData}
+      >
         <FormWizardHeader steps={carRentalSteps} />
 
         <FormWizardContent>
@@ -98,7 +149,7 @@ export default function CarRentalForm() {
           </FormWizardStep>
         </FormWizardContent>
 
-        <FormWizardFooter />
+        <FormWizardFooter form={form} onSubmit={onSubmit} />
       </FormWizard>
     </AppForm>
   );

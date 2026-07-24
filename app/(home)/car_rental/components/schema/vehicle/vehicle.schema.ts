@@ -31,42 +31,45 @@ export const CarRentalVehicleSchema = z.object({
 
   type: z.nativeEnum(RentalVehicleType),
 
-  status: z.nativeEnum(RentalVehicleStatus).optional(),
+  status: z.nativeEnum(RentalVehicleStatus).nullable().optional(),
 
-  brand: z.string().optional(),
+  brand: z.string().nullable().optional(),
 
-  model: z.string().optional(),
+  model: z.string().nullable().optional(),
 
-  year: z.number().optional(),
+  year: z.number().nullable().optional(),
 
-  color: z.string().optional(),
+  color: z.string().nullable().optional(),
 
-  licensePlate: z.string().optional(),
+  licensePlate: z.string().nullable().optional(),
 
-  transmission: z.nativeEnum(RentalTransmission).optional(),
+  transmission: z.nativeEnum(RentalTransmission).nullable().optional(),
 
-  fuelType: z.nativeEnum(RentalFuelType).optional(),
+  fuelType: z.nativeEnum(RentalFuelType).nullable().optional(),
 
-  fuelCapacityLiters: z.number().optional(),
+  fuelCapacityLiters: z.number().nullable().optional(),
 
-  mileageKm: z.number().optional(),
+  mileageKm: z.number().nullable().optional(),
 
-  mileageLimitPerDay: z.number().optional(),
+  mileageLimitPerDay: z.number().nullable().optional(),
 
-  unlimitedMileage: z.boolean().optional(),
+  unlimitedMileage: z.boolean().nullable().optional(),
 
-  capacity: CarRentalVehicleCapacitySchema.optional(),
+  capacity: CarRentalVehicleCapacitySchema.nullable().optional(),
 
-  features: CarRentalVehicleFeaturesSchema.optional(),
+  features: CarRentalVehicleFeaturesSchema.nullable().optional(),
 
-  locationCurrent: CarRentalVehicleLocationSchema.optional(),
+  locationCurrent: CarRentalVehicleLocationSchema.nullable().optional(),
 
-  images: z.array(CarRentalVehicleImageSchema).default([]),
+  images: z.array(CarRentalVehicleImageSchema).default([]).optional(),
 
-  maintenance: z.array(CarRentalVehicleMaintenanceSchema).default([]),
-  specification: z.array(CarRentalVehicleSpecificationSchema).default([]),
-  document: z.array(CarRentalVehicleDocumentSchema).default([]),
-  price: z.array(CarRentalPriceSchema).default([]),
-  carLocks: z.array(CarRentalInventoryLockSchema).default([]),
-  calendar: z.array(CarRentalAvailabilityCalendarSchema).default([]),
+  maintenance: z
+    .array(CarRentalVehicleMaintenanceSchema)
+    .default([])
+    .optional(),
+  specification: CarRentalVehicleSpecificationSchema.nullable().optional(),
+  document: z.array(CarRentalVehicleDocumentSchema).default([]).optional(),
+  price: z.array(CarRentalPriceSchema).default([]).optional(),
+  carLocks: z.array(CarRentalInventoryLockSchema).default([]).optional(),
+  calendar: z.array(CarRentalAvailabilityCalendarSchema).default([]).optional(),
 });

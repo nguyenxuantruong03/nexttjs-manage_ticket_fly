@@ -226,4 +226,4 @@ export const CitySchema = z.object({
 });
 
 
-export type CityFormValues = z.infer<typeof CitySchema>;
+export type CityFormSchema = z.infer<typeof CitySchema>;

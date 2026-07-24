@@ -6,13 +6,13 @@ import { CarRental } from "@/types/bookings/car_rental/core/car-rental.types";
 
 interface Props {
   onView: (id: string) => void;
-  onEdit: (id: string) => void;
+  onUpdate: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
 export function createCarRentalActions({
   onView,
-  onEdit,
+  onUpdate,
   onDelete,
 }: Props) {
   return (row: CarRental): ActionMenuItem<CarRental>[] => [
@@ -25,10 +25,10 @@ export function createCarRentalActions({
     },
 
     {
-      label: "Edit",
+      label: "Update",
       icon: Pencil,
       onClick() {
-        onEdit(row.id);
+        onUpdate(row.id);
       },
     },
 

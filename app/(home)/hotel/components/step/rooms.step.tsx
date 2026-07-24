@@ -13,7 +13,7 @@ import {
   SmokingPolicy,
 } from "@/types/bookings/hotel/enum/enums";
 
-import { HotelFormValues } from "../schema";
+import { HotelFormSchema } from "../schema";
 
 const bedTypeOptions = Object.values(BedType).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -45,23 +45,23 @@ export default function RoomsStep() {
     <>
       <FormSection title="Room Type" description="Room type information">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.name"
             label="Room Type Name"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.sortOrder"
             label="Sort Order"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.description"
             label="Description"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.active"
             label="Active"
           />
@@ -70,89 +70,89 @@ export default function RoomsStep() {
 
       <FormSection title="Room" description="Room information">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.name"
             label="Room Name"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.description"
             label="Description"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomSize"
             label="Room Size (㎡)"
             type="number"
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="roomTypes.0.rooms.0.bedTypes.0"
             label="Bed Type"
             options={bedTypeOptions}
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.maxGuests"
             label="Max Guests"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.maxAdults"
             label="Max Adults"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.maxChildren"
             label="Max Children"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.totalRooms"
             label="Total Rooms"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.bedCount"
             label="Bed Count"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.bathroomCount"
             label="Bathroom Count"
             type="number"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.floor"
             label="Floor"
             type="number"
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="roomTypes.0.rooms.0.mealPlan"
             label="Meal Plan"
             options={mealPlanOptions}
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="roomTypes.0.rooms.0.smokingPolicy"
             label="Smoking Policy"
             options={smokingPolicyOptions}
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="roomTypes.0.rooms.0.viewType"
             label="View"
             options={roomViewOptions}
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="roomTypes.0.rooms.0.bathRoomType"
             label="Bathroom Type"
             options={bathroomOptions}
@@ -160,32 +160,32 @@ export default function RoomsStep() {
         </div>
 
         <div className="mt-6 grid gap-6 md:grid-cols-3">
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.breakfastIncluded"
             label="Breakfast Included"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.soundproof"
             label="Soundproof"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.nonSmoking"
             label="Non Smoking"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.airConditioning"
             label="Air Conditioning"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.kitchenette"
             label="Kitchenette"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.privateBathroom"
             label="Private Bathroom"
           />
@@ -197,79 +197,79 @@ export default function RoomsStep() {
         description="Facilities inside the room"
       >
         <div className="grid gap-6 md:grid-cols-3">
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.tv"
             label="TV"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.minibar"
             label="Minibar"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.refrigerator"
             label="Refrigerator"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.microwave"
             label="Microwave"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.coffeeMachine"
             label="Coffee Machine"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.kettle"
             label="Kettle"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.safe"
             label="Safe"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.wardrobe"
             label="Wardrobe"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.hairDryer"
             label="Hair Dryer"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.ironingFacilities"
             label="Ironing Facilities"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.slippers"
             label="Slippers"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.bathrobe"
             label="Bathrobe"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.telephone"
             label="Telephone"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.desk"
             label="Desk"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.sofa"
             label="Sofa"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.balcony"
             label="Balcony"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.bathtub"
             label="Bathtub"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.shower"
             label="Shower"
           />
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomFacilities.streamingService"
             label="Streaming Service"
           />
@@ -278,17 +278,17 @@ export default function RoomsStep() {
 
       <FormSection title="Room Images" description="Room gallery">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomImage.0.thumbnail"
             label="Thumbnail"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomImage.0.cover"
             label="Cover"
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="roomTypes.0.rooms.0.roomImage.0.hero"
             label="Hero"
           />
@@ -296,7 +296,7 @@ export default function RoomsStep() {
       </FormSection>
 
       <FormSection title="Inventory" description="Room inventory">
-        <FormInput<HotelFormValues>
+        <FormInput<HotelFormSchema>
           name="inventory.0.roomTypeId"
           label="Room Type ID"
         />

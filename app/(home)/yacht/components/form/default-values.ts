@@ -4,9 +4,9 @@ import {
   YachtPricingType,
   YachtRefundType,
 } from "@/types/bookings/yacht/enums";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
-export const defaultYachtValues: YachtFormValues = {
+export const defaultYachtValues: YachtFormSchema = {
   // =========================
   // CORE
   // =========================

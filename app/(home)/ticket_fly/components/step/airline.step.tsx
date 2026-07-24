@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch } from "@/components/form/form-data";
-import { TicketFlyFormValues } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../schema/core/fly.schema";
 
 export default function AirlineStep() {
   return (
@@ -15,64 +15,64 @@ export default function AirlineStep() {
         description="Airline basic information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.name"
             label="Airline Name"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.legalName"
             label="Legal Name"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.iataCode"
             label="IATA Code"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.icaoCode"
             label="ICAO Code"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.callsign"
             label="Callsign"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.country"
             label="Country"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.website"
             label="Website"
             type="url"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.hotline"
             label="Hotline"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.email"
             label="Email"
             type="email"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.logo"
             label="Logo URL"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.banner"
             label="Banner URL"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="airline.active"
             label="Active"
           />
@@ -84,7 +84,7 @@ export default function AirlineStep() {
         description="Airline introduction"
       >
         <div className="grid gap-6">
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.description"
             label="Description"
           />
@@ -93,17 +93,17 @@ export default function AirlineStep() {
 
       <FormSection title="Airline Images" description="Airline gallery">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.images.0.url"
             label="Image URL"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.images.0.category"
             label="Image Category"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="airline.images.0.isPrimary"
             label="Primary Image"
           />
@@ -112,24 +112,24 @@ export default function AirlineStep() {
 
       <FormSection title="Wifi Package" description="Airline wifi service">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.wifiPackage.0.name"
             label="Package Name"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.wifiPackage.0.dataLimitMb"
             label="Data Limit (MB)"
             type="number"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.wifiPackage.0.durationMinutes"
             label="Duration Minutes"
             type="number"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.wifiPackage.0.amount"
             label="Amount"
             type="number"
@@ -139,38 +139,38 @@ export default function AirlineStep() {
 
       <FormSection title="Addons" description="Airline extra services">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.addon.0.name"
             label="Addon Name"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.addon.0.description"
             label="Description"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.addon.0.type"
             label="Addon Type"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.addon.0.provider"
             label="Provider"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.addon.0.image"
             label="Image URL"
           />
 
-          <FormInput<TicketFlyFormValues>
+          <FormInput<FlyFormSchema>
             name="airline.addon.0.amount"
             label="Amount"
             type="number"
           />
 
-          <FormSwitch<TicketFlyFormValues>
+          <FormSwitch<FlyFormSchema>
             name="airline.addon.0.active"
             label="Active"
           />

@@ -14,8 +14,8 @@ export function createProviderBookingHandlers({ router, deleteMutation }: Props)
       router.push(ProviderBookingRoutes.detail(id));
     },
 
-    edit(id: string) {
-      router.push(ProviderBookingRoutes.edit(id));
+    update(id: string) {
+      router.push(ProviderBookingRoutes.update(id));
     },
 
     async delete(id: string) {

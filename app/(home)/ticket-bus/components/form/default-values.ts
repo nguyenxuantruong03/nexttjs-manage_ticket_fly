@@ -15,9 +15,9 @@ import {
 } from "@/types/bookings/bus/enums";
 
 import { InventoryLockStatus } from "@/types/common/enums";
-import { BusFormValues } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../schema/core/bus.schema";
 
-export const busDefaultValues: BusFormValues = {
+export const busDefaultValues: BusFormSchema = {
   providerBookingId: "",
 
   active: true,

@@ -11,7 +11,7 @@ import {
 
 import { HotelImageCategory } from "@/types/bookings/hotel/enum/enums";
 
-import { HotelFormValues } from "../schema";
+import { HotelFormSchema } from "../schema";
 
 const imageCategoryOptions = Object.values(HotelImageCategory).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -27,25 +27,25 @@ export default function ImagesStep() {
       <div className="space-y-8">
         <div className="rounded-lg border p-6">
           <div className="grid gap-6 md:grid-cols-2">
-            <FormInput<HotelFormValues>
+            <FormInput<HotelFormSchema>
               name="hotelImage.0.url"
               label="Image URL"
               placeholder="https://example.com/image.jpg"
             />
 
-            <FormSelect<HotelFormValues>
+            <FormSelect<HotelFormSchema>
               name="hotelImage.0.category"
               label="Category"
               options={imageCategoryOptions}
             />
 
-            <FormInput<HotelFormValues>
+            <FormInput<HotelFormSchema>
               name="hotelImage.0.sortOrder"
               label="Sort Order"
               type="number"
             />
 
-            <FormSwitch<HotelFormValues>
+            <FormSwitch<HotelFormSchema>
               name="hotelImage.0.isPrimary"
               label="Primary Image"
             />

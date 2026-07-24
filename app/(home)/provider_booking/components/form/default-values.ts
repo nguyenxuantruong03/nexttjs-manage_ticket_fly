@@ -2,9 +2,9 @@ import {
   ProviderOperatingStatus,
   ProviderStatus,
 } from "@/types/bookings/provider-bookings";
-import { FormValues } from "./schema";
+import { ProviderBookingFormSchema } from "./schema";
 
-export const providerBookingDefaultValues: FormValues = {
+export const providerBookingDefaultValues: ProviderBookingFormSchema = {
   officialName: "",
   displayName: "",
   shortName: "",

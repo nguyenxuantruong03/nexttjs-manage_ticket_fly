@@ -8,7 +8,7 @@ import {
   FormInput,
   FormSwitch,
 } from "@/components/form/form-data";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
 
 
@@ -25,50 +25,50 @@ export default function MarinaStep() {
       >
         <div className="grid gap-6 md:grid-cols-2">
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.name"
             label="Marina Name"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.addressId"
             label="Address ID"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.city"
             label="City"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.country"
             label="Country"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.contactPhone"
             label="Contact Phone"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.operatingHours"
             label="Operating Hours"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.latitude"
             label="Latitude"
             type="number"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.longitude"
             label="Longitude"
             type="number"
@@ -92,103 +92,103 @@ export default function MarinaStep() {
         <div className="grid gap-6 md:grid-cols-3">
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.fuelStation"
             label="Fuel Station"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.restaurant"
             label="Restaurant"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.cafe"
             label="Cafe"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.parking"
             label="Parking"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.waitingLounge"
             label="Waiting Lounge"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.toilet"
             label="Toilet"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.shower"
             label="Shower"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.drinkingWater"
             label="Drinking Water"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.electricity"
             label="Electricity"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.wifi"
             label="WiFi"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.security"
             label="Security"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.cctv"
             label="CCTV"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.luggageStorage"
             label="Luggage Storage"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.convenienceStore"
             label="Convenience Store"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.atm"
             label="ATM"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.customs"
             label="Customs"
           />
 
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="marina.0.marinaFacilities.immigration"
             label="Immigration"
           />
@@ -213,14 +213,14 @@ export default function MarinaStep() {
         <div className="grid gap-6 md:grid-cols-2">
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.latitude"
             label="Latitude"
             type="number"
           />
 
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="marina.0.longitude"
             label="Longitude"
             type="number"

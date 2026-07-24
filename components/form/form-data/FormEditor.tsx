@@ -8,6 +8,7 @@ import StarterKit from "@tiptap/starter-kit";
 
 import { Button } from "@/components/ui/button";
 import { FormField } from "./FormField";
+import { useAppFormContext } from "./AppForm";
 
 /* =========================
    TYPES
@@ -33,9 +34,11 @@ interface EditorProps {
 ========================= */
 
 function TiptapEditor({ value, onChange, disabled }: EditorProps) {
+  const { loading } = useAppFormContext();
+
   const editor = useEditor({
     extensions: [StarterKit],
-    editable: !disabled,
+    editable: loading || !disabled,
     immediatelyRender: false,
     content: value ?? "",
 
@@ -145,6 +148,7 @@ export function FormEditor<TFieldValues extends FieldValues>({
   disabled,
   className,
 }: FormEditorProps<TFieldValues>) {
+  const { loading } = useAppFormContext();
   return (
     <FormField<TFieldValues>
       name={name}
@@ -157,7 +161,7 @@ export function FormEditor<TFieldValues extends FieldValues>({
         <TiptapEditor
           value={typeof field.value === "string" ? field.value : ""}
           onChange={field.onChange}
-          disabled={disabled}
+          disabled={loading || disabled}
         />
       )}
     </FormField>

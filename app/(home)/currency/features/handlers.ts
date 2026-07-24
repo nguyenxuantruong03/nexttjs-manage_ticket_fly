@@ -1,6 +1,7 @@
 import { useDeleteCurrency } from "@/hooks/location/currency";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import toast from "react-hot-toast";
+
 import { CurrencyRoutes } from "./routes";
 
 interface Props {
@@ -14,8 +15,8 @@ export function createCurrencyHandlers({ router, deleteMutation }: Props) {
       router.push(CurrencyRoutes.detail(id));
     },
 
-    edit(id: string) {
-      router.push(CurrencyRoutes.edit(id));
+    update(id: string) {
+      router.push(CurrencyRoutes.update(id));
     },
 
     async delete(id: string) {

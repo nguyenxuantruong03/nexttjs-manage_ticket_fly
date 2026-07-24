@@ -9,7 +9,7 @@ import { FormInput, FormSelect } from "@/components/form/form-data";
 import {
   InventoryLockStatus,
 } from "@/types/common/enums";
-import { CarRentalFormValues } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
 import { CarRentalCalendarStatus } from "@/types/bookings/car_rental/enums";
 
 const inventoryLockStatusOptions = Object.values(InventoryLockStatus).map(
@@ -34,26 +34,26 @@ export default function AvailabilityStep() {
         description="Vehicle rental availability"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.calendar.0.startTime"
             label="Start Time"
             type="datetime-local"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.calendar.0.endTime"
             label="End Time"
             type="datetime-local"
           />
 
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="vehicle.0.calendar.0.status"
             label="Status"
             options={calendarStatusOptions}
           />
 
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.calendar.0.note"
             label="Note"
           />
@@ -65,52 +65,52 @@ export default function AvailabilityStep() {
         description="Temporary vehicle reservation"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.carLocks.0.bookingId"
             label="Booking ID"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.carLocks.0.vehicleId"
             label="Vehicle ID"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.carLocks.0.userId"
             label="User ID"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.carLocks.0.startTime"
             label="Start Time"
             type="datetime-local"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.carLocks.0.endTime"
             label="End Time"
             type="datetime-local"
           />
 
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="vehicle.0.carLocks.0.status"
             label="Lock Status"
             options={inventoryLockStatusOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.carLocks.0.quantity"
             label="Quantity"
             type="number"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.carLocks.0.expiresAt"
             label="Expires At"
             type="datetime-local"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.carLocks.0.releasedAt"
             label="Released At"
             type="datetime-local"
@@ -123,7 +123,7 @@ export default function AvailabilityStep() {
         description="Current vehicle position"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.locationCurrent.addressId"
             label="Address ID"
           />

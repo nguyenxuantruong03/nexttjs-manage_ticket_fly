@@ -1,5 +1,4 @@
 export const CountryRoutes = {
   detail: (id: string) => `/country/${id}`,
-
-  edit: (id: string) => `/country/${id}/edit`,
+  update: (id: string) => `/country/${id}/update`,
 };

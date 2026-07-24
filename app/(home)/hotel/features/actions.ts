@@ -5,11 +5,11 @@ import { Hotel } from "@/types/bookings/hotel/core/hotel.types";
 
 interface Props {
   onView: (id: string) => void;
-  onEdit: (id: string) => void;
+  onUpdate: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export function createHotelActions({ onView, onEdit, onDelete }: Props) {
+export function createHotelActions({ onView, onUpdate, onDelete }: Props) {
   return (row: Hotel): ActionMenuItem<Hotel>[] => [
     {
       label: "View",
@@ -20,10 +20,10 @@ export function createHotelActions({ onView, onEdit, onDelete }: Props) {
     },
 
     {
-      label: "Edit",
+      label: "Update",
       icon: Pencil,
       onClick() {
-        onEdit(row.id);
+        onUpdate(row.id);
       },
     },
 

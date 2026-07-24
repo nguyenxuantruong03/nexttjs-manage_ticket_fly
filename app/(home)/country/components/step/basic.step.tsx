@@ -3,56 +3,56 @@
 import FormSection from "@/components/form/FormSection";
 
 import { FormInput } from "@/components/form/form-data";
-import { CountryFormValues } from "../form/schema";
+import { CountryFormSchema } from "../form/schema";
 
 
 export default function BasicStep() {
   return (
     <FormSection title="Country" description="Basic country information">
       <div className="grid gap-6 md:grid-cols-2">
-        <FormInput<CountryFormValues>
+        <FormInput<CountryFormSchema>
           name="name"
           label="Name"
           placeholder="Vietnam"
         />
 
-        <FormInput<CountryFormValues>
+        <FormInput<CountryFormSchema>
           name="officialName"
           label="Official Name"
           placeholder="Socialist Republic of Vietnam"
         />
 
-        <FormInput<CountryFormValues>
+        <FormInput<CountryFormSchema>
           name="slug"
           label="Slug"
           placeholder="vietnam"
         />
 
-        <FormInput<CountryFormValues>
+        <FormInput<CountryFormSchema>
           name="code"
           label="Code"
           placeholder="VN"
         />
 
-        <FormInput<CountryFormValues>
+        <FormInput<CountryFormSchema>
           name="iso2"
           label="ISO 2"
           placeholder="VN"
         />
 
-        <FormInput<CountryFormValues>
+        <FormInput<CountryFormSchema>
           name="iso3"
           label="ISO 3"
           placeholder="VNM"
         />
 
-        <FormInput<CountryFormValues>
+        <FormInput<CountryFormSchema>
           name="phoneCode"
           label="Phone Code"
           placeholder="+84"
         />
 
-        <FormInput<CountryFormValues>
+        <FormInput<CountryFormSchema>
           name="capital"
           label="Capital"
           placeholder="Hanoi"

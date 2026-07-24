@@ -17,8 +17,8 @@ export function createAirportTransferHandlers({
       router.push(airportTransferRoutes.detail(id));
     },
 
-    edit(id: string) {
-      router.push(airportTransferRoutes.edit(id));
+    update(id: string) {
+      router.push(airportTransferRoutes.update(id));
     },
 
     async delete(id: string) {

@@ -6,6 +6,7 @@ import { FieldPath, FieldValues } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormField } from "./FormField";
 import { cn } from "@/lib/utils";
+import { useAppFormContext } from "./AppForm";
 
 interface CheckboxOption {
   label: React.ReactNode;
@@ -40,6 +41,7 @@ export function FormCheckboxGroup<TFieldValues extends FieldValues>({
   checkboxClassName,
   columns = 2,
 }: FormCheckboxGroupProps<TFieldValues>) {
+  const { loading } = useAppFormContext();
   return (
     <FormField<TFieldValues>
       name={name}
@@ -70,7 +72,7 @@ export function FormCheckboxGroup<TFieldValues extends FieldValues>({
                 >
                   <Checkbox
                     checked={checked}
-                    disabled={disabled || option.disabled}
+                    disabled={loading || disabled || option.disabled}
                     className={cn(checkboxClassName)}
                     onCheckedChange={(isChecked) => {
                       if (isChecked) {

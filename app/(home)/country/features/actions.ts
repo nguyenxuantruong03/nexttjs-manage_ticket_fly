@@ -6,11 +6,11 @@ import { Country } from "@/types/bookings/location/country";
 
 interface Props {
   onView: (id: string) => void;
-  onEdit: (id: string) => void;
+  onUpdate: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export function createCountryActions({ onView, onEdit, onDelete }: Props) {
+export function createCountryActions({ onView, onUpdate, onDelete }: Props) {
   return (row: Country): ActionMenuItem<Country>[] => [
     {
       label: "View",
@@ -21,10 +21,10 @@ export function createCountryActions({ onView, onEdit, onDelete }: Props) {
     },
 
     {
-      label: "Edit",
+      label: "Update",
       icon: Pencil,
       onClick() {
-        onEdit(row.id);
+        onUpdate(row.id);
       },
     },
 

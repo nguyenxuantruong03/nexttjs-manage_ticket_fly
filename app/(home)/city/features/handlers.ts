@@ -14,8 +14,8 @@ export function createCityHandlers({ router, deleteMutation }: Props) {
       router.push(CityRoutes.detail(id));
     },
 
-    edit(id: string) {
-      router.push(CityRoutes.edit(id));
+    update(id: string) {
+      router.push(CityRoutes.update(id));
     },
 
     async delete(id: string) {

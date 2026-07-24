@@ -5,11 +5,11 @@ import { Currency } from "@/types/bookings/location/currency";
 
 interface Props {
   onView: (id: string) => void;
-  onEdit: (id: string) => void;
+  onUpdate: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export function createCurrencyActions({ onView, onEdit, onDelete }: Props) {
+export function createCurrencyActions({ onView, onUpdate, onDelete }: Props) {
   return (row: Currency): ActionMenuItem<Currency>[] => [
     {
       label: "View",
@@ -20,10 +20,10 @@ export function createCurrencyActions({ onView, onEdit, onDelete }: Props) {
     },
 
     {
-      label: "Edit",
+      label: "Update",
       icon: Pencil,
       onClick() {
-        onEdit(row.id);
+        onUpdate(row.id);
       },
     },
 

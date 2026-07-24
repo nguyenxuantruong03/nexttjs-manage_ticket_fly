@@ -1,30 +1,25 @@
-import { FormWizardStep } from "@/components/form/wizard/types";
-
 import {
   Info,
   Ship,
-  Images,
   Anchor,
   CalendarRange,
   DollarSign,
   Package,
-  ShieldCheck,
-  Users,
-  Search,
   FileText,
+  Users,
+  Images,
   Settings,
 } from "lucide-react";
 
-export const yachtSteps: (FormWizardStep & {
-  sections: {
-    id: string;
-    title: string;
-  }[];
-})[] = [
+import { FormWizardStep } from "@/components/form/wizard/types";
+
+import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { yachtFieldGroups } from "./field-groups";
+
+export const yachtSteps: FormWizardStep<YachtFormSchema>[] = [
   // ======================================================
   // BASIC
   // ======================================================
-
   {
     id: "basic",
 
@@ -34,28 +29,12 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: Info,
 
-    sections: [
-      {
-        id: "yacht",
-        title: "Yacht Information",
-      },
-
-      {
-        id: "provider",
-        title: "Provider Information",
-      },
-
-      {
-        id: "search",
-        title: "Search Metadata",
-      },
-    ],
+    fields: yachtFieldGroups.basic,
   },
 
   // ======================================================
   // VEHICLE
   // ======================================================
-
   {
     id: "vehicle",
 
@@ -65,43 +44,12 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: Ship,
 
-    sections: [
-      {
-        id: "vehicleInfo",
-        title: "Yacht Details",
-      },
-
-      {
-        id: "capacity",
-        title: "Capacity",
-      },
-
-      {
-        id: "specification",
-        title: "Specifications",
-      },
-
-      {
-        id: "facilities",
-        title: "Facilities",
-      },
-
-      {
-        id: "safety",
-        title: "Safety Equipment",
-      },
-
-      {
-        id: "vehicleImages",
-        title: "Vehicle Images",
-      },
-    ],
+    fields: yachtFieldGroups.vehicle,
   },
 
   // ======================================================
   // MARINA
   // ======================================================
-
   {
     id: "marina",
 
@@ -111,23 +59,12 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: Anchor,
 
-    sections: [
-      {
-        id: "marinaInfo",
-        title: "Marina Information",
-      },
-
-      {
-        id: "marinaFacilities",
-        title: "Marina Facilities",
-      },
-    ],
+    fields: yachtFieldGroups.marina,
   },
 
   // ======================================================
   // ROUTES
   // ======================================================
-
   {
     id: "routes",
 
@@ -137,23 +74,12 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: Anchor,
 
-    sections: [
-      {
-        id: "route",
-        title: "Route Information",
-      },
-
-      {
-        id: "stops",
-        title: "Route Stops",
-      },
-    ],
+    fields: yachtFieldGroups.routes,
   },
 
   // ======================================================
   // TRIPS
   // ======================================================
-
   {
     id: "trips",
 
@@ -163,38 +89,12 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: CalendarRange,
 
-    sections: [
-      {
-        id: "trip",
-        title: "Trip Information",
-      },
-
-      {
-        id: "schedule",
-        title: "Trip Schedule",
-      },
-
-      {
-        id: "tripPrice",
-        title: "Trip Pricing",
-      },
-
-      {
-        id: "availability",
-        title: "Availability Calendar",
-      },
-
-      {
-        id: "inventoryLocks",
-        title: "Inventory Locks",
-      },
-    ],
+    fields: yachtFieldGroups.trips,
   },
 
   // ======================================================
   // PRICING
   // ======================================================
-
   {
     id: "pricing",
 
@@ -204,33 +104,12 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: DollarSign,
 
-    sections: [
-      {
-        id: "price",
-        title: "Base Pricing",
-      },
-
-      {
-        id: "priceOptions",
-        title: "Price Options",
-      },
-
-      {
-        id: "fees",
-        title: "Additional Fees",
-      },
-
-      {
-        id: "discounts",
-        title: "Discount Rules",
-      },
-    ],
+    fields: yachtFieldGroups.pricing,
   },
 
   // ======================================================
   // PACKAGES
   // ======================================================
-
   {
     id: "packages",
 
@@ -240,28 +119,12 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: Package,
 
-    sections: [
-      {
-        id: "package",
-        title: "Packages",
-      },
-
-      {
-        id: "packageExtras",
-        title: "Package Extras",
-      },
-
-      {
-        id: "packageImages",
-        title: "Package Images",
-      },
-    ],
+    fields: yachtFieldGroups.packages,
   },
 
   // ======================================================
-  // EXTRA
+  // EXTRAS
   // ======================================================
-
   {
     id: "extras",
 
@@ -271,23 +134,12 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: Package,
 
-    sections: [
-      {
-        id: "extra",
-        title: "Extra Services",
-      },
-
-      {
-        id: "extraImages",
-        title: "Extra Images",
-      },
-    ],
+    fields: yachtFieldGroups.extras,
   },
 
   // ======================================================
   // POLICIES
   // ======================================================
-
   {
     id: "policies",
 
@@ -297,48 +149,12 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: FileText,
 
-    sections: [
-      {
-        id: "bookingPolicy",
-        title: "Booking Policy",
-      },
-
-      {
-        id: "cancellation",
-        title: "Cancellation Policy",
-      },
-
-      {
-        id: "passenger",
-        title: "Passenger Requirements",
-      },
-
-      {
-        id: "luggage",
-        title: "Luggage Policy",
-      },
-
-      {
-        id: "waiting",
-        title: "Waiting Policy",
-      },
-
-      {
-        id: "flightSupport",
-        title: "Flight Support",
-      },
-
-      {
-        id: "meetAndGreet",
-        title: "Meet & Greet",
-      },
-    ],
+    fields: yachtFieldGroups.policies,
   },
 
   // ======================================================
   // CREW
   // ======================================================
-
   {
     id: "crew",
 
@@ -348,18 +164,12 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: Users,
 
-    sections: [
-      {
-        id: "crew",
-        title: "Crew Members",
-      },
-    ],
+    fields: yachtFieldGroups.crew,
   },
 
   // ======================================================
   // IMAGES
   // ======================================================
-
   {
     id: "images",
 
@@ -369,18 +179,12 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: Images,
 
-    sections: [
-      {
-        id: "images",
-        title: "Yacht Images",
-      },
-    ],
+    fields: yachtFieldGroups.images,
   },
 
   // ======================================================
-  // SETTINGS / SEO
+  // SETTINGS
   // ======================================================
-
   {
     id: "settings",
 
@@ -390,21 +194,6 @@ export const yachtSteps: (FormWizardStep & {
 
     icon: Settings,
 
-    sections: [
-      {
-        id: "seo",
-        title: "SEO",
-      },
-
-      {
-        id: "visibility",
-        title: "Visibility",
-      },
-
-      {
-        id: "status",
-        title: "Status",
-      },
-    ],
+    fields: yachtFieldGroups.settings,
   },
 ];

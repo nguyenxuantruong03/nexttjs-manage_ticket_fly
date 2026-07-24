@@ -4,20 +4,20 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput } from "@/components/form/form-data";
 
-import { CityFormValues } from "../form/schema";
+import { CityFormSchema } from "../form/schema";
 
 export default function SeoStep() {
   return (
     <FormSection title="SEO" description="Search engine optimization">
       <div className="grid gap-6">
-        <FormInput<CityFormValues> name="seoTitle" label="SEO Title" />
+        <FormInput<CityFormSchema> name="seoTitle" label="SEO Title" />
 
-        <FormInput<CityFormValues>
+        <FormInput<CityFormSchema>
           name="seoDescription"
           label="SEO Description"
         />
 
-        <FormInput<CityFormValues> name="seoKeywords.0" label="SEO Keyword" />
+        <FormInput<CityFormSchema> name="seoKeywords.0" label="SEO Keyword" />
       </div>
     </FormSection>
   );

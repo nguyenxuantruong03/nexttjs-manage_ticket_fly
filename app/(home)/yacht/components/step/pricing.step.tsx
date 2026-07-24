@@ -13,7 +13,7 @@ import {
   YachtDiscountType,
   YachtDurationType,
 } from "@/types/bookings/yacht/enums";
-import { YachtFormValues } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
 
 const pricingTypeOptions = Object.values(YachtPricingType).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -47,7 +47,7 @@ export default function PricingStep() {
         description="Yacht pricing type"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="price.pricingType"
             label="Pricing Type"
             options={pricingTypeOptions}
@@ -61,42 +61,42 @@ export default function PricingStep() {
 
       <FormSection title="Base Prices" description="Main yacht price options">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.basePrices.0.name"
             label="Price Name"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.basePrices.0.duration"
             label="Duration"
             type="number"
           />
 
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="price.basePrices.0.durationType"
             label="Duration Type"
             options={durationTypeOptions}
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.basePrices.0.minGuests"
             label="Minimum Guests"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.basePrices.0.maxGuests"
             label="Maximum Guests"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.basePrices.0.originalPrice"
             label="Original Price"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.basePrices.0.includedItems.0"
             label="Included Item"
           />
@@ -112,24 +112,24 @@ export default function PricingStep() {
         description="Extra mandatory and optional fees"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="price.fees.0.type"
             label="Fee Type"
             options={feeTypeOptions}
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.fees.0.amount"
             label="Amount"
             type="number"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="price.fees.0.mandatory"
             label="Mandatory"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.fees.0.description"
             label="Description"
           />
@@ -145,37 +145,37 @@ export default function PricingStep() {
         description="Pricing discount configuration"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="price.discounts.0.type"
             label="Discount Type"
             options={discountTypeOptions}
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.discounts.0.percentage"
             label="Percentage"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.discounts.0.amount"
             label="Discount Amount"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.discounts.0.startDate"
             label="Start Date"
             type="date"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="price.discounts.0.endDate"
             label="End Date"
             type="date"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="price.discounts.0.active"
             label="Active"
           />
@@ -191,41 +191,41 @@ export default function PricingStep() {
         description="Yacht package price information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.name"
             label="Package Name"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.description"
             label="Description"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.duration"
             label="Duration"
             type="number"
           />
 
-          <FormSelect<YachtFormValues>
+          <FormSelect<YachtFormSchema>
             name="packages.0.durationType"
             label="Duration Type"
             options={durationTypeOptions}
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.maxGuests"
             label="Maximum Guests"
             type="number"
           />
 
-          <FormInput<YachtFormValues>
+          <FormInput<YachtFormSchema>
             name="packages.0.price"
             label="Package Price"
             type="number"
           />
 
-          <FormSwitch<YachtFormValues>
+          <FormSwitch<YachtFormSchema>
             name="packages.0.active"
             label="Active"
           />

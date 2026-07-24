@@ -29,12 +29,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from "lucide-react";
+
 import {
   Select,
   SelectContent,
@@ -47,14 +42,22 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   filterColumn?: string;
   filterPlaceholder?: string;
+  // Handle Click
+  onRowClick?: (row: TData) => void;
+  onRowDoubleClick?: (row: TData) => void;
+  onRowRightClick?: (row: TData) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   filterColumn = "email",
-  filterPlaceholder = "Filter email...",
+  filterPlaceholder = `"Filter ${filterColumn}..."`,
+  onRowClick,
+  onRowDoubleClick,
+  onRowRightClick,
 }: DataTableProps<TData, TValue>) {
+  const clickTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -62,6 +65,15 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+  // Handle Click
+  React.useEffect(() => {
+    return () => {
+      if (clickTimeout.current) {
+        clearTimeout(clickTimeout.current);
+      }
+    };
+  }, []);
 
   const table = useReactTable({
     data,
@@ -149,6 +161,33 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="cursor-pointer"
+                  onClick={(event) => {
+                    if (event.detail === 2) {
+                      return;
+                    }
+
+                    if (clickTimeout.current) {
+                      clearTimeout(clickTimeout.current);
+                    }
+
+                    clickTimeout.current = setTimeout(() => {
+                      onRowClick?.(row.original);
+                    }, 250);
+                  }}
+                  onDoubleClick={() => {
+                    if (clickTimeout.current) {
+                      clearTimeout(clickTimeout.current);
+                      clickTimeout.current = null;
+                    }
+
+                    onRowDoubleClick?.(row.original);
+                  }}
+                  onContextMenu={(event) => {
+                    event.preventDefault();
+
+                    onRowRightClick?.(row.original);
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

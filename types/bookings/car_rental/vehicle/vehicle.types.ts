@@ -1,7 +1,12 @@
 import { CarRentalAvailabilityCalendar } from "../booking/availability-calendar.types";
 import { CarRentalBooking } from "../booking/booking.types";
 import { CarRental } from "../core/car-rental.types";
-import { RentalFuelType, RentalTransmission, RentalVehicleStatus, RentalVehicleType } from "../enums";
+import {
+  RentalFuelType,
+  RentalTransmission,
+  RentalVehicleStatus,
+  RentalVehicleType,
+} from "../enums";
 import { CarRentalPrice } from "../pricing/price.types";
 import { CarRentalInventoryLock } from "../trip/inventory-lock.types";
 import { CarRentalVehicleCapacity } from "./vehicle-capacity.types";

@@ -10,7 +10,7 @@ import {
   RentalVehicleImageCategory,
   RentalVehicleImagePosition,
 } from "@/types/bookings/car_rental/enums";
-import { CarRentalFormValues } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
 
 const rentalImageCategoryOptions = Object.values(CarRentalImageCategory).map(
   (value) => ({
@@ -41,28 +41,28 @@ export default function ImagesStep() {
         description="Car rental gallery images"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="images.0.url"
             label="Image URL"
           />
 
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="images.0.category"
             label="Category"
             options={rentalImageCategoryOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="images.0.alt"
             label="Alt Text"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="images.0.isPrimary"
             label="Primary Image"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="images.0.sortOrder"
             label="Sort Order"
             type="number"
@@ -72,34 +72,34 @@ export default function ImagesStep() {
 
       <FormSection title="Vehicle Images" description="Vehicle gallery images">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.images.0.url"
             label="Image URL"
           />
 
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="vehicle.0.images.0.category"
             label="Category"
             options={vehicleImageCategoryOptions}
           />
 
-          <FormSelect<CarRentalFormValues>
+          <FormSelect<CarRentalFormSchema>
             name="vehicle.0.images.0.position"
             label="Position"
             options={vehicleImagePositionOptions}
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.images.0.alt"
             label="Alt Text"
           />
 
-          <FormSwitch<CarRentalFormValues>
+          <FormSwitch<CarRentalFormSchema>
             name="vehicle.0.images.0.isPrimary"
             label="Primary Image"
           />
 
-          <FormInput<CarRentalFormValues>
+          <FormInput<CarRentalFormSchema>
             name="vehicle.0.images.0.sortOrder"
             label="Sort Order"
             type="number"

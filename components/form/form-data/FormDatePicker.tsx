@@ -15,6 +15,7 @@ import {
 
 import { FormField } from "./FormField";
 import { cn } from "@/lib/utils";
+import { useAppFormContext } from "./AppForm";
 
 export interface FormDatePickerProps<TFieldValues extends FieldValues> {
   name: FieldPath<TFieldValues>;
@@ -37,6 +38,8 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
   placeholder = "Chọn ngày",
   buttonClassName,
 }: FormDatePickerProps<TFieldValues>) {
+    const { loading } = useAppFormContext();
+  
   return (
     <FormField<TFieldValues>
       name={name}
@@ -51,7 +54,7 @@ export function FormDatePicker<TFieldValues extends FieldValues>({
             <Button
               type="button"
               variant="outline"
-              disabled={disabled}
+              disabled={loading || disabled}
               className={cn(
                 "w-full justify-start text-left font-normal",
                 !field.value && "text-muted-foreground",

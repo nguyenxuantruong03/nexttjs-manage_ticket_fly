@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
-import { HotelFormValues } from "../schema";
+import { HotelFormSchema } from "../schema";
 
 import {
   HotelMealType,
@@ -39,23 +39,23 @@ export default function MealsStep() {
     <>
       <FormSection title="Meal Options" description="Hotel meal options">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="mealOptions.0.name"
             label="Meal Name"
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="mealOptions.0.type"
             label="Meal Type"
             options={mealTypeOptions}
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="mealOptions.0.description"
             label="Description"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="mealOptions.0.active"
             label="Active"
           />
@@ -64,13 +64,13 @@ export default function MealsStep() {
 
       <FormSection title="Meal Prices" description="Meal pricing">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="mealOptions.0.prices.0.price"
             label="Price"
             type="number"
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="mealOptions.0.prices.0.unit"
             label="Price Unit"
             options={mealPriceUnitOptions}
@@ -80,43 +80,43 @@ export default function MealsStep() {
 
       <FormSection title="Hotel Extras" description="Additional services">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues> name="extras.0.name" label="Extra Name" />
+          <FormInput<HotelFormSchema> name="extras.0.name" label="Extra Name" />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="extras.0.type"
             label="Extra Type"
             options={extraTypeOptions}
           />
 
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="extras.0.description"
             label="Description"
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="extras.0.required"
             label="Required"
           />
 
-          <FormSwitch<HotelFormValues> name="extras.0.active" label="Active" />
+          <FormSwitch<HotelFormSchema> name="extras.0.active" label="Active" />
         </div>
       </FormSection>
 
       <FormSection title="Extra Prices" description="Pricing for extras">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelFormValues>
+          <FormInput<HotelFormSchema>
             name="extras.0.prices.0.price"
             label="Price"
             type="number"
           />
 
-          <FormSelect<HotelFormValues>
+          <FormSelect<HotelFormSchema>
             name="extras.0.prices.0.unit"
             label="Price Unit"
             options={extraPriceUnitOptions}
           />
 
-          <FormSwitch<HotelFormValues>
+          <FormSwitch<HotelFormSchema>
             name="extras.0.prices.0.active"
             label="Active"
           />

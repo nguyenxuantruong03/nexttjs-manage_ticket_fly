@@ -4,6 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput } from "@/components/form/form-data";
 import { CurrencyFormSchema } from "../form/schema";
+import { useAppFormContext } from "@/components/form/form-data/AppForm";
 
 export default function BasicStep() {
   return (
@@ -21,7 +22,11 @@ export default function BasicStep() {
           placeholder="840"
         />
 
-        <FormInput<CurrencyFormSchema> name="symbol" label="Symbol" placeholder="$" />
+        <FormInput<CurrencyFormSchema>
+          name="symbol"
+          label="Symbol"
+          placeholder="$"
+        />
 
         <FormInput<CurrencyFormSchema>
           name="symbolNative"
@@ -47,7 +52,11 @@ export default function BasicStep() {
           type="number"
         />
 
-        <FormInput<CurrencyFormSchema> name="rounding" label="Rounding" type="number" />
+        <FormInput<CurrencyFormSchema>
+          name="rounding"
+          label="Rounding"
+          type="number"
+        />
       </div>
     </FormSection>
   );
