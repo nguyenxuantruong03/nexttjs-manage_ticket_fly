@@ -11,51 +11,6 @@ export default function BasicStep() {
   return (
     <>
       {/* ======================================================
-          BASIC INFORMATION
-      ====================================================== */}
-
-      <FormSection
-        title="Yacht Information"
-        description="Basic yacht information"
-      >
-        <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormSchema>
-            name="providerBookingId"
-            label="Provider Booking ID"
-          />
-
-          <FormInput<YachtFormSchema> name="name" label="Yacht Name" />
-
-          <FormInput<YachtFormSchema> name="slug" label="Slug" />
-
-          <FormInput<YachtFormSchema> name="searchText" label="Search Text" />
-
-          <FormInput<YachtFormSchema>
-            name="searchPriority"
-            label="Search Priority"
-            type="number"
-          />
-        </div>
-      </FormSection>
-
-      {/* ======================================================
-          SEARCH METADATA
-      ====================================================== */}
-
-      <FormSection
-        title="Search Metadata"
-        description="Search engine optimization fields"
-      >
-        <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<YachtFormSchema> name="aliases.0" label="Alias" />
-
-          <FormInput<YachtFormSchema> name="keywords.0" label="Keyword" />
-
-          <FormInput<YachtFormSchema> name="tags.0" label="Tag" />
-        </div>
-      </FormSection>
-
-      {/* ======================================================
           NOTICE
       ====================================================== */}
 

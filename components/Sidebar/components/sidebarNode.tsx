@@ -8,48 +8,49 @@ import {
 import { Dispatch, SetStateAction } from "react";
 import Link from "next/link";
 import { SidebarItem } from "../types";
-import { SIDEBARCONTENTICONS } from "../items";
 import { Button } from "@/components/ui/button";
+import { SIDEBARCONTENTICONS } from "../icon";
+
+interface SidebarNodeProps {
+  item: SidebarItem;
+  isCollapse?: boolean;
+
+  open: boolean;
+  setOpen?: Dispatch<SetStateAction<boolean>>;
+
+  setIsHover?: Dispatch<SetStateAction<boolean>>;
+  isHover?: boolean;
+
+  openItems: string[];
+  setOpenItems: Dispatch<SetStateAction<string[]>>;
+
+  currentPathname: string;
+}
 
 const SidebarNode = ({
   item,
   isCollapse = false,
   open,
   setOpen,
+
   setIsHover,
   isHover,
-  setOpenItems,
+
   openItems,
+  setOpenItems,
+
   currentPathname,
-}: {
-  item: SidebarItem;
-  isCollapse?: boolean;
-  open: boolean;
-  setOpen?: (open: boolean) => void;
-  setIsHover?: Dispatch<SetStateAction<boolean>>;
-  isHover?: boolean;
-  setOpenItems: Dispatch<SetStateAction<string[]>>;
-  openItems: string[];
-  currentPathname: string;
-}) => {
+}: SidebarNodeProps) => {
   const IconComp = SIDEBARCONTENTICONS[item.icon];
 
   const currentLink = item.categories?.some(
     (category) => category.link === currentPathname,
   );
 
-  const handleMouseEnter = () => {
-    if (!isHover) return;
-
-    setOpenItems([String(item.id)]);
-  };
-
-  const handleMouseLeave = () => {
-    if (!isHover) return;
-
-    setOpenItems(openItems.length ? [openItems[0]] : []);
-  };
-
+  /**
+   * Collapse sidebar:
+   * Hover icon -> mở sidebar + mở đúng node
+   */
   const renderButton = () => (
     <Button
       variant="ghost"
@@ -57,6 +58,11 @@ const SidebarNode = ({
       onMouseEnter={() => {
         setOpen?.(true);
         setIsHover?.(true);
+
+        /**
+         * mở node hiện tại
+         */
+        setOpenItems([String(item.id)]);
       }}
       className={currentLink ? "text-custom-root" : ""}
     >
@@ -65,54 +71,85 @@ const SidebarNode = ({
   );
 
   const renderAccordionItem = () => (
-    <AccordionItem
-      value={String(item.id)}
-      onMouseEnter={open && !isHover ? undefined : handleMouseEnter}
-      onMouseLeave={open && !isHover ? undefined : handleMouseLeave}
-    >
-      <AccordionTrigger>
-        <div
-          className={`flex items-center gap-2 ${
-            currentLink ? "text-custom-darkroot" : ""
-          }`}
-        >
+    <AccordionItem value={String(item.id)} className="border-none">
+      <AccordionTrigger
+        className={`
+          py-2
+          hover:no-underline
+          flex
+          items-center
+          justify-between
+          px-2
+
+          ${currentLink ? "text-custom-darkroot" : ""}
+        `}
+      >
+        <div className="flex items-center gap-2">
           {IconComp && <IconComp className="w-5 h-5" />}
-          {item.title}
+
+          <span>{item.title}</span>
         </div>
       </AccordionTrigger>
 
-      <AccordionContent className="flex flex-col">
+      <AccordionContent className="pb-0">
         {item.categories?.map((category) => (
           <Link
             key={category.id}
             href={category.link}
-            className={`ml-8 py-1 cursor-pointer ${
-              currentPathname === category.link ? "text-custom-root" : ""
-            }`}
+            className={`
+                  flex
+                  items-center
+                  ml-8
+                  py-1.5
+                  text-sm
+                  hover:text-custom-root
+
+                  ${
+                    currentPathname === category.link
+                      ? "text-custom-root font-medium"
+                      : ""
+                  }
+                `}
           >
             {category.name}
           </Link>
         ))}
+
+        {item.children && (
+          <div
+            className="
+                ml-5
+                pl-3
+                border-l
+                border-muted
+              "
+          >
+            {item.children.map((child) => (
+              <SidebarNode
+                key={child.id}
+                item={child}
+                isCollapse={false}
+                open={open}
+                setOpen={setOpen}
+                setIsHover={setIsHover}
+                isHover={isHover}
+                openItems={openItems}
+                setOpenItems={setOpenItems}
+                currentPathname={currentPathname}
+              />
+            ))}
+          </div>
+        )}
       </AccordionContent>
     </AccordionItem>
   );
 
-  const accordionProps =
-    open && !isHover
-      ? {
-          type: "multiple" as const,
-          value: openItems,
-          onValueChange: setOpenItems,
-        }
-      : {
-          type: "single" as const,
-          value: openItems[0],
-          collapsible: true,
-          onValueChange: (value: string) => setOpenItems(value ? [value] : []),
-        };
-
+  /**
+   * Luôn dùng multiple
+   * vì tree có nhiều tầng
+   */
   return (
-    <Accordion {...accordionProps}>
+    <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
       {isCollapse ? renderButton() : renderAccordionItem()}
     </Accordion>
   );

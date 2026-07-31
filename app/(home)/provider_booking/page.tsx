@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { createProviderBookingHandlers } from "./features/handlers";
 import { createProviderBookingActions } from "./features/actions";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
+import LoadingPage from "@/components/ui/loading-page";
+import ErrorPage from "@/components/ui/error-page";
 
 const ProviderBooking = () => {
   const deleteMutation = useDeleteProviderBooking();
@@ -28,11 +30,11 @@ const ProviderBooking = () => {
   });
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   if (error) {
-    return <div>Đã xảy ra lỗi.</div>;
+    return <ErrorPage />;
   }
   return (
     <>

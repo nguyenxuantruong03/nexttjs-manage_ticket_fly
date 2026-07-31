@@ -17,14 +17,7 @@ export const defaultCarRentalValues: CarRentalFormSchema = {
   driverOption: DriverOption.with_driver,
 
   name: "",
-
-  slug: "",
-
-  aliases: [],
-
-  keywords: [],
-
-  searchText: "",
+  tagIds: [],
 
   featured: false,
 

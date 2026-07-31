@@ -8,6 +8,14 @@ import { AirportTransferRouteType } from "@/types/bookings/airport-transfer/enum
 
 import { WeekDay } from "@/types/common/enums";
 import { AirportTransferFormSchema } from "../schema/core/schema";
+import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+import { Address } from "@/types/bookings/location/address";
+import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";
+import { Country } from "@/types/bookings/location/country";
+import { City } from "@/types/bookings/location/city";
+import { District } from "@/types/bookings/location/district";
+import { Ward } from "@/types/bookings/location/ward";
+import { EntityOption } from "@/components/entity-selector";
 
 const routeTypeOptions = Object.values(AirportTransferRouteType).map(
   (value) => ({
@@ -21,7 +29,28 @@ const weekDayOptions = Object.values(WeekDay).map((value) => ({
   value,
 }));
 
-export default function RouteStep() {
+interface RouteStepProps {
+  addresses: Address[];
+  countries: Country[];
+  cities: City[];
+  districts: District[];
+  wards: Ward[];
+}
+
+export default function RouteStep({
+  addresses,
+  countries,
+  cities,
+  districts,
+  wards,
+}: RouteStepProps) {
+  const addressOptions: EntityOption<Address>[] = addresses.map((address) => ({
+    value: address.id,
+    label:
+      address.name ?? `${address.street ?? ""} ${address.houseNumber ?? ""}`,
+    description: address.city?.name,
+    data: address,
+  }));
   return (
     <>
       {/* Route */}
@@ -36,16 +65,44 @@ export default function RouteStep() {
             options={routeTypeOptions}
           />
 
-          <FormInput<AirportTransferFormSchema>
+          <FormEntitySelector<AirportTransferFormSchema, Address>
             name="routes.0.departureAddressId"
-            label="Departure Address ID"
-            placeholder="Enter departure address ID"
+            label="Departure Address"
+            placeholder="Enter departure address..."
+            searchPlaceholder="Search departure address..."
+            emptyText="No address found"
+            createText="Create address"
+            options={addressOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <AddressCreateDialog
+                {...props}
+                countries={countries}
+                cities={cities}
+                districts={districts}
+                wards={wards}
+              />
+            )}
           />
 
-          <FormInput<AirportTransferFormSchema>
+          <FormEntitySelector<AirportTransferFormSchema, Address>
             name="routes.0.arrivalAddressId"
-            label="Arrival Address ID"
-            placeholder="Enter arrival address ID"
+            label="Arrival Address"
+            placeholder="Enter arrival address..."
+            searchPlaceholder="Search arrival address..."
+            emptyText="No address found"
+            createText="Create address"
+            options={addressOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <AddressCreateDialog
+                {...props}
+                countries={countries}
+                cities={cities}
+                districts={districts}
+                wards={wards}
+              />
+            )}
           />
 
           <FormInput<AirportTransferFormSchema>
@@ -76,6 +133,25 @@ export default function RouteStep() {
             name="routes.0.stops.0.addressId"
             label="Stop Address ID"
             placeholder="Enter stop address ID"
+          />
+          <FormEntitySelector<AirportTransferFormSchema, Address>
+            name="routes.0.stops.0.addressId"
+            label="Stop Address"
+            placeholder="Enter Stop Address..."
+            searchPlaceholder="Search Stop Address..."
+            emptyText="No address found"
+            createText="Create address"
+            options={addressOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <AddressCreateDialog
+                {...props}
+                countries={countries}
+                cities={cities}
+                districts={districts}
+                wards={wards}
+              />
+            )}
           />
 
           <FormInput<AirportTransferFormSchema>

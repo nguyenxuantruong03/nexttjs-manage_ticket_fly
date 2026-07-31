@@ -43,15 +43,7 @@ export interface Yacht {
 
   name: string;
 
-  slug: string;
-
-  aliases: string[];
-
-  keywords: string[];
-
-  tags: string[];
-
-  searchText?: string | null;
+  tagIds: string[];
 
   featured: boolean;
 

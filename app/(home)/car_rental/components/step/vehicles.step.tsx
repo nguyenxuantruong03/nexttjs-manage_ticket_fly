@@ -13,6 +13,22 @@ import {
   RentalVehicleCondition,
 } from "@/types/bookings/car_rental/enums";
 import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
+import { Address } from "@/types/bookings/location/address";
+import { Country } from "@/types/bookings/location/country";
+import { City } from "@/types/bookings/location/city";
+import { District } from "@/types/bookings/location/district";
+import { Ward } from "@/types/bookings/location/ward";
+import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";
+import { EntityOption } from "@/components/entity-selector";
+import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+
+interface VehiclesStepProps {
+  addresses: Address[];
+  countries: Country[];
+  cities: City[];
+  districts: District[];
+  wards: Ward[];
+}
 
 const vehicleTypeOptions = Object.values(RentalVehicleType).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
@@ -41,7 +57,21 @@ const conditionOptions = Object.values(RentalVehicleCondition).map((value) => ({
   value,
 }));
 
-export default function VehiclesStep() {
+export default function VehiclesStep({
+  addresses,
+  countries,
+  cities,
+  districts,
+  wards,
+}: VehiclesStepProps) {
+  const addressOptions: EntityOption<Address>[] = addresses.map((address) => ({
+    value: address.id,
+    label:
+      address.name ?? `${address.street ?? ""} ${address.houseNumber ?? ""}`,
+    description: address.city?.name,
+    data: address,
+  }));
+
   return (
     <>
       <FormSection
@@ -52,6 +82,26 @@ export default function VehiclesStep() {
           <FormSwitch<CarRentalFormSchema>
             name="vehicle.0.active"
             label="Active"
+          />
+
+          <FormEntitySelector<CarRentalFormSchema, Address>
+            name="vehicle.0.locationCurrent.addressId"
+            label="Address"
+            placeholder="Search address..."
+            searchPlaceholder="Search address..."
+            emptyText="No address found"
+            createText="Create address"
+            options={addressOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <AddressCreateDialog
+                {...props}
+                countries={countries}
+                cities={cities}
+                districts={districts}
+                wards={wards}
+              />
+            )}
           />
 
           <FormSelect<CarRentalFormSchema>

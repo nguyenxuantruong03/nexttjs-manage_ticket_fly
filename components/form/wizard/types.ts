@@ -56,10 +56,15 @@ export interface FormWizardContextType<
    */
   loading: boolean;
 
-   /**
+  /**
    * Edit/View mode
    */
   unlockAll: boolean;
+
+  /**
+   * Reset wizard state
+   */
+  onResetReady?: (reset: () => void) => void;
 
   /**
    * Wizard steps

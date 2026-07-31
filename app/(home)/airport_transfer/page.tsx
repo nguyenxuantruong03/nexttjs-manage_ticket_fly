@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { createAirportTransferActions } from "./features/actions";
 import { createAirportTransferHandlers } from "./features/handlers";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
+import LoadingPage from "@/components/ui/loading-page";
+import ErrorPage from "@/components/ui/error-page";
 
 const AirportTransferPage = () => {
   const deleteMutation = useDeleteAirportTransfer();
@@ -28,11 +30,11 @@ const AirportTransferPage = () => {
   });
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   if (error) {
-    return <div>Đã xảy ra lỗi.</div>;
+    return <ErrorPage />;
   }
   return (
     <>

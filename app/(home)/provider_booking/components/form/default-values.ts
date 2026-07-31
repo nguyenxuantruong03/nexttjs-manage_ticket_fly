@@ -29,14 +29,7 @@ export const providerBookingDefaultValues: ProviderBookingFormSchema = {
   hotline: "",
   website: "",
 
-  address: "",
-  city: "",
-  state: "",
-  country: "",
-  postalCode: "",
-
-  latitude: undefined,
-  longitude: undefined,
+  addressId: "",
 
   facebook: "",
   instagram: "",

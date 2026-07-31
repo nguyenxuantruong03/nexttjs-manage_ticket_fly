@@ -1,22 +1,32 @@
+// hotel-availability-calendar.type.ts
+
+import { HotelAvailability } from "./availability.types";
 
 export interface HotelAvailabilityCalendar {
   id: string;
 
   availabilityId: string;
+  availability: HotelAvailability;
 
   date: Date;
 
-  available: boolean;
+  totalRooms?: number | null;
 
-  remainingRooms?: number | null;
+  remainingRooms: number;
+
+  available: boolean;
 
   priceOverride?: number | null;
 
-  stopSell?: boolean | null;
+  stopSell: boolean;
+
+  closed: boolean;
 
   minimumStay?: number | null;
 
-  closedToArrival?: boolean | null;
+  closedToArrival: boolean;
 
-  closedToDeparture?: boolean | null;
+  closedToDeparture: boolean;
+
+  note?: string | null;
 }

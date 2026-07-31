@@ -1,13 +1,15 @@
+// hotel-availability.type.ts
+
 import { HotelAvailabilityCalendar } from "./calendar.types";
+import { HotelInventory } from "./inventory.types";
 
 export interface HotelAvailability {
   id: string;
 
   inventoryId: string;
+  inventory: HotelInventory;
 
-  isAvailable: boolean;
-
-  availableRooms?: number | null;
+  availableRooms: number;
 
   lastUpdated?: Date | null;
 

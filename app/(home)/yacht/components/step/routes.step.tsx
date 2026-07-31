@@ -6,9 +6,38 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { EntityOption } from "@/components/entity-selector";
+import { Address } from "@/types/bookings/location/address";
+import { Country } from "@/types/bookings/location/country";
+import { City } from "@/types/bookings/location/city";
+import { District } from "@/types/bookings/location/district";
+import { Ward } from "@/types/bookings/location/ward";
+import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";
+import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
+interface RoutesStepProps {
+  addresses: Address[];
+  countries: Country[];
+  cities: City[];
+  districts: District[];
+  wards: Ward[];
+}
 
-export default function RoutesStep() {
+export default function RoutesStep({
+  addresses,
+  countries,
+  cities,
+  districts,
+  wards,
+}: RoutesStepProps) {
+  const addressOptions: EntityOption<Address>[] = addresses.map((address) => ({
+    value: address.id,
+    label:
+      address.name ?? `${address.street ?? ""} ${address.houseNumber ?? ""}`,
+    description: address.city?.name,
+    data: address,
+  }));
+
   return (
     <>
       {/* ======================================================
@@ -73,9 +102,24 @@ export default function RoutesStep() {
             label="Stop Name"
           />
 
-          <FormInput<YachtFormSchema>
+          <FormEntitySelector<YachtFormSchema, Address>
             name="routes.0.stops.0.addressId"
-            label="Address ID"
+            label="Address Stop"
+            placeholder="Search address..."
+            searchPlaceholder="Search address..."
+            emptyText="No address found"
+            createText="Create address"
+            options={addressOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <AddressCreateDialog
+                {...props}
+                countries={countries}
+                cities={cities}
+                districts={districts}
+                wards={wards}
+              />
+            )}
           />
 
           <FormInput<YachtFormSchema>

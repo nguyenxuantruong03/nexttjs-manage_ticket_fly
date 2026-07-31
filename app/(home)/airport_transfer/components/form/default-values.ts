@@ -169,15 +169,7 @@ export const airportTransferDefaultValues = {
 
   name: "",
 
-  slug: "",
-
-  aliases: [],
-
-  keywords: [],
-
-  tags: [],
-
-  searchText: "",
+  tagIds: [],
 
   featured: false,
 

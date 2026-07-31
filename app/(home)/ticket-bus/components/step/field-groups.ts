@@ -10,14 +10,10 @@ export const busFieldGroups: Record<string, readonly BusFieldPath[]> = {
   basic: [
     "providerBookingId",
     "name",
-    "slug",
     "searchPriority",
-    "searchText",
     "active",
     "featured",
-    "aliases",
-    "keywords",
-    "tags",
+    "tagIds",
   ],
 
   // ======================================================

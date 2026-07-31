@@ -2,18 +2,14 @@ export const airportTransferFieldGroups = {
   basic: [
     "providerBookingId",
     "name",
-    "slug",
     "serviceType",
     "instantConfirmation",
     "active",
 
-    "searchText",
     "searchPriority",
     "featured",
     "searchable",
-    "aliases",
-    "keywords",
-    "tags",
+    "tagIds",
 
     "capacity.maxTripsPerDay",
     "capacity.maxVehiclesPerDay",

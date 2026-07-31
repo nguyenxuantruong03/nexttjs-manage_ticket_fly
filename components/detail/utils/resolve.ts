@@ -26,8 +26,6 @@ export function resolveSubtitle(data: Record<string, any>) {
 
     "icaoCode",
 
-    "slug",
-
     "symbol",
 
     "legalName",

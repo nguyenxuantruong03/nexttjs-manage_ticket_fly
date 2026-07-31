@@ -20,13 +20,9 @@ export const BusSchema = z.object({
 
   // Search Metadata
   name: z.string(),
-  slug: z.string(),
-  aliases: z.array(z.string()),
-  keywords: z.array(z.string()),
-  searchText: z.string().optional(),
   featured: z.boolean(),
-  tags: z.array(z.string()),
-  searchPriority: z.number(),
+  tagIds: z.array(z.string()).default([]),
+  searchPriority: z.coerce.number().default(0),
 });
 
 export type BusFormSchema = z.infer<typeof BusSchema>;

@@ -35,12 +35,32 @@ import { useSearchParams } from "next/navigation";
 import { DraftEntity } from "@/components/daft/draft-config";
 import { CarRental } from "@/types/bookings/car_rental/core/car-rental.types";
 import { initCarRentalFormValues } from "./form/init-value";
+import { SearchTag } from "@/types/bookings/search/tag.types";
+import { Address } from "@/types/bookings/location/address";
+import { Country } from "@/types/bookings/location/country";
+import { City } from "@/types/bookings/location/city";
+import { District } from "@/types/bookings/location/district";
+import { Ward } from "@/types/bookings/location/ward";
 
 interface CarRentalFormProps {
   initialData?: CarRental;
+  searchTagData: SearchTag[];
+  addresses: Address[];
+  countries: Country[];
+  cities: City[];
+  districts: District[];
+  wards: Ward[];
 }
 
-export default function CarRentalForm({ initialData }: CarRentalFormProps) {
+export default function CarRentalForm({
+  initialData,
+  searchTagData,
+  addresses,
+  countries,
+  cities,
+  districts,
+  wards,
+}: CarRentalFormProps) {
   const submit = useSubmit();
   const { setDirty } = useFormPage();
   const createCarRental = useCreateCarRental();
@@ -89,7 +109,7 @@ export default function CarRentalForm({ initialData }: CarRentalFormProps) {
 
     clearDraft();
 
-    form.reset(values);
+    form.reset(defaultCarRentalValues);
   };
 
   return (
@@ -105,12 +125,18 @@ export default function CarRentalForm({ initialData }: CarRentalFormProps) {
         <FormWizardContent>
           {/* BASIC */}
           <FormWizardStep index={0}>
-            <BasicStep />
+            <BasicStep searchTagData={searchTagData} />
           </FormWizardStep>
 
           {/* VEHICLES */}
           <FormWizardStep index={1}>
-            <VehiclesStep />
+            <VehiclesStep
+              addresses={addresses}
+              countries={countries}
+              cities={cities}
+              districts={districts}
+              wards={wards}
+            />
           </FormWizardStep>
 
           {/* IMAGES */}
@@ -120,7 +146,13 @@ export default function CarRentalForm({ initialData }: CarRentalFormProps) {
 
           {/* TRIP */}
           <FormWizardStep index={3}>
-            <TripStep />
+            <TripStep
+              addresses={addresses}
+              countries={countries}
+              cities={cities}
+              districts={districts}
+              wards={wards}
+            />
           </FormWizardStep>
 
           {/* PRICING */}

@@ -35,13 +35,31 @@ import { useSearchParams } from "next/navigation";
 import { DraftEntity } from "@/components/daft/draft-config";
 import { AirportTransfer } from "@/types/bookings/airport-transfer/core/airport-transfer.types";
 import { initAirportTransferFormValues } from "./form/init-value";
+import { SearchTag } from "@/types/bookings/search/tag.types";
+import { Address } from "@/types/bookings/location/address";
+import { Country } from "@/types/bookings/location/country";
+import { City } from "@/types/bookings/location/city";
+import { District } from "@/types/bookings/location/district";
+import { Ward } from "@/types/bookings/location/ward";
 
 interface AirportTransferFormProps {
   initialData?: AirportTransfer;
+  searchTagData: SearchTag[];
+  addresses: Address[];
+  countries: Country[];
+  cities: City[];
+  districts: District[];
+  wards: Ward[];
 }
 
 export default function AirportTransferForm({
   initialData,
+  searchTagData,
+  addresses,
+  countries,
+  cities,
+  districts,
+  wards,
 }: AirportTransferFormProps) {
   const submit = useSubmit();
 
@@ -87,13 +105,15 @@ export default function AirportTransferForm({
             data: values,
           })
         : createAirportTransfer.mutateAsync(values),
-      success: isUpdate ? "Airport Transfer updated" :"Airport Transfer created",
+      success: isUpdate
+        ? "Airport Transfer updated"
+        : "Airport Transfer created",
       redirect: "/airport-transfer",
     });
 
     clearDraft();
 
-    form.reset(values);
+    form.reset(airportTransferDefaultValues);
   };
 
   return (
@@ -102,17 +122,24 @@ export default function AirportTransferForm({
         form={form}
         steps={airportTransferSteps}
         loading={isSubmitting}
-        unlockAll={!!initialData}
+        // unlockAll={!!initialData}
+        unlockAll={true}
       >
         <FormWizardHeader steps={airportTransferSteps} />
 
         <FormWizardContent>
           <FormWizardStep index={0}>
-            <BasicStep />
+            <BasicStep searchTagData={searchTagData} />
           </FormWizardStep>
 
           <FormWizardStep index={1}>
-            <RouteStep />
+            <RouteStep
+              addresses={addresses}
+              countries={countries}
+              cities={cities}
+              districts={districts}
+              wards={wards}
+            />
           </FormWizardStep>
 
           <FormWizardStep index={2}>

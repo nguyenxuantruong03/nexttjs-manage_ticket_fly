@@ -12,30 +12,11 @@ export const yachtFieldGroups: Record<string, readonly YachtFieldPath[]> = {
     "providerBookingId",
 
     "name",
-    "slug",
-
-    "searchText",
-    "searchPriority",
-
-    "aliases.0",
-    "keywords.0",
-    "tags.0",
-
     "notice.important",
     "notice.beforeBooking",
     "notice.afterBooking",
     "notice.safetyNotice",
-
     "active",
-    "featured",
-    "searchable",
-
-    "marina.0.name",
-    "marina.0.addressId",
-    "marina.0.city",
-    "marina.0.country",
-    "marina.0.contactPhone",
-    "marina.0.operatingHours",
   ],
 
   // ======================================================
@@ -375,16 +356,9 @@ export const yachtFieldGroups: Record<string, readonly YachtFieldPath[]> = {
     "active",
     "featured",
     "searchable",
-
     "searchPriority",
-
     "name",
-    "slug",
-    "searchText",
-
-    "aliases.0",
-    "keywords.0",
-    "tags.0",
+    "tagIds",
 
     "providerBookingId",
   ],

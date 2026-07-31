@@ -11,10 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import {
-  SIDEBARCONTENTICONS,
-  SIDEBARCONTENTITEMS,
-} from "@/components/Sidebar/items";
+import { SIDEBARCONTENTITEMS } from "@/components/Sidebar/items";
 import {
   Accordion,
   AccordionContent,
@@ -25,6 +22,7 @@ import { User } from "@/types/bookings/auth/users";
 import { UserMenu } from "@/components/menuUser/userMenu";
 import { UserButton } from "../menuUser/userButton";
 import { handleLogout } from "@/lib/logout";
+import { SIDEBARCONTENTICONS } from "../Sidebar/icon";
 interface NavbarProps {
   user: User;
 }

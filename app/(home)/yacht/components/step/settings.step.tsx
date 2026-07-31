@@ -4,11 +4,17 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { FormInput, FormSwitch } from "@/components/form/form-data";
+import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { SEARCH_PRIORITY_OPTIONS } from "@/types/bookings/search-prioty-score";
+import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
+import { SearchTag } from "@/types/bookings/search/tag.types";
 
+interface SettingStepProps {
+  searchTagData: SearchTag[];
+}
 
-export default function SettingsStep() {
+export default function SettingsStep({searchTagData}:SettingStepProps) {
   return (
     <>
       {/* ======================================================
@@ -26,10 +32,11 @@ export default function SettingsStep() {
 
           <FormSwitch<YachtFormSchema> name="searchable" label="Searchable" />
 
-          <FormInput<YachtFormSchema>
+          <FormSelect<YachtFormSchema>
             name="searchPriority"
             label="Search Priority"
-            type="number"
+            placeholder="Select search priority"
+            options={SEARCH_PRIORITY_OPTIONS}
           />
         </div>
       </FormSection>
@@ -45,15 +52,16 @@ export default function SettingsStep() {
         <div className="grid gap-6 md:grid-cols-2">
           <FormInput<YachtFormSchema> name="name" label="Yacht Name" />
 
-          <FormInput<YachtFormSchema> name="slug" label="Slug" />
-
-          <FormInput<YachtFormSchema> name="searchText" label="Search Text" />
-
-          <FormInput<YachtFormSchema> name="aliases.0" label="Alias" />
-
-          <FormInput<YachtFormSchema> name="keywords.0" label="Keyword" />
-
-          <FormInput<YachtFormSchema> name="tags.0" label="Tag" />
+          <FormMultiCombobox<YachtFormSchema>
+            name="tagIds"
+            label="Tags"
+            placeholder="Select tags..."
+            searchPlaceholder="Search tags..."
+            options={searchTagData.map((tag) => ({
+              label: tag.name,
+              value: tag.id,
+            }))}
+          />
         </div>
       </FormSection>
 

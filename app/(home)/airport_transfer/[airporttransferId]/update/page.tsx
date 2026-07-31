@@ -1,16 +1,37 @@
-import { AirportTransferServerService } from "@/services/airport-transfer/server";
+"use client";
+
+import { useParams } from "next/navigation";
+
 import AirportTransferForm from "../../components/AirrportTransferForm";
+import { useAirportTransferUpdateFormData } from "@/hooks/airport-transfer/useAirportTransferUpdateFormData";
+import LoadingPage from "@/components/ui/loading-page";
+import ErrorPage from "@/components/ui/error-page";
 
-type Props = {
-  params: Promise<{
-    airporttransferId: string;
-  }>;
-};
+export default function AirportTransferEditPage() {
+  const params = useParams();
 
-export default async function AirportTransferEditPage({ params }: Props) {
-  const { airporttransferId } = await params;
-  const airportTransferData =
-    await AirportTransferServerService.getOne(airporttransferId);
+  const airportTransferId = params.airporttransferId as string;
 
-  return <AirportTransferForm initialData={airportTransferData} />;
+  const { data, isLoading, error } =
+    useAirportTransferUpdateFormData(airportTransferId);
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  if (error || !data) {
+    return <ErrorPage />;
+  }
+
+  return (
+    <AirportTransferForm
+      initialData={data.initialData}
+      searchTagData={data.searchTagData}
+      addresses={data.addresses}
+      countries={data.countries}
+      cities={data.cities}
+      districts={data.districts}
+      wards={data.wards}
+    />
+  );
 }

@@ -3,12 +3,14 @@
 // ======================================================
 
 import { City, Continent } from "./city";
+import { Timezone } from "./timezone";
 
 // ======================================================
 // COUNTRY
 // ======================================================
 
 export interface Country {
+  currencyId: string;
   id: string;
 
   // ======================================================
@@ -18,8 +20,6 @@ export interface Country {
   name: string;
 
   officialName?: string;
-
-  slug: string;
 
   code: string;
 
@@ -37,9 +37,10 @@ export interface Country {
 
   continent: Continent;
 
-  timezone?: string;
+  timezoneId?: string;
+  timezone?: Timezone;
 
-  languages: string[];
+  languageIds: string[];
 
   // ======================================================
   // MEDIA
@@ -55,11 +56,9 @@ export interface Country {
   // SEARCH
   // ======================================================
 
-  aliases: string[];
+  tagIds: string[];
 
-  keywords: string[];
-
-  priority: number;
+  searchPriority: number;
 
   featured: boolean;
 

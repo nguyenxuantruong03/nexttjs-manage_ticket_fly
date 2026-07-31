@@ -12,7 +12,6 @@ import { CarRentalBusinessHour } from "./business-hour.types";
 import { CarRentalFavorite } from "../favorite/favorite.types";
 import { CarRentalImage } from "./image.types";
 
-
 export interface CarRental {
   id: string;
 
@@ -34,14 +33,7 @@ export interface CarRental {
 
   name: string;
 
-  slug: string;
-
-  aliases: string[];
-
-  keywords: string[];
-
-  searchText?: string;
-
+  tagIds: string[];
   featured: boolean;
 
   searchPriority: number;

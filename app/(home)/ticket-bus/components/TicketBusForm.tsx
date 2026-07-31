@@ -31,12 +31,32 @@ import { useFormDraft } from "@/hooks/useFormDraft";
 import { DraftEntity } from "@/components/daft/draft-config";
 import { Bus } from "@/types/bookings/bus/core/bus.types";
 import { initTicketBusFormValues } from "./form/init-value";
+import { SearchTag } from "@/types/bookings/search/tag.types";
+import { Address } from "@/types/bookings/location/address";
+import { Country } from "@/types/bookings/location/country";
+import { City } from "@/types/bookings/location/city";
+import { District } from "@/types/bookings/location/district";
+import { Ward } from "@/types/bookings/location/ward";
 
 interface TicketBusFormProps {
   initialData?: Bus;
+  searchTagData: SearchTag[];
+  addresses: Address[];
+  countries: Country[];
+  cities: City[];
+  districts: District[];
+  wards: Ward[];
 }
 
-export default function TicketBusForm({ initialData }: TicketBusFormProps) {
+export default function TicketBusForm({
+  initialData,
+  searchTagData,
+  addresses,
+  countries,
+  cities,
+  districts,
+  wards,
+}: TicketBusFormProps) {
   const submit = useSubmit();
   const { setDirty } = useFormPage();
 
@@ -86,7 +106,7 @@ export default function TicketBusForm({ initialData }: TicketBusFormProps) {
 
     clearDraft();
 
-    form.reset(values);
+    form.reset(busDefaultValues);
   };
 
   return (
@@ -101,11 +121,17 @@ export default function TicketBusForm({ initialData }: TicketBusFormProps) {
 
         <FormWizardContent>
           <FormWizardStep index={0}>
-            <BasicStep />
+            <BasicStep searchTagData={searchTagData} />
           </FormWizardStep>
 
           <FormWizardStep index={1}>
-            <RoutesStep />
+            <RoutesStep
+              addresses={addresses}
+              countries={countries}
+              cities={cities}
+              districts={districts}
+              wards={wards}
+            />
           </FormWizardStep>
 
           <FormWizardStep index={2}>

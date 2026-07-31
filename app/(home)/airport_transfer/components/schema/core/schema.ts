@@ -57,21 +57,13 @@ export const AirportTransferSchema = z.object({
 
   name: z.string().min(1),
 
-  slug: z.string().min(1),
-
-  aliases: z.array(z.string()),
-
-  keywords: z.array(z.string()),
-
-  tags: z.array(z.string()),
-
-  searchText: z.string().optional(),
+  tagIds: z.array(z.string()).default([]),
 
   featured: z.boolean(),
 
   searchable: z.boolean(),
 
-  searchPriority: z.number(),
+  searchPriority: z.coerce.number().default(0),
 });
 
 export type AirportTransferFormSchema = z.infer<typeof AirportTransferSchema>;

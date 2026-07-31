@@ -18,7 +18,7 @@ export interface Bus {
 
   routes: BusRoute[];
   policies?: BusPolicies;
-  vehicles?: BusVehicle[]
+  vehicles?: BusVehicle[];
   reviews: BusReview[];
   images: BusImage[];
   favorites: BusFavorite[];
@@ -30,17 +30,9 @@ export interface Bus {
   // Search Metadata
   name: string;
 
-  slug: string;
-
-  aliases: string[];
-
-  keywords: string[];
-
-  searchText?: string;
-
   featured: boolean;
 
-  tags: string[];
+  tagIds: string[];
 
   searchPriority: number;
 

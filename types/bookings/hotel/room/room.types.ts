@@ -1,57 +1,116 @@
-import { BathroomType, BedType, MealPlan, RoomViewType, SmokingPolicy } from "../enum/enums";
-import { HotelRoomFacilities } from "./room-facilities.types";
-import { HotelRoomImage } from "./room-image.types";
+// bathroom-type.type.ts
 
-export interface HotelRoom {
+import { HotelFacility } from "../facilities.types";
+import { HotelRoomType } from "./room-type.types";
+
+export interface BathroomType {
   id: string;
-
-  roomTypeId: string;
-
-  roomFacilities?: HotelRoomFacilities | null;
-
-  active: boolean;
 
   name: string;
 
   description?: string | null;
 
-  roomSize?: number | null;
+  icon?: string | null;
 
-  bedTypes: BedType[];
+  rooms: HotelRoomType[];
 
-  maxGuests?: number | null;
+  active: boolean;
 
-  maxAdults?: number | null;
+  sortOrder: number;
 
-  maxChildren?: number | null;
+  createdAt: Date;
 
-  totalRooms?: number | null;
+  updatedAt: Date;
+}
 
-  breakfastIncluded?: boolean | null;
+export interface RoomView {
+  id: string;
 
-  smokingPolicy?: SmokingPolicy | null;
+  name: string;
 
-  mealPlan?: MealPlan | null;
+  
 
-  bedCount?: number | null;
+  description?: string | null;
 
-  bathroomCount?: number | null;
+  icon?: string | null;
 
-  viewType?: RoomViewType | null;
+  rooms: HotelRoomType[];
 
-  bathRoomType?: BathroomType | null;
+  active: boolean;
 
-  roomImage: HotelRoomImage[];
+  sortOrder: number;
 
-  floor?: number | null;
+  createdAt: Date;
 
-  soundproof?: boolean | null;
+  updatedAt: Date;
+}
 
-  nonSmoking?: boolean | null;
+export interface BedType {
+  id: string;
 
-  airConditioning?: boolean | null;
+  name: string;
 
-  kitchenette?: boolean | null;
+  description?: string | null;
 
-  privateBathroom?: boolean | null;
+  icon?: string | null;
+
+  rooms: HotelRoomTypeBedType[];
+
+  active: boolean;
+
+  sortOrder: number;
+
+  createdAt: Date;
+
+  updatedAt: Date;
+}
+
+export interface HotelRoomTypeBedType {
+  id: string;
+
+  roomTypeId: string;
+  roomType: HotelRoomType;
+
+  bedTypeId: string;
+  bedType: BedType;
+
+  quantity: number;
+
+  createdAt: Date;
+}
+
+export interface RoomCategory {
+  id: string;
+
+  name: string;
+
+  
+
+  description?: string | null;
+
+  icon?: string | null;
+
+  rooms: HotelRoomType[];
+
+  active: boolean;
+
+  sortOrder: number;
+
+  createdAt: Date;
+
+  updatedAt: Date;
+}
+
+export interface RoomFacility {
+  id: string;
+
+  roomTypeId: string;
+  roomType: HotelRoomType;
+
+  facilityId: string;
+  facility: HotelFacility;
+
+  quantity?: number | null;
+
+  note?: string | null;
 }

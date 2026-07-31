@@ -6,8 +6,37 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 
 import { BusFormSchema } from "../schema/core/bus.schema";
+import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+import { Address } from "@/types/bookings/location/address";
+import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";
+import { EntityOption } from "@/components/entity-selector";
+import { Country } from "@/types/bookings/location/country";
+import { City } from "@/types/bookings/location/city";
+import { District } from "@/types/bookings/location/district";
+import { Ward } from "@/types/bookings/location/ward";
 
-export default function RoutesStep() {
+interface RoutesStepProps {
+  addresses: Address[];
+  countries: Country[];
+  cities: City[];
+  districts: District[];
+  wards: Ward[];
+}
+
+export default function RoutesStep({
+  addresses,
+  countries,
+  cities,
+  districts,
+  wards,
+}: RoutesStepProps) {
+  const addressOptions: EntityOption<Address>[] = addresses.map((address) => ({
+    value: address.id,
+    label:
+      address.name ?? `${address.street ?? ""} ${address.houseNumber ?? ""}`,
+    description: address.city?.name,
+    data: address,
+  }));
   return (
     <>
       <FormSection
@@ -46,9 +75,24 @@ export default function RoutesStep() {
         description="Passenger boarding locations"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormSchema>
+          <FormEntitySelector<BusFormSchema, Address>
             name="routes.0.boardingPoints.0.addressId"
-            label="Address ID"
+            label="Boarding Point"
+            placeholder="Search address..."
+            searchPlaceholder="Search address..."
+            emptyText="No address found"
+            createText="Create address"
+            options={addressOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <AddressCreateDialog
+                {...props}
+                countries={countries}
+                cities={cities}
+                districts={districts}
+                wards={wards}
+              />
+            )}
           />
 
           <FormInput<BusFormSchema>
@@ -75,9 +119,24 @@ export default function RoutesStep() {
         description="Passenger drop-off locations"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormSchema>
+          <FormEntitySelector<BusFormSchema, Address>
             name="routes.0.dropoffPoints.0.addressId"
-            label="Address ID"
+            label="Drop off Point"
+            placeholder="Search address..."
+            searchPlaceholder="Search address..."
+            emptyText="No address found"
+            createText="Create address"
+            options={addressOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <AddressCreateDialog
+                {...props}
+                countries={countries}
+                cities={cities}
+                districts={districts}
+                wards={wards}
+              />
+            )}
           />
 
           <FormInput<BusFormSchema>
@@ -101,9 +160,24 @@ export default function RoutesStep() {
 
       <FormSection title="Route Stops" description="Intermediate stops">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormSchema>
+          <FormEntitySelector<BusFormSchema, Address>
             name="routes.0.trips.0.stops.0.addressId"
-            label="Address ID"
+            label="Address stop"
+            placeholder="Search address..."
+            searchPlaceholder="Search address..."
+            emptyText="No address found"
+            createText="Create address"
+            options={addressOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <AddressCreateDialog
+                {...props}
+                countries={countries}
+                cities={cities}
+                districts={districts}
+                wards={wards}
+              />
+            )}
           />
 
           <FormInput<BusFormSchema>

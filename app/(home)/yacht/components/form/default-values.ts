@@ -17,15 +17,7 @@ export const defaultYachtValues: YachtFormSchema = {
 
   name: "",
 
-  slug: "",
-
-  aliases: [],
-
-  keywords: [],
-
-  tags: [],
-
-  searchText: null,
+  tagIds: [],
 
   active: true,
 

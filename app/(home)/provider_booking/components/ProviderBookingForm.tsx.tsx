@@ -4,7 +4,6 @@ import { AppForm } from "@/components/form/form-data";
 import BasicSection from "./steps/BasicSection";
 import CompanySection from "./steps/CompanySection";
 import ContactSection from "./steps/ContactSection";
-import AddressSection from "./steps/AddressSection";
 import SocialSection from "./steps/SocialSection";
 import ServiceSection from "./steps/ServiceSection";
 import { ProviderBookingFormSchema, schema } from "./form/schema";
@@ -28,13 +27,31 @@ import { useFormDraft } from "@/hooks/useFormDraft";
 import { DraftEntity } from "@/components/daft/draft-config";
 import { ProviderBooking } from "@/types/bookings/provider-bookings";
 import { initProviderBookingFormValues } from "./form/init-value";
+import { User } from "@/types/bookings/auth/users";
+import { Address } from "@/types/bookings/location/address";
+import { Country } from "@/types/bookings/location/country";
+import { City } from "@/types/bookings/location/city";
+import { District } from "@/types/bookings/location/district";
+import { Ward } from "@/types/bookings/location/ward";
 
 interface ProviderBookingFormProps {
   initialData?: ProviderBooking;
+  userDatas: User[];
+  addresses: Address[];
+  countries: Country[];
+  cities: City[];
+  districts: District[];
+  wards: Ward[];
 }
 
 export default function ProviderBookingForm({
   initialData,
+  userDatas,
+  addresses,
+  countries,
+  cities,
+  districts,
+  wards,
 }: ProviderBookingFormProps) {
   const submit = useSubmit();
   const { setDirty } = useFormPage();
@@ -80,12 +97,12 @@ export default function ProviderBookingForm({
           })
         : createProviderBooking.mutateAsync(values),
       success: isUpdate ? "Provider updated" : "Provider created",
-      redirect: "/provider-booking",
+      redirect: "/provider_booking",
     });
 
     clearDraft();
 
-    form.reset(values);
+    form.reset(providerBookingDefaultValues);
   };
 
   return (
@@ -100,7 +117,14 @@ export default function ProviderBookingForm({
 
         <FormWizardContent>
           <FormWizardStep index={0}>
-            <BasicSection />
+            <BasicSection
+              userDatas={userDatas}
+              addresses={addresses}
+              countries={countries}
+              cities={cities}
+              districts={districts}
+              wards={wards}
+            />
           </FormWizardStep>
 
           <FormWizardStep index={1}>
@@ -112,14 +136,10 @@ export default function ProviderBookingForm({
           </FormWizardStep>
 
           <FormWizardStep index={3}>
-            <AddressSection />
-          </FormWizardStep>
-
-          <FormWizardStep index={4}>
             <SocialSection />
           </FormWizardStep>
 
-          <FormWizardStep index={5}>
+          <FormWizardStep index={4}>
             <ServiceSection />
           </FormWizardStep>
         </FormWizardContent>
