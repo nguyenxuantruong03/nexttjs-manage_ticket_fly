@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { createBusActions } from "./features/actions";
 import { createBusHandlers } from "./features/handlers";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
+import ErrorPage from "@/components/ui/error-page";
+import LoadingPage from "@/components/ui/loading-page";
 
 const TicketBusPage = () => {
   const deleteMutation = useDeleteBus();
@@ -25,11 +27,11 @@ const TicketBusPage = () => {
   });
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <LoadingPage />;
   }
 
   if (error) {
-    return <div>Đã xảy ra lỗi.</div>;
+    return <ErrorPage />;
   }
   return (
     <>

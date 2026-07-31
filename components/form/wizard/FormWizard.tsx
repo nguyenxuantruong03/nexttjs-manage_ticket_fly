@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
 
@@ -12,8 +18,11 @@ import {
 
 interface Props<TFieldValues extends FieldValues> {
   form: UseFormReturn<TFieldValues>;
+
   steps: FormWizardStep<TFieldValues>[];
+
   children: React.ReactNode;
+
   loading?: boolean;
 
   /**
@@ -21,6 +30,8 @@ interface Props<TFieldValues extends FieldValues> {
    * Unlock every step
    */
   unlockAll?: boolean;
+
+  onResetReady?: (reset: () => void) => void;
 }
 
 export const FormWizardContext =
@@ -32,9 +43,11 @@ export default function FormWizard<TFieldValues extends FieldValues>({
   children,
   loading = false,
   unlockAll = false,
+  onResetReady,
 }: Props<TFieldValues>) {
   /**
-   * Current step
+   * Internal step state
+   * Used when component is uncontrolled
    */
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -121,34 +134,23 @@ export default function FormWizard<TFieldValues extends FieldValues>({
   const isStepVisited = (index: number) => {
     return visitedSteps.has(index);
   };
+
   /**
    * Step disabled
    */
   const isStepDisabled = (index: number) => {
-    /**
-     * Loading
-     */
     if (loading) {
       return true;
     }
 
-    /**
-     * Edit / View
-     */
     if (unlockAll) {
       return false;
     }
 
-    /**
-     * First step
-     */
     if (index === 0) {
       return false;
     }
 
-    /**
-     * Previous step must completed
-     */
     return !completedSteps.has(index - 1);
   };
 
@@ -161,32 +163,21 @@ export default function FormWizard<TFieldValues extends FieldValues>({
     const hasError =
       step.fields?.some((field) => form.getFieldState(field).invalid) ?? false;
 
-    /**
-     * Current
-     */
     if (index === currentStep) {
       return hasError ? "error" : "current";
     }
 
-    /**
-     * Completed
-     */
     if (unlockAll || completedSteps.has(index)) {
       return hasError ? "error" : "completed";
     }
 
-    /**
-     * Disabled
-     */
     if (isStepDisabled(index)) {
       return "disabled";
     }
 
-    /**
-     * Pending
-     */
     return "pending";
   };
+
   /**
    * Next
    */
@@ -197,9 +188,6 @@ export default function FormWizard<TFieldValues extends FieldValues>({
       return;
     }
 
-    /**
-     * Mark current step completed
-     */
     setCompletedSteps((prev) => {
       const next = new Set(prev);
 
@@ -208,9 +196,6 @@ export default function FormWizard<TFieldValues extends FieldValues>({
       return next;
     });
 
-    /**
-     * Unlock next step
-     */
     setVisitedSteps((prev) => {
       const next = new Set(prev);
 
@@ -221,17 +206,18 @@ export default function FormWizard<TFieldValues extends FieldValues>({
       return next;
     });
 
-    /**
-     * Move next
-     */
-    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+    setCurrentStep((prev) => {
+      return Math.min(prev + 1, steps.length - 1);
+    });
   };
 
   /**
    * Previous
    */
   const previous = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
+    setCurrentStep((prev) => {
+      return Math.max(prev - 1, 0);
+    });
   };
 
   /**
@@ -257,6 +243,22 @@ export default function FormWizard<TFieldValues extends FieldValues>({
     setCurrentStep(index);
   };
 
+  const resetWizard = useCallback(() => {
+    setCurrentStep(0);
+
+    setCompletedSteps(new Set());
+
+    setVisitedSteps(new Set([0]));
+  }, []);
+
+  useEffect(() => {
+    if (!onResetReady) {
+      return;
+    }
+
+    onResetReady(resetWizard);
+  }, [onResetReady, resetWizard]);
+
   const value = useMemo<FormWizardContextType<TFieldValues>>(
     () => ({
       form,
@@ -278,7 +280,9 @@ export default function FormWizard<TFieldValues extends FieldValues>({
       previous,
 
       goTo,
+
       unlockAll,
+
       isFirstStep: currentStep === 0,
 
       isLastStep: currentStep === steps.length - 1,
@@ -295,7 +299,17 @@ export default function FormWizard<TFieldValues extends FieldValues>({
 
       isStepVisited,
     }),
-    [form, loading, steps, currentStep, completedSteps, visitedSteps, errors,  unlockAll],
+
+    [
+      form,
+      loading,
+      steps,
+      currentStep,
+      completedSteps,
+      visitedSteps,
+      unlockAll,
+      errors,
+    ],
   );
 
   return (

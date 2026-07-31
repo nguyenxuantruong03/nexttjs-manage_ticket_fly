@@ -2,7 +2,6 @@ import {
   Building2,
   Contact,
   Globe,
-  MapPin,
   Settings,
   User,
 } from "lucide-react";
@@ -48,18 +47,6 @@ export const providerBookingSteps: FormWizardStep<ProviderBookingFormSchema>[] =
       icon: Contact,
 
       fields: providerBookingFieldGroups.contact,
-    },
-
-    {
-      id: "address",
-
-      title: "Address",
-
-      description: "Provider address information",
-
-      icon: MapPin,
-
-      fields: providerBookingFieldGroups.address,
     },
 
     {

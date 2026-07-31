@@ -16,6 +16,7 @@ export const providerBookingFieldGroups: Record<
     "description",
     "logo",
     "banner",
+    "addressId"
   ],
 
   company: [
@@ -28,16 +29,6 @@ export const providerBookingFieldGroups: Record<
   ],
 
   contact: ["email", "phone", "hotline", "website"],
-
-  address: [
-    "address",
-    "city",
-    "state",
-    "country",
-    "postalCode",
-    "latitude",
-    "longitude",
-  ],
 
   social: ["facebook", "instagram", "youtube", "linkedin"],
 

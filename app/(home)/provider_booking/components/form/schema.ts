@@ -19,9 +19,8 @@ export const schema = z.object({
 
   description: z.string().nullable().optional(),
 
-  logo: z.string().url().nullable().optional().or(z.literal("")),
-
-  banner: z.string().url().nullable().optional().or(z.literal("")),
+  logo: z.string().nullable().optional(),
+  banner: z.string().nullable().optional(),
 
   // ======================
   // COMPANY
@@ -55,19 +54,7 @@ export const schema = z.object({
   // ADDRESS
   // ======================
 
-  address: z.string().optional(),
-
-  city: z.string().nullable().optional(),
-
-  state: z.string().nullable().optional(),
-
-  country: z.string().nullable().optional(),
-
-  postalCode: z.string().nullable().optional(),
-
-  latitude: z.coerce.number().nullable().optional(),
-
-  longitude: z.coerce.number().nullable().optional(),
+  addressId: z.string().nullable().optional(),
 
   // ======================
   // SOCIAL

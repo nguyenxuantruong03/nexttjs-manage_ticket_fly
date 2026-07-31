@@ -26,14 +26,9 @@ export const busDefaultValues: BusFormSchema = {
   // Search
   // ==========================
   name: "",
-  slug: "",
-  aliases: [],
-  keywords: [],
-  searchText: "",
   featured: false,
-  tags: [],
+  tagIds: [],
   searchPriority: 0,
-
   // ==========================
   // Routes
   // ==========================

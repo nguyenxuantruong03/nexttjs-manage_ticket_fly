@@ -7,20 +7,25 @@ import { FormInput, FormSwitch, FormSelect } from "@/components/form/form-data";
 
 import { DriverOption } from "@/types/bookings/car_rental/enums";
 import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
+import { SEARCH_PRIORITY_OPTIONS } from "@/types/bookings/search-prioty-score";
+import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
+import { SearchTag } from "@/types/bookings/search/tag.types";
+
+interface BasicStepProps {
+  searchTagData: SearchTag[];
+}
 
 const driverOptionOptions = Object.values(DriverOption).map((value) => ({
   label: value.replace(/_/g, " ").toUpperCase(),
   value,
 }));
 
-export default function BasicStep() {
+export default function BasicStep({ searchTagData }: BasicStepProps) {
   return (
     <>
       <FormSection title="Car Rental" description="General rental information">
         <div className="grid gap-6 md:grid-cols-2">
           <FormInput<CarRentalFormSchema> name="name" label="Rental Name" />
-
-          <FormInput<CarRentalFormSchema> name="slug" label="Slug" />
 
           <FormSelect<CarRentalFormSchema>
             name="driverOption"
@@ -33,34 +38,26 @@ export default function BasicStep() {
             label="Provider Booking ID"
           />
 
-          <FormInput<CarRentalFormSchema>
-            name="searchText"
-            label="Search Text"
-          />
-
-          <FormInput<CarRentalFormSchema>
+          <FormSelect<CarRentalFormSchema>
             name="searchPriority"
             label="Search Priority"
-            type="number"
+            placeholder="Select search priority"
+            options={SEARCH_PRIORITY_OPTIONS}
           />
         </div>
       </FormSection>
 
-      <FormSection
-        title="Search Metadata"
-        description="Search aliases and keywords"
-      >
+      <FormSection title="Search Metadata" description="Search">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormSchema>
-            name="aliases"
-            label="Aliases"
-            placeholder="Enter aliases separated by comma"
-          />
-
-          <FormInput<CarRentalFormSchema>
-            name="keywords"
-            label="Keywords"
-            placeholder="Enter keywords separated by comma"
+          <FormMultiCombobox<CarRentalFormSchema>
+            name="tagIds"
+            label="Tags"
+            placeholder="Select tags..."
+            searchPlaceholder="Search tags..."
+            options={searchTagData.map((tag) => ({
+              label: tag.name,
+              value: tag.id,
+            }))}
           />
         </div>
       </FormSection>

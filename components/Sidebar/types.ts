@@ -1,4 +1,4 @@
-import { SIDEBARCONTENTICONS } from "./items";
+import { SIDEBARCONTENTICONS } from "./icon";
 
 export type IconName = keyof typeof SIDEBARCONTENTICONS;
 
@@ -11,10 +11,11 @@ export interface SidebarCategory {
 export interface SidebarItem {
   id: number;
   title: string;
-  icon: IconName;
+  icon: keyof typeof SIDEBARCONTENTICONS;
 
-  // cuối cùng mới có category
   categories?: SidebarCategory[];
+
+  children?: SidebarItem[];
 }
 
 export interface SidebarTopic {

@@ -11,6 +11,13 @@ import {
 
 import { AirportTransferServiceType } from "@/types/bookings/airport-transfer/enums";
 import { AirportTransferFormSchema } from "../schema/core/schema";
+import { SEARCH_PRIORITY_OPTIONS } from "@/types/bookings/search-prioty-score";
+import { SearchTag } from "@/types/bookings/search/tag.types";
+import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
+
+interface BasicStepProps {
+  searchTagData: SearchTag[];
+}
 
 const serviceTypeOptions = Object.values(AirportTransferServiceType).map(
   (value) => ({
@@ -19,7 +26,7 @@ const serviceTypeOptions = Object.values(AirportTransferServiceType).map(
   }),
 );
 
-export default function BasicStep() {
+export default function BasicStep({ searchTagData }: BasicStepProps) {
   return (
     <>
       {/* Basic Information */}
@@ -39,13 +46,6 @@ export default function BasicStep() {
             label="Name"
             placeholder="Enter transfer name"
           />
-
-          <FormInput<AirportTransferFormSchema>
-            name="slug"
-            label="Slug"
-            placeholder="airport-transfer-example"
-          />
-
           <FormSelect<AirportTransferFormSchema>
             name="serviceType"
             label="Service Type"
@@ -67,17 +67,11 @@ export default function BasicStep() {
         description="Search optimization fields"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormSchema>
-            name="searchText"
-            label="Search Text"
-            placeholder="Enter searchable text"
-          />
-
-          <FormInput<AirportTransferFormSchema>
+          <FormSelect<AirportTransferFormSchema>
             name="searchPriority"
             label="Search Priority"
-            type="number"
-            placeholder="Enter priority number"
+            placeholder="Select search priority"
+            options={SEARCH_PRIORITY_OPTIONS}
           />
 
           <FormSwitch<AirportTransferFormSchema>
@@ -92,22 +86,15 @@ export default function BasicStep() {
         </div>
 
         <div className="grid gap-6 mt-6">
-          <FormInput<AirportTransferFormSchema>
-            name="aliases.0"
-            label="Alias"
-            placeholder="Enter alternative name"
-          />
-
-          <FormInput<AirportTransferFormSchema>
-            name="keywords.0"
-            label="Keyword"
-            placeholder="Enter search keyword"
-          />
-
-          <FormInput<AirportTransferFormSchema>
-            name="tags.0"
-            label="Tag"
-            placeholder="Enter tag"
+          <FormMultiCombobox<AirportTransferFormSchema>
+            name="tagIds"
+            label="Tags"
+            placeholder="Select tags..."
+            searchPlaceholder="Search tags..."
+            options={searchTagData.map((tag) => ({
+              label: tag.name,
+              value: tag.id,
+            }))}
           />
         </div>
       </FormSection>

@@ -56,21 +56,13 @@ export const YachtSchema = z.object({
 
   name: z.string().min(1),
 
-  slug: z.string().min(1),
-
-  aliases: z.array(z.string()).default([]),
-
-  keywords: z.array(z.string()).default([]),
-
-  tags: z.array(z.string()).default([]),
-
-  searchText: z.string().nullable().optional(),
+  tagIds: z.array(z.string()).default([]),
 
   featured: z.boolean(),
 
   searchable: z.boolean(),
 
-  searchPriority: z.number(),
+  searchPriority: z.coerce.number().default(0),
 });
 
 export type YachtFormSchema = z.infer<typeof YachtSchema>;

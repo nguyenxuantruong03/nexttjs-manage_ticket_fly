@@ -16,6 +16,9 @@ import { User } from "@/types/bookings/auth/users";
 import { UserMenu } from "@/components/menuUser/userMenu";
 import { UserButton } from "@/components/menuUser/userButton";
 import { handleLogout } from "@/lib/logout";
+import { SidebarItem } from "./types";
+import Link from "next/link";
+import { SIDEBARCONTENTICONS } from "./icon";
 
 interface SidebarIndexProps {
   open: boolean;
@@ -30,6 +33,31 @@ const SidebarComponents = ({ open, setOpen, user }: SidebarIndexProps) => {
     defaultOpenItem ? [defaultOpenItem] : [],
   );
   const [isHover, setIsHover] = useState(false);
+
+  const renderChildren = (children?: SidebarItem[]) => {
+    return children?.map((child) => {
+      const ChildIcon = SIDEBARCONTENTICONS[child.icon];
+
+      return (
+        <div key={child.id} className="ml-6">
+          <Link
+            href={child.categories?.[0]?.link ?? "#"}
+            className={`flex items-center gap-2 py-1 ${
+              currentPathname === child.categories?.[0]?.link
+                ? "text-custom-root"
+                : ""
+            }`}
+          >
+            {ChildIcon && <ChildIcon className="w-4 h-4" />}
+
+            {child.title}
+          </Link>
+
+          {renderChildren(child.children)}
+        </div>
+      );
+    });
+  };
 
   return (
     <div
@@ -48,8 +76,16 @@ const SidebarComponents = ({ open, setOpen, user }: SidebarIndexProps) => {
               className="size-8"
               onClick={() => {
                 setOpen(true);
+
                 setIsHover(false);
-                setOpenItems(defaultOpenItem ? [defaultOpenItem] : []);
+
+                /**
+                 * giữ trạng thái menu trước đó
+                 * không reset tree
+                 */
+                if (defaultOpenItem) {
+                  setOpenItems([defaultOpenItem]);
+                }
               }}
             >
               <PanelLeft className="size-5" />

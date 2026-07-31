@@ -32,15 +32,7 @@ export interface TicketFly {
 
   name: string;
 
-  slug: string;
-
-  aliases: string[];
-
-  keywords: string[];
-
-  tags: string[];
-
-  searchText?: string;
+  tagIds: string[];
 
   featured: boolean;
 

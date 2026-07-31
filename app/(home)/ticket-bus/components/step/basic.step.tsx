@@ -3,14 +3,18 @@
 "use client";
 
 import FormSection from "@/components/form/FormSection";
-import {
-  FormInput,
-  FormSwitch,
-} from "@/components/form/form-data";
+import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
 import { BusFormSchema } from "../schema/core/bus.schema";
+import { SEARCH_PRIORITY_OPTIONS } from "@/types/bookings/search-prioty-score";
+import { SearchTag } from "@/types/bookings/search/tag.types";
+import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
 
-export default function BasicStep() {
+interface BasicStepProps {
+  searchTagData: SearchTag[];
+}
+
+export default function BasicStep({ searchTagData }: BasicStepProps) {
   return (
     <>
       <FormSection
@@ -25,15 +29,12 @@ export default function BasicStep() {
 
           <FormInput<BusFormSchema> name="name" label="Bus Name" />
 
-          <FormInput<BusFormSchema> name="slug" label="Slug" />
-
-          <FormInput<BusFormSchema>
+          <FormSelect<BusFormSchema>
             name="searchPriority"
             label="Search Priority"
-            type="number"
+            placeholder="Select search priority"
+            options={SEARCH_PRIORITY_OPTIONS}
           />
-
-          <FormInput<BusFormSchema> name="searchText" label="Search Text" />
 
           <FormSwitch<BusFormSchema> name="active" label="Active" />
 
@@ -46,22 +47,15 @@ export default function BasicStep() {
         description="SEO & search configuration"
       >
         <div className="grid gap-6">
-          <FormInput<BusFormSchema>
-            name="aliases"
-            label="Aliases"
-            placeholder="Press Enter to add alias"
-          />
-
-          <FormInput<BusFormSchema>
-            name="keywords"
-            label="Keywords"
-            placeholder="Press Enter to add keyword"
-          />
-
-          <FormInput<BusFormSchema>
-            name="tags"
+          <FormMultiCombobox<BusFormSchema>
+            name="tagIds"
             label="Tags"
-            placeholder="Press Enter to add tag"
+            placeholder="Select tags..."
+            searchPlaceholder="Search tags..."
+            options={searchTagData.map((tag) => ({
+              label: tag.name,
+              value: tag.id,
+            }))}
           />
         </div>
       </FormSection>

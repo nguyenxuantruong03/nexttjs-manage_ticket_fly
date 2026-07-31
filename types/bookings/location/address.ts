@@ -1,7 +1,6 @@
 import { Invoice } from "@/types/common/payment";
 import { City } from "./city";
 import { ProviderBooking } from "../provider-bookings";
-import { HotelNearbyPlace } from "../hotel/content/nearby-place.types";
 import { AirportTransferRouteStop } from "../airport-transfer/routes/route-stop.types";
 import { CarRentalVehicleLocation } from "../car_rental/vehicle/vehicle-location.types";
 import { CarRentalLocation } from "../car_rental/trip/trip-location.types";
@@ -15,6 +14,10 @@ import { BusBoardingPoint } from "../bus/routes/boarding-point.types";
 import { BusRouteStop } from "../bus/routes/stop.types";
 import { FlyAirport } from "../ticket-fly/airport/airport.types";
 import { HotelInformation } from "../hotel/core/hotel-information.types";
+import { Country } from "./country";
+import { Ward } from "./ward";
+import { District } from "./district";
+import { Place } from "./place";
 
 export enum AddressPrecision {
   COUNTRY = "COUNTRY",
@@ -35,13 +38,17 @@ export interface Address {
 
   houseNumber?: string | null;
   street?: string | null;
-  ward?: string | null;
-  district?: string | null;
-  administrativeArea?: string | null;
-  region?: string | null;
+
+  wardId?: string | null;
+  ward?: Ward;
+
+  districtId?: string | null;
+  district: District;
 
   postcode?: string | null;
-  countryCode: string;
+
+  countryId: string;
+  country: Country;
 
   cityId: string;
   city?: City;
@@ -51,8 +58,6 @@ export interface Address {
   // ======================================================
   latitude?: number | null;
   longitude?: number | null;
-
-  timezone?: string | null;
 
   plusCode?: string | null;
 
@@ -77,9 +82,8 @@ export interface Address {
   carRentalLocations?: CarRentalLocation[];
   carRentalVehicleLocation?: CarRentalVehicleLocation | null;
   airportTransferRouteStop?: AirportTransferRouteStop[];
-  hotelNearbyPlace?: HotelNearbyPlace | null;
   providerBooking?: ProviderBooking | null;
-
+  place?: Place;
   // ======================================================
   // TIMESTAMP
   // ======================================================

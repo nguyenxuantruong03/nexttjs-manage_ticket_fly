@@ -1,15 +1,36 @@
+"use client";
+
+import { useParams } from "next/navigation";
+
 import CarRentalForm from "../../components/CarrentalForm";
-import { CarRentalServerService } from "@/services/car-rental/server";
+import { useCarrentalUpdateFormData } from "@/hooks/car-rental/useCarrentalUpdateFormData";
+import LoadingPage from "@/components/ui/loading-page";
+import ErrorPage from "@/components/ui/error-page";
 
-type Props = {
-  params: Promise<{
-    carrentalId: string;
-  }>;
-};
+export default function CarrentalEditPage() {
+  const params = useParams();
 
-export default async function CarrentalEditPage({ params }: Props) {
-  const { carrentalId } = await params;
-  const carRentalData = await CarRentalServerService.getOne(carrentalId);
+  const carrentalId = params.carrentalId as string;
 
-  return <CarRentalForm initialData={carRentalData} />;
+  const { data, isLoading, error } = useCarrentalUpdateFormData(carrentalId);
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  if (error || !data) {
+    return <ErrorPage />;
+  }
+
+  return (
+    <CarRentalForm
+      initialData={data.initialData}
+      searchTagData={data.searchTagData}
+      addresses={data.addresses}
+      countries={data.countries}
+      cities={data.cities}
+      districts={data.districts}
+      wards={data.wards}
+    />
+  );
 }

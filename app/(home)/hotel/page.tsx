@@ -1,49 +1,27 @@
 "use client";
-import { DataTable } from "@/components/ui/data-table";
-import { hotelColumns } from "./components/columns";
-import { useDeleteHotel, useHotels } from "@/hooks/hotel";
-import { useRouter } from "next/navigation";
-import { createHotelHandlers } from "./features/handlers";
-import { createHotelActions } from "./features/actions";
-import { useCrudTable } from "@/hooks/crud/useCrudTable";
 
-const hotelPage = () => {
-  const deleteMutation = useDeleteHotel();
-  const { data, isPending, error } = useHotels();
-  const router = useRouter();
+import { useState } from "react";
 
-  const handlers = createHotelHandlers({
-    router,
-    deleteMutation,
-  });
+import { FormPageProvider } from "@/components/form/form-context";
+import HotelStepper from "./components/HotelStepper";
 
-  const { actions, deleteDialog } = useCrudTable({
-    handlers,
-    createActions: createHotelActions,
-    deleteTitle: "Delete hotel",
-    deleteDescription: "Are you sure you want to delete this hotel?",
-  });
+export default function HotelStepperPage() {
+  const [mainStep, setMainStep] = useState("basic");
 
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
+  const [subStep, setSubStep] = useState("hotel-type");
 
-  if (error) {
-    return <div>Đã xảy ra lỗi.</div>;
-  }
   return (
-    <>
-      {deleteDialog.dialog}
-      <DataTable
-        columns={hotelColumns(actions)}
-        data={data}
-        onRowClick={({ id }) => handlers.view(id)}
-        onRowDoubleClick={({ id }) => handlers.update(id)}
-        onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
-      />
-      ;
-    </>
-  );
-};
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6">Hotel Management</h1>
 
-export default hotelPage;
+      <FormPageProvider>
+        <HotelStepper
+          mainStep={mainStep}
+          setMainStep={setMainStep}
+          subStep={subStep}
+          setSubStep={setSubStep}
+        />
+      </FormPageProvider>
+    </div>
+  );
+}

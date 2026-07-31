@@ -5,6 +5,7 @@
 import { Country } from "./country";
 
 import { Address } from "./address";
+import { Timezone } from "./timezone";
 
 // ======================================================
 // CITY
@@ -20,8 +21,6 @@ export interface City {
   name: string;
 
   nativeName?: string;
-
-  slug: string;
 
   code?: string;
 
@@ -57,15 +56,14 @@ export interface City {
 
   elevation?: number;
 
-  timezone?: string;
-
-  utcOffset?: string;
+  timezoneId?: string;
+  timezone?: Timezone
 
   // ======================================================
   // SEARCH
   // ======================================================
 
-  priority: number;
+  searchPriority: number;
 
   displayOrder: number;
 
@@ -77,11 +75,7 @@ export interface City {
 
   searchable: boolean;
 
-  aliases: string[];
-
-  keywords: string[];
-
-  tags: string[];
+  tagIds: string[];
 
   // ======================================================
   // MEDIA
@@ -104,16 +98,6 @@ export interface City {
   bestMonths: string[];
 
   rainyMonths: string[];
-
-  // ======================================================
-  // SEO
-  // ======================================================
-
-  seoTitle?: string;
-
-  seoDescription?: string;
-
-  seoKeywords: string[];
 
   // ======================================================
   // STATUS

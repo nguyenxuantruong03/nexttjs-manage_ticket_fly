@@ -16,10 +16,10 @@ import { FlyAirlineRating } from "../ticket-fly/airline/airline.types";
 import { FlyBooking } from "../ticket-fly/booking/booking.types";
 import { FlyFavorite } from "../ticket-fly/favorite/favorite.types";
 import { FlyInventoryLock } from "../ticket-fly/trip/inventory-lock.types";
-import { HotelBooking } from "../hotel/bookings/booking.types";
-import { HotelFavorite } from "../hotel/favorite/favorite.types";
+// import { HotelBooking } from "../hotel/bookings/booking.types";
+// import { HotelFavorite } from "../hotel/favorite.types";
 import { HotelInventoryLock } from "../hotel/inventory/lock.types";
-import { HotelReview } from "../hotel/review/review.types";
+// import { HotelReview } from "../hotel/review.types";
 import { ProviderBooking } from "../provider-bookings";
 import { YachtBooking } from "../yacht/booking/booking.types";
 import { YachtFavorite } from "../yacht/favorite/favorite.types";
@@ -61,9 +61,9 @@ export interface User {
   providers: ProviderBooking[];
 
   // Hotel
-  hotelReviews: HotelReview[];
-  hotelBookings: HotelBooking[];
-  hotelFavorite: HotelFavorite[];
+  // hotelReviews: HotelReview[];
+  // hotelBookings: HotelBooking[];
+  // hotelFavorite: HotelFavorite[];
   hotelUserLock: HotelInventoryLock[];
 
   // Car Rental

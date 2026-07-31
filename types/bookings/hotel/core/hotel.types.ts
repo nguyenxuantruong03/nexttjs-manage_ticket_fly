@@ -1,65 +1,93 @@
-import { HotelBooking } from "../bookings/booking.types";
-import { HotelAreaGuide } from "../content/area-guide.types";
-import { HotelNearbyPlace } from "../content/nearby-place.types";
+// ======================================================
+// HOTEL
+// ======================================================
+
+import { TagType } from "../../search/tag.types";
 import { HotelStatus } from "../enum/enums";
-import { HotelFacilities } from "../facilities/facilities.types";
-import { HotelFavorite } from "../favorite/favorite.types";
+import { HotelFacilityMapper } from "../facilities.types";
+import {
+  HotelAccessibility,
+  HotelAward,
+  HotelBrand,
+  HotelContact,
+  HotelDescription,
+  HotelOpeningHour,
+  HotelStarRating,
+  HotelSustainability,
+} from "../hotel-detail.type";
 import { HotelInventory } from "../inventory/inventory.types";
-import { HotelReview } from "../review/review.types";
+import { HotelCheckPolicy, HotelPolicyMapper } from "../policy.type";
 import { HotelRoomType } from "../room/room-type.types";
-import { HotelExtra } from "../service/extra.types";
-import { HotelMealOption } from "../service/meal.types";
-import { HotelImage } from "./hotel-image.types";
+import { HotelDiningOption } from "../service/dinner-option.type";
+import { HotelExtra } from "../service/extra.type";
 import { HotelInformation } from "./hotel-information.types";
+import { HotelMedia } from "./hotel-media.types";
+// ======================================================
+// HOTEL
+// ======================================================
 
 export interface Hotel {
   id: string;
 
+  // Relations
   information?: HotelInformation | null;
 
-  hotelImage: HotelImage[];
+  medias: HotelMedia[];
 
-  inventory: HotelInventory[];
+  inventories: HotelInventory[];
 
   roomTypes: HotelRoomType[];
 
-  reviews: HotelReview[];
+  facilities: HotelFacilityMapper[];
 
-  facilitiesHotel?: HotelFacilities | null;
+  policies: HotelPolicyMapper[];
 
-  bookings: HotelBooking[];
+  checkinPolicy?: HotelCheckPolicy | null;
+
+  accessibilities: HotelAccessibility[];
+
+  awards: HotelAward[];
 
   extras: HotelExtra[];
 
-  mealOptions: HotelMealOption[];
+  mealOptions: HotelDiningOption[];
 
-  favorites: HotelFavorite[];
+  openingHours: HotelOpeningHour[];
 
-  nearbyPlaces: HotelNearbyPlace[];
+  descriptions: HotelDescription[];
 
-  areaGuides: HotelAreaGuide[];
+  contacts?: HotelContact | null;
 
-  status: HotelStatus;
+  sustainabilities: HotelSustainability[];
 
+  // Relations
+  brandId?: string | null;
+
+  brand?: HotelBrand | null;
+
+  starRatingId?: string | null;
+
+  starRating?: HotelStarRating | null;
+
+  // Basic
   name: string;
 
-  slug: string;
+  // Search
 
-  aliases: string[];
+  tags: TagType[];
 
-  keywords: string[];
+  // Status
+  status: HotelStatus;
 
-  tags: string[];
-
-  searchText?: string | null;
-
+  // Ranking / Search
   featured: boolean;
 
   searchable: boolean;
 
   searchPriority: number;
 
-  createdAt: Date;
+  // Timestamp
+  createdAt: string;
 
-  updatedAt: Date;
+  updatedAt: string;
 }

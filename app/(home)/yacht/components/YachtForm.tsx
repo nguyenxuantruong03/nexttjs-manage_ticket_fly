@@ -37,12 +37,32 @@ import { useFormDraft } from "@/hooks/useFormDraft";
 import { DraftEntity } from "@/components/daft/draft-config";
 import { Yacht } from "@/types/bookings/yacht/core/yacht.types";
 import { initYachtFormValues } from "./form/init-value";
+import { SearchTag } from "@/types/bookings/search/tag.types";
+import { Address } from "@/types/bookings/location/address";
+import { Country } from "@/types/bookings/location/country";
+import { City } from "@/types/bookings/location/city";
+import { District } from "@/types/bookings/location/district";
+import { Ward } from "@/types/bookings/location/ward";
 
 interface YachtFormProps {
   initialData?: Yacht;
+  searchTagData: SearchTag[];
+  addresses: Address[];
+  countries: Country[];
+  cities: City[];
+  districts: District[];
+  wards: Ward[];
 }
 
-export default function YachtForm({ initialData }: YachtFormProps) {
+export default function YachtForm({
+  initialData,
+  searchTagData,
+  addresses,
+  countries,
+  cities,
+  districts,
+  wards,
+}: YachtFormProps) {
   const submit = useSubmit();
   const { setDirty } = useFormPage();
   const createYacht = useCreateYacht();
@@ -91,7 +111,7 @@ export default function YachtForm({ initialData }: YachtFormProps) {
 
     clearDraft();
 
-    form.reset(values);
+    form.reset(defaultYachtValues);
   };
 
   return (
@@ -117,12 +137,24 @@ export default function YachtForm({ initialData }: YachtFormProps) {
 
           {/* MARINA */}
           <FormWizardStep index={2}>
-            <MarinaStep />
+            <MarinaStep
+              addresses={addresses}
+              countries={countries}
+              cities={cities}
+              districts={districts}
+              wards={wards}
+            />
           </FormWizardStep>
 
           {/* ROUTES */}
           <FormWizardStep index={3}>
-            <RoutesStep />
+            <RoutesStep
+              addresses={addresses}
+              countries={countries}
+              cities={cities}
+              districts={districts}
+              wards={wards}
+            />
           </FormWizardStep>
 
           {/* TRIPS */}
@@ -162,7 +194,7 @@ export default function YachtForm({ initialData }: YachtFormProps) {
 
           {/* SETTINGS */}
           <FormWizardStep index={11}>
-            <SettingsStep />
+            <SettingsStep searchTagData={searchTagData} />
           </FormWizardStep>
         </FormWizardContent>
 

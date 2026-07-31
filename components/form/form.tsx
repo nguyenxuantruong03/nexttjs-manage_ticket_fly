@@ -30,6 +30,7 @@ interface FormProps {
   title: string;
   description: string;
   link?: string;
+
   action?: string;
   apiPath?: string;
 
@@ -44,7 +45,6 @@ export default function FormPage({
   link,
   action,
   apiPath,
-
   draft,
 }: FormProps) {
   const pathname = usePathname();
@@ -52,22 +52,28 @@ export default function FormPage({
 
   const { dirty } = useFormPage();
   const { open, requestLeave, confirm, cancel } = useLeaveConfirm(dirty);
+
   const backend = "http://backend:3000";
+
   const apiUrl = apiPath ? `${backend}/api/${apiPath}` : null;
   const apiUrlID = apiPath ? `${backend}/api/${apiPath}/{id}` : null;
-  const createPath = link ? `${link}/create` : "";
-  const isChildPage = Boolean(link) && pathname.startsWith(`${link}/`);
+
+  const rootPath = link;
+
+  const createPath = rootPath ? `${rootPath}/create` : "";
+
+  const isChildPage =
+    !!rootPath && pathname !== rootPath && pathname.startsWith(`${rootPath}/`);
 
   const handleBack = () => {
     requestLeave(() => {
-      router.push(link ?? "/");
+      router.push(rootPath ?? "/");
     });
   };
 
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-
       toast.success("Đã copy URL");
     } catch {
       toast.error("Không thể copy URL");
@@ -77,44 +83,44 @@ export default function FormPage({
   return (
     <div
       className="
- flex
- min-h-full
- w-full
- flex-col
-"
+        flex
+        min-h-full
+        w-full
+        flex-col
+      "
     >
       <header
         className="
- flex
- items-center
- justify-between
- border-b
- pb-4
-"
+          flex
+          items-center
+          justify-between
+          border-b
+          pb-4
+        "
       >
         <div>
           <Label
             className="
-text-2xl
-font-bold
-"
+              text-2xl
+              font-bold
+            "
           >
             {label}
           </Label>
 
           <div
             className="
-mt-1
-flex
-items-center
-gap-2
-"
+              mt-1
+              flex
+              items-center
+              gap-2
+            "
           >
             <p
               className="
-text-sm
-text-muted-foreground
-"
+                text-sm
+                text-muted-foreground
+              "
             >
               {title}
             </p>
@@ -124,10 +130,10 @@ text-muted-foreground
                 <TooltipTrigger asChild>
                   <CircleHelp
                     className="
-h-4
-w-4
-text-muted-foreground
-"
+                      h-4
+                      w-4
+                      text-muted-foreground
+                    "
                   />
                 </TooltipTrigger>
 
@@ -162,10 +168,10 @@ text-muted-foreground
 
       <main
         className="
-flex-1
-min-w-0
-py-6
-"
+          flex-1
+          min-w-0
+          py-6
+        "
       >
         {children}
       </main>
@@ -173,32 +179,28 @@ py-6
       {(apiUrl || apiUrlID) && (
         <div
           className="
-mt-auto
-space-y-4
-border-t
-pt-4
-"
+            mt-auto
+            space-y-4
+            border-t
+            pt-4
+          "
         >
           {apiUrl && (
             <div
               className="
-grid
-gap-2
-"
+                grid
+                gap-2
+              "
             >
               <Link href={apiUrl}>
-                <Badge variant="destructive">
-                  API:
-                  {apiPath}
-                </Badge>
+                <Badge variant="destructive">API: {apiPath}</Badge>
               </Link>
 
               <Badge
                 variant="secondary"
                 onClick={() => copyToClipboard(apiUrl)}
               >
-                URL:
-                {apiUrl}
+                URL: {apiUrl}
               </Badge>
             </div>
           )}
@@ -206,14 +208,13 @@ gap-2
           {apiUrlID && (
             <div
               className="
-grid
-gap-2
-"
+                grid
+                gap-2
+              "
             >
               <Link href={apiUrlID}>
                 <Badge variant="destructive">
-                  API:
-                  {apiPath}/{"{id}"}
+                  API: {apiPath}/{"{id}"}
                 </Badge>
               </Link>
 
@@ -221,8 +222,7 @@ gap-2
                 variant="secondary"
                 onClick={() => copyToClipboard(apiUrlID)}
               >
-                URL:
-                {apiUrlID}
+                URL: {apiUrlID}
               </Badge>
             </div>
           )}

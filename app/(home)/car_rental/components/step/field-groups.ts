@@ -11,15 +11,12 @@ export const carRentalFieldGroups: Record<
 > = {
   basic: [
     "name",
-    "slug",
     "driverOption",
     "providerBookingId",
-    "searchText",
     "searchPriority",
-    "aliases",
-    "keywords",
     "active",
     "featured",
+    "tagIds",
   ],
 
   vehicles: [

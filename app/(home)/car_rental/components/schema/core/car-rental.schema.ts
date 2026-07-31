@@ -23,20 +23,12 @@ export const CarRentalSchema = z.object({
   // =====================
 
   driverOption: z.nativeEnum(DriverOption),
-
+  tagIds: z.array(z.string()).default([]),
   name: z.string().min(1),
-
-  slug: z.string().min(1),
-
-  aliases: z.array(z.string()).default([]),
-
-  keywords: z.array(z.string()).default([]),
-
-  searchText: z.string().optional(),
 
   featured: z.boolean().default(false),
 
-  searchPriority: z.number().default(0),
+  searchPriority: z.coerce.number().default(0),
 
   active: z.boolean().default(true),
 

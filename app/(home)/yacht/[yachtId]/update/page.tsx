@@ -1,15 +1,36 @@
-import { YachtServerService } from "@/services/yacht/server";
+"use client";
+
+import { useParams } from "next/navigation";
+
 import YachtForm from "../../components/YachtForm";
+import { useYachtUpdateFormData } from "@/hooks/yacht/useYachtUpdateFormData";
+import LoadingPage from "@/components/ui/loading-page";
+import ErrorPage from "@/components/ui/error-page";
 
-type Props = {
-  params: Promise<{
-    yachtId: string;
-  }>;
-};
+export default function YachtEditPage() {
+  const params = useParams();
 
-export default async function YachtEditPage({ params }: Props) {
-  const { yachtId } = await params;
-  const yachtData = await YachtServerService.getOne(yachtId);
+  const yachtId = params.yachtId as string;
 
-  return <YachtForm initialData={yachtData} />;
+  const { data, isLoading, error } = useYachtUpdateFormData(yachtId);
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  if (error || !data) {
+    return <ErrorPage />;
+  }
+
+  return (
+    <YachtForm
+      initialData={data.initialData}
+      searchTagData={data.searchTagData}
+      addresses={data.addresses}
+      countries={data.countries}
+      cities={data.cities}
+      districts={data.districts}
+      wards={data.wards}
+    />
+  );
 }

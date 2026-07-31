@@ -54,13 +54,8 @@ export interface AirportTransfer {
   instantConfirmation: boolean;
 
   name: string;
-  slug: string;
 
-  aliases: string[];
-  keywords: string[];
-  tags: string[];
-
-  searchText?: string;
+  tagIds: string[];
 
   featured: boolean;
   searchable: boolean;
