@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { PlaceType } from "@/types/bookings/location/place";
-
 export const PlaceSchema = z.object({
   // ======================================================
   // BASIC
@@ -28,10 +26,13 @@ export const PlaceSchema = z.object({
   longitude: z.coerce.number().nullable().optional(),
 
   // ======================================================
-  // CATEGORY
+  // PLACE TYPE
   // ======================================================
 
-  type: z.nativeEnum(PlaceType).default(PlaceType.OTHER),
+  placeTypeId: z
+    .string()
+    .trim()
+    .min(1, "Place type is required"),
 
   // ======================================================
   // SEARCH / FEATURE
@@ -41,7 +42,7 @@ export const PlaceSchema = z.object({
 
   searchable: z.boolean().default(true),
 
-  searchPriority: z.coerce.number().default(0),
+  searchPriority: z.coerce.number().int().default(0),
 
   // ======================================================
   // MEDIA

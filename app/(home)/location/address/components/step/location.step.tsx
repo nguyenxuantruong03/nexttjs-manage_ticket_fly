@@ -10,17 +10,19 @@ import {
 
 import { AddressFormSchema } from "../form/schema";
 
-import { City } from "@/types/bookings/location/city";
-import { AddressPrecision } from "@/types/bookings/location/address";
-import { Country } from "@/types/bookings/location/country";
 import { EntityOption } from "@/components/entity-selector";
 import CityCreateDialog from "../../../city/components/CityCreateDialog";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import CountryCreateDialog from "../../../country/components/CountryCreateDialog";
-import { Currency } from "@/types/bookings/location/currency";
-import { Timezone } from "@/types/bookings/location/timezone";
-import { SearchTag } from "@/types/bookings/search/tag.types";
-import { Language } from "@/types/bookings/location/language";
+import { City } from "@/types/location/city";
+import { Country } from "@/types/location/country/country";
+import { Timezone } from "@/types/location/timezone";
+import { Currency } from "@/types/location/currency";
+import { SearchTag } from "@/types/searchs/search/tag.types";
+import { Language } from "@/types/location/language";
+import { AddressPrecision } from "@/types/location/address";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import { Continent } from "@/types/location/country/continent.type";
 
 interface LocationStepProps {
   cityData?: City[];
@@ -29,6 +31,8 @@ interface LocationStepProps {
   currencyData: Currency[];
   searchTags: SearchTag[];
   languageData: Language[];
+  bookingTypeData: BookingType[]
+  continentsData: Continent[]
 }
 
 export default function LocationStep({
@@ -38,6 +42,8 @@ export default function LocationStep({
   timezoneData,
   searchTags,
   languageData,
+  continentsData,
+  bookingTypeData
 }: LocationStepProps) {
   const countryOptions: EntityOption<Country>[] =
     countryData?.map((country) => ({
@@ -68,6 +74,8 @@ export default function LocationStep({
           enableCreate
           renderCreateDialog={(props) => (
             <CountryCreateDialog
+              continents={continentsData}
+              bookingTypeData={bookingTypeData}
               currencies={currencyData}
               languages={languageData}
               timezones={timezoneData}
@@ -87,7 +95,13 @@ export default function LocationStep({
           options={cityOptions}
           enableCreate
           renderCreateDialog={(props) => (
-            <CityCreateDialog {...props} countries={countryData ?? []} />
+            <CityCreateDialog
+              {...props}
+              timezones={timezoneData}
+              searchTagData={searchTags}
+              bookingTypeData={bookingTypeData}
+              countries={countryData ?? []}
+            />
           )}
         />
 

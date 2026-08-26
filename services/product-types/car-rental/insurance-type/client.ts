@@ -1,0 +1,9 @@
+import { createCrudApi } from "@/lib/api/createCrudApi";
+import { API } from "@/lib/api/endpoints";
+import { clientHttp } from "@/lib/http/client";
+import { InsuranceType } from "@/types/product-types/car_rental/insurance-type.type";
+
+export const CarRentalInsuranceTypeService = createCrudApi<InsuranceType>(
+  clientHttp,
+  API.CAR_RENTAL_INSURANCE_TYPE,
+);

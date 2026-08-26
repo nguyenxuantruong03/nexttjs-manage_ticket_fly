@@ -9,6 +9,8 @@ import { CityService } from "@/services/location/city/client";
 import { DistrictService } from "@/services/location/district/client";
 import { WardService } from "@/services/location/ward/client";
 import { SearchTagService } from "@/services/search/tag/client";
+import { PlaceTypeService } from "@/services/location/place/place-type/client";
+import { BookingTypeService } from "@/services/commerce/booking-type/client";
 
 export const usePlaceUpdateFormData = (placeId: string, enabled = true) => {
   return useQuery({
@@ -24,6 +26,8 @@ export const usePlaceUpdateFormData = (placeId: string, enabled = true) => {
         districts,
         wards,
         searchTag,
+        placeTypeData,
+        bookingTypeData,
       ] = await Promise.all([
         PlaceService.getOne(placeId),
         AddressService.getMany(),
@@ -32,6 +36,8 @@ export const usePlaceUpdateFormData = (placeId: string, enabled = true) => {
         DistrictService.getMany(),
         WardService.getMany(),
         SearchTagService.getMany(),
+        PlaceTypeService.getMany(),
+        BookingTypeService.getMany(),
       ]);
 
       return {
@@ -42,6 +48,8 @@ export const usePlaceUpdateFormData = (placeId: string, enabled = true) => {
         districts,
         wards,
         searchTag,
+        placeTypeData,
+        bookingTypeData,
       };
     },
   });

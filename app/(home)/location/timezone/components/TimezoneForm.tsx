@@ -19,7 +19,6 @@ import { useFormPage } from "@/components/form/form-context";
 import { useSearchParams } from "next/navigation";
 import { useFormDraft } from "@/hooks/useFormDraft";
 import { DraftEntity } from "@/components/daft/draft-config";
-import { Timezone } from "@/types/bookings/location/timezone";
 import { TimezoneFormSchema, TimezoneSchema } from "./form/schema";
 import { timezoneSteps } from "./step/steps";
 import {
@@ -30,6 +29,7 @@ import { initTimezoneFormValues } from "./form/init-value";
 import { timezoneDefaultValues } from "./form/default-values";
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
 import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
+import { Timezone } from "@/types/location/timezone";
 interface TimezoneFormProps {
   initialData?: Timezone;
   redirect?: boolean;

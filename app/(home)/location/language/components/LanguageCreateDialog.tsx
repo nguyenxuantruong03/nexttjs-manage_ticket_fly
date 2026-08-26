@@ -6,8 +6,6 @@ import { AppForm, FormInput, FormSwitch } from "@/components/form/form-data";
 
 import { Button } from "@/components/ui/button";
 
-import { Language } from "@/types/bookings/location/language";
-
 import { useCreateLanguage } from "@/hooks/location/language";
 import { useSubmit } from "@/hooks/useSubmit";
 import { useAppForm } from "@/hooks/useAppForm";
@@ -22,6 +20,7 @@ import {
 } from "@/components/entity-selector";
 
 import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { Language } from "@/types/location/language";
 
 // ======================================================
 // PROPS

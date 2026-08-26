@@ -10,6 +10,8 @@ import { TimezoneService } from "@/services/location/timezone/client";
 import { LanguageService } from "@/services/location/language/client";
 import { CurrencyService } from "@/services/location/currency/client";
 import { SearchTagService } from "@/services/search/tag/client";
+import { BookingTypeService } from "@/services/commerce/booking-type/client";
+import { ContinentService } from "@/services/location/country/continent/client";
 
 export const useAddressCreateFormData = (enabled = true) => {
   return useQuery({
@@ -29,6 +31,8 @@ export const useAddressCreateFormData = (enabled = true) => {
         languageData,
         currencyData,
         searchTagData,
+        bookingTypeData,
+        continentsData,
       ] = await Promise.all([
         CityService.getMany(),
         DistrictService.getMany(),
@@ -38,6 +42,8 @@ export const useAddressCreateFormData = (enabled = true) => {
         LanguageService.getMany(),
         CurrencyService.getMany(),
         SearchTagService.getMany(),
+        BookingTypeService.getMany(),
+        ContinentService.getMany(),
       ]);
 
       return {
@@ -54,6 +60,8 @@ export const useAddressCreateFormData = (enabled = true) => {
 
         // Search
         searchTagData,
+        bookingTypeData,
+        continentsData,
       };
     },
   });

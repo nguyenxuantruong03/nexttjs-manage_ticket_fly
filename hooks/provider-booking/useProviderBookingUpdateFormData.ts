@@ -9,6 +9,7 @@ import { CountryService } from "@/services/location/country/client";
 import { CityService } from "@/services/location/city/client";
 import { DistrictService } from "@/services/location/district/client";
 import { WardService } from "@/services/location/ward/client";
+import { BookingTypeService } from "@/services/commerce/booking-type/client";
 
 export const useProviderBookingUpdateFormData = (
   providerbookingId: string,
@@ -27,6 +28,7 @@ export const useProviderBookingUpdateFormData = (
         cities,
         districts,
         wards,
+        bookingTypeData,
       ] = await Promise.all([
         ProviderBookingService.getOne(providerbookingId),
         UserService.getMany(),
@@ -35,6 +37,7 @@ export const useProviderBookingUpdateFormData = (
         CityService.getMany(),
         DistrictService.getMany(),
         WardService.getMany(),
+        BookingTypeService.getMany()
       ]);
 
       return {
@@ -45,6 +48,7 @@ export const useProviderBookingUpdateFormData = (
         cities,
         districts,
         wards,
+        bookingTypeData,
       };
     },
   });

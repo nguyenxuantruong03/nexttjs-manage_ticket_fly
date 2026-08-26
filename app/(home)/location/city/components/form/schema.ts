@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { CityStatus } from "@/types/bookings/location/city";
-
 export const CitySchema = z.object({
   // ======================================================
   // BASIC
@@ -90,8 +88,8 @@ export const CitySchema = z.object({
   // ======================================================
 
   verified: z.boolean().default(false),
+  active: z.boolean().default(false),
 
-  status: z.nativeEnum(CityStatus).default(CityStatus.ACTIVE),
 });
 
 export type CityFormSchema = z.infer<typeof CitySchema>;

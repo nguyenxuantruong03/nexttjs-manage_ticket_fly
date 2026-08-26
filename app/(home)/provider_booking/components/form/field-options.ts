@@ -1,35 +1,7 @@
 import {
   ProviderOperatingStatus,
   ProviderStatus,
-  typeServiceBooking,
-} from "@/types/bookings/provider-bookings";
-
-export const serviceOptions = [
-  {
-    label: "Hotel",
-    value: typeServiceBooking.HOTEL,
-  },
-  {
-    label: "Car Rental",
-    value: typeServiceBooking.CARRENTAL,
-  },
-  {
-    label: "Airport Transfer",
-    value: typeServiceBooking.AIRPORTTRANSFER,
-  },
-  {
-    label: "Flight",
-    value: typeServiceBooking.TICKETFLY,
-  },
-  {
-    label: "Bus",
-    value: typeServiceBooking.TICKETBUS,
-  },
-  {
-    label: "Yacht",
-    value: typeServiceBooking.YACHT,
-  },
-];
+} from "@/types/users/provider-bookings";
 
 export const providerStatusOptions = [
   {

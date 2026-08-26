@@ -1,7 +1,7 @@
 import { Eye, Pencil, Trash } from "lucide-react";
 
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
-import { Timezone } from "@/types/bookings/location/timezone";
+import { Timezone } from "@/types/location/timezone";
 
 interface Props {
   onView: (id: string) => void;

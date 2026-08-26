@@ -19,20 +19,27 @@ import { useFormPage } from "@/components/form/form-context";
 import { useSearchParams } from "next/navigation";
 import { useFormDraft } from "@/hooks/useFormDraft";
 import { DraftEntity } from "@/components/daft/draft-config";
-import { Ward } from "@/types/bookings/location/ward";
 import { WardFormSchema, WardSchema } from "./form/schema";
 import { wardSteps } from "./step/steps";
 import { useCreateWard, useUpdateWard } from "@/hooks/location/ward";
 import { initwardFormValues } from "./form/init-value";
 import { wardDefaultValues } from "./form/default-values";
-import { District } from "@/types/bookings/location/district";
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
 import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
-import { City } from "@/types/bookings/location/city";
+import { Ward } from "@/types/location/ward";
+import { District } from "@/types/location/district";
+import { City } from "@/types/location/city";
+import StatusStep from "./step/status.step";
+import SearchStep from "./step/search.step";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import { SearchTag } from "@/types/searchs/search/tag.types";
+import MediaStep from "./step/media.step";
 interface WardFormProps {
   initialData?: Ward;
   districtData: District[];
-  cityData: City[]
+  cityData: City[];
+  bookingTypeData: BookingType[];
+  searchTagData: SearchTag[];
   redirect?: boolean;
 }
 
@@ -40,6 +47,8 @@ export default function WardForm({
   initialData,
   districtData,
   cityData,
+  bookingTypeData,
+  searchTagData,
   redirect = true,
 }: WardFormProps) {
   const redirectDefault = "/ward";
@@ -130,11 +139,31 @@ export default function WardForm({
 
           <FormWizardContent>
             <FormWizardStep index={0}>
-              <BasicStep cityData={cityData} districtData={districtData} />
+              <BasicStep
+                bookingTypeData={bookingTypeData}
+                searchTagData={searchTagData}
+                cityData={cityData}
+                districtData={districtData}
+              />
             </FormWizardStep>
 
             <FormWizardStep index={1}>
+              <MediaStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={2}>
               <LocationStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={3}>
+              <SearchStep
+                searchTagData={searchTagData}
+                bookingTypeData={bookingTypeData}
+              />
+            </FormWizardStep>
+
+            <FormWizardStep index={4}>
+              <StatusStep />
             </FormWizardStep>
           </FormWizardContent>
 

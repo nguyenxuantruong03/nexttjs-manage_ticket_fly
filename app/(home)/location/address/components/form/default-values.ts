@@ -1,5 +1,5 @@
+import { AddressPrecision } from "@/types/location/address";
 import { AddressFormSchema } from "./schema";
-import { AddressPrecision } from "@/types/bookings/location/address";
 
 export const addressDefaultValues: AddressFormSchema = {
   // ======================================================
@@ -15,8 +15,6 @@ export const addressDefaultValues: AddressFormSchema = {
   wardId: "",
 
   districtId: "",
-
-
 
   postcode: "",
 
@@ -34,5 +32,18 @@ export const addressDefaultValues: AddressFormSchema = {
 
   plusCode: "",
 
-  precision: AddressPrecision.ADDRESS,
+  precision: AddressPrecision.CITY,
+
+  // ======================================================
+  // MEDIA
+  // ======================================================
+
+  thumbnail: "",
+  coverImage: "",
+  bannerImage: "",
+  images: [],
+  video: "",
+
+  verified: false,
+  active: false,
 };

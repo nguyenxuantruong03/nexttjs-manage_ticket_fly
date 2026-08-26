@@ -1,4 +1,4 @@
-import { Timezone } from "@/types/bookings/location/timezone";
+import { Timezone } from "@/types/location/timezone";
 import { timezoneDefaultValues } from "./default-values";
 import { TimezoneFormSchema } from "./schema";
 

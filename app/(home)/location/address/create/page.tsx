@@ -26,6 +26,8 @@ const AddressCreatePage = () => {
       languageData={data.languageData}
       timezoneData={data.timezoneData}
       searchTags={data.searchTagData}
+      bookingTypeData={data.bookingTypeData}
+      continentsData={data.continentsData}
     />
   );
 };

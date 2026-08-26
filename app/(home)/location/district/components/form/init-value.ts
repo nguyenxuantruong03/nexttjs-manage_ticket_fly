@@ -1,4 +1,4 @@
-import { District } from "@/types/bookings/location/district";
+import { District } from "@/types/location/district";
 import { districtDefaultValues } from "./default-values";
 import { DistrictFormSchema } from "./schema";
 

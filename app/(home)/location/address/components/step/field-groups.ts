@@ -10,14 +10,7 @@ export const addressFieldGroups: Record<string, readonly AddressFieldPath[]> = {
   // ADDRESS
   // ======================================================
 
-  basic: [
-    "name",
-    "houseNumber",
-    "street",
-    "wardId",
-    "districtId",
-    "postcode",
-  ],
+  basic: ["name", "houseNumber", "street", "wardId", "districtId", "postcode"],
 
   // ======================================================
   // LOCATION
@@ -31,4 +24,8 @@ export const addressFieldGroups: Record<string, readonly AddressFieldPath[]> = {
     "plusCode",
     "precision",
   ],
+
+  media: ["thumbnail", "coverImage", "bannerImage", "video", "images.0"],
+
+  status: ["verified", "active"],
 };

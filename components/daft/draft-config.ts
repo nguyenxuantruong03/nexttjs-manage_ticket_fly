@@ -40,7 +40,58 @@ export enum DraftEntity {
   HotelRoomView = "hotelRoomView",
   HotelSustainability = "hotelSustainability",
   HotelMediaAsset = "hotelMediaAsset",
-  HotelRoomType="hotelRoomType"
+  HotelRoomType = "hotelRoomType",
+  HotelCheckInPolicy = "hotelCheckInPolicy",
+  Facility = "facility",
+  FacilityCategory = "facilityCategory",
+  BookingType = "bookingType",
+  Promotion = "promotion",
+  Coupon = "coupon",
+  ExtraType = "extraType",
+  AirportTransferPriceRuleType = "airportTransferPriceRuleType",
+  AirportTransferRouteType = "airportTransferRouteType",
+  AirportTransferServiceType = "airportTransferServiceType",
+  AirportTransferVehicleType = "airportTransferVehicleType",
+  BusSeatType = "busSeatType",
+  BusVehicleType = "busVehicleType",
+  CarRentalVehicleType = "carRentalVehicleType",
+  CarRentalInsuranceBenefitType = "carRentalInsuranceBenefitType",
+  CarRentalInsuranceType = "carRentalInsuranceType",
+  CarRentalDocumentType = "carRentalDocumentType",
+  YachtCondition = "yachtCondition",
+  YachtCrewRole = "yachtCrewRole",
+  YachtExtraCategory = "yachtExtraCategory",
+  YachtFeeType = "yachtFeeType",
+  YachtServiceType = "yachtServiceType",
+  YachtType = "yachtType",
+  FlyAddonType = "flyAddonType",
+  FlyCabinClass = "flyCabinClass",
+  FlyCrewDuty = "flyCrewDuty",
+  FlyCrewRole = "flyCrewRole",
+  FlyDelayReason = "flyDelayReason",
+  FlyFareRuleType = "flyFareRuleType",
+  FlyMealType = "flyMealType",
+  FlyPriceRuleType = "flyPriceRuleType",
+  FlyAircraft = "flyAircraft",
+  FlyAirline = "flyAirline",
+  FlySeatType = "flySeatType",
+  FlyAlliance = "flyAlliance",
+  FlyCrew = "flyCrew",
+  FlyAircraftType = "flyAircraftType",
+  VehicleType = "vehicleType",
+  FuelType = "fuelType",
+  RouteType = "routeType",
+  ServiceType = "serviceType",
+  PriceRuleType = "priceRuleType",
+  BookingItemType = "bookingItemType",
+  Extra = "extra",
+  ExtraFeeType = "extraFeeType",
+  Package = "package",
+  PolicyType = "policyType",
+  Policy = "policy",
+  PromotionRule = "promotionRule",
+  Continent = "continent",
+  PlaceType = "place-type",
 }
 
 export const draftConfig = {
@@ -60,6 +111,9 @@ export const draftConfig = {
     titleFields: ["name"],
   },
   [DraftEntity.HotelBedType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.HotelCheckInPolicy]: {
     titleFields: ["name"],
   },
   [DraftEntity.HotelDiningMealType]: {
@@ -177,6 +231,156 @@ export const draftConfig = {
   },
 
   [DraftEntity.Yacht]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.Facility]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FacilityCategory]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.BookingType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.Promotion]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.Coupon]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.ExtraType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.AirportTransferPriceRuleType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.AirportTransferRouteType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.AirportTransferServiceType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.AirportTransferVehicleType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.BusSeatType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.BusVehicleType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.CarRentalVehicleType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.CarRentalInsuranceBenefitType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.CarRentalInsuranceType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.CarRentalDocumentType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.YachtCondition]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.YachtCrewRole]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.YachtExtraCategory]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.YachtFeeType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.YachtServiceType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.YachtType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyAddonType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyCabinClass]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyCrewDuty]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyAircraftType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyCrewRole]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyDelayReason]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyFareRuleType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyMealType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyPriceRuleType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyAircraft]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyAirline]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlySeatType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyAlliance]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FlyCrew]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.VehicleType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FuelType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.RouteType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.ServiceType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.PriceRuleType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.BookingItemType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.Extra]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.ExtraFeeType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.Package]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.PolicyType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.Policy]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.PromotionRule]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.Continent]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.PlaceType]: {
     titleFields: ["name"],
   },
 } satisfies Record<

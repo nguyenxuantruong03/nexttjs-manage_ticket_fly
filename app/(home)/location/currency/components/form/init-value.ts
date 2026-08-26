@@ -1,6 +1,6 @@
 import { CurrencyFormSchema } from "@/app/(home)/location/currency/components/form/schema";
-import { Currency } from "@/types/bookings/location/currency";
 import { currencyDefaultValues } from "./default-values";
+import { Currency } from "@/types/location/currency";
 
 export function initCurrencyFormValues(
   currency?: Currency,

@@ -1,7 +1,7 @@
 "use client";
 import SidebarIndex from "@/components/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { User } from "@/types/bookings/auth/users";
+import { User } from "@/types/users/auth/users";
 import { useState } from "react";
 export default function SidebarClient({
   children,

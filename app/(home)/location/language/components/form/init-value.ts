@@ -1,4 +1,4 @@
-import { Language } from "@/types/bookings/location/language";
+import { Language } from "@/types/location/language";
 import { languageDefaultValues } from "./default-values";
 import { LanguageFormSchema } from "./schema";
 

@@ -2,12 +2,15 @@
 
 import * as React from "react";
 
-import { AppForm, FormCombobox, FormInput } from "@/components/form/form-data";
+import {
+  AppForm,
+  FormCombobox,
+  FormInput,
+  FormSelect,
+  FormSwitch,
+} from "@/components/form/form-data";
 
 import { Button } from "@/components/ui/button";
-
-import { District } from "@/types/bookings/location/district";
-import { Ward } from "@/types/bookings/location/ward";
 
 import { useCreateWard } from "@/hooks/location/ward";
 import { useSubmit } from "@/hooks/useSubmit";
@@ -20,9 +23,17 @@ import { wardDefaultValues } from "./form/default-values";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
+  EntityOption,
 } from "@/components/entity-selector";
 
 import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { District } from "@/types/location/district";
+import { Ward } from "@/types/location/ward";
+import SearchTagCreateDialog from "@/app/(home)/search/tag/components/SearchTagCreateDialog";
+import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
+import { SEARCH_PRIORITY_OPTIONS } from "@/types/searchs/search-prioty-score";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import { SearchTag } from "@/types/searchs/search/tag.types";
 
 // ======================================================
 // PROPS
@@ -30,6 +41,8 @@ import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog"
 
 interface WardCreateDialogProps extends EntityCreateDialogProps<Ward> {
   districts: District[];
+  bookingTypeData: BookingType[];
+  searchTagData: SearchTag[];
 }
 
 // ======================================================
@@ -42,6 +55,8 @@ export default function WardCreateDialog({
   defaultKeyword,
   onCreated,
   districts,
+  bookingTypeData,
+  searchTagData,
 }: WardCreateDialogProps) {
   const dialogRef = React.useRef<HTMLDivElement>(null);
 
@@ -84,6 +99,12 @@ export default function WardCreateDialog({
       },
     });
   };
+
+  const tagOptions: EntityOption<SearchTag>[] = searchTagData.map((tag) => ({
+    value: tag.id,
+    label: tag.name,
+    data: tag,
+  }));
 
   return (
     <EntityCreateDialog
@@ -128,6 +149,33 @@ export default function WardCreateDialog({
               placeholder="Ward code"
             />
           </div>
+
+           <div className="grid gap-6 md:grid-cols-2">
+        <FormInput<WardFormSchema>
+          name="thumbnail"
+          label="Thumbnail URL"
+        />
+
+        <FormInput<WardFormSchema>
+          name="coverImage"
+          label="Cover Image URL"
+        />
+
+        <FormInput<WardFormSchema>
+          name="bannerImage"
+          label="Banner Image URL"
+        />
+
+        <FormInput<WardFormSchema>
+          name="video"
+          label="Video URL"
+        />
+
+        <FormInput<WardFormSchema>
+          name="images.0"
+          label="Image URL"
+        />
+      </div>
           {/* ====================================================== */}
           {/* LOCATION */}
           {/* ====================================================== */}
@@ -164,6 +212,52 @@ export default function WardCreateDialog({
               type="number"
               placeholder="Longitude"
             />
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-base font-semibold">Search Metadata</h3>
+
+              <p className="text-sm text-muted-foreground">
+                Search engine configuration
+              </p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <FormSelect<WardFormSchema>
+                name="searchPriority"
+                label="Search Priority"
+                placeholder="Select search priority"
+                options={SEARCH_PRIORITY_OPTIONS}
+              />
+
+              <FormSwitch<WardFormSchema>
+                name="searchable"
+                label="Searchable"
+              />
+
+              <FormEntityMultiSelector<WardFormSchema, SearchTag>
+                name="tagIds"
+                label="Tags"
+                placeholder="Search tags..."
+                searchPlaceholder="Search tags..."
+                emptyText="No tags found"
+                createText="Create tag"
+                options={tagOptions}
+                enableCreate
+                renderCreateDialog={(props) => (
+                  <SearchTagCreateDialog
+                    bookingTypeData={bookingTypeData}
+                    {...props}
+                  />
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <FormSwitch<WardFormSchema> name="verified" label="Verified" />
+            <FormSwitch<WardFormSchema> name="active" label="Active" />
           </div>
 
           {/* ====================================================== */}

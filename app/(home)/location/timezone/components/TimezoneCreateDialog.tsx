@@ -6,8 +6,6 @@ import { AppForm, FormInput, FormSwitch } from "@/components/form/form-data";
 
 import { Button } from "@/components/ui/button";
 
-import { Timezone } from "@/types/bookings/location/timezone";
-
 import { useCreateTimezone } from "@/hooks/location/timezone";
 import { useSubmit } from "@/hooks/useSubmit";
 import { useAppForm } from "@/hooks/useAppForm";
@@ -22,6 +20,7 @@ import {
 } from "@/components/entity-selector";
 
 import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { Timezone } from "@/types/location/timezone";
 
 // ======================================================
 // PROPS

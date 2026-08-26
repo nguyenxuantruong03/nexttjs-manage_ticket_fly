@@ -36,7 +36,7 @@ export const placeFieldGroups: Record<
   // ======================================================
 
   category: [
-    "type",
+    "placeTypeId",
   ],
 
 

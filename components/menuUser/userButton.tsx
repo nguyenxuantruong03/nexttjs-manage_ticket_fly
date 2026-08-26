@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { User } from "@/types/bookings/auth/users";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { User } from "@/types/users/auth/users";
 
 interface UserButtonProps extends React.ComponentPropsWithoutRef<
   typeof Button

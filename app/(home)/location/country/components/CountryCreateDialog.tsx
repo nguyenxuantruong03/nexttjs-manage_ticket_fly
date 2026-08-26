@@ -2,23 +2,14 @@
 
 import * as React from "react";
 
-import {
-  AppForm,
-  FormCombobox,
-  FormInput,
-  FormSwitch,
-} from "@/components/form/form-data";
+import { AppForm, FormInput, FormSwitch } from "@/components/form/form-data";
 
 import { Button } from "@/components/ui/button";
 
-import { Country } from "@/types/bookings/location/country";
-import { Currency } from "@/types/bookings/location/currency";
-import { Language } from "@/types/bookings/location/language";
-import { Timezone } from "@/types/bookings/location/timezone";
-import { Continent } from "@/types/bookings/location/city";
-
 import { useCreateCountry } from "@/hooks/location/country";
+
 import { useSubmit } from "@/hooks/useSubmit";
+
 import { useAppForm } from "@/hooks/useAppForm";
 
 import { CountryFormSchema, CountrySchema } from "./form/schema";
@@ -28,10 +19,33 @@ import { countryDefaultValues } from "./form/default-values";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
+  EntityOption,
 } from "@/components/entity-selector";
 
 import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
-import { SearchTag } from "@/types/bookings/search/tag.types";
+
+import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+
+import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
+
+import { Country } from "@/types/location/country/country";
+
+import { Currency } from "@/types/location/currency";
+
+import { Language } from "@/types/location/language";
+
+import { Timezone } from "@/types/location/timezone";
+
+import { SearchTag } from "@/types/searchs/search/tag.types";
+
+import { Continent } from "@/types/location/country/continent.type";
+
+import SearchTagCreateDialog from "@/app/(home)/search/tag/components/SearchTagCreateDialog";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import CurrencyCreateDialog from "../../currency/components/CurrencyCreateDialog";
+import ContinentCreateDialog from "../../continent/components/ContinentCreateDialog";
+import TimezoneCreateDialog from "../../timezone/components/TimezoneCreateDialog";
+import LanguageCreateDialog from "../../language/components/LanguageCreateDialog";
 
 // ======================================================
 // PROPS
@@ -41,7 +55,9 @@ interface CountryCreateDialogProps extends EntityCreateDialogProps<Country> {
   currencies: Currency[];
   languages: Language[];
   timezones: Timezone[];
+  continents: Continent[];
   tags: SearchTag[];
+  bookingTypeData: BookingType[];
 }
 
 // ======================================================
@@ -56,7 +72,9 @@ export default function CountryCreateDialog({
   currencies,
   languages,
   timezones,
+  continents,
   tags,
+  bookingTypeData,
 }: CountryCreateDialogProps) {
   const dialogRef = React.useRef<HTMLDivElement>(null);
 
@@ -77,6 +95,56 @@ export default function CountryCreateDialog({
       name: defaultKeyword ?? "",
     });
   }, [open, defaultKeyword, form]);
+
+  // ======================================================
+  // OPTIONS
+  // ======================================================
+
+  const currencyOptions: EntityOption<Currency>[] = currencies.map(
+    (currency) => ({
+      value: currency.id,
+      label: `${currency.flagEmoji} ${currency.name} (${currency.code}) ${currency.symbol}`,
+      description: currency.code,
+      data: currency,
+    }),
+  );
+
+  const timezoneOptions: EntityOption<Timezone>[] = timezones.map(
+    (timezone) => ({
+      value: timezone.id,
+      label: `${timezone.displayName} (${timezone.name})`,
+      description: timezone.name,
+      data: timezone,
+    }),
+  );
+
+  const languageOptions: EntityOption<Language>[] = languages.map(
+    (language) => ({
+      value: language.id,
+      label: language.name,
+      description: language.code ?? undefined,
+      data: language,
+    }),
+  );
+
+  const continentOptions: EntityOption<Continent>[] = continents.map(
+    (continent) => ({
+      value: continent.id,
+      label: continent.name,
+      description: continent.code ?? undefined,
+      data: continent,
+    }),
+  );
+
+  const tagOptions: EntityOption<SearchTag>[] = tags.map((tag) => ({
+    value: tag.id,
+    label: tag.name,
+    data: tag,
+  }));
+
+  // ======================================================
+  // SUBMIT
+  // ======================================================
 
   const onSubmit = (values: CountryFormSchema) => {
     submit({
@@ -161,63 +229,66 @@ export default function CountryCreateDialog({
               placeholder="Capital city"
             />
           </div>
+
           {/* ====================================================== */}
           {/* LOCATION */}
           {/* ====================================================== */}
 
           <div className="grid gap-4 md:grid-cols-2">
-            <FormCombobox<CountryFormSchema>
-              portalContainer={dialogRef.current}
-              name="continent"
-              label="Continent"
-              placeholder="Select continent"
-              searchPlaceholder="Search continent..."
-              options={Object.values(Continent).map((continent) => ({
-                label: continent,
-                value: continent,
-              }))}
-            />
-
-            <FormCombobox<CountryFormSchema>
-              portalContainer={dialogRef.current}
+            <FormEntitySelector<CountryFormSchema, Currency>
               name="currencyId"
               label="Currency"
-              placeholder="Select currency"
+              placeholder="Search currency..."
               searchPlaceholder="Search currency..."
-              options={currencies.map((currency) => ({
-                label: currency.name,
-                value: currency.id,
-              }))}
+              emptyText="No currency found"
+              createText="Create currency"
+              options={currencyOptions}
+              enableCreate
+              renderCreateDialog={(props) => (
+                <CurrencyCreateDialog {...props} />
+              )}
             />
 
-            <FormCombobox<CountryFormSchema>
-              portalContainer={dialogRef.current}
+            <FormEntitySelector<CountryFormSchema, Continent>
+              name="continentId"
+              label="Continent"
+              placeholder="Search continent..."
+              searchPlaceholder="Search continent..."
+              emptyText="No continent found"
+              createText="Create continent"
+              options={continentOptions}
+              enableCreate
+              renderCreateDialog={(props) => (
+                <ContinentCreateDialog {...props} />
+              )}
+            />
+
+            <FormEntitySelector<CountryFormSchema, Timezone>
               name="timezoneId"
               label="Timezone"
-              placeholder="Select timezone"
+              placeholder="Search timezone..."
               searchPlaceholder="Search timezone..."
-              options={timezones.map((timezone) => ({
-                label: timezone.name,
-                value: timezone.id,
-              }))}
+              emptyText="No timezone found"
+              createText="Create timezone"
+              options={timezoneOptions}
+              enableCreate
+              renderCreateDialog={(props) => (
+                <TimezoneCreateDialog {...props} />
+              )}
             />
-          </div>
 
-          {/* ====================================================== */}
-          {/* LANGUAGE */}
-          {/* ====================================================== */}
-
-          <div className="grid gap-4">
-            <FormCombobox<CountryFormSchema>
-              portalContainer={dialogRef.current}
+            <FormEntityMultiSelector<CountryFormSchema, Language>
               name="languageIds"
               label="Languages"
-              placeholder="Select languages"
-              searchPlaceholder="Search languages..."
-              options={languages.map((language) => ({
-                label: language.name,
-                value: language.id,
-              }))}
+              placeholder="Search language..."
+              searchPlaceholder="Search language..."
+              emptyText="No language found"
+              createText="Create language"
+              options={languageOptions}
+              enableCreate
+              renderCreateDialog={(props) => (
+                <LanguageCreateDialog {...props} />
+              )}
             />
           </div>
 
@@ -226,16 +297,21 @@ export default function CountryCreateDialog({
           {/* ====================================================== */}
 
           <div className="grid gap-4">
-            <FormCombobox<CountryFormSchema>
-              portalContainer={dialogRef.current}
+            <FormEntityMultiSelector<CountryFormSchema, SearchTag>
               name="tagIds"
               label="Tags"
-              placeholder="Select tags"
+              placeholder="Search tags..."
               searchPlaceholder="Search tags..."
-              options={tags.map((tag) => ({
-                label: tag.name,
-                value: tag.id,
-              }))}
+              emptyText="No tags found"
+              createText="Create tag"
+              options={tagOptions}
+              enableCreate
+              renderCreateDialog={(props) => (
+                <SearchTagCreateDialog
+                  bookingTypeData={bookingTypeData}
+                  {...props}
+                />
+              )}
             />
           </div>
 
@@ -259,9 +335,28 @@ export default function CountryCreateDialog({
             <FormInput<CountryFormSchema>
               name="coverImage"
               label="Cover Image"
-              placeholder="Cover image URL"
+              placeholder="Cover Image URL"
+            />
+
+            <FormInput<CountryFormSchema>
+              name="bannerImage"
+              label="Banner Image"
+              placeholder="Banner Image URL"
+            />
+
+            <FormInput<CountryFormSchema>
+              name="video"
+              label="Video"
+              placeholder="Video URL"
+            />
+
+            <FormInput<CountryFormSchema>
+              name="images.0"
+              label="Image"
+              placeholder="Image URL"
             />
           </div>
+
           {/* ====================================================== */}
           {/* SEARCH */}
           {/* ====================================================== */}
@@ -294,20 +389,12 @@ export default function CountryCreateDialog({
           {/* ACTION */}
           {/* ====================================================== */}
 
-          <div
-            className="
-            flex
-            justify-end
-            gap-3
-            "
-          >
+          <div className="flex justify-end gap-3">
             <Button
               type="button"
               variant="outline"
               disabled={createCountry.isPending}
-              onClick={() => {
-                onOpenChange(false);
-              }}
+              onClick={() => onOpenChange(false)}
             >
               Cancel
             </Button>

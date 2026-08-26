@@ -1,21 +1,27 @@
 "use client";
 
 import FormSection from "@/components/form/FormSection";
-import { FormCombobox, FormInput } from "@/components/form/form-data";
+import { FormInput } from "@/components/form/form-data";
 
 import { DistrictFormSchema } from "../form/schema";
-import { City } from "@/types/bookings/location/city";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import CityCreateDialog from "../../../city/components/CityCreateDialog";
-import { Country } from "@/types/bookings/location/country";
+import { City } from "@/types/location/city";
+import { Country } from "@/types/location/country/country";
+import { Timezone } from "@/types/location/timezone";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import { SearchTag } from "@/types/searchs/search/tag.types";
 
 interface BasicStepProps {
   cityData: City[];
   countryData: Country[];
+  timezones: Timezone[]
+  searchTagData: SearchTag[]
+  bookingTypeData: BookingType[]
 }
 
-export default function BasicStep({ cityData, countryData }: BasicStepProps) {
+export default function BasicStep({ cityData, countryData,timezones,searchTagData,bookingTypeData }: BasicStepProps) {
   const cityOptions: EntityOption<City>[] =
     cityData?.map((city) => ({
       value: city.id,
@@ -54,7 +60,13 @@ export default function BasicStep({ cityData, countryData }: BasicStepProps) {
           options={cityOptions}
           enableCreate
           renderCreateDialog={(props) => (
-            <CityCreateDialog countries={countryData} {...props} />
+            <CityCreateDialog
+              timezones={timezones}
+              searchTagData={searchTagData}
+              bookingTypeData={bookingTypeData}
+              countries={countryData}
+              {...props}
+            />
           )}
         />
       </div>

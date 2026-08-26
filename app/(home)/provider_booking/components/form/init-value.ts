@@ -1,6 +1,6 @@
-import { ProviderBooking } from "@/types/bookings/provider-bookings";
 import { ProviderBookingFormSchema } from "./schema";
 import { providerBookingDefaultValues } from "./default-values";
+import { ProviderBooking } from "@/types/users/provider-bookings";
 
 export function initProviderBookingFormValues(
   providerBooking?: ProviderBooking,

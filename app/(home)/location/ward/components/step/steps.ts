@@ -1,6 +1,6 @@
 import { FormWizardStep } from "@/components/form/wizard/types";
 
-import { Info, MapPinned, Images } from "lucide-react";
+import { Info, MapPinned, Images, Activity, Search } from "lucide-react";
 import { WardFormSchema } from "../form/schema";
 import { wardFieldGroups } from "./field-groups";
 
@@ -14,6 +14,15 @@ export const wardSteps: FormWizardStep<WardFormSchema>[] = [
     fields: wardFieldGroups.basic,
   },
 
+   {
+    id: "media",
+    title: "Media",
+    description: "City images and videos",
+    icon: Images,
+
+    fields: wardFieldGroups.media,
+  },
+
   {
     id: "location",
     title: "Location",
@@ -21,5 +30,23 @@ export const wardSteps: FormWizardStep<WardFormSchema>[] = [
     icon: MapPinned,
 
     fields: wardFieldGroups.location,
+  },
+
+  {
+    id: "search",
+    title: "Search",
+    description: "Search configuration",
+    icon: Search,
+
+    fields: wardFieldGroups.search,
+  },
+
+  {
+    id: "status",
+    title: "Status",
+    description: "Ward visibility",
+    icon: Activity,
+
+    fields: wardFieldGroups.status,
   },
 ];

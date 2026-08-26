@@ -2,7 +2,7 @@
 
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 import { RowActions } from "@/components/ui/data-table/row-actions";
-import { Address } from "@/types/bookings/location/address";
+import { Address } from "@/types/location/address";
 import { ColumnDef } from "@tanstack/react-table";
 
 export function addressColumns(
@@ -69,6 +69,41 @@ export function addressColumns(
     {
       accessorKey: "precision",
       header: "Precision",
+    },
+
+    {
+      accessorKey: "verified",
+      header: "Verified",
+    },
+    {
+      accessorKey: "active",
+      header: "Active",
+    },
+
+    // ======================================================
+    // MEDIA
+    // ======================================================
+
+    {
+      accessorKey: "thumbnail",
+      header: "Thumbnail",
+    },
+    {
+      accessorKey: "coverImage",
+      header: "Cover Image",
+    },
+    {
+      accessorKey: "bannerImage",
+      header: "Banner Image",
+    },
+    {
+      id: "images",
+      header: "Images",
+      cell: ({ row }) => row.original.images?.length ?? 0,
+    },
+    {
+      accessorKey: "video",
+      header: "Video",
     },
 
     // ======================================================

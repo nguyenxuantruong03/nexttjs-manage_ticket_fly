@@ -2,7 +2,7 @@
 
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 import { RowActions } from "@/components/ui/data-table/row-actions";
-import { Ward } from "@/types/bookings/location/ward";
+import { Ward } from "@/types/location/ward";
 import { ColumnDef } from "@tanstack/react-table";
 
 export function wardColumns(
@@ -54,6 +54,41 @@ export function wardColumns(
     {
       accessorKey: "longitude",
       header: "Longitude",
+    },
+
+    {
+      accessorKey: "verified",
+      header: "Verified",
+    },
+    {
+      accessorKey: "active",
+      header: "Active",
+    },
+
+     // ======================================================
+    // MEDIA
+    // ======================================================
+
+    {
+      accessorKey: "thumbnail",
+      header: "Thumbnail",
+    },
+    {
+      accessorKey: "coverImage",
+      header: "Cover Image",
+    },
+    {
+      accessorKey: "bannerImage",
+      header: "Banner Image",
+    },
+    {
+      id: "images",
+      header: "Images",
+      cell: ({ row }) => row.original.images?.length ?? 0,
+    },
+    {
+      accessorKey: "video",
+      header: "Video",
     },
 
     // ======================================================

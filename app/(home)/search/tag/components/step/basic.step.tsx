@@ -2,15 +2,9 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { FormInput, FormSelect } from "@/components/form/form-data";
+import { FormInput } from "@/components/form/form-data";
 
 import { SearchTagFormSchema } from "../form/schema";
-import { TagType } from "@/types/bookings/search/tag.types";
-
-const tagTypeOptions = Object.values(TagType).map((value) => ({
-  label: value.replace(/_/g, " "),
-  value,
-}));
 
 export default function BasicStep() {
   return (
@@ -20,13 +14,6 @@ export default function BasicStep() {
           name="name"
           label="Name"
           placeholder="Luxury"
-        />
-
-        <FormSelect<SearchTagFormSchema>
-          name="type"
-          label="Tag Type"
-          placeholder="Select tag type"
-          options={tagTypeOptions}
         />
       </div>
     </FormSection>

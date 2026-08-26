@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { SearchTagService } from "@/services/search/tag/client";
+import { BookingTypeService } from "@/services/commerce/booking-type/client";
 
 export const useSearchTagUpdateFormData = (tagId: string, enabled = true) => {
   return useQuery({
@@ -10,10 +11,14 @@ export const useSearchTagUpdateFormData = (tagId: string, enabled = true) => {
     enabled: enabled && !!tagId,
     staleTime: 1000 * 60 * 5,
     queryFn: async () => {
-      const [initialData] = await Promise.all([SearchTagService.getOne(tagId)]);
+      const [initialData, bookingTypeData] = await Promise.all([
+        SearchTagService.getOne(tagId),
+        BookingTypeService.getMany(),
+      ]);
 
       return {
         initialData,
+        bookingTypeData,
       };
     },
   });

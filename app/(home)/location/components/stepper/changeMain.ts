@@ -10,6 +10,6 @@ export function changeMainStep(
   setMainStep(id);
 
   setSubStep(
-    id === "country" ? "currency" : id === "city" ? "district" : "address",
+    id === "country" ? "continent" : id === "city" ? "district" : "place-type",
   );
 }

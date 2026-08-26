@@ -1,0 +1,13 @@
+import { HotelRoomType } from "@/types/product-types/hotel/room/room-type.types";
+import { roomTypeDefaultValues } from "./default-values";
+import { RoomTypeFormSchema } from "./schema";
+
+export function initRoomTypeFormValues(
+  roomType: HotelRoomType,
+): RoomTypeFormSchema {
+  if (!roomType) {
+    return structuredClone(roomTypeDefaultValues);
+  }
+
+  return structuredClone(roomType);
+}

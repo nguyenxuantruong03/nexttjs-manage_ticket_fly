@@ -1,0 +1,115 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+
+import { AirportTransferService } from "@/services/product-types/airport-transfer/client";
+import { SearchTagService } from "@/services/search/tag/client";
+import { AddressService } from "@/services/location/address/client";
+import { CountryService } from "@/services/location/country/client";
+import { CityService } from "@/services/location/city/client";
+import { DistrictService } from "@/services/location/district/client";
+import { WardService } from "@/services/location/ward/client";
+import { VehicleTypeService } from "@/services/catalog/vehicle-type/client";
+import { BookingTypeService } from "@/services/commerce/booking-type/client";
+import { FuelTypeService } from "@/services/catalog/fuel-type/client";
+import { ServiceTypeService } from "@/services/catalog/service-type/client";
+import { RouteTypeService } from "@/services/catalog/route-type/client";
+import { ExtraFeeTypeService } from "@/services/commerce/extra-fee-type/client";
+import { PriceRuleTypeService } from "@/services/commerce/price-rule-type/client";
+import { ProviderBookingService } from "@/services/provider-booking/client";
+import { BookingItemTypeService } from "@/services/commerce/booking-item-type/client";
+import { ExtraService } from "@/services/commerce/extra/client";
+import { ExtraTypeService } from "@/services/commerce/extra-type/client";
+import { CurrencyService } from "@/services/location/currency/client";
+import { PackageService } from "@/services/commerce/package/client";
+import { PolicyService } from "@/services/features/policy/client";
+import { PolicyTypeService } from "@/services/features/policy-type/client";
+import { LanguageService } from "@/services/location/language/client";
+
+export const useAirportTransferUpdateFormData = (
+  airportTransferId: string,
+  enabled = true,
+) => {
+  return useQuery({
+    queryKey: ["airport-transfer-form", airportTransferId],
+    enabled: enabled && !!airportTransferId,
+    staleTime: 1000 * 60 * 5,
+    queryFn: async () => {
+      const [
+        initialData,
+        searchTagData,
+        addresses,
+        countries,
+        cities,
+        districts,
+        wards,
+        vehicleTypeData,
+        bookingTypeData,
+        fuelTypeData,
+        serviceTypeData,
+        routeTypeData,
+        extraFeeTypeData,
+        priceRuleTypeData,
+        providerBookingData,
+        bookingItemTypeData,
+        extraData,
+        extraTypeData,
+        currencyData,
+        packageData,
+        policyData,
+        policyTypeData,
+        languageData,
+      ] = await Promise.all([
+        AirportTransferService.getOne(airportTransferId),
+        SearchTagService.getMany(),
+        AddressService.getMany(),
+        CountryService.getMany(),
+        CityService.getMany(),
+        DistrictService.getMany(),
+        WardService.getMany(),
+        VehicleTypeService.getMany(),
+        BookingTypeService.getMany(),
+        FuelTypeService.getMany(),
+        ServiceTypeService.getMany(),
+        RouteTypeService.getMany(),
+        ExtraFeeTypeService.getMany(),
+        PriceRuleTypeService.getMany(),
+        ProviderBookingService.getMany(),
+        BookingItemTypeService.getMany(),
+        ExtraService.getMany(),
+        ExtraTypeService.getMany(),
+        CurrencyService.getMany(),
+        PackageService.getMany(),
+        PolicyService.getMany(),
+        PolicyTypeService.getMany(),
+        LanguageService.getMany(),
+      ]);
+
+      return {
+        initialData,
+        searchTagData,
+        addresses,
+        countries,
+        cities,
+        districts,
+        wards,
+        vehicleTypeData,
+        bookingTypeData,
+        fuelTypeData,
+        serviceTypeData,
+        routeTypeData,
+        extraFeeTypeData,
+        priceRuleTypeData,
+        providerBookingData,
+        bookingItemTypeData,
+        extraData,
+        extraTypeData,
+        currencyData,
+        packageData,
+        policyData,
+        policyTypeData,
+        languageData,
+      };
+    },
+  });
+};

@@ -1,7 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { User } from "@/types/bookings/auth/users";
 import {
   ActionMenu,
   ActionMenuItem,
@@ -9,6 +8,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { RowActions } from "@/components/ui/data-table/row-actions";
+import { User } from "@/types/users/auth/users";
 
 export function usersColumns(
   actions: (row: User) => ActionMenuItem<User>[],

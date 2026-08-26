@@ -1,0 +1,101 @@
+import { z } from "zod";
+
+import { FlyInventorySchema } from "./inventory.schema";
+
+import { FlyCrewAssignmentSchema } from "../crew/assignment.schema";
+
+import { FlyCrewScheduleSchema } from "../crew/schedule.schema";
+
+import { FlyCodeshareSchema } from "../alliance/codeshare.schema";
+
+import { FlyConnectionSchema } from "../alliance/connection.schema";
+
+import { FlyItinerarySegmentSchema } from "../alliance/itinerary.schema";
+
+import { FlyOperationSchema } from "../operation/operation.schema";
+
+import { FlyTrackingSchema } from "../operation/tracking.schema";
+
+import { FlyCancellationSchema } from "../operation/cancellation.schema";
+
+import { FlyDiversionSchema } from "../operation/diversion.schema";
+
+import { FlyTripStatus } from "@/types/product-types/ticket-fly/enums";
+
+// ======================================================
+// TRIP
+// ======================================================
+
+export const FlyTripSchema = z.object({
+  // ======================================================
+  // RELATIONS
+  // ======================================================
+
+  aircraftId: z.string().optional(),
+
+  scheduleId: z.string().optional(),
+
+  // ======================================================
+  // BASIC
+  // ======================================================
+
+  flightNumber: z.string(),
+
+  departureTime: z.date(),
+
+  arrivalTime: z.date(),
+
+  durationMinutes: z.number(),
+
+  status: z.nativeEnum(FlyTripStatus),
+
+  availableSeats: z.number().optional(),
+
+  // ======================================================
+  // INVENTORY
+  // ======================================================
+
+  inventory: FlyInventorySchema.optional(),
+
+  // ======================================================
+  // OPERATION
+  // ======================================================
+
+  operation: FlyOperationSchema.optional(),
+
+  tracking: z.array(FlyTrackingSchema).optional(),
+
+  cancellation: FlyCancellationSchema.optional(),
+
+  diversion: FlyDiversionSchema.optional(),
+
+  // ======================================================
+  // CODESHARE
+  // ======================================================
+
+  codeshares: z.array(FlyCodeshareSchema).optional(),
+
+  // ======================================================
+  // CONNECTIONS
+  // ======================================================
+
+  firstConnections: z.array(FlyConnectionSchema).optional(),
+
+  secondConnections: z.array(FlyConnectionSchema).optional(),
+
+  // ======================================================
+  // CREW
+  // ======================================================
+
+  crewSchedule: z.array(FlyCrewScheduleSchema).optional(),
+
+  crewAssignment: z.array(FlyCrewAssignmentSchema).optional(),
+
+  // ======================================================
+  // ITINERARY
+  // ======================================================
+
+  itinerarySegment: z.array(FlyItinerarySegmentSchema).optional(),
+});
+
+export type FlyTripFormValues = z.infer<typeof FlyTripSchema>;

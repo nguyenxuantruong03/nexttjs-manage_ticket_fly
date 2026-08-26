@@ -7,6 +7,8 @@ import { CurrencyService } from "@/services/location/currency/client";
 import { LanguageService } from "@/services/location/language/client";
 import { TimezoneService } from "@/services/location/timezone/client";
 import { SearchTagService } from "@/services/search/tag/client";
+import { ContinentService } from "@/services/location/country/continent/client";
+import { BookingTypeService } from "@/services/commerce/booking-type/client";
 
 export const useCountryUpdateFormData = (countryId: string, enabled = true) => {
   return useQuery({
@@ -20,12 +22,16 @@ export const useCountryUpdateFormData = (countryId: string, enabled = true) => {
         searchTagData,
         timezoneData,
         languageData,
+        bookingTypeData,
+        continentData,
       ] = await Promise.all([
         CountryService.getOne(countryId),
         CurrencyService.getMany(),
         SearchTagService.getMany(),
         TimezoneService.getMany(),
         LanguageService.getMany(),
+        BookingTypeService.getMany(),
+        ContinentService.getMany(),
       ]);
 
       return {
@@ -34,6 +40,8 @@ export const useCountryUpdateFormData = (countryId: string, enabled = true) => {
         searchTagData,
         timezoneData,
         languageData,
+        bookingTypeData,
+        continentData,
       };
     },
   });

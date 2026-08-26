@@ -17,36 +17,27 @@ export enum Gender {
   OTHER = "Other",
 }
 
-// ======================================================
-// Inventory Lock Status
-// ======================================================
-
 export enum InventoryLockStatus {
-  LOCKED = "locked",
-
-  CONVERTED = "converted",
-
-  EXPIRED = "expired",
-
-  RELEASED = "released",
+  LOCKED = "LOCKED",
+  CONFIRMED = "CONFIRMED",
+  EXPIRED = "EXPIRED",
+  RELEASED = "RELEASED",
+  CANCELLED = "CANCELLED",
 }
-
-// ======================================================
-// Week Day
-// ======================================================
 
 export enum WeekDay {
   MONDAY = "monday",
-
   TUESDAY = "tuesday",
-
   WEDNESDAY = "wednesday",
-
   THURSDAY = "thursday",
-
   FRIDAY = "friday",
-
   SATURDAY = "saturday",
-
   SUNDAY = "sunday",
 }
+
+export enum PriceCalculationType {
+  FIXED = "FIXED",
+  PERCENTAGE = "PERCENTAGE",
+}
+
+

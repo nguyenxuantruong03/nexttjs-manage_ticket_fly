@@ -41,5 +41,5 @@ export const cityFieldGroups: Record<string, readonly CityFieldPath[]> = {
     "tagIds",
   ],
 
-  status: ["verified", "status"],
+  status: ["verified", "active"],
 };

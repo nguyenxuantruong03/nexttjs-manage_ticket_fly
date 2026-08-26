@@ -5,14 +5,14 @@ import FormSection from "@/components/form/FormSection";
 import { FormCombobox, FormInput } from "@/components/form/form-data";
 
 import { PlaceFormSchema } from "../form/schema";
-import { Address } from "@/types/bookings/location/address";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import AddressCreateDialog from "../../../address/components/AddressCreateDialog";
 import { EntityOption } from "@/components/entity-selector";
-import { Country } from "@/types/bookings/location/country";
-import { City } from "@/types/bookings/location/city";
-import { District } from "@/types/bookings/location/district";
-import { Ward } from "@/types/bookings/location/ward";
+import { Address } from "@/types/location/address";
+import { Country } from "@/types/location/country/country";
+import { City } from "@/types/location/city";
+import { District } from "@/types/location/district";
+import { Ward } from "@/types/location/ward";
 
 interface LocationStepProps {
   addresses: Address[];

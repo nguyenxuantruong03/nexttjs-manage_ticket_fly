@@ -30,6 +30,8 @@ export default function CityEditPage() {
       countryData={data.countryData}
       searchTagData={data.searchTagData}
       timezoneData={data.timezoneData}
+      bookingTypeData={data.bookingTypeData}
+      continentData={data.continentData}
     />
   );
 }

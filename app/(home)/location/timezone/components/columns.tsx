@@ -2,7 +2,7 @@
 
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 import { RowActions } from "@/components/ui/data-table/row-actions";
-import { Timezone } from "@/types/bookings/location/timezone";
+import { Timezone } from "@/types/location/timezone";
 import { ColumnDef } from "@tanstack/react-table";
 
 export function timezoneColumns(

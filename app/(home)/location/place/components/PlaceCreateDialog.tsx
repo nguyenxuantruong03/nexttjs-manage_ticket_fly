@@ -12,15 +12,11 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import { Address } from "@/types/bookings/location/address";
-import { Place, PlaceType } from "@/types/bookings/location/place";
-
 import { useCreatePlace } from "@/hooks/location/place";
 import { useSubmit } from "@/hooks/useSubmit";
 import { useAppForm } from "@/hooks/useAppForm";
 
 import { PlaceFormSchema, PlaceSchema } from "./form/schema";
-
 import { placeDefaultValues } from "./form/default-values";
 
 import {
@@ -30,7 +26,14 @@ import {
 } from "@/components/entity-selector";
 
 import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
-import { SearchTag } from "@/types/bookings/search/tag.types";
+
+import { Address } from "@/types/location/address";
+import { SearchTag } from "@/types/searchs/search/tag.types";
+import { Place } from "@/types/location/place/place";
+import { PlaceType } from "@/types/location/place/place-type.type";
+
+import PlaceTypeCreateDialog from "../../place-type/components/PlaceTypeCreateDialog";
+import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
 // ======================================================
 // PROPS
@@ -39,6 +42,7 @@ import { SearchTag } from "@/types/bookings/search/tag.types";
 interface PlaceCreateDialogProps extends EntityCreateDialogProps<Place> {
   addresses: Address[];
   tags: SearchTag[];
+  placeTypeData: PlaceType[];
 }
 
 // ======================================================
@@ -52,17 +56,21 @@ export default function PlaceCreateDialog({
   onCreated,
   addresses,
   tags,
+  placeTypeData,
 }: PlaceCreateDialogProps) {
   const dialogRef = React.useRef<HTMLDivElement>(null);
 
   const submit = useSubmit();
-
   const createPlace = useCreatePlace();
 
   const { form } = useAppForm<PlaceFormSchema>({
     schema: PlaceSchema,
     defaultValues: placeDefaultValues,
   });
+
+  // ======================================================
+  // RESET
+  // ======================================================
 
   React.useEffect(() => {
     if (!open) return;
@@ -73,10 +81,13 @@ export default function PlaceCreateDialog({
     });
   }, [open, defaultKeyword, form]);
 
+  // ======================================================
+  // SUBMIT
+  // ======================================================
+
   const onSubmit = (values: PlaceFormSchema) => {
     submit({
       mutation: createPlace.mutateAsync(values),
-
       success: "Place created",
 
       onSuccess: (response) => {
@@ -89,19 +100,42 @@ export default function PlaceCreateDialog({
         onCreated(result);
 
         form.reset();
-
         onOpenChange(false);
       },
     });
   };
 
+  // ======================================================
+  // ADDRESS OPTIONS
+  // ======================================================
+
   const addressOptions: EntityOption<Address>[] = addresses.map((address) => ({
     value: address.id,
+
     label:
-      address.name ?? `${address.street ?? ""} ${address.houseNumber ?? ""}`,
+      address.name ??
+      `${address.street ?? ""} ${address.houseNumber ?? ""}`.trim(),
+
     description: address.city?.name,
+
     data: address,
   }));
+
+  // ======================================================
+  // PLACE TYPE OPTIONS
+  // ======================================================
+
+  const placeTypeOptions: EntityOption<PlaceType>[] =
+    placeTypeData?.map((placeType) => ({
+      value: placeType.id,
+      label: placeType.name,
+      description: placeType.code ?? undefined,
+      data: placeType,
+    })) ?? [];
+
+  // ======================================================
+  // RENDER
+  // ======================================================
 
   return (
     <EntityCreateDialog
@@ -150,17 +184,12 @@ export default function PlaceCreateDialog({
               />
             </div>
           </div>
+
           {/* ====================================================== */}
           {/* LOCATION */}
           {/* ====================================================== */}
 
-          <div
-            className="
-            grid
-            gap-4
-            md:grid-cols-2
-            "
-          >
+          <div className="grid gap-4 md:grid-cols-2">
             <FormCombobox<PlaceFormSchema>
               portalContainer={dialogRef.current}
               name="addressId"
@@ -168,18 +197,6 @@ export default function PlaceCreateDialog({
               placeholder="Select address"
               searchPlaceholder="Search address..."
               options={addressOptions}
-            />
-
-            <FormCombobox<PlaceFormSchema>
-              portalContainer={dialogRef.current}
-              name="type"
-              label="Place Type"
-              placeholder="Select place type"
-              searchPlaceholder="Search place type..."
-              options={Object.values(PlaceType).map((type) => ({
-                label: type.replaceAll("_", " "),
-                value: type,
-              }))}
             />
 
             <FormInput<PlaceFormSchema>
@@ -198,16 +215,30 @@ export default function PlaceCreateDialog({
           </div>
 
           {/* ====================================================== */}
+          {/* CATEGORY */}
+          {/* ====================================================== */}
+
+          <div className="grid gap-4">
+            <FormEntitySelector<PlaceFormSchema, PlaceType>
+              name="placeTypeId"
+              label="Place Type"
+              placeholder="Search place type..."
+              searchPlaceholder="Search place type..."
+              emptyText="No place type found"
+              createText="Create place type"
+              options={placeTypeOptions}
+              enableCreate
+              renderCreateDialog={(props) => (
+                <PlaceTypeCreateDialog {...props} />
+              )}
+            />
+          </div>
+
+          {/* ====================================================== */}
           {/* MEDIA */}
           {/* ====================================================== */}
 
-          <div
-            className="
-            grid
-            gap-4
-            md:grid-cols-2
-            "
-          >
+          <div className="grid gap-4 md:grid-cols-2">
             <FormInput<PlaceFormSchema>
               name="thumbnail"
               label="Thumbnail"
@@ -229,17 +260,12 @@ export default function PlaceCreateDialog({
               description="Enter image URLs separated by commas."
             />
           </div>
+
           {/* ====================================================== */}
           {/* SEARCH / FEATURE */}
           {/* ====================================================== */}
 
-          <div
-            className="
-            grid
-            gap-4
-            md:grid-cols-2
-            "
-          >
+          <div className="grid gap-4 md:grid-cols-2">
             <FormInput<PlaceFormSchema>
               name="searchPriority"
               label="Search Priority"
@@ -250,13 +276,7 @@ export default function PlaceCreateDialog({
             <div />
           </div>
 
-          <div
-            className="
-            grid
-            gap-4
-            md:grid-cols-2
-            "
-          >
+          <div className="grid gap-4 md:grid-cols-2">
             <FormSwitch<PlaceFormSchema> name="featured" label="Featured" />
 
             <FormSwitch<PlaceFormSchema> name="searchable" label="Searchable" />
@@ -284,13 +304,7 @@ export default function PlaceCreateDialog({
           {/* STATUS */}
           {/* ====================================================== */}
 
-          <div
-            className="
-            grid
-            gap-4
-            md:grid-cols-2
-            "
-          >
+          <div className="grid gap-4 md:grid-cols-2">
             <FormSwitch<PlaceFormSchema> name="verified" label="Verified" />
 
             <FormSwitch<PlaceFormSchema> name="active" label="Active" />
@@ -300,13 +314,7 @@ export default function PlaceCreateDialog({
           {/* ACTION */}
           {/* ====================================================== */}
 
-          <div
-            className="
-            flex
-            justify-end
-            gap-3
-            "
-          >
+          <div className="flex justify-end gap-3">
             <Button
               type="button"
               variant="outline"

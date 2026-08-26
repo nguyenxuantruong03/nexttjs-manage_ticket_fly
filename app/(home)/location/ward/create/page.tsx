@@ -16,5 +16,12 @@ export default function WardCreatePage() {
     return <ErrorPage />;
   }
 
-  return <WardForm cityData={data.cityData} districtData={data.districtData} />;
+  return (
+    <WardForm
+      cityData={data.cityData}
+      districtData={data.districtData}
+      bookingTypeData={data.bookingTypeData}
+      searchTagData={data.searchTagData}
+    />
+  );
 }

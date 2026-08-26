@@ -29,14 +29,17 @@ import { useFormPage } from "@/components/form/form-context";
 import { useFormDraft } from "@/hooks/useFormDraft";
 import { useSearchParams } from "next/navigation";
 import { DraftEntity } from "@/components/daft/draft-config";
-import { Country } from "@/types/bookings/location/country";
 import { initCountryFormValues } from "./form/init-value";
-import { Currency } from "@/types/bookings/location/currency";
-import { SearchTag } from "@/types/bookings/search/tag.types";
-import { Timezone } from "@/types/bookings/location/timezone";
-import { Language } from "@/types/bookings/location/language";
+
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
 import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
+import { Country } from "@/types/location/country/country";
+import { Currency } from "@/types/location/currency";
+import { SearchTag } from "@/types/searchs/search/tag.types";
+import { Timezone } from "@/types/location/timezone";
+import { Language } from "@/types/location/language";
+import { Continent } from "@/types/location/country/continent.type";
+import { BookingType } from "@/types/common/commerce/booking-type";
 
 interface CountryFormProps {
   initialData?: Country;
@@ -44,6 +47,8 @@ interface CountryFormProps {
   searchTagData: SearchTag[];
   timezoneData: Timezone[];
   languageData: Language[];
+  bookingTypeData: BookingType[];
+  continentData: Continent[];
   redirect?: boolean;
 }
 
@@ -54,6 +59,8 @@ export default function CountryForm({
   timezoneData,
   languageData,
   redirect = true,
+  bookingTypeData,
+  continentData,
 }: CountryFormProps) {
   const redirectDefault = "/country";
 
@@ -151,6 +158,7 @@ export default function CountryForm({
                 currencyData={currencyData}
                 timezoneData={timezoneData}
                 languageData={languageData}
+                continentData={continentData}
               />
             </FormWizardStep>
 
@@ -159,7 +167,10 @@ export default function CountryForm({
             </FormWizardStep>
 
             <FormWizardStep index={3}>
-              <SearchStep searchTagData={searchTagData} />
+              <SearchStep
+                searchTagData={searchTagData}
+                bookingTypeData={bookingTypeData}
+              />
             </FormWizardStep>
 
             <FormWizardStep index={4}>

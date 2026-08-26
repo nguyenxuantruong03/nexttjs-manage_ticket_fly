@@ -4,24 +4,30 @@ import FormSection from "@/components/form/FormSection";
 import { FormCombobox, FormInput } from "@/components/form/form-data";
 
 import { AddressFormSchema } from "../form/schema";
-import { District } from "@/types/bookings/location/district";
-import { Ward } from "@/types/bookings/location/ward";
 import { EntityOption } from "@/components/entity-selector";
 import DistrictCreateDialog from "../../../district/components/DistrictCreateDialog";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import WardCreateDialog from "../../../ward/components/WardCreateDialog";
-import { City } from "@/types/bookings/location/city";
+import { Ward } from "@/types/location/ward";
+import { City } from "@/types/location/city";
+import { District } from "@/types/location/district";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import { SearchTag } from "@/types/searchs/search/tag.types";
 
 interface BasicStepProps {
   districtData: District[];
   wardData: Ward[];
   cityData: City[];
+  bookingTypeData: BookingType[]
+  searchTagData: SearchTag[]
 }
 
 export default function BasicStep({
   districtData,
   wardData,
   cityData,
+  bookingTypeData,
+  searchTagData
 }: BasicStepProps) {
   const wardOptions: EntityOption<Ward>[] =
     wardData?.map((ward) => ({
@@ -69,7 +75,12 @@ export default function BasicStep({
           options={wardOptions}
           enableCreate
           renderCreateDialog={(props) => (
-            <WardCreateDialog {...props} districts={districtData ?? []} />
+            <WardCreateDialog
+              {...props}
+              searchTagData={searchTagData}
+              bookingTypeData={bookingTypeData}
+              districts={districtData ?? []}
+            />
           )}
         />
 
@@ -83,7 +94,11 @@ export default function BasicStep({
           options={districtOptions}
           enableCreate
           renderCreateDialog={(props) => (
-            <DistrictCreateDialog {...props} cities={cityData ?? []} />
+            <DistrictCreateDialog 
+            {...props} 
+            searchTagData={searchTagData}
+            bookingTypeData={bookingTypeData} 
+            cities={cityData ?? []} />
           )}
         />
 

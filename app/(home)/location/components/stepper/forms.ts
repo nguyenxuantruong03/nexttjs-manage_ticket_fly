@@ -1,3 +1,5 @@
+export { default as ContinentForm } from "../../continent/components/ContinentForm";
+
 export { default as CountryForm } from "../../country/components/CountryForm";
 
 export { default as CurrencyForm } from "../../currency/components/CurrencyForm";
@@ -14,6 +16,8 @@ export { default as WardForm } from "../../ward/components/WardForm";
 
 export { default as AddressForm } from "../../address/components/AddressForm";
 
+export { default as PlaceTypeForm } from "../../place-type/components/PlaceTypeForm";
+
 export { default as PlaceForm } from "../../place/components/PlaceForm";
 
-export { default as FlyAirportForm } from "../../../ticket-fly/fly-airport/components/FlyAirportForm";
+export { default as FlyAirportForm } from "../../../product-types/references/airport/components/FlyAirportForm";

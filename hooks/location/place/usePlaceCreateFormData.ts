@@ -8,6 +8,8 @@ import { CityService } from "@/services/location/city/client";
 import { DistrictService } from "@/services/location/district/client";
 import { WardService } from "@/services/location/ward/client";
 import { SearchTagService } from "@/services/search/tag/client";
+import { PlaceTypeService } from "@/services/location/place/place-type/client";
+import { BookingTypeService } from "@/services/commerce/booking-type/client";
 
 export const usePlaceCreateFormData = (enabled = true) => {
   return useQuery({
@@ -15,15 +17,25 @@ export const usePlaceCreateFormData = (enabled = true) => {
     enabled,
     staleTime: 1000 * 60 * 5,
     queryFn: async () => {
-      const [addresses, countries, cities, districts, wards, searchTag] =
-        await Promise.all([
-          AddressService.getMany(),
-          CountryService.getMany(),
-          CityService.getMany(),
-          DistrictService.getMany(),
-          WardService.getMany(),
-          SearchTagService.getMany(),
-        ]);
+      const [
+        addresses,
+        countries,
+        cities,
+        districts,
+        wards,
+        searchTag,
+        placeTypeData,
+        bookingTypeData,
+      ] = await Promise.all([
+        AddressService.getMany(),
+        CountryService.getMany(),
+        CityService.getMany(),
+        DistrictService.getMany(),
+        WardService.getMany(),
+        SearchTagService.getMany(),
+        PlaceTypeService.getMany(),
+        BookingTypeService.getMany()
+      ]);
 
       return {
         addresses,
@@ -32,6 +44,8 @@ export const usePlaceCreateFormData = (enabled = true) => {
         districts,
         wards,
         searchTag,
+        placeTypeData,
+        bookingTypeData,
       };
     },
   });

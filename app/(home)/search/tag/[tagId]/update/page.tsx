@@ -22,5 +22,10 @@ export default function SearchTagEditPage() {
     return <ErrorPage />;
   }
 
-  return <SearchTagForm initialData={data.initialData} />;
+  return (
+    <SearchTagForm
+      bookingTypeData={data.bookingTypeData}
+      initialData={data.initialData}
+    />
+  );
 }

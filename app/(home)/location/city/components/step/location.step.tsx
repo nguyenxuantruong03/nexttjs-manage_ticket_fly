@@ -9,15 +9,17 @@ import {
 } from "@/components/form/form-data";
 
 import { CityFormSchema } from "../form/schema";
-import { Country } from "@/types/bookings/location/country";
-import { Timezone } from "@/types/bookings/location/timezone";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import CountryCreateDialog from "../../../country/components/CountryCreateDialog";
 import TimezoneCreateDialog from "../../../timezone/components/TimezoneCreateDialog";
-import { Currency } from "@/types/bookings/location/currency";
-import { Language } from "@/types/bookings/location/language";
-import { SearchTag } from "@/types/bookings/search/tag.types";
+import { Country } from "@/types/location/country/country";
+import { Timezone } from "@/types/location/timezone";
+import { Currency } from "@/types/location/currency";
+import { Language } from "@/types/location/language";
+import { SearchTag } from "@/types/searchs/search/tag.types";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import { Continent } from "@/types/location/country/continent.type";
 
 interface LocationStepProps {
   countryData?: Country[];
@@ -25,6 +27,8 @@ interface LocationStepProps {
   currencyData: Currency[];
   languageData: Language[];
   searchTagData: SearchTag[];
+  bookingTypeData: BookingType[]
+  continentData: Continent[]
 }
 
 export default function LocationStep({
@@ -33,6 +37,8 @@ export default function LocationStep({
   currencyData,
   searchTagData,
   languageData,
+  bookingTypeData,
+  continentData
 }: LocationStepProps) {
   const countryOptions: EntityOption<Country>[] =
     countryData?.map((country) => ({
@@ -64,6 +70,8 @@ export default function LocationStep({
           enableCreate
           renderCreateDialog={(props) => (
             <CountryCreateDialog
+              continents={continentData} 
+              bookingTypeData={bookingTypeData}
               currencies={currencyData}
               languages={languageData}
               timezones={timezoneData}

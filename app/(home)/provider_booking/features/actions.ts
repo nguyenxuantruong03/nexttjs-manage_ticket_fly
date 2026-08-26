@@ -1,7 +1,7 @@
 import { Eye, Pencil, Trash } from "lucide-react";
 
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
-import { ProviderBooking } from "@/types/bookings/provider-bookings";
+import { ProviderBooking } from "@/types/users/provider-bookings";
 
 interface Props {
   onView: (id: string) => void;

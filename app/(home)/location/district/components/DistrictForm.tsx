@@ -19,7 +19,6 @@ import { useFormPage } from "@/components/form/form-context";
 import { useSearchParams } from "next/navigation";
 import { useFormDraft } from "@/hooks/useFormDraft";
 import { DraftEntity } from "@/components/daft/draft-config";
-import { District } from "@/types/bookings/location/district";
 import { DistrictFormSchema, DistrictSchema } from "./form/schema";
 import { DistrictSteps } from "./step/steps";
 import {
@@ -28,21 +27,34 @@ import {
 } from "@/hooks/location/district";
 import { initDistrictFormValues } from "./form/init-value";
 import { districtDefaultValues } from "./form/default-values";
-import { City } from "@/types/bookings/location/city";
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
 import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
-import { Country } from "@/types/bookings/location/country";
+import { District } from "@/types/location/district";
+import { City } from "@/types/location/city";
+import { Country } from "@/types/location/country/country";
+import StatusStep from "./step/status.step";
+import SearchStep from "./step/search.step";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import { SearchTag } from "@/types/searchs/search/tag.types";
+import MediaStep from "./step/media.step";
+import { Timezone } from "@/types/location/timezone";
 interface DistrictFormProps {
   initialData?: District;
   cityData: City[];
   countryData: Country[];
+  bookingTypeData: BookingType[];
+  searchTagData: SearchTag[];
+  timezones: Timezone[]
   redirect?: boolean;
 }
 
 export default function DistrictForm({
   initialData,
   cityData,
+  timezones,
   countryData,
+  bookingTypeData,
+  searchTagData,
   redirect = true,
 }: DistrictFormProps) {
   const redirectDefault = "/district";
@@ -132,11 +144,32 @@ export default function DistrictForm({
 
           <FormWizardContent>
             <FormWizardStep index={0}>
-              <BasicStep cityData={cityData} countryData={countryData} />
+              <BasicStep
+                timezones={timezones}
+                searchTagData={searchTagData}
+                bookingTypeData={bookingTypeData}
+                cityData={cityData}
+                countryData={countryData}
+              />
             </FormWizardStep>
 
             <FormWizardStep index={1}>
+              <MediaStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={2}>
               <LocationStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={3}>
+              <SearchStep
+                searchTagData={searchTagData}
+                bookingTypeData={bookingTypeData}
+              />
+            </FormWizardStep>
+
+            <FormWizardStep index={4}>
+              <StatusStep />
             </FormWizardStep>
           </FormWizardContent>
 

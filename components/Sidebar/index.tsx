@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   Sidebar,
@@ -12,13 +12,13 @@ import { usePathname } from "next/navigation";
 import { getDefaultOpenItem, SIDEBARCONTENTITEMS } from "./items";
 import { Label } from "../ui/label";
 import SidebarNode from "./components/sidebarNode";
-import { User } from "@/types/bookings/auth/users";
 import { UserMenu } from "@/components/menuUser/userMenu";
 import { UserButton } from "@/components/menuUser/userButton";
 import { handleLogout } from "@/lib/logout";
 import { SidebarItem } from "./types";
 import Link from "next/link";
 import { SIDEBARCONTENTICONS } from "./icon";
+import { User } from "@/types/users/auth/users";
 
 interface SidebarIndexProps {
   open: boolean;

@@ -1,7 +1,7 @@
 import { createServerCrudApi } from "@/lib/api/createServerCrudApi";
 import { API } from "@/lib/api/endpoints";
 import { serverHttp } from "@/lib/http/server";
-import { User } from "@/types/bookings/auth/users";
+import { User } from "@/types/users/auth/users";
 
 const crud = createServerCrudApi<User>(API.USER);
 

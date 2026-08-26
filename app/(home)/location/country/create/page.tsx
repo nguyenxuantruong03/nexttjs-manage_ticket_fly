@@ -22,6 +22,8 @@ export default function CountryCreatePage() {
       searchTagData={data.searchTagData}
       timezoneData={data.timezoneData}
       languageData={data.languageData}
+      continentData={data.continentData}
+      bookingTypeData={data.bookingTypeData}
     />
   );
 }

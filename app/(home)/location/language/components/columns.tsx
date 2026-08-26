@@ -2,7 +2,7 @@
 
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 import { RowActions } from "@/components/ui/data-table/row-actions";
-import { Language } from "@/types/bookings/location/language";
+import { Language } from "@/types/location/language";
 import { ColumnDef } from "@tanstack/react-table";
 
 export function languageColumns(

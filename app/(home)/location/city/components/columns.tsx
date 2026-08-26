@@ -2,7 +2,7 @@
 
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 import { RowActions } from "@/components/ui/data-table/row-actions";
-import { City } from "@/types/bookings/location/city";
+import { City } from "@/types/location/city";
 import { ColumnDef } from "@tanstack/react-table";
 
 export function cityColumns(
@@ -89,10 +89,10 @@ export function cityColumns(
       header: "Elevation",
     },
     {
-  id: "timezone",
-  header: "Timezone",
-  cell: ({ row }) => row.original.timezone?.name ?? "-",
-},
+      id: "timezone",
+      header: "Timezone",
+      cell: ({ row }) => row.original.timezone?.name ?? "-",
+    },
 
     // ======================================================
     // SEARCH
@@ -197,6 +197,11 @@ export function cityColumns(
       id: "addresses",
       header: "Addresses",
       cell: ({ row }) => row.original.addresses?.length ?? 0,
+    },
+
+    {
+      accessorKey: "active",
+      header: "Active",
     },
 
     // ======================================================

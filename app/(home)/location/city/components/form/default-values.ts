@@ -1,5 +1,4 @@
 import { CityFormSchema } from "./schema";
-import { CityStatus } from "@/types/bookings/location/city";
 
 export const cityDefaultValues: CityFormSchema = {
   // ======================================================
@@ -20,7 +19,6 @@ export const cityDefaultValues: CityFormSchema = {
 
   description: "",
 
-
   // ======================================================
   // COUNTRY
   // ======================================================
@@ -32,7 +30,6 @@ export const cityDefaultValues: CityFormSchema = {
   region: "",
 
   isCapital: false,
-
 
   // ======================================================
   // LOCATION
@@ -64,21 +61,15 @@ export const cityDefaultValues: CityFormSchema = {
 
   tagIds: [],
 
-
   // ======================================================
   // MEDIA
   // ======================================================
 
   thumbnail: "",
-
   coverImage: "",
-
   bannerImage: "",
-
   images: [],
-
   video: "",
-
 
   // ======================================================
   // TRAVEL
@@ -88,12 +79,11 @@ export const cityDefaultValues: CityFormSchema = {
 
   rainyMonths: [],
 
-
   // ======================================================
   // STATUS
   // ======================================================
 
   verified: false,
 
-  status: CityStatus.ACTIVE,
+  active: false,
 };

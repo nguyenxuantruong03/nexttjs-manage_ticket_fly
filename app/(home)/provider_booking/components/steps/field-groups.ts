@@ -16,7 +16,7 @@ export const providerBookingFieldGroups: Record<
     "description",
     "logo",
     "banner",
-    "addressId"
+    "addressId",
   ],
 
   company: [
@@ -32,5 +32,5 @@ export const providerBookingFieldGroups: Record<
 
   social: ["facebook", "instagram", "youtube", "linkedin"],
 
-  service: ["service"],
+  bookingType: ["bookingTypeIds"],
 };

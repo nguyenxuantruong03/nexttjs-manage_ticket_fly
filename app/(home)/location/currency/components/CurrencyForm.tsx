@@ -22,7 +22,6 @@ import {
   useUpdateCurrency,
 } from "@/hooks/location/currency";
 import { useSubmit } from "@/hooks/useSubmit";
-import { Currency } from "@/types/bookings/location/currency";
 import { initCurrencyFormValues } from "./form/init-value";
 import { useFormPage } from "@/components/form/form-context";
 import { useEffect, useRef } from "react";
@@ -32,6 +31,8 @@ import { useMemo } from "react";
 import { DraftEntity } from "@/components/daft/draft-config";
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
 import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
+import { Currency } from "@/types/location/currency";
+import MediaStep from "./step/media.step";
 
 interface CurrencyformProps {
   initialData?: Currency;
@@ -135,6 +136,10 @@ export default function CurrencyForm({
             </FormWizardStep>
 
             <FormWizardStep index={2}>
+              <MediaStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={3}>
               <StatusStep />
             </FormWizardStep>
           </FormWizardContent>

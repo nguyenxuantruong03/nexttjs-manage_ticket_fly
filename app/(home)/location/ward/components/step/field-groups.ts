@@ -11,10 +11,12 @@ export const wardFieldGroups: Record<string, readonly WardFieldPath[]> = {
   // ======================================================
 
   basic: ["code", "name", "nativeName"],
-
+  media: ["thumbnail", "coverImage", "bannerImage", "video", "images.0"],
   // ======================================================
   // LOCATION
   // ======================================================
 
   location: ["latitude", "longitude", "districtId"],
+  search: ["searchPriority", "searchable", "tagIds"],
+  status: ["verified", "active"],
 };

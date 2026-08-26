@@ -1,7 +1,7 @@
 import { Eye, Pencil, Trash } from "lucide-react";
 
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
-import { City } from "@/types/bookings/location/city";
+import { City } from "@/types/location/city";
 
 interface Props {
   onView: (id: string) => void;

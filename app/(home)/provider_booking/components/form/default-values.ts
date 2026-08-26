@@ -1,7 +1,7 @@
 import {
   ProviderOperatingStatus,
   ProviderStatus,
-} from "@/types/bookings/provider-bookings";
+} from "@/types/users/provider-bookings";
 import { ProviderBookingFormSchema } from "./schema";
 
 export const providerBookingDefaultValues: ProviderBookingFormSchema = {
@@ -44,5 +44,5 @@ export const providerBookingDefaultValues: ProviderBookingFormSchema = {
 
   userId: "",
 
-  service: [],
+  bookingTypeIds: [],
 };

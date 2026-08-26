@@ -5,7 +5,7 @@ import BasicSection from "./steps/BasicSection";
 import CompanySection from "./steps/CompanySection";
 import ContactSection from "./steps/ContactSection";
 import SocialSection from "./steps/SocialSection";
-import ServiceSection from "./steps/ServiceSection";
+import ServiceSection from "./steps/booking-type.step";
 import { ProviderBookingFormSchema, schema } from "./form/schema";
 import { providerBookingDefaultValues } from "./form/default-values";
 import { useAppForm } from "@/hooks/useAppForm";
@@ -25,14 +25,16 @@ import { useFormPage } from "@/components/form/form-context";
 import { useSearchParams } from "next/navigation";
 import { useFormDraft } from "@/hooks/useFormDraft";
 import { DraftEntity } from "@/components/daft/draft-config";
-import { ProviderBooking } from "@/types/bookings/provider-bookings";
 import { initProviderBookingFormValues } from "./form/init-value";
-import { User } from "@/types/bookings/auth/users";
-import { Address } from "@/types/bookings/location/address";
-import { Country } from "@/types/bookings/location/country";
-import { City } from "@/types/bookings/location/city";
-import { District } from "@/types/bookings/location/district";
-import { Ward } from "@/types/bookings/location/ward";
+import { ProviderBooking } from "@/types/users/provider-bookings";
+import { User } from "@/types/users/auth/users";
+import { Address } from "@/types/location/address";
+import { Country } from "@/types/location/country/country";
+import { City } from "@/types/location/city";
+import { District } from "@/types/location/district";
+import { Ward } from "@/types/location/ward";
+import BookingTypeStep from "./steps/booking-type.step";
+import { BookingType } from "@/types/common/commerce/booking-type";
 
 interface ProviderBookingFormProps {
   initialData?: ProviderBooking;
@@ -42,6 +44,7 @@ interface ProviderBookingFormProps {
   cities: City[];
   districts: District[];
   wards: Ward[];
+  bookingTypeData: BookingType[];
 }
 
 export default function ProviderBookingForm({
@@ -52,6 +55,7 @@ export default function ProviderBookingForm({
   cities,
   districts,
   wards,
+  bookingTypeData,
 }: ProviderBookingFormProps) {
   const submit = useSubmit();
   const { setDirty } = useFormPage();
@@ -140,7 +144,7 @@ export default function ProviderBookingForm({
           </FormWizardStep>
 
           <FormWizardStep index={4}>
-            <ServiceSection />
+            <BookingTypeStep bookingTypeData={bookingTypeData} />
           </FormWizardStep>
         </FormWizardContent>
 

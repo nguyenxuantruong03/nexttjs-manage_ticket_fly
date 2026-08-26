@@ -10,10 +10,13 @@ export const districtFieldGroups: Record<string, readonly DistrictFieldPath[]> =
     // ======================================================
 
     basic: ["code", "name", "nativeName", "cityId"],
-
+    media: ["thumbnail", "coverImage", "bannerImage", "video", "images.0"],
     // ======================================================
     // LOCATION
     // ======================================================
 
     location: ["latitude", "longitude"],
+    search: ["searchPriority", "searchable", "tagIds"],
+
+    status: ["verified", "active"],
   };

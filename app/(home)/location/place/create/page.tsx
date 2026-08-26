@@ -24,6 +24,8 @@ const PlaceCreatePage = () => {
       districts={data.districts}
       wards={data.wards}
       searchTagData={data.searchTag}
+      placeTypeData={data.placeTypeData}
+      bookingTypeData={data.bookingTypeData}
     />
   );
 };

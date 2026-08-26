@@ -1,6 +1,6 @@
 import { FormWizardStep } from "@/components/form/wizard/types";
 
-import { Info, MapPinned, Images } from "lucide-react";
+import { Info, MapPinned, Images, Activity, Search } from "lucide-react";
 import { districtFieldGroups } from "./field-groups";
 import { DistrictFormSchema } from "../form/schema";
 
@@ -14,6 +14,15 @@ export const DistrictSteps: FormWizardStep<DistrictFormSchema>[] = [
     fields: districtFieldGroups.basic,
   },
 
+   {
+    id: "media",
+    title: "Media",
+    description: "City images and videos",
+    icon: Images,
+
+    fields: districtFieldGroups.media,
+  },
+
   {
     id: "location",
     title: "Location",
@@ -21,5 +30,23 @@ export const DistrictSteps: FormWizardStep<DistrictFormSchema>[] = [
     icon: MapPinned,
 
     fields: districtFieldGroups.location,
+  },
+
+  {
+    id: "search",
+    title: "Search",
+    description: "Search configuration",
+    icon: Search,
+
+    fields: districtFieldGroups.search,
+  },
+
+  {
+    id: "status",
+    title: "Status",
+    description: "District visibility",
+    icon: Activity,
+
+    fields: districtFieldGroups.status,
   },
 ];

@@ -1,0 +1,121 @@
+import {
+  Info,
+  Ship,
+  Anchor,
+  Map,
+  CalendarRange,
+  CalendarCheck,
+  DollarSign,
+  Package,
+  Plus,
+  FileText,
+  Users,
+  Images,
+  Settings,
+  Bell,
+} from "lucide-react";
+
+import { FormWizardStep } from "@/components/form/wizard/types";
+import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { yachtFieldGroups } from "./field-groups";
+
+export const yachtSteps: FormWizardStep<YachtFormSchema>[] = [
+  {
+    id: "basic",
+    title: "Basic",
+    description: "General yacht information",
+    icon: Info,
+    fields: yachtFieldGroups.basic,
+  },
+  {
+    id: "notice",
+    title: "Notice",
+    description: "Booking notices",
+    icon: Bell,
+    fields: yachtFieldGroups.notice,
+  },
+  {
+    id: "vehicle",
+    title: "Vehicle",
+    description: "Yacht specifications and facilities",
+    icon: Ship,
+    fields: yachtFieldGroups.vehicle,
+  },
+  {
+    id: "marina",
+    title: "Marina",
+    description: "Marina and departure information",
+    icon: Anchor,
+    fields: yachtFieldGroups.marina,
+  },
+  {
+    id: "routes",
+    title: "Routes",
+    description: "Cruise routes and destinations",
+    icon: Map,
+    fields: yachtFieldGroups.routes,
+  },
+  {
+    id: "trips",
+    title: "Trips",
+    description: "Trip schedules and pricing",
+    icon: CalendarRange,
+    fields: yachtFieldGroups.trips,
+  },
+  {
+    id: "availability",
+    title: "Availability",
+    description: "Yacht availability calendar",
+    icon: CalendarCheck,
+    fields: yachtFieldGroups.availability,
+  },
+  {
+    id: "pricing",
+    title: "Pricing",
+    description: "Yacht pricing management",
+    icon: DollarSign,
+    fields: yachtFieldGroups.pricing,
+  },
+  {
+    id: "packages",
+    title: "Packages",
+    description: "Yacht package mapping",
+    icon: Package,
+    fields: yachtFieldGroups.packages,
+  },
+  {
+    id: "extras",
+    title: "Extras",
+    description: "Additional yacht services",
+    icon: Plus,
+    fields: yachtFieldGroups.extras,
+  },
+  {
+    id: "crew",
+    title: "Crew",
+    description: "Crew members management",
+    icon: Users,
+    fields: yachtFieldGroups.crew,
+  },
+  {
+    id: "policies",
+    title: "Policies",
+    description: "Booking and passenger policies",
+    icon: FileText,
+    fields: yachtFieldGroups.policies,
+  },
+  {
+    id: "images",
+    title: "Images",
+    description: "Yacht gallery",
+    icon: Images,
+    fields: yachtFieldGroups.images,
+  },
+  {
+    id: "settings",
+    title: "Settings",
+    description: "Search and visibility settings",
+    icon: Settings,
+    fields: yachtFieldGroups.settings,
+  },
+];

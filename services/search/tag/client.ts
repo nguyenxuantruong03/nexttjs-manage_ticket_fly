@@ -1,7 +1,7 @@
 import { createCrudApi } from "@/lib/api/createCrudApi";
 import { API } from "@/lib/api/endpoints";
 import { clientHttp } from "@/lib/http/client";
-import { SearchTag } from "@/types/bookings/search/tag.types";
+import { SearchTag } from "@/types/searchs/search/tag.types";
 
 export const SearchTagService = createCrudApi<SearchTag>(
   clientHttp,

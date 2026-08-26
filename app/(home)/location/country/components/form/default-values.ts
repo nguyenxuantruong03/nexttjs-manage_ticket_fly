@@ -1,4 +1,3 @@
-import { Continent } from "@/types/bookings/location/city";
 import { CountryFormSchema } from "./schema";
 
 export const countryDefaultValues: CountryFormSchema = {
@@ -24,11 +23,9 @@ export const countryDefaultValues: CountryFormSchema = {
   // LOCATION
   // ======================================================
 
-  continent: Continent.AFRICA,
+  continentId: "",
 
   timezoneId: "",
-
-  languageIds: [],
 
   // ======================================================
   // MEDIA
@@ -40,11 +37,14 @@ export const countryDefaultValues: CountryFormSchema = {
 
   coverImage: "",
 
+  images: [],
+
   // ======================================================
   // SEARCH
   // ======================================================
 
   tagIds: [],
+  languageIds:[],
   searchPriority: 0,
 
   featured: false,

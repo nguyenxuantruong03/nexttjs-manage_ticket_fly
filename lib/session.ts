@@ -3,8 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { jwtVerify, SignJWT } from "jose";
-
-import { Role } from "@/types/bookings/auth/users";
+import { Role } from "@/types/users/auth/users";
 
 export type Session = {
   user: {
@@ -138,15 +137,10 @@ export async function refreshToken(
       return null;
     }
 
-    const {
-      accessToken,
-      refreshToken: newRefreshToken,
-    } = await response.json();
+    const { accessToken, refreshToken: newRefreshToken } =
+      await response.json();
 
-    await updateSessionToken(
-      accessToken,
-      newRefreshToken,
-    );
+    await updateSessionToken(accessToken, newRefreshToken);
 
     return accessToken;
   } catch (error) {

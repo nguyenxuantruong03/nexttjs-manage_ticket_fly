@@ -7,6 +7,8 @@ import { SearchTagService } from "@/services/search/tag/client";
 import { TimezoneService } from "@/services/location/timezone/client";
 import { CurrencyService } from "@/services/location/currency/client";
 import { LanguageService } from "@/services/location/language/client";
+import { BookingTypeService } from "@/services/commerce/booking-type/client";
+import { ContinentService } from "@/services/location/country/continent/client";
 
 export const useCityCreateFormData = (enabled = true) => {
   return useQuery({
@@ -14,12 +16,22 @@ export const useCityCreateFormData = (enabled = true) => {
     enabled,
     staleTime: 1000 * 60 * 5,
     queryFn: async () => {
-      const [countryData, searchTagData, timezoneData,languageData,currencyData] = await Promise.all([
+      const [
+        countryData,
+        searchTagData,
+        timezoneData,
+        languageData,
+        currencyData,
+        bookingTypeData,
+        continentData,
+      ] = await Promise.all([
         CountryService.getMany(),
         SearchTagService.getMany(),
         TimezoneService.getMany(),
         LanguageService.getMany(),
-        CurrencyService.getMany()
+        CurrencyService.getMany(),
+        BookingTypeService.getMany(),
+        ContinentService.getMany(),
       ]);
 
       return {
@@ -27,7 +39,9 @@ export const useCityCreateFormData = (enabled = true) => {
         searchTagData,
         timezoneData,
         languageData,
-        currencyData
+        currencyData,
+        bookingTypeData,
+        continentData
       };
     },
   });

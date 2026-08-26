@@ -2,27 +2,29 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
-
-import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
+import { FormSelect, FormSwitch } from "@/components/form/form-data";
 
 import { PlaceFormSchema } from "../form/schema";
 
-import { SearchTag } from "@/types/bookings/search/tag.types";
-import { SEARCH_PRIORITY_OPTIONS } from "@/types/bookings/search-prioty-score";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import { EntityOption } from "@/components/entity-selector";
 import SearchTagCreateDialog from "@/app/(home)/search/tag/components/SearchTagCreateDialog";
+import { SearchTag } from "@/types/searchs/search/tag.types";
+import { SEARCH_PRIORITY_OPTIONS } from "@/types/searchs/search-prioty-score";
+import { BookingType } from "@/types/common/commerce/booking-type";
 
 interface SearchStepProps {
   searchTagData: SearchTag[];
+  bookingTypeData: BookingType[];
 }
 
-export default function SearchStep({ searchTagData }: SearchStepProps) {
+export default function SearchStep({
+  searchTagData,
+  bookingTypeData,
+}: SearchStepProps) {
   const tagOptions: EntityOption<SearchTag>[] = searchTagData.map((tag) => ({
     value: tag.id,
     label: tag.name,
-    description: tag.type ?? undefined,
     data: tag,
   }));
   return (
@@ -51,7 +53,12 @@ export default function SearchStep({ searchTagData }: SearchStepProps) {
           createText="Create tag"
           options={tagOptions}
           enableCreate
-          renderCreateDialog={(props) => <SearchTagCreateDialog {...props} />}
+          renderCreateDialog={(props) => (
+            <SearchTagCreateDialog
+              bookingTypeData={bookingTypeData}
+              {...props}
+            />
+          )}
         />
       </div>
     </FormSection>

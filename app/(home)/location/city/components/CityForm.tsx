@@ -30,22 +30,27 @@ import { useFormPage } from "@/components/form/form-context";
 import { useSearchParams } from "next/navigation";
 import { useFormDraft } from "@/hooks/useFormDraft";
 import { DraftEntity } from "@/components/daft/draft-config";
-import { City } from "@/types/bookings/location/city";
 import { initCityFormValues } from "./form/init-value";
-import { Country } from "@/types/bookings/location/country";
-import { SearchTag } from "@/types/bookings/search/tag.types";
-import { Timezone } from "@/types/bookings/location/timezone";
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
 import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
-import { Currency } from "@/types/bookings/location/currency";
-import { Language } from "@/types/bookings/location/language";
+import { City } from "@/types/location/city";
+import { Country } from "@/types/location/country/country";
+import { SearchTag } from "@/types/searchs/search/tag.types";
+import { Timezone } from "@/types/location/timezone";
+import { Language } from "@/types/location/language";
+import { Currency } from "@/types/location/currency";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import { Continent } from "@/types/location/country/continent.type";
+
 interface CityFormProps {
   initialData?: City;
   countryData?: Country[];
   searchTagData: SearchTag[];
   timezoneData: Timezone[];
-  languageData:Language[]
-  currencyData: Currency[]
+  languageData: Language[];
+  currencyData: Currency[];
+  bookingTypeData: BookingType[];
+  continentData: Continent[]
   redirect?: boolean;
 }
 
@@ -56,6 +61,8 @@ export default function CityForm({
   timezoneData,
   languageData,
   currencyData,
+  bookingTypeData,
+  continentData,
   redirect = true,
 }: CityFormProps) {
   const redirectDefault = "/city";
@@ -150,9 +157,11 @@ export default function CityForm({
 
             <FormWizardStep index={1}>
               <LocationStep
-              currencyData={currencyData}
-              languageData={languageData}
-              searchTagData={searchTagData}
+                bookingTypeData={bookingTypeData}
+                continentData={continentData}
+                currencyData={currencyData}
+                languageData={languageData}
+                searchTagData={searchTagData}
                 countryData={countryData}
                 timezoneData={timezoneData}
               />
@@ -163,7 +172,10 @@ export default function CityForm({
             </FormWizardStep>
 
             <FormWizardStep index={3}>
-              <SearchStep searchTagData={searchTagData} />
+              <SearchStep
+                bookingTypeData={bookingTypeData}
+                searchTagData={searchTagData}
+              />
             </FormWizardStep>
 
             <FormWizardStep index={4}>

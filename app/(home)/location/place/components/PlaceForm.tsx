@@ -12,41 +12,55 @@ import { useAppForm } from "@/hooks/useAppForm";
 import { useSubmit } from "@/hooks/useSubmit";
 
 import { PlaceSchema, PlaceFormSchema } from "./form/schema";
-
 import { placeDefaultValues } from "./form/default-values";
-
 import { placeSteps } from "./step/steps";
 
 import BasicStep from "./step/basic.step";
 import LocationStep from "./step/location.step";
+import CategoryStep from "./step/category.step";
 import MediaStep from "./step/media.step";
 import SearchStep from "./step/search.step";
 import StatusStep from "./step/status.step";
 
-import { useCreatePlace, useUpdatePlace } from "@/hooks/location/place";
+import {
+  useCreatePlace,
+  useUpdatePlace,
+} from "@/hooks/location/place";
+
 import { useEffect, useMemo, useRef } from "react";
 import { useFormPage } from "@/components/form/form-context";
 import { useSearchParams } from "next/navigation";
+
 import { useFormDraft } from "@/hooks/useFormDraft";
 import { DraftEntity } from "@/components/daft/draft-config";
-import { Place } from "@/types/bookings/location/place";
 import { initPlaceFormValues } from "./form/init-value";
+
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
 import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
-import { Address } from "@/types/bookings/location/address";
-import { SearchTag } from "@/types/bookings/search/tag.types";
-import { City } from "@/types/bookings/location/city";
-import { Country } from "@/types/bookings/location/country";
-import { District } from "@/types/bookings/location/district";
-import { Ward } from "@/types/bookings/location/ward";
+
+import { Place } from "@/types/location/place/place";
+import { Address } from "@/types/location/address";
+import { City } from "@/types/location/city";
+import { Country } from "@/types/location/country/country";
+import { District } from "@/types/location/district";
+import { Ward } from "@/types/location/ward";
+import { SearchTag } from "@/types/searchs/search/tag.types";
+import { PlaceType } from "@/types/location/place/place-type.type";
+import { BookingType } from "@/types/common/commerce/booking-type";
+
 interface PlaceFormProps {
   initialData?: Place;
+
   addresses: Address[];
   cities: City[];
   countries: Country[];
   districts: District[];
   wards: Ward[];
+
+  placeTypeData: PlaceType[];
+
   searchTagData: SearchTag[];
+  bookingTypeData: BookingType[]
   redirect?: boolean;
 }
 
@@ -57,18 +71,26 @@ export default function PlaceForm({
   countries,
   districts,
   wards,
+  placeTypeData,
   searchTagData,
+  bookingTypeData,
   redirect = true,
 }: PlaceFormProps) {
-  const redirectDefault = "/place";
+  const redirectDefault = "/location/place";
 
   const resetWizardRef = useRef<(() => void) | null>(null);
 
-  const { confirmDialog, openDialog, shouldShow, cancelDialog } =
-    useConfirmDialogStorage("confirm-redirect");
+  const {
+    confirmDialog,
+    openDialog,
+    shouldShow,
+    cancelDialog,
+  } = useConfirmDialogStorage("confirm-redirect");
 
   const submit = useSubmit();
+
   const { setDirty } = useFormPage();
+
   const createPlace = useCreatePlace();
   const updatePlace = useUpdatePlace();
 
@@ -82,7 +104,7 @@ export default function PlaceForm({
     return searchParams.get("draft") ?? crypto.randomUUID();
   }, [initialData, searchParams]);
 
-  const { form, mode, isUpdate } = useAppForm<PlaceFormSchema>({
+  const { form, isUpdate } = useAppForm<PlaceFormSchema>({
     schema: PlaceSchema,
     defaultValues: initialData
       ? initPlaceFormValues(initialData)
@@ -99,7 +121,7 @@ export default function PlaceForm({
 
   useEffect(() => {
     setDirty(form.formState.isDirty);
-  }, [form.formState.isDirty]);
+  }, [form.formState.isDirty, setDirty]);
 
   const onSubmit = (values: PlaceFormSchema) => {
     submit({
@@ -109,16 +131,25 @@ export default function PlaceForm({
             data: values,
           })
         : createPlace.mutateAsync(values),
-      success: isUpdate ? "Place updated" : "Place created",
-      redirect: redirect ? redirectDefault : undefined,
+
+      success: isUpdate
+        ? "Place updated"
+        : "Place created",
+
+      redirect: redirect
+        ? redirectDefault
+        : undefined,
     });
 
     clearDraft();
 
     if (!redirect) {
       openDialog();
+
       form.reset(placeDefaultValues);
+
       resetWizardRef.current?.();
+
       return;
     }
 
@@ -133,7 +164,12 @@ export default function PlaceForm({
         shouldShow={shouldShow}
         cancelDialog={cancelDialog}
       />
-      <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
+
+      <AppForm
+        form={form}
+        onSubmit={onSubmit}
+        loading={isSubmitting}
+      >
         <FormWizard
           form={form}
           steps={placeSteps}
@@ -146,9 +182,17 @@ export default function PlaceForm({
           <FormWizardHeader steps={placeSteps} />
 
           <FormWizardContent>
+            {/* ======================================================
+                0 - BASIC
+            ====================================================== */}
+
             <FormWizardStep index={0}>
               <BasicStep />
             </FormWizardStep>
+
+            {/* ======================================================
+                1 - LOCATION
+            ====================================================== */}
 
             <FormWizardStep index={1}>
               <LocationStep
@@ -160,20 +204,48 @@ export default function PlaceForm({
               />
             </FormWizardStep>
 
+            {/* ======================================================
+                2 - CATEGORY
+            ====================================================== */}
+
             <FormWizardStep index={2}>
+              <CategoryStep
+                placeTypeData={placeTypeData}
+              />
+            </FormWizardStep>
+
+            {/* ======================================================
+                3 - MEDIA
+            ====================================================== */}
+
+            <FormWizardStep index={3}>
               <MediaStep />
             </FormWizardStep>
 
-            <FormWizardStep index={3}>
-              <SearchStep searchTagData={searchTagData} />
+            {/* ======================================================
+                4 - SEARCH
+            ====================================================== */}
+
+            <FormWizardStep index={4}>
+              <SearchStep
+                bookingTypeData={bookingTypeData}
+                searchTagData={searchTagData}
+              />
             </FormWizardStep>
+
+            {/* ======================================================
+                5 - STATUS
+            ====================================================== */}
 
             <FormWizardStep index={5}>
               <StatusStep />
             </FormWizardStep>
           </FormWizardContent>
 
-          <FormWizardFooter form={form} onSubmit={onSubmit} />
+          <FormWizardFooter
+            form={form}
+            onSubmit={onSubmit}
+          />
         </FormWizard>
       </AppForm>
     </>

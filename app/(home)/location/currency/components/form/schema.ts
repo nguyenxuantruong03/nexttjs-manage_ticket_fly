@@ -39,6 +39,12 @@ export const schema = z.object({
 
   locale: z.string().trim().nullable().optional(),
 
+  thumbnail: z.string().trim().optional(),
+  coverImage: z.string().trim().optional(),
+  bannerImage: z.string().trim().optional(),
+  images: z.array(z.string().trim()).default([]),
+  video: z.string().trim().optional(),
+
   // ======================================================
   // STATUS
   // ======================================================

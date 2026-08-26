@@ -6,12 +6,14 @@ import LoadingPage from "@/components/ui/loading-page";
 import {
   AddressForm,
   CityForm,
+  ContinentForm,
   CountryForm,
   CurrencyForm,
   DistrictForm,
   FlyAirportForm,
   LanguageForm,
   PlaceForm,
+  PlaceTypeForm,
   TimezoneForm,
   WardForm,
 } from "./forms";
@@ -21,7 +23,6 @@ import { useLocationStepperHooks } from "./hooks";
 interface Props {
   mainStep: string;
   subStep: string;
-
   hooks: ReturnType<typeof useLocationStepperHooks>;
 }
 
@@ -32,12 +33,11 @@ export function renderLocationStepperContent({
 }: Props) {
   const {
     country,
-
     city,
     district,
     ward,
-
     place,
+    placeType,
     address,
     flyairport,
   } = hooks;
@@ -49,6 +49,10 @@ export function renderLocationStepperContent({
    */
 
   if (mainStep === "country") {
+    if (subStep === "continent") {
+      return <ContinentForm redirect={false} />;
+    }
+
     if (subStep === "currency") {
       return <CurrencyForm redirect={false} />;
     }
@@ -77,6 +81,8 @@ export function renderLocationStepperContent({
           searchTagData={country.data.searchTagData}
           timezoneData={country.data.timezoneData}
           languageData={country.data.languageData}
+          bookingTypeData={country.data.bookingTypeData}
+          continentData={country.data.continentData}
         />
       );
     }
@@ -87,6 +93,7 @@ export function renderLocationStepperContent({
    * CITY
    * ==========================
    */
+
   if (mainStep === "city") {
     if (city.isLoading) {
       return <LoadingPage />;
@@ -99,6 +106,9 @@ export function renderLocationStepperContent({
     if (subStep === "district" && district.data) {
       return (
         <DistrictForm
+          timezones={district.data.timezones}
+          bookingTypeData={district.data.bookingTypeData}
+          searchTagData={district.data.searchTagData}
           redirect={false}
           countryData={district.data.countryData}
           cityData={district.data.cityData}
@@ -110,6 +120,8 @@ export function renderLocationStepperContent({
       return (
         <WardForm
           redirect={false}
+          bookingTypeData={ward.data.bookingTypeData}
+          searchTagData={ward.data.searchTagData}
           districtData={ward.data.districtData}
           cityData={ward.data.cityData}
         />
@@ -120,6 +132,8 @@ export function renderLocationStepperContent({
       return (
         <CityForm
           redirect={false}
+          bookingTypeData={city.data.bookingTypeData}
+          continentData={city.data.continentData}
           languageData={city.data.languageData}
           currencyData={city.data.currencyData}
           countryData={city.data.countryData}
@@ -135,10 +149,16 @@ export function renderLocationStepperContent({
    * ADDRESS
    * ==========================
    */
+
   if (mainStep === "address") {
+    if (subStep === "place-type") {
+      return <PlaceTypeForm redirect={false} />;
+    }
+
     if (subStep === "place" && place.data) {
       return (
         <PlaceForm
+          bookingTypeData={place.data.bookingTypeData}
           searchTagData={place.data.searchTag}
           redirect={false}
           cities={place.data.cities}
@@ -146,6 +166,7 @@ export function renderLocationStepperContent({
           districts={place.data.districts}
           wards={place.data.wards}
           addresses={place.data.addresses}
+          placeTypeData={place.data.placeTypeData}
         />
       );
     }
@@ -154,6 +175,8 @@ export function renderLocationStepperContent({
       return (
         <AddressForm
           redirect={false}
+          bookingTypeData={address.data.bookingTypeData}
+          continentsData={address.data.continentsData}
           timezoneData={address.data.timezoneData}
           currencyData={address.data.currencyData}
           searchTags={address.data.searchTagData}

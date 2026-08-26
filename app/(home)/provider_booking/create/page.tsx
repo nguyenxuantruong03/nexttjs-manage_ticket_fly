@@ -24,6 +24,7 @@ export default function ProviderBookingsCreate() {
       cities={data.cities}
       districts={data.districts}
       wards={data.wards}
+      bookingTypeData={data.bookingTypeData}
     />
   );
 }

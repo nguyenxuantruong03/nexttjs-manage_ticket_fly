@@ -1,10 +1,4 @@
-import {
-  Building2,
-  Contact,
-  Globe,
-  Settings,
-  User,
-} from "lucide-react";
+import { Briefcase, Building2, Contact, Globe, User } from "lucide-react";
 
 import { FormWizardStep } from "@/components/form/wizard/types";
 
@@ -62,14 +56,14 @@ export const providerBookingSteps: FormWizardStep<ProviderBookingFormSchema>[] =
     },
 
     {
-      id: "service",
+      id: "booking-type",
 
-      title: "Service",
+      title: "Booking Types",
 
-      description: "Provider services configuration",
+      description: "Select booking types",
 
-      icon: Settings,
+      icon: Briefcase,
 
-      fields: providerBookingFieldGroups.service,
+      fields: providerBookingFieldGroups.bookingType,
     },
   ];

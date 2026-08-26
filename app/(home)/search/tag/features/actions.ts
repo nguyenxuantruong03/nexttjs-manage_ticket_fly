@@ -1,7 +1,7 @@
 import { Eye, Pencil, Trash } from "lucide-react";
 
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
-import { SearchTag } from "@/types/bookings/search/tag.types";
+import { SearchTag } from "@/types/searchs/search/tag.types";
 
 interface Props {
   onView: (id: string) => void;

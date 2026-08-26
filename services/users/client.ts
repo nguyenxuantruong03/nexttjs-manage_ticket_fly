@@ -1,6 +1,6 @@
 import { createCrudApi } from "@/lib/api/createCrudApi";
 import { clientHttp } from "@/lib/http/client";
-import { User } from "@/types/bookings/auth/users";
+import { User } from "@/types/users/auth/users";
 
 export const UserService = {
   ...createCrudApi<User>(clientHttp, "/user"),

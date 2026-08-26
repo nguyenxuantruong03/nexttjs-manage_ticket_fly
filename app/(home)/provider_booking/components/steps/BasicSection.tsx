@@ -9,15 +9,15 @@ import {
 
 import FormSection from "@/components/form/FormSection";
 import { ProviderBookingFormSchema } from "../form/schema";
-import { User } from "@/types/bookings/auth/users";
-import { Address } from "@/types/bookings/location/address";
-import { Country } from "@/types/bookings/location/country";
-import { City } from "@/types/bookings/location/city";
-import { District } from "@/types/bookings/location/district";
-import { Ward } from "@/types/bookings/location/ward";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";
+import { User } from "@/types/users/auth/users";
+import { Address } from "@/types/location/address";
+import { Country } from "@/types/location/country/country";
+import { City } from "@/types/location/city";
+import { District } from "@/types/location/district";
+import { Ward } from "@/types/location/ward";
 
 interface BasicSectionProps {
   userDatas: User[];

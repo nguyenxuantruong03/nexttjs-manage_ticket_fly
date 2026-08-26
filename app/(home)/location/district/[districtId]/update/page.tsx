@@ -27,6 +27,9 @@ export default function DistrictEditPage() {
       initialData={data.initialData}
       cityData={data.cityData}
       countryData={data.countryData}
+      bookingTypeData={data.bookingTypeData}
+      searchTagData={data.searchTagData}
+      timezones={data.timezones}
     />
   );
 }

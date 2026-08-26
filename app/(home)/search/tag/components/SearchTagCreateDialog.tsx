@@ -3,7 +3,11 @@
 import * as React from "react";
 
 import { AppForm, FormSwitch } from "@/components/form/form-data";
-import { FormInput, FormSelect } from "@/components/form/form-data";
+
+import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
+
+import { FormInput } from "@/components/form/form-data";
+
 import { Button } from "@/components/ui/button";
 
 import {
@@ -15,30 +19,23 @@ import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog"
 
 import { useSubmit } from "@/hooks/useSubmit";
 import { useAppForm } from "@/hooks/useAppForm";
-
 import { useCreateSearchTag } from "@/hooks/search/tag";
-
-import { SearchTag } from "@/types/bookings/search/tag.types";
-import { TagType } from "@/types/bookings/search/tag.types";
 
 import { SearchTagFormSchema, schema as SearchTagSchema } from "./form/schema";
 
 import { searchTagDefaultValues } from "./form/default-values";
 
+import { SearchTag } from "@/types/searchs/search/tag.types";
+
+import { BookingType } from "@/types/common/commerce/booking-type";
+
 // ======================================================
 // PROPS
 // ======================================================
 
-interface SearchTagCreateDialogProps extends EntityCreateDialogProps<SearchTag> {}
-
-// ======================================================
-// OPTIONS
-// ======================================================
-
-const tagTypeOptions = Object.values(TagType).map((value) => ({
-  label: value.replaceAll("_", " "),
-  value,
-}));
+interface SearchTagCreateDialogProps extends EntityCreateDialogProps<SearchTag> {
+  bookingTypeData: BookingType[];
+}
 
 // ======================================================
 // COMPONENT
@@ -49,6 +46,7 @@ export default function SearchTagCreateDialog({
   onOpenChange,
   defaultKeyword,
   onCreated,
+  bookingTypeData,
 }: SearchTagCreateDialogProps) {
   const dialogRef = React.useRef<HTMLDivElement>(null);
 
@@ -58,7 +56,6 @@ export default function SearchTagCreateDialog({
 
   const { form } = useAppForm<SearchTagFormSchema>({
     schema: SearchTagSchema,
-
     defaultValues: searchTagDefaultValues,
   });
 
@@ -67,7 +64,6 @@ export default function SearchTagCreateDialog({
 
     form.reset({
       ...searchTagDefaultValues,
-
       name: defaultKeyword ?? "",
     });
   }, [open, defaultKeyword, form]);
@@ -81,9 +77,7 @@ export default function SearchTagCreateDialog({
       onSuccess: (response) => {
         const result: EntityCreateResult<SearchTag> = {
           value: response.id,
-
           label: response.name ?? "Search Tag",
-
           data: response,
         };
 
@@ -110,37 +104,26 @@ export default function SearchTagCreateDialog({
         loading={createSearchTag.isPending}
       >
         <div className="space-y-6">
-          <div
-            className="
-              grid
-              gap-4
-              md:grid-cols-2
-            "
-          >
+          <div className="grid gap-4 md:grid-cols-2">
             <FormInput<SearchTagFormSchema>
               name="name"
               label="Tag Name"
               placeholder="Enter tag name"
             />
 
-            <FormSelect<SearchTagFormSchema>
-              name="type"
-              label="Tag Type"
-              placeholder="Select tag type"
-              options={tagTypeOptions}
+            <FormMultiCombobox<SearchTagFormSchema>
+              name="bookingTypeIds"
+              label="Booking Types"
+              placeholder="Select booking types..."
+              searchPlaceholder="Search booking types..."
+              options={bookingTypeData.map((bookingType) => ({
+                label: bookingType.name,
+                value: bookingType.id,
+              }))}
             />
           </div>
 
-          <div
-            className="
-              flex
-              items-center
-              justify-between
-              rounded-md
-              border
-              p-4
-            "
-          >
+          <div className="flex items-center justify-between rounded-md border p-4">
             <div>
               <p className="font-medium">Active</p>
 
@@ -149,16 +132,10 @@ export default function SearchTagCreateDialog({
               </p>
             </div>
 
-            <FormSwitch<SearchTagFormSchema> name="active" label="" />
+            <FormSwitch<SearchTagFormSchema> name="active" label="Active" />
           </div>
 
-          <div
-            className="
-              flex
-              justify-end
-              gap-3
-            "
-          >
+          <div className="flex justify-end gap-3">
             <Button
               type="button"
               variant="outline"

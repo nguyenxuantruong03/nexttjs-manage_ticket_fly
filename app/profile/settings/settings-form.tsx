@@ -20,9 +20,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormError from "@/components/form-notification/form-error";
 import FormSuccess from "@/components/form-notification/form-success";
-import { User } from "@/types/bookings/auth/users";
 import { SettingSchema } from "@/schemas/user";
 import { useUpdateUser } from "@/hooks/user";
+import { User } from "@/types/users/auth/users";
 
 interface SettingFormProps {
   user: User;

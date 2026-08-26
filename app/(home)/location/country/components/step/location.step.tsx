@@ -2,39 +2,30 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import {
-  FormCombobox,
-  FormInput,
-  FormSelect,
-} from "@/components/form/form-data";
 import { CountryFormSchema } from "../form/schema";
-import { Continent } from "@/types/bookings/location/city";
-import { Currency } from "@/types/bookings/location/currency";
-import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
-import { Language } from "@/types/bookings/location/language";
-import { Timezone } from "@/types/bookings/location/timezone";
 import LanguageCreateDialog from "../../../language/components/LanguageCreateDialog";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import TimezoneCreateDialog from "../../../timezone/components/TimezoneCreateDialog";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import CurrencyCreateDialog from "../../../currency/components/CurrencyCreateDialog";
 import { EntityOption } from "@/components/entity-selector";
+import { Currency } from "@/types/location/currency";
+import { Language } from "@/types/location/language";
+import { Timezone } from "@/types/location/timezone";
+import ContinentCreateDialog from "../../../continent/components/ContinentCreateDialog";
+import { Continent } from "@/types/location/country/continent.type";
 
 interface LocationStepProps {
   currencyData?: Currency[];
   languageData: Language[];
   timezoneData: Timezone[];
+  continentData: Continent[];
 }
-
-const continentOptions = Object.values(Continent).map((value) => ({
-  label: value.replaceAll("_", " "),
-  value,
-}));
-
 export default function LocationStep({
   currencyData,
   languageData,
   timezoneData,
+  continentData,
 }: LocationStepProps) {
   const currencyOptions: EntityOption<Currency>[] =
     currencyData?.map((currency) => ({
@@ -60,6 +51,14 @@ export default function LocationStep({
       data: language,
     })) ?? [];
 
+  const continentOptions: EntityOption<Continent>[] =
+    continentData?.map((continent) => ({
+      value: continent.id,
+      label: continent.name,
+      description: continent.code ?? undefined,
+      data: continent,
+    })) ?? [];
+
   return (
     <FormSection title="Location" description="Geographical information">
       <div className="grid gap-6 md:grid-cols-2">
@@ -75,10 +74,16 @@ export default function LocationStep({
           renderCreateDialog={(props) => <CurrencyCreateDialog {...props} />}
         />
 
-        <FormSelect<CountryFormSchema>
-          name="continent"
+        <FormEntitySelector<CountryFormSchema, Continent>
+          name="continentId"
           label="Continent"
+          placeholder="Search continent..."
+          searchPlaceholder="Search continent..."
+          emptyText="No continent found"
+          createText="Create continent"
           options={continentOptions}
+          enableCreate
+          renderCreateDialog={(props) => <ContinentCreateDialog {...props} />}
         />
 
         <FormEntitySelector<CountryFormSchema, Timezone>

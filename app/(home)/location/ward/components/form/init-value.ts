@@ -1,4 +1,4 @@
-import { Ward } from "@/types/bookings/location/ward";
+import { Ward } from "@/types/location/ward";
 import { wardDefaultValues } from "./default-values";
 import { WardFormSchema } from "./schema";
 

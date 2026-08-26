@@ -4,18 +4,27 @@ import FormSection from "@/components/form/FormSection";
 import { FormCombobox, FormInput } from "@/components/form/form-data";
 
 import { WardFormSchema } from "../form/schema";
-import { District } from "@/types/bookings/location/district";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import DistrictCreateDialog from "../../../district/components/DistrictCreateDialog";
-import { City } from "@/types/bookings/location/city";
+import { District } from "@/types/location/district";
+import { City } from "@/types/location/city";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import { SearchTag } from "@/types/searchs/search/tag.types";
 
 interface BasicStepProps {
   districtData: District[];
-  cityData: City[]
+  cityData: City[];
+  bookingTypeData: BookingType[];
+  searchTagData: SearchTag[]
 }
 
-export default function BasicStep({ districtData,cityData }: BasicStepProps) {
+export default function BasicStep({
+  districtData,
+  cityData,
+  bookingTypeData,
+  searchTagData
+}: BasicStepProps) {
   const districtOptions: EntityOption<District>[] =
     districtData?.map((district) => ({
       value: district.id,
@@ -53,7 +62,14 @@ export default function BasicStep({ districtData,cityData }: BasicStepProps) {
           createText="Create district"
           options={districtOptions}
           enableCreate
-          renderCreateDialog={(props) => <DistrictCreateDialog cities={cityData} {...props} />}
+          renderCreateDialog={(props) => (
+            <DistrictCreateDialog
+              bookingTypeData={bookingTypeData}
+              searchTagData={searchTagData}
+              cities={cityData}
+              {...props}
+            />
+          )}
         />
       </div>
     </FormSection>

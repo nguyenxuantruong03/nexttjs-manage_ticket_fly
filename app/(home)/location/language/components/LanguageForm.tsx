@@ -19,7 +19,6 @@ import { useFormPage } from "@/components/form/form-context";
 import { useSearchParams } from "next/navigation";
 import { useFormDraft } from "@/hooks/useFormDraft";
 import { DraftEntity } from "@/components/daft/draft-config";
-import { Language } from "@/types/bookings/location/language";
 import { LanguageFormSchema, LanguageSchema } from "./form/schema";
 import { languageSteps } from "./step/steps";
 import {
@@ -30,6 +29,7 @@ import { initLanguageFormValues } from "./form/init-value";
 import { languageDefaultValues } from "./form/default-values";
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
 import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
+import { Language } from "@/types/location/language";
 interface LanguageFormProps {
   initialData?: Language;
   redirect?: boolean;

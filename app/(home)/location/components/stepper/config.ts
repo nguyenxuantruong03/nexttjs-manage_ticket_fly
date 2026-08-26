@@ -2,12 +2,14 @@ import {
   Building2,
   CircleDollarSign,
   Clock,
+  Globe2,
   Home,
   Languages,
   Map,
   MapPinHouse,
   MapPinned,
   Navigation,
+  Tags,
 } from "lucide-react";
 
 import { Step } from "@/components/stepper/types";
@@ -20,6 +22,7 @@ export const mainSteps: Step[] = [
 
 export const subSteps: Record<string, Step[]> = {
   country: [
+    ["continent", "Continent", Globe2],
     ["currency", "Currency", CircleDollarSign],
     ["language", "Language", Languages],
     ["timezone", "Timezone", Clock],
@@ -33,6 +36,7 @@ export const subSteps: Record<string, Step[]> = {
   ],
 
   address: [
+    ["place-type", "Place Type", Tags],
     ["address", "Address", Map],
     ["place", "Place", Map],
     ["flyairport", "FlyAirport", Map],

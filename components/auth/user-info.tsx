@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { User } from "@/types/bookings/auth/users";
 import { Badge } from "../ui/badge";
 import { FormUploadImage } from "../from-image/from-up-load-image";
+import { User } from "@/types/users/auth/users";
 interface UserInfoPorps {
   user?: User;
   label: string;

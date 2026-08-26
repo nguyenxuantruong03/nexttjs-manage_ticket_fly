@@ -1,14 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { AppForm, FormCombobox } from "@/components/form/form-data";
+import { AppForm, FormCombobox, FormSwitch } from "@/components/form/form-data";
 import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/form/form-data";
-import { Country } from "@/types/bookings/location/country";
-import { City } from "@/types/bookings/location/city";
-import { District } from "@/types/bookings/location/district";
-import { Ward } from "@/types/bookings/location/ward";
-import { Address } from "@/types/bookings/location/address";
+
 import { useCreateAddress } from "@/hooks/location/address";
 import { useSubmit } from "@/hooks/useSubmit";
 import { useAppForm } from "@/hooks/useAppForm";
@@ -21,6 +17,11 @@ import {
 } from "@/components/entity-selector";
 
 import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { Address } from "@/types/location/address";
+import { Country } from "@/types/location/country/country";
+import { City } from "@/types/location/city";
+import { District } from "@/types/location/district";
+import { Ward } from "@/types/location/ward";
 // ======================================================
 // PROPS
 // ======================================================
@@ -189,6 +190,32 @@ export default function AddressCreateDialog({
                 value: ward.id,
               }))}
             />
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <FormInput<AddressFormSchema>
+              name="thumbnail"
+              label="Thumbnail URL"
+            />
+
+            <FormInput<AddressFormSchema>
+              name="coverImage"
+              label="Cover Image URL"
+            />
+
+            <FormInput<AddressFormSchema>
+              name="bannerImage"
+              label="Banner Image URL"
+            />
+
+            <FormInput<AddressFormSchema> name="video" label="Video URL" />
+
+            <FormInput<AddressFormSchema> name="images.0" label="Image URL" />
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <FormSwitch<AddressFormSchema> name="verified" label="Verified" />
+            <FormSwitch<AddressFormSchema> name="active" label="Active" />
           </div>
 
           <div

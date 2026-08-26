@@ -23,10 +23,12 @@ export default function WardEditPage() {
   }
 
   return (
-    <WardForm 
-      initialData={data.initialData} 
-      cityData={data.cityData} 
-      districtData={data.districtData} 
+    <WardForm
+      initialData={data.initialData}
+      cityData={data.cityData}
+      districtData={data.districtData}
+      bookingTypeData={data.bookingTypeData}
+      searchTagData={data.searchTagData}
     />
   );
 }

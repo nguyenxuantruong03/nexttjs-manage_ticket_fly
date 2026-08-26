@@ -6,8 +6,6 @@ import { AppForm, FormInput, FormSwitch } from "@/components/form/form-data";
 
 import { Button } from "@/components/ui/button";
 
-import { Currency } from "@/types/bookings/location/currency";
-
 import { useCreateCurrency } from "@/hooks/location/currency";
 import { useSubmit } from "@/hooks/useSubmit";
 import { useAppForm } from "@/hooks/useAppForm";
@@ -22,6 +20,7 @@ import {
 } from "@/components/entity-selector";
 
 import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { Currency } from "@/types/location/currency";
 
 // ======================================================
 // PROPS
@@ -166,6 +165,27 @@ export default function CurrencyCreateDialog({
               label="Locale"
               placeholder="en-US"
             />
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <FormInput<CurrencyFormSchema>
+              name="thumbnail"
+              label="Thumbnail URL"
+            />
+
+            <FormInput<CurrencyFormSchema>
+              name="coverImage"
+              label="Cover Image URL"
+            />
+
+            <FormInput<CurrencyFormSchema>
+              name="bannerImage"
+              label="Banner Image URL"
+            />
+
+            <FormInput<CurrencyFormSchema> name="video" label="Video URL" />
+
+            <FormInput<CurrencyFormSchema> name="images.0" label="Image URL" />
           </div>
 
           {/* ====================================================== */}

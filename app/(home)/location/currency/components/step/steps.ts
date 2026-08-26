@@ -1,4 +1,4 @@
-import { Info, Monitor, Activity } from "lucide-react";
+import { Info, Monitor, Activity, Images } from "lucide-react";
 
 import { FormWizardStep } from "@/components/form/wizard/types";
 
@@ -28,6 +28,15 @@ export const currencySteps: FormWizardStep<CurrencyFormSchema>[] = [
     icon: Monitor,
 
     fields: currencyFieldGroups.display,
+  },
+
+  {
+    id: "media",
+    title: "Media",
+    description: "City images and videos",
+    icon: Images,
+
+    fields: currencyFieldGroups.media,
   },
 
   {

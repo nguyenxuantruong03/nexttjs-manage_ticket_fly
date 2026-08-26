@@ -2,12 +2,15 @@
 
 import * as React from "react";
 
-import { AppForm, FormCombobox, FormInput } from "@/components/form/form-data";
+import {
+  AppForm,
+  FormCombobox,
+  FormInput,
+  FormSelect,
+  FormSwitch,
+} from "@/components/form/form-data";
 
 import { Button } from "@/components/ui/button";
-
-import { City } from "@/types/bookings/location/city";
-import { District } from "@/types/bookings/location/district";
 
 import { useCreateDistrict } from "@/hooks/location/district";
 import { useSubmit } from "@/hooks/useSubmit";
@@ -20,9 +23,17 @@ import { districtDefaultValues } from "./form/default-values";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
+  EntityOption,
 } from "@/components/entity-selector";
 
 import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { City } from "@/types/location/city";
+import { District } from "@/types/location/district";
+import SearchTagCreateDialog from "@/app/(home)/search/tag/components/SearchTagCreateDialog";
+import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
+import { SEARCH_PRIORITY_OPTIONS } from "@/types/searchs/search-prioty-score";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import { SearchTag } from "@/types/searchs/search/tag.types";
 
 // ======================================================
 // PROPS
@@ -30,6 +41,8 @@ import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog"
 
 interface DistrictCreateDialogProps extends EntityCreateDialogProps<District> {
   cities: City[];
+  bookingTypeData: BookingType[];
+  searchTagData: SearchTag[];
 }
 
 // ======================================================
@@ -42,6 +55,8 @@ export default function DistrictCreateDialog({
   defaultKeyword,
   onCreated,
   cities,
+  bookingTypeData,
+  searchTagData,
 }: DistrictCreateDialogProps) {
   const dialogRef = React.useRef<HTMLDivElement>(null);
 
@@ -84,6 +99,12 @@ export default function DistrictCreateDialog({
       },
     });
   };
+
+  const tagOptions: EntityOption<SearchTag>[] = searchTagData.map((tag) => ({
+    value: tag.id,
+    label: tag.name,
+    data: tag,
+  }));
 
   return (
     <EntityCreateDialog
@@ -157,6 +178,79 @@ export default function DistrictCreateDialog({
               placeholder="Longitude"
             />
           </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <FormSwitch<DistrictFormSchema> name="verified" label="Verified" />
+            <FormSwitch<DistrictFormSchema> name="active" label="Active" />
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-base font-semibold">Search Metadata</h3>
+
+              <p className="text-sm text-muted-foreground">
+                Search engine configuration
+              </p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <FormSelect<DistrictFormSchema>
+                name="searchPriority"
+                label="Search Priority"
+                placeholder="Select search priority"
+                options={SEARCH_PRIORITY_OPTIONS}
+              />
+
+              <FormSwitch<DistrictFormSchema>
+                name="searchable"
+                label="Searchable"
+              />
+
+              <FormEntityMultiSelector<DistrictFormSchema, SearchTag>
+                name="tagIds"
+                label="Tags"
+                placeholder="Search tags..."
+                searchPlaceholder="Search tags..."
+                emptyText="No tags found"
+                createText="Create tag"
+                options={tagOptions}
+                enableCreate
+                renderCreateDialog={(props) => (
+                  <SearchTagCreateDialog
+                    bookingTypeData={bookingTypeData}
+                    {...props}
+                  />
+                )}
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+        <FormInput<DistrictFormSchema>
+          name="thumbnail"
+          label="Thumbnail URL"
+        />
+
+        <FormInput<DistrictFormSchema>
+          name="coverImage"
+          label="Cover Image URL"
+        />
+
+        <FormInput<DistrictFormSchema>
+          name="bannerImage"
+          label="Banner Image URL"
+        />
+
+        <FormInput<DistrictFormSchema>
+          name="video"
+          label="Video URL"
+        />
+
+        <FormInput<DistrictFormSchema>
+          name="images.0"
+          label="Image URL"
+        />
+      </div>
 
           {/* ====================================================== */}
           {/* ACTION */}

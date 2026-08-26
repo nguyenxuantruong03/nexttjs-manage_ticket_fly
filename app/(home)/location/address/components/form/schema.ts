@@ -1,8 +1,7 @@
 // schema.ts
 
+import { AddressPrecision } from "@/types/location/address";
 import { z } from "zod";
-
-import { AddressPrecision } from "@/types/bookings/location/address";
 
 export const AddressSchema = z.object({
   // ======================================================
@@ -34,7 +33,16 @@ export const AddressSchema = z.object({
 
   plusCode: z.string().trim().nullable().optional(),
 
-  precision: z.nativeEnum(AddressPrecision).default(AddressPrecision.ADDRESS),
+  precision: z.nativeEnum(AddressPrecision).default(AddressPrecision.CITY),
+
+  thumbnail: z.string().trim().optional(),
+  coverImage: z.string().trim().optional(),
+  bannerImage: z.string().trim().optional(),
+  images: z.array(z.string().trim()).default([]),
+  video: z.string().trim().optional(),
+
+  verified: z.boolean().default(false),
+  active: z.boolean().default(false),
 });
 
 export type AddressFormSchema = z.infer<typeof AddressSchema>;

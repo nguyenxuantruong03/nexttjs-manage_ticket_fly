@@ -19,22 +19,28 @@ import { useFormPage } from "@/components/form/form-context";
 import { useSearchParams } from "next/navigation";
 import { useFormDraft } from "@/hooks/useFormDraft";
 import { DraftEntity } from "@/components/daft/draft-config";
-import { City } from "@/types/bookings/location/city";
-import { Address } from "@/types/bookings/location/address";
 import { addressSteps } from "./step/steps";
 import { AddressFormSchema, AddressSchema } from "./form/schema";
 import { addressDefaultValues } from "./form/default-values";
 import { initAddressFormValues } from "./form/init-value";
 import { useCreateAddress, useUpdateAddress } from "@/hooks/location/address";
-import { District } from "@/types/bookings/location/district";
-import { Ward } from "@/types/bookings/location/ward";
-import { Country } from "@/types/bookings/location/country";
+
 import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
-import { Timezone } from "@/types/bookings/location/timezone";
-import { Currency } from "@/types/bookings/location/currency";
-import { SearchTag } from "@/types/bookings/search/tag.types";
-import { Language } from "@/types/bookings/location/language";
+import { Address } from "@/types/location/address";
+import { City } from "@/types/location/city";
+import { District } from "@/types/location/district";
+import { Ward } from "@/types/location/ward";
+import { Country } from "@/types/location/country/country";
+import { Timezone } from "@/types/location/timezone";
+import { Currency } from "@/types/location/currency";
+import { SearchTag } from "@/types/searchs/search/tag.types";
+import { Language } from "@/types/location/language";
+import StatusStep from "./step/status.step";
+import MediaStep from "./step/media.step";
+import { BookingType } from "@/types/common/commerce/booking-type";
+import { Continent } from "@/types/location/country/continent.type";
+
 interface AddressFormProps {
   initialData?: Address;
   cityData: City[];
@@ -45,6 +51,8 @@ interface AddressFormProps {
   currencyData: Currency[];
   searchTags: SearchTag[];
   languageData: Language[];
+  bookingTypeData: BookingType[]
+  continentsData: Continent[]
   redirect?: boolean;
 }
 
@@ -58,6 +66,8 @@ export default function AddressForm({
   timezoneData,
   searchTags,
   languageData,
+  bookingTypeData,
+  continentsData,
   redirect = true,
 }: AddressFormProps) {
   const redirectDefault = "/address";
@@ -148,6 +158,8 @@ export default function AddressForm({
                 cityData={cityData}
                 districtData={districtData}
                 wardData={wardData}
+                bookingTypeData={bookingTypeData} 
+                searchTagData={searchTags}
               />
             </FormWizardStep>
 
@@ -159,7 +171,17 @@ export default function AddressForm({
                 searchTags={searchTags}
                 cityData={cityData}
                 countryData={countryData}
+                bookingTypeData={bookingTypeData} 
+                continentsData={continentsData}
               />
+            </FormWizardStep>
+
+            <FormWizardStep index={2}>
+              <MediaStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={3}>
+              <StatusStep />
             </FormWizardStep>
           </FormWizardContent>
 

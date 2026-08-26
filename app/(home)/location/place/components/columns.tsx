@@ -2,7 +2,7 @@
 
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 import { RowActions } from "@/components/ui/data-table/row-actions";
-import { Place } from "@/types/bookings/location/place";
+import { Place } from "@/types/location/place/place";
 import { ColumnDef } from "@tanstack/react-table";
 
 export function placeColumns(
@@ -17,22 +17,27 @@ export function placeColumns(
       accessorKey: "id",
       header: "ID",
     },
+
     {
       accessorKey: "name",
       header: "Name",
     },
+
     {
       accessorKey: "nativeName",
       header: "Native Name",
     },
+
     {
       accessorKey: "subtitle",
       header: "Subtitle",
     },
+
     {
       accessorKey: "shortDescription",
       header: "Short Description",
     },
+
     {
       accessorKey: "description",
       header: "Description",
@@ -43,48 +48,53 @@ export function placeColumns(
     // ======================================================
 
     {
-      accessorKey: "addressId",
-      header: "Address ID",
-    },
-    {
       id: "address",
       header: "Address",
-      cell: ({ row }) =>
-        row.original.address
-          ? `${row.original.address.street ?? ""} ${
-              row.original.address.city?.name ?? ""
-            }`
+      accessorFn: (row) =>
+        row.address
+          ? `${row.address.street ?? ""} ${
+              row.address.city?.name ?? ""
+            }`.trim()
           : "-",
     },
+
     {
       accessorKey: "latitude",
       header: "Latitude",
     },
+
     {
       accessorKey: "longitude",
       header: "Longitude",
     },
 
     // ======================================================
-    // CATEGORY
+    // PLACE TYPE
     // ======================================================
 
     {
-      accessorKey: "type",
-      header: "Type",
+      id: "placeType",
+      header: "Place Type",
+      accessorFn: (row) => row.placeType?.name ?? "-",
     },
+
+    // ======================================================
+    // SEARCH / FEATURE
+    // ======================================================
 
     {
       accessorKey: "featured",
       header: "Featured",
     },
+
     {
       accessorKey: "searchable",
       header: "Searchable",
     },
+
     {
-      accessorKey: "popularityScore",
-      header: "Popularity Score",
+      accessorKey: "searchPriority",
+      header: "Search Priority",
     },
 
     // ======================================================
@@ -95,14 +105,16 @@ export function placeColumns(
       accessorKey: "thumbnail",
       header: "Thumbnail",
     },
+
     {
       accessorKey: "coverImage",
       header: "Cover Image",
     },
+
     {
       id: "images",
       header: "Images",
-      cell: ({ row }) => row.original.images?.length ?? 0,
+      accessorFn: (row) => row.images?.length ?? 0,
     },
 
     // ======================================================
@@ -110,10 +122,30 @@ export function placeColumns(
     // ======================================================
 
     {
-      id: "tagIds",
+      id: "tags",
       header: "Tags",
-      cell: ({ row }) =>
-        row.original.tagIds?.length ? row.original.tagIds.join(", ") : "-",
+      accessorFn: (row) =>
+        row.tags?.length
+          ? row.tags.map((tag) => tag.name).join(", ")
+          : "-",
+    },
+
+    // ======================================================
+    // SEARCH
+    // ======================================================
+
+    {
+      id: "aliases",
+      header: "Aliases",
+      accessorFn: (row) =>
+        row.aliases?.length ? row.aliases.join(", ") : "-",
+    },
+
+    {
+      id: "keywords",
+      header: "Keywords",
+      accessorFn: (row) =>
+        row.keywords?.length ? row.keywords.join(", ") : "-",
     },
 
     // ======================================================
@@ -124,6 +156,7 @@ export function placeColumns(
       accessorKey: "verified",
       header: "Verified",
     },
+
     {
       accessorKey: "active",
       header: "Active",
@@ -137,6 +170,7 @@ export function placeColumns(
       accessorKey: "createdAt",
       header: "Created At",
     },
+
     {
       accessorKey: "updatedAt",
       header: "Updated At",
@@ -149,7 +183,12 @@ export function placeColumns(
     {
       id: "actions",
       header: "",
-      cell: ({ row }) => <RowActions row={row.original} actions={actions} />,
+      cell: ({ row }) => (
+        <RowActions
+          row={row.original}
+          actions={actions}
+        />
+      ),
     },
   ];
 }

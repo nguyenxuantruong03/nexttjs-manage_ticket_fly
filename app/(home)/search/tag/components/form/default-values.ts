@@ -1,4 +1,3 @@
-import { TagType } from "@/types/bookings/search/tag.types";
 import { SearchTagFormSchema } from "./schema";
 
 export const searchTagDefaultValues: SearchTagFormSchema = {
@@ -8,7 +7,7 @@ export const searchTagDefaultValues: SearchTagFormSchema = {
 
   name: "",
 
-  type: TagType.CITY,
+  bookingTypeIds: [],
 
   // ======================================================
   // STATUS

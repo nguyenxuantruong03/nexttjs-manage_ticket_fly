@@ -1,9 +1,8 @@
-import { z } from "zod";
 import {
   ProviderOperatingStatus,
   ProviderStatus,
-  typeServiceBooking,
-} from "@/types/bookings/provider-bookings";
+} from "@/types/users/provider-bookings";
+import { z } from "zod";
 
 export const schema = z.object({
   // ======================
@@ -88,7 +87,7 @@ export const schema = z.object({
   // SERVICE
   // ======================
 
-  service: z.array(z.nativeEnum(typeServiceBooking)).default([]),
+  bookingTypeIds: z.array(z.string().min(1)).default([]),
 });
 
 export type ProviderBookingFormSchema = z.infer<typeof schema>;

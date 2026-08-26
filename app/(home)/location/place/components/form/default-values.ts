@@ -1,5 +1,4 @@
 import { PlaceFormSchema } from "./schema";
-import { PlaceType } from "@/types/bookings/location/place";
 
 export const placeDefaultValues: PlaceFormSchema = {
   // ======================================================
@@ -16,7 +15,6 @@ export const placeDefaultValues: PlaceFormSchema = {
 
   description: "",
 
-
   // ======================================================
   // LOCATION
   // ======================================================
@@ -27,13 +25,11 @@ export const placeDefaultValues: PlaceFormSchema = {
 
   longitude: 0,
 
-
   // ======================================================
   // CATEGORY
   // ======================================================
 
-  type: PlaceType.OTHER,
-
+  placeTypeId: "",
 
   // ======================================================
   // SEARCH / FEATURE
@@ -45,7 +41,6 @@ export const placeDefaultValues: PlaceFormSchema = {
 
   searchPriority: 0,
 
-
   // ======================================================
   // MEDIA
   // ======================================================
@@ -56,13 +51,11 @@ export const placeDefaultValues: PlaceFormSchema = {
 
   images: [],
 
-
   // ======================================================
   // TAGS
   // ======================================================
 
   tagIds: [],
-
 
   // ======================================================
   // STATUS

@@ -7,12 +7,10 @@ import {
   ActionMenuItem,
 } from "../../../../components/ui/data-table/action-menu";
 import { Badge } from "@/components/ui/badge";
-import {
-  ProviderBooking,
-  typeServiceBooking,
-} from "@/types/bookings/provider-bookings";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { RowActions } from "@/components/ui/data-table/row-actions";
+import { ProviderBooking } from "@/types/users/provider-bookings";
 
 export function providerBookingColumns(
   actions: (row: ProviderBooking) => ActionMenuItem<ProviderBooking>[],
@@ -240,21 +238,15 @@ export function providerBookingColumns(
 
     // Services
     {
-      accessorKey: "service",
-      header: "Service",
-      cell: ({ row }) => {
-        const services = row.original.service;
-
-        return (
-          <div className="flex flex-wrap gap-1">
-            {services?.map((service: typeServiceBooking) => (
-              <Badge key={service} variant="secondary">
-                {service}
-              </Badge>
-            ))}
-          </div>
-        );
-      },
+      id: "bookingTypes",
+      header: "Services",
+      cell: ({ row }) => (
+        <div className="flex flex-wrap gap-1">
+          {row.original.bookingTypes.map((bookingType) => (
+            <Badge key={bookingType.id}>{bookingType.name}</Badge>
+          ))}
+        </div>
+      ),
     },
 
     // Status

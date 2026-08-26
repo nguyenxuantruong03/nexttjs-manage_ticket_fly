@@ -17,6 +17,12 @@ export default function DistrictCreatePage() {
   }
 
   return (
-    <DistrictForm cityData={data.cityData} countryData={data.countryData} />
+    <DistrictForm
+      cityData={data.cityData}
+      countryData={data.countryData}
+      bookingTypeData={data.bookingTypeData}
+      searchTagData={data.searchTagData}
+      timezones={data.timezones}
+    />
   );
 }

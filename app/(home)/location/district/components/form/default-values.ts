@@ -24,4 +24,24 @@ export const districtDefaultValues: DistrictFormSchema = {
   latitude: 0,
 
   longitude: 0,
+
+  // ======================================================
+  // MEDIA
+  // ======================================================
+
+  thumbnail: "",
+  coverImage: "",
+  bannerImage: "",
+  images: [],
+  video: "",
+
+  // ======================================================
+  // SEARCH
+  // ======================================================
+  searchPriority: 0,
+  searchable: true,
+  tagIds: [],
+
+  verified: false,
+  active: false,
 };
