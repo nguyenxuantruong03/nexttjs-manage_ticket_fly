@@ -11,8 +11,8 @@ import { YachtPriceRule } from "@/types/product-types/yacht/pricing/price-rule.t
 export interface PriceRuleType {
   id: string;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   name: string;
 

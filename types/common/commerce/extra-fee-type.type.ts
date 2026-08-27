@@ -14,8 +14,8 @@ export interface ExtraFeeType {
   // BOOKING TYPE
   // ======================================================
 
-  bookingTypeId: string;
-  bookingType: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   // ======================================================
   // BASIC

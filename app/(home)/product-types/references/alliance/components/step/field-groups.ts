@@ -1,6 +1,6 @@
 import { FieldPath } from "react-hook-form";
+import { FlyAllianceFormSchema } from "../schema/alliance.schema";
 
-import { FlyAllianceFormSchema } from "../form/schema";
 
 type FlyAllianceFieldPath = FieldPath<FlyAllianceFormSchema>;
 
@@ -13,4 +13,10 @@ export const flyAllianceFieldGroups: Record<
   // ======================================================
 
   basic: ["name", "code", "logo", "description"],
+
+  // ======================================================
+  // MEMBERS
+  // ======================================================
+
+  airlines: ["airlines"],
 };

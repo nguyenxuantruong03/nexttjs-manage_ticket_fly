@@ -22,8 +22,8 @@ export interface MediaCategory {
   sortOrder: number;
   active: boolean;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   hotelMedias?: HotelMedia[];
   roomMedias?: RoomMedia[];

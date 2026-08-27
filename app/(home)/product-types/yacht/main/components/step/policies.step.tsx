@@ -8,7 +8,7 @@ import { EntityOption } from "@/components/entity-selector";
 
 import { YachtFormSchema } from "../schema/core/yacht.schema";
 import { Policy } from "@/types/common/features/policy/policy";
-import PolicyCreateDialog from "@/app/(home)/features/policy/components/PolicyCreateDialog";
+import PolicyCreateDialog from "@/app/(home)/features/policy/main/components/PolicyCreateDialog";
 import { PolicyType } from "@/types/common/features/policy/policy-type";
 import { BookingType } from "@/types/common/commerce/booking-type";
 

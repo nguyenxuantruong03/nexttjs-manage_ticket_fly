@@ -13,7 +13,7 @@ export const fuelTypeDefaultValues: FuelTypeFormSchema = {
   // BOOKING TYPE
   // ======================================================
 
-  bookingTypeId: "",
+  bookingTypeIds: [],
 
   // ======================================================
   // STATUS

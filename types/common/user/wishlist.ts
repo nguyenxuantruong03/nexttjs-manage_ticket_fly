@@ -17,8 +17,8 @@ export interface Wishlist {
 export interface WishlistItem {
   id: string;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   wishlistId: string;
   wishlist?: Wishlist;

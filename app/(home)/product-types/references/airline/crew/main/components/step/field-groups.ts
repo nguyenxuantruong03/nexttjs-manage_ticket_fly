@@ -1,8 +1,8 @@
 // field-groups.ts
 
 import { FieldPath } from "react-hook-form";
+import { FlyCrewFormSchema } from "../schema/crew.schema";
 
-import { FlyCrewFormSchema } from "../form/schema";
 
 type FlyCrewFieldPath = FieldPath<FlyCrewFormSchema>;
 

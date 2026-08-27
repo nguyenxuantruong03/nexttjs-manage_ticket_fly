@@ -5,7 +5,7 @@ export const packageDefaultValues: PackageFormSchema = {
   // BOOKING TYPE
   // ======================================================
 
-  bookingTypeId: "",
+  bookingTypeIds: [],
 
   // ======================================================
   // BASIC

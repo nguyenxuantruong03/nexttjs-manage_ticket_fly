@@ -2,9 +2,19 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { FormInput } from "@/components/form/form-data";
+import {
+  FormDatePicker,
+  FormInput,
+  FormSelect,
+} from "@/components/form/form-data";
 
-import { FlyCrewFormSchema } from "../form/schema";
+import { Gender } from "@/types/common/enums";
+import { FlyCrewFormSchema } from "../schema/crew.schema";
+
+const genderOptions = Object.values(Gender).map((value) => ({
+  label: value,
+  value,
+}));
 
 export default function BasicStep() {
   return (
@@ -25,34 +35,24 @@ export default function BasicStep() {
           placeholder="Smith"
         />
 
-        <FormInput<FlyCrewFormSchema>
-          name="employeeNumber"
-          label="Employee Number"
-          placeholder="EMP001"
+        {/* TODO: confirm FormSelect exists with this options shape;
+            swap for the actual enum-select component if different */}
+        <FormSelect<FlyCrewFormSchema>
+          name="gender"
+          label="Gender"
+          placeholder="Select gender"
+          options={genderOptions}
+        />
+
+        <FormDatePicker<FlyCrewFormSchema>
+          name="birthDate"
+          label="Birth Date"
         />
 
         <FormInput<FlyCrewFormSchema>
           name="nationality"
           label="Nationality"
           placeholder="Vietnamese"
-        />
-
-        <FormInput<FlyCrewFormSchema>
-          name="birthDate"
-          label="Birth Date"
-          placeholder="YYYY-MM-DD"
-        />
-
-        <FormInput<FlyCrewFormSchema>
-          name="email"
-          label="Email"
-          placeholder="crew@example.com"
-        />
-
-        <FormInput<FlyCrewFormSchema>
-          name="phone"
-          label="Phone"
-          placeholder="+84..."
         />
       </div>
     </FormSection>

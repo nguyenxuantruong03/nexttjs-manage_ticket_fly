@@ -19,11 +19,10 @@ import { useSubmit } from "@/hooks/useSubmit";
 
 import { useCreateFlyAirline } from "@/hooks/product-types/references/airline";
 
-import { FlyAirlineFormSchema, FlyAirlineSchema } from "./form/schema";
-
 import { flyAirlineDefaultValues } from "./form/default-values";
 
 import { FlyAirline } from "@/types/product-types/references/airline/airline.types";
+import { FlyAirlineFormSchema, FlyAirlineSchema } from "./schema/airline.schema";
 
 // ======================================================
 // PROPS
@@ -61,7 +60,7 @@ export default function FlyAirlineCreateDialog({
     });
   }, [open, defaultKeyword, form]);
 
-  const onSubmit = (values: FlyAirlineFormSchema) => {
+  const onSubmit = (values: any) => {
     submit({
       mutation: createFlyAirline.mutateAsync(values),
 

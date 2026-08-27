@@ -29,6 +29,7 @@ export default function FlyAiportEditPage() {
       districts={data.districts}
       wards={data.wards}
       countries={data.countries}
+      airportData={data.airportData}
     />
   );
 }

@@ -3,8 +3,7 @@
 import FormSection from "@/components/form/FormSection";
 
 import { FormSwitch } from "@/components/form/form-data";
-
-import { FlyAircraftFormSchema } from "../form/schema";
+import { FlyAircraftFormSchema } from "../schema/aircraft.schema";
 
 export default function StatusStep() {
   return (

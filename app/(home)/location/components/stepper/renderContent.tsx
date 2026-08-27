@@ -193,6 +193,7 @@ export function renderLocationStepperContent({
       return (
         <FlyAirportForm
           redirect={false}
+          airportData={flyairport.data.airportData}
           addresses={flyairport.data.addresses}
           cities={flyairport.data.cities}
           districts={flyairport.data.districts}

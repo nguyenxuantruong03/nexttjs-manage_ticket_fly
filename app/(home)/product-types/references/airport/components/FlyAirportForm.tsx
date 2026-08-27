@@ -36,6 +36,8 @@ import { Country } from "@/types/location/country/country";
 import { City } from "@/types/location/city";
 import { District } from "@/types/location/district";
 import { Ward } from "@/types/location/ward";
+import DiversionsStep from "./step/diversions.step";
+import MinimumConnectionTimeStep from "./step/minimumconnectiontime.step";
 
 interface FlyAirportFormProps {
   initialData?: FlyAirport;
@@ -44,6 +46,7 @@ interface FlyAirportFormProps {
   cities: City[];
   districts: District[];
   wards: Ward[];
+  airportData: FlyAirport[]
   redirect?: boolean;
 }
 
@@ -54,6 +57,7 @@ export default function FlyAirportForm({
   cities,
   districts,
   wards,
+  airportData,
   redirect = true,
 }: FlyAirportFormProps) {
   const redirectDefault = "/ticket-fly/fly-aiport";
@@ -94,7 +98,7 @@ export default function FlyAirportForm({
     setDirty(form.formState.isDirty);
   }, [form.formState.isDirty]);
 
-  const onSubmit = (values: FlyAirportFormSchema) => {
+  const onSubmit = (values: any) => {
     submit({
       mutation: initialData
         ? updateFlyAirport.mutateAsync({
@@ -155,6 +159,14 @@ export default function FlyAirportForm({
                 districts={districts}
                 wards={wards}
               />
+            </FormWizardStep>
+
+            <FormWizardStep index={3}>
+              <DiversionsStep airportData={airportData} />
+            </FormWizardStep>
+
+            <FormWizardStep index={4}>
+              <MinimumConnectionTimeStep />
             </FormWizardStep>
           </FormWizardContent>
 

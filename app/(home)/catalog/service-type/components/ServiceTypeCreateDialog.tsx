@@ -37,6 +37,7 @@ import { useCreateServiceType } from "@/hooks/catalog/service-type";
 
 import BookingTypeCreateDialog from "@/app/(home)/commerce/booking-type/components/BookingTypeCreateDialog";
 import { ServiceType } from "@/types/common/catalog/service-type.type";
+import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 // ======================================================
 // PROPS
@@ -72,13 +73,13 @@ export default function ServiceTypeCreateDialog({
   // BOOKING TYPE OPTIONS
   // ======================================================
 
-  const bookingTypeEntityOptions: EntityOption<BookingType>[] =
-    bookingTypeData.map((bookingType) => ({
+  const bookingTypeOptions: EntityOption<BookingType>[] = bookingTypeData.map(
+    (bookingType) => ({
       value: bookingType.id,
       label: bookingType.name,
-      description: bookingType.description ?? undefined,
       data: bookingType,
-    }));
+    }),
+  );
 
   // ======================================================
   // RESET
@@ -164,14 +165,14 @@ export default function ServiceTypeCreateDialog({
           ====================================================== */}
 
           <div className="grid gap-4 md:grid-cols-2">
-            <FormEntitySelector<ServiceTypeFormSchema, BookingType>
-              name="bookingTypeId"
-              label="Booking Type"
-              placeholder="Search booking type..."
-              searchPlaceholder="Search booking type..."
-              emptyText="No booking type found"
+            <FormEntityMultiSelector<ServiceTypeFormSchema, BookingType>
+              name="bookingTypeIds"
+              label="Booking Types"
+              placeholder="Search booking types..."
+              searchPlaceholder="Search booking types..."
+              emptyText="No booking types found"
               createText="Create booking type"
-              options={bookingTypeEntityOptions}
+              options={bookingTypeOptions}
               enableCreate
               renderCreateDialog={(props) => (
                 <BookingTypeCreateDialog {...props} />

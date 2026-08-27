@@ -12,6 +12,7 @@ import { useAppForm } from "@/hooks/useAppForm";
 import { useSubmit } from "@/hooks/useSubmit";
 
 import BasicStep from "./step/basic.step";
+import AddonStep from "./step/addon.step";
 import StatusStep from "./step/status.step";
 
 import { useEffect, useMemo, useRef } from "react";
@@ -24,8 +25,6 @@ import { DraftEntity } from "@/components/daft/draft-config";
 import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
 
-import { FlyAirlineFormSchema, FlyAirlineSchema } from "./form/schema";
-
 import { flyAirlineDefaultValues } from "./form/default-values";
 import { initFlyAirlineFormValues } from "./form/init-value";
 import { flyAirlineSteps } from "./step/steps";
@@ -36,6 +35,17 @@ import {
 } from "@/hooks/product-types/references/airline";
 
 import { FlyAirline } from "@/types/product-types/references/airline/airline.types";
+import {
+  FlyAirlineFormSchema,
+  FlyAirlineSchema,
+} from "./schema/airline.schema";
+import ImagesStep from "./step/image.step";
+import WifiPackageStep from "./step/wifipackage.step";
+import InterlineStep from "./step/interline.step";
+import {
+  MarketingCodeshareStep,
+  OperatingCodeshareStep,
+} from "./step/codeshare.step";
 
 interface FlyAirlineFormProps {
   initialData?: FlyAirline;
@@ -89,7 +99,7 @@ export default function FlyAirlineForm({
     setDirty(form.formState.isDirty);
   }, [form.formState.isDirty, setDirty]);
 
-  const onSubmit = (values: FlyAirlineFormSchema) => {
+  const onSubmit = (values: any) => {
     submit({
       mutation: initialData
         ? updateFlyAirline.mutateAsync({
@@ -145,6 +155,30 @@ export default function FlyAirlineForm({
             </FormWizardStep>
 
             <FormWizardStep index={1}>
+              <ImagesStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={2}>
+              <AddonStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={3}>
+              <WifiPackageStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={4}>
+              <InterlineStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={5}>
+              <MarketingCodeshareStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={5}>
+              <OperatingCodeshareStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={6}>
               <StatusStep />
             </FormWizardStep>
           </FormWizardContent>

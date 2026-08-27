@@ -17,14 +17,14 @@ export const useFlyAirportCreateFormData = (enabled = true) => {
     enabled,
     staleTime: 1000 * 60 * 5,
     queryFn: async () => {
-      const [searchTagData, airports] = await Promise.all([
+      const [searchTagData, airportData] = await Promise.all([
         SearchTagService.getMany(),
         FlyAirportService.getMany(),
       ]);
 
       return {
         searchTagData,
-        airports,
+        airportData,
       };
     },
   });

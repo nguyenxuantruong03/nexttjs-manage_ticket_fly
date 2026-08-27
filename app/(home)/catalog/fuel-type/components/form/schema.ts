@@ -5,24 +5,15 @@ export const schema = z.object({
   // BASIC
   // ======================================================
 
-  name: z
-    .string()
-    .trim()
-    .min(1, "Fuel type name is required"),
+  name: z.string().trim().min(1, "Fuel type name is required"),
 
-  icon: z
-    .string()
-    .trim()
-    .nullable()
-    .optional(),
+  icon: z.string().trim().nullable().optional(),
 
   // ======================================================
   // BOOKING TYPE
   // ======================================================
 
-  bookingTypeId: z
-    .string()
-    .min(1, "Booking type is required"),
+  bookingTypeIds: z.array(z.string()).default([]),
 
   // ======================================================
   // STATUS
@@ -30,10 +21,7 @@ export const schema = z.object({
 
   active: z.boolean(),
 
-  sortOrder: z
-    .number()
-    .int()
-    .min(0),
+  sortOrder: z.number().int().min(0),
 });
 
 export type FuelTypeFormSchema = z.infer<typeof schema>;

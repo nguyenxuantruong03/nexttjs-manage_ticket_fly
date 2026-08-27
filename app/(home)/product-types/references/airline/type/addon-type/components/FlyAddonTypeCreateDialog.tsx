@@ -17,10 +17,10 @@ import { useSubmit } from "@/hooks/useSubmit";
 
 import { useCreateFlyAddonType } from "@/hooks/product-types/references/airline/addon-type";
 
-import { FlyAddonTypeFormSchema, FlyAddonTypeSchema } from "./form/schema";
 
 import { flyAddonTypeDefaultValues } from "./form/default-values";
 import { FlyAddonType } from "@/types/product-types/references/airline/fly-addon-type";
+import { FlyAddonTypeFormSchema, FlyAddonTypeSchema } from "./form/schema";
 
 // ======================================================
 // PROPS
@@ -59,7 +59,7 @@ export default function FlyAddonTypeCreateDialog({
     });
   }, [open, defaultKeyword, form]);
 
-  const onSubmit = (values: FlyAddonTypeFormSchema) => {
+  const onSubmit = (values: any) => {
     submit({
       mutation: createFlyAddonType.mutateAsync(values),
 

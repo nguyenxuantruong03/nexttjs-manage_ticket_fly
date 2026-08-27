@@ -23,6 +23,7 @@ const FlyAirportCreatePage = () => {
       districts={data.districts}
       wards={data.wards}
       countries={data.countries}
+      airportData={data.airportData}
     />
   );
 };

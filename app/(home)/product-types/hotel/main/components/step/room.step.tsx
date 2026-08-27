@@ -21,7 +21,7 @@ import {
 } from "@/types/product-types/hotel/room/room.types";
 import { Facility } from "@/types/common/features/facility/facility";
 import { MediaCategory } from "@/types/common/catalog/media-category";
-import FacilityCreateDialog from "@/app/(home)/features/facility/components/FacilityCreateDialog";
+import FacilityCreateDialog from "@/app/(home)/features/facility/main/components/FacilityCreateDialog";
 import { FacilityCategory } from "@/types/common/features/facility/facility-category";
 import { BookingType } from "@/types/common/commerce/booking-type";
 

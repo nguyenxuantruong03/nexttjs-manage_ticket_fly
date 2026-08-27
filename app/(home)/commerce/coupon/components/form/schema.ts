@@ -18,7 +18,7 @@ export const schema = z.object({
 
   discountType: z.nativeEnum(DiscountType),
 
-  bookingTypeId: z.string().min(1, "Booking type is required"),
+  bookingTypeIds: z.array(z.string()).default([]),
 
   value: z.number().min(0, "Value must be greater than or equal to 0"),
 

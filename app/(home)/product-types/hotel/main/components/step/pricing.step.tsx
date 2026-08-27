@@ -4,7 +4,11 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { FormCombobox, FormInput, FormSwitch } from "@/components/form/form-data";
+import {
+  FormCombobox,
+  FormInput,
+  FormSwitch,
+} from "@/components/form/form-data";
 
 import { HotelSchemaForm } from "../schema/core/hotel.schema";
 import { EntityOption } from "@/components/entity-selector";
@@ -17,7 +21,7 @@ import {
   MealPlan,
 } from "@/types/product-types/hotel/pricing/rate-plan.types";
 import { Policy } from "@/types/common/features/policy/policy";
-import PolicyCreateDialog from "@/app/(home)/features/policy/components/PolicyCreateDialog";
+import PolicyCreateDialog from "@/app/(home)/features/policy/main/components/PolicyCreateDialog";
 import { PolicyType } from "@/types/common/features/policy/policy-type";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
@@ -39,7 +43,6 @@ const DAYS_OF_WEEK_OPTIONS = [
   { value: "SUN", label: "Sunday" },
 ];
 
-
 // NOTE: `ratePlans.0.policies.0.policyId` and `cancellationPolicy.*` were
 // entirely missing from this step. `Policy` type + dialog guessed to
 // follow the existing pattern — please verify against the actual module
@@ -51,7 +54,7 @@ interface PricingStepProps {
   policyData: Policy[];
   policyTypeData: PolicyType[];
   bookingTypeData: BookingType[];
-  priceRuleTypeData: PriceRuleType[]
+  priceRuleTypeData: PriceRuleType[];
 }
 
 export default function PricingStep({
@@ -60,7 +63,7 @@ export default function PricingStep({
   policyData,
   policyTypeData,
   bookingTypeData,
-  priceRuleTypeData
+  priceRuleTypeData,
 }: PricingStepProps) {
   const ratePlanTypeOptions: EntityOption<HotelRatePlanType>[] =
     ratePlanTypeData.map((type) => ({
@@ -85,7 +88,7 @@ export default function PricingStep({
     data: policy,
   }));
 
-   const priceRuleTypeOptions: EntityOption<PriceRuleType>[] =
+  const priceRuleTypeOptions: EntityOption<PriceRuleType>[] =
     priceRuleTypeData.map((type) => ({
       value: type.id,
       label: type.name,

@@ -15,7 +15,7 @@ export const routeTypeDefaultValues: RouteTypeFormSchema = {
   // BOOKING TYPE
   // ======================================================
 
-  bookingTypeId: "",
+  bookingTypeIds: [],
 
   // ======================================================
   // STATUS

@@ -1,18 +1,26 @@
 import { SidebarTopic } from "./types";
 
-import { statisticSidebar } from "./components/statistic";
-import { userSidebar } from "./components/user";
-import { providerSidebar } from "./components/provider";
+import { providerSidebar } from "./components/service/provider";
 
 import { serviceSidebar } from "./components/service";
 import { productTypesSidebar } from "./components/productTypes";
+import { commerceSidebar } from "./components/commerce";
+import { statisticSidebar } from "./components/service/statistic";
+import { featuresSidebar } from "./components/features";
+import { userSidebar } from "./components/service/user";
+import { catalogSidebar } from "./components/catalog";
+import { dashboardSidebar } from "./components/service/dashboard";
 
 export const SIDEBARCONTENTITEMS: SidebarTopic[] = [
+  dashboardSidebar,
   statisticSidebar,
   userSidebar,
   providerSidebar,
   serviceSidebar,
   productTypesSidebar,
+  catalogSidebar,
+  commerceSidebar,
+  featuresSidebar,
 ];
 
 const findOpenParent = (items: any[], pathname: string): string | undefined => {

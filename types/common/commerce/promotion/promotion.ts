@@ -23,8 +23,8 @@ export interface Promotion {
 
   status: PromotionStatus;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   startDate: Date;
   endDate: Date;
@@ -48,8 +48,8 @@ export interface PromotionUsage {
   userId: string;
   user?: User;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   discountAmount: number;
 

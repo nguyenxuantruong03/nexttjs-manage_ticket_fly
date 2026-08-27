@@ -1,6 +1,6 @@
 import { FormWizardStep } from "@/components/form/wizard/types";
 
-import { Info, Plane, MapPinned } from "lucide-react";
+import { Info, Plane, MapPinned, Route, Timer } from "lucide-react";
 
 import { FlyAirportFormSchema } from "../form/schema";
 import { flyAirportFieldGroups } from "./field-groups";
@@ -31,5 +31,23 @@ export const flyAirportSteps: FormWizardStep<FlyAirportFormSchema>[] = [
     icon: MapPinned,
 
     fields: flyAirportFieldGroups.relation,
+  },
+
+  {
+    id: "diversions",
+    title: "Diversions",
+    description: "Alternate airports for diversion",
+    icon: Route,
+
+    fields: flyAirportFieldGroups.diversions,
+  },
+
+  {
+    id: "minimumConnectionTime",
+    title: "Connection Time",
+    description: "Minimum connection time at this airport",
+    icon: Timer,
+
+    fields: flyAirportFieldGroups.minimumConnectionTime,
   },
 ];

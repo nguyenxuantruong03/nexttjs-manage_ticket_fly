@@ -9,7 +9,7 @@ import { BusFormSchema } from "../schema/core/bus.schema";
 import { Policy } from "@/types/common/features/policy/policy";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
-import PolicyCreateDialog from "@/app/(home)/features/policy/components/PolicyCreateDialog";
+import PolicyCreateDialog from "@/app/(home)/features/policy/main/components/PolicyCreateDialog";
 import { PolicyType } from "@/types/common/features/policy/policy-type";
 import { BookingType } from "@/types/common/commerce/booking-type";
 

@@ -2,8 +2,8 @@
 
 import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
+import { FlyAllianceFormSchema } from "../schema/alliance.schema";
 
-import { FlyAllianceFormSchema } from "../form/schema";
 
 export default function BasicStep() {
   return (

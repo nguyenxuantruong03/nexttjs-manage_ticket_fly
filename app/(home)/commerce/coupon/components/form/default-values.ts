@@ -16,7 +16,7 @@ export const couponDefaultValues: CouponFormSchema = {
 
   discountType: DiscountType.percentage,
 
-  bookingTypeId: "",
+  bookingTypeIds: [],
 
   value: 0,
   maxDiscount: null,

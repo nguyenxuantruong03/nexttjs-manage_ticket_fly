@@ -42,9 +42,8 @@ export interface Policy {
   // BOOKING TYPE
   // ======================================================
 
-  bookingTypeId: string;
-
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   // ======================================================
   // PRODUCT RELATIONS

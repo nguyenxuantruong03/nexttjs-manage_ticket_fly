@@ -1,5 +1,5 @@
-import { FlyAircraftFormSchema } from "./schema";
 
+import { FlyAircraftFormSchema } from "../schema/aircraft.schema";
 import { flyAircraftDefaultValues } from "./default-values";
 import { FlyAircraft } from "@/types/product-types/references/airline/aircraft/aircraft.types";
 

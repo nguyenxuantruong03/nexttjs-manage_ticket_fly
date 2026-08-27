@@ -24,8 +24,6 @@ import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-d
 
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
 
-import { FlyCrewFormSchema, FlyCrewSchema } from "./form/schema";
-
 import { flyCrewDefaultValues } from "./form/default-values";
 import { initFlyCrewFormValues } from "./form/init-value";
 import { flyCrewSteps } from "./step/steps";
@@ -48,13 +46,14 @@ import StatusStep from "./step/status.step";
 import CrewScheduleStep from "./step/crewSchedule.step";
 import { FlyCrewDuty } from "@/types/product-types/references/airline/crew/crew-duty/fly-crew-duty";
 import { FlyAircraftType } from "@/types/product-types/references/airline/aircraft/aircraft-type.type";
+import { FlyCrewFormSchema, FlyCrewSchema } from "./schema/crew.schema";
 
 interface FlyCrewFormProps {
   initialData?: FlyCrew;
   airlineData: FlyAirline[];
   roleData: FlyCrewRole[];
   dutyData: FlyCrewDuty[];
-  aircraftTypeData: FlyAircraftType[]
+  aircraftTypeData: FlyAircraftType[];
   redirect?: boolean;
 }
 
@@ -196,7 +195,7 @@ export default function FlyCrewForm({
 
             {/* 6 - QUALIFICATIONS */}
             <FormWizardStep index={6}>
-              <QualificationsStep aircraftTypeData={aircraftTypeData}/>
+              <QualificationsStep aircraftTypeData={aircraftTypeData} />
             </FormWizardStep>
 
             {/* 7 - ASSIGNMENTS */}

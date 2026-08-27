@@ -1,25 +1,23 @@
 import { z } from "zod";
 
+// ======================================================
+// CREW DUTY
+// ======================================================
+
 export const FlyCrewDutySchema = z.object({
   // ======================================================
   // BASIC
   // ======================================================
 
-  name: z.string().trim().min(1, "Name is required"),
+  name: z.string().min(1),
 
-  description: z.string().trim().optional(),
+  description: z.string().optional(),
 
-  icon: z.string().trim().optional(),
+  icon: z.string().optional(),
 
-  // ======================================================
-  // STATUS
-  // ======================================================
-
-  sortOrder: z.coerce.number().int().min(0),
+  sortOrder: z.number().int().min(0),
 
   active: z.boolean(),
 });
 
-export type FlyCrewDutyFormSchema = z.infer<
-  typeof FlyCrewDutySchema
->;
+export type FlyCrewDutyFormSchema = z.infer<typeof FlyCrewDutySchema>;

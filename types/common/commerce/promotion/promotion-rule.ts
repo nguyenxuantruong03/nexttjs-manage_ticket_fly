@@ -8,8 +8,8 @@ export interface PromotionRule {
   promotionId: string;
   promotion?: Promotion;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   discountType: PriceCalculationType;
 

@@ -15,7 +15,7 @@ export const schema = z.object({
   // BOOKING TYPE
   // ======================================================
 
-  bookingTypeId: z.string().min(1, "Booking type is required"),
+  bookingTypeIds: z.array(z.string()).default([]),
 
   // ======================================================
   // STATUS

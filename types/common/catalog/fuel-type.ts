@@ -12,8 +12,8 @@ export interface FuelType {
   sortOrder: number;
   active: boolean;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   busSpecifications?: BusVehicleSpecification[];
   yachtVehicles?: YachtVehicle[];

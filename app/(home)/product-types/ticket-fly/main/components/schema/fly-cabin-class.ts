@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { FlyCabinSchema } from "./aircraft/cabin.schema";
+import { FlyCabinSchema } from "../../../../references/airline/aircraft/main/components/schema/cabin.schema";
 
 import { FlyFareSchema } from "./pricing/fare.schema";
 

@@ -2,12 +2,11 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { FlyCrewFormSchema } from "../form/schema";
-
 import { FlyAirline } from "@/types/product-types/references/airline/airline.types";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import FlyAirlineCreateDialog from "../../../../main/components/FlyAirlineCreateDialog";
+import { FlyCrewFormSchema } from "../schema/crew.schema";
 
 interface AirlineStepProps {
   airlineData: FlyAirline[];

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { FlySeatSchema } from "./aircraft/cabin.schema";
+import { FlySeatSchema } from "../../../../references/airline/aircraft/main/components/schema/cabin.schema";
 
 // ======================================================
 // SEAT TYPE

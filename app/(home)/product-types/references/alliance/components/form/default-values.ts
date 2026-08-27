@@ -1,4 +1,4 @@
-import { FlyAllianceFormSchema } from "./schema";
+import { FlyAllianceFormSchema } from "../schema/alliance.schema";
 
 export const flyAllianceDefaultValues: FlyAllianceFormSchema = {
   // ======================================================
@@ -12,4 +12,10 @@ export const flyAllianceDefaultValues: FlyAllianceFormSchema = {
   logo: "",
 
   description: "",
+
+  // ======================================================
+  // MEMBERS
+  // ======================================================
+
+  airlines: [],
 };

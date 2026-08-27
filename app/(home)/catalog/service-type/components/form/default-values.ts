@@ -15,7 +15,7 @@ export const serviceTypeDefaultValues: ServiceTypeFormSchema = {
   // BOOKING TYPE
   // ======================================================
 
-  bookingTypeId: "",
+  bookingTypeIds: [],
 
   // ======================================================
   // STATUS

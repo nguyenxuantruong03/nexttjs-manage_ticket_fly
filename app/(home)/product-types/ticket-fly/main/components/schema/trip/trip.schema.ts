@@ -2,15 +2,9 @@ import { z } from "zod";
 
 import { FlyInventorySchema } from "./inventory.schema";
 
-import { FlyCrewAssignmentSchema } from "../crew/assignment.schema";
+import { FlyCrewAssignmentSchema } from "../../../../../references/airline/crew/main/components/schema/assignment.schema";
 
-import { FlyCrewScheduleSchema } from "../crew/schedule.schema";
-
-import { FlyCodeshareSchema } from "../alliance/codeshare.schema";
-
-import { FlyConnectionSchema } from "../alliance/connection.schema";
-
-import { FlyItinerarySegmentSchema } from "../alliance/itinerary.schema";
+import { FlyCrewScheduleSchema } from "../../../../../references/airline/crew/main/components/schema/schedule.schema";
 
 import { FlyOperationSchema } from "../operation/operation.schema";
 
@@ -21,6 +15,9 @@ import { FlyCancellationSchema } from "../operation/cancellation.schema";
 import { FlyDiversionSchema } from "../operation/diversion.schema";
 
 import { FlyTripStatus } from "@/types/product-types/ticket-fly/enums";
+import { FlyCodeshareSchema } from "@/app/(home)/product-types/references/airline/main/components/schema/codeshare.schema";
+import { FlyConnectionSchema } from "@/app/(home)/product-types/ticket-fly/main/components/schema/trip/connection.schema";
+import { FlyItinerarySegmentSchema } from "@/app/(home)/product-types/ticket-fly/main/components/schema/trip/itinerary.schema";
 
 // ======================================================
 // TRIP

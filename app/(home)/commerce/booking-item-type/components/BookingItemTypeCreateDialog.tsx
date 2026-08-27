@@ -37,6 +37,7 @@ import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
 import BookingTypeCreateDialog from "../../booking-type/components/BookingTypeCreateDialog";
 import { BookingItemType } from "@/types/common/commerce/booking-item-type.type";
+import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 // ======================================================
 // PROPS
@@ -109,13 +110,13 @@ export default function BookingItemTypeCreateDialog({
   // BOOKING TYPE OPTIONS
   // ======================================================
 
-  const bookingTypeOptions: EntityOption<BookingType>[] =
-    bookingTypeData?.map((type) => ({
-      value: type.id,
-      label: type.name,
-      description: type.description ?? undefined,
-      data: type,
-    })) ?? [];
+  const bookingTypeOptions: EntityOption<BookingType>[] = bookingTypeData.map(
+    (bookingType) => ({
+      value: bookingType.id,
+      label: bookingType.name,
+      data: bookingType,
+    }),
+  );
 
   // ======================================================
   // RENDER
@@ -185,12 +186,12 @@ export default function BookingItemTypeCreateDialog({
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <FormEntitySelector<BookingItemTypeFormSchema, BookingType>
-                name="bookingTypeId"
-                label="Booking Type"
-                placeholder="Search booking type..."
-                searchPlaceholder="Search booking type..."
-                emptyText="No booking type found"
+              <FormEntityMultiSelector<BookingItemTypeFormSchema, BookingType>
+                name="bookingTypeIds"
+                label="Booking Types"
+                placeholder="Search booking types..."
+                searchPlaceholder="Search booking types..."
+                emptyText="No booking types found"
                 createText="Create booking type"
                 options={bookingTypeOptions}
                 enableCreate

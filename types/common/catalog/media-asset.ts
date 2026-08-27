@@ -51,9 +51,8 @@ export interface MediaAsset {
 
   extraImage: ExtraImage[];
 
-  bookingTypeId: string;
-
-  bookingType: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   mimeType: string | null;
 

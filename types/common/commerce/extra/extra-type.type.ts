@@ -4,8 +4,8 @@ import { Extra } from "./extra.type";
 export interface ExtraType {
   id: string;
 
-  bookingTypeId: string;
-  bookingType: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   name: string;
   slug: string;

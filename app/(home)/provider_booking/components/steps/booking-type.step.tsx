@@ -2,10 +2,11 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
-
 import { ProviderBookingFormSchema } from "../form/schema";
 import { BookingType } from "@/types/common/commerce/booking-type";
+import BookingTypeCreateDialog from "@/app/(home)/commerce/booking-type/components/BookingTypeCreateDialog";
+import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
+import { EntityOption } from "@/components/entity-selector";
 
 type BookingTypeStepProps = {
   bookingTypeData: BookingType[];
@@ -14,20 +15,29 @@ type BookingTypeStepProps = {
 export default function BookingTypeStep({
   bookingTypeData,
 }: BookingTypeStepProps) {
+  const bookingTypeOptions: EntityOption<BookingType>[] = bookingTypeData.map(
+    (bookingType) => ({
+      value: bookingType.id,
+      label: bookingType.name,
+      data: bookingType,
+    }),
+  );
+
   return (
     <FormSection
       title="Services"
       description="Select all services provided by this provider"
     >
-      <FormMultiCombobox<ProviderBookingFormSchema>
+      <FormEntityMultiSelector<ProviderBookingFormSchema, BookingType>
         name="bookingTypeIds"
-        label="Services"
-        placeholder="Select services..."
-        searchPlaceholder="Search services..."
-        options={bookingTypeData.map((bookingType) => ({
-          label: bookingType.name,
-          value: bookingType.id,
-        }))}
+        label="Booking Types"
+        placeholder="Search booking types..."
+        searchPlaceholder="Search booking types..."
+        emptyText="No booking types found"
+        createText="Create booking type"
+        options={bookingTypeOptions}
+        enableCreate
+        renderCreateDialog={(props) => <BookingTypeCreateDialog {...props} />}
       />
     </FormSection>
   );

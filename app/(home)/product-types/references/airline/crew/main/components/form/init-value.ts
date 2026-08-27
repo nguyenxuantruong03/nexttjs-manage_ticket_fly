@@ -1,5 +1,5 @@
-import { FlyCrewFormSchema } from "./schema";
 
+import { FlyCrewFormSchema } from "../schema/crew.schema";
 import { flyCrewDefaultValues } from "./default-values";
 import { FlyCrew } from "@/types/product-types/references/airline/crew/crew.types";
 

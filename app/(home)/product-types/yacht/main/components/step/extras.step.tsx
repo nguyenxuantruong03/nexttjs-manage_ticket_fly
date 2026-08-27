@@ -9,7 +9,7 @@ import { EntityOption } from "@/components/entity-selector";
 import { Extra } from "@/types/common/commerce/extra/extra.type";
 
 import { YachtFormSchema } from "../schema/core/yacht.schema";
-import ExtraCreateDialog from "@/app/(home)/commerce/extra/components/ExtraCreateDialog";
+import ExtraCreateDialog from "@/app/(home)/commerce/extra/main/components/ExtraCreateDialog";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import { ExtraType } from "@/types/common/commerce/extra/extra-type.type";
 import { Currency } from "@/types/location/currency";

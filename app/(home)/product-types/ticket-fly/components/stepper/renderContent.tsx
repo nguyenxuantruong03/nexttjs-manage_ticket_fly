@@ -59,6 +59,7 @@ export function renderTicketFlyStepperContent({
     if (subStep === "airport") {
       return (
         <AirportForm
+          airportData={airport.data?.airportData ?? []}
           addresses={airport.data?.addresses ?? []}
           countries={airport.data?.countries ?? []}
           cities={airport.data?.cities ?? []}

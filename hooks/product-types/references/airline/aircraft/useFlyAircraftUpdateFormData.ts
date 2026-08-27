@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { FlyAircraftService } from "@/services/product-types/references/airline/aircraft/client";
 
+import { FlyAirlineService } from "@/services/product-types/references/airline/client";
+
 export const useFlyAircraftUpdateFormData = (
   flyAircraftId: string,
   enabled = true,
@@ -16,21 +18,31 @@ export const useFlyAircraftUpdateFormData = (
     staleTime: 1000 * 60 * 5,
 
     queryFn: async () => {
-      const initialData = await FlyAircraftService.getOne(flyAircraftId);
+      const [initialData, airlineData] = await Promise.all([
+        FlyAircraftService.getOne(flyAircraftId),
+        FlyAirlineService.getMany(),
+      ]);
 
       return {
         initialData,
+        airlineData,
       };
     },
   });
 
   return {
     data: query.data,
+
     isPending: query.isPending,
+
     isLoading: query.isLoading,
+
     isFetching: query.isFetching,
+
     isError: query.isError,
+
     error: query.error,
+
     refetch: query.refetch,
   };
 };

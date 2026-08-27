@@ -11,8 +11,8 @@ export interface Coupon {
 
   discountType: DiscountType;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   value: number;
   maxDiscount?: number | null;
@@ -41,8 +41,8 @@ export interface CouponUsage {
   userId: string;
   user?: User;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   discountAmount: number;
 

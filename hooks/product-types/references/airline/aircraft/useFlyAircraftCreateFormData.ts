@@ -1,5 +1,6 @@
 "use client";
 
+import { FlyAirlineService } from "@/services/product-types/references/airline/client";
 import { useQuery } from "@tanstack/react-query";
 
 export const useFlyAircraftCreateFormData = (enabled = true) => {
@@ -11,7 +12,11 @@ export const useFlyAircraftCreateFormData = (enabled = true) => {
     staleTime: 1000 * 60 * 5,
 
     queryFn: async () => {
-      return {};
+      const [airlineData] = await Promise.all([FlyAirlineService.getMany()]);
+
+      return {
+        airlineData
+      }
     },
   });
 

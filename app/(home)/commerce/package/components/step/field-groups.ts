@@ -1,5 +1,5 @@
 export const packageFieldGroups = {
-  bookingType: ["bookingTypeId"] as const,
+  bookingType: ["bookingTypeIds"] as const,
 
   basic: ["name", "description"] as const,
 

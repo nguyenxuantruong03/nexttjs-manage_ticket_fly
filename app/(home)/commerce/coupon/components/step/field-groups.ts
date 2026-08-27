@@ -3,7 +3,7 @@ export const couponFieldGroups = {
 
   discount: [
     "discountType",
-    "bookingTypeId",
+    "bookingTypeIds",
     "value",
     "maxDiscount",
     "minimumAmount",

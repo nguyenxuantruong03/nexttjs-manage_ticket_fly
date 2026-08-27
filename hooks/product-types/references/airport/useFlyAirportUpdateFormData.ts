@@ -20,14 +20,16 @@ export const useFlyAirportUpdateFormData = (
     enabled: enabled && !!flyAirportId,
     staleTime: 1000 * 60 * 5,
     queryFn: async () => {
-      const [initialData, searchTagData] = await Promise.all([
+      const [initialData, searchTagData,airportData] = await Promise.all([
         FlyAirportService.getOne(flyAirportId),
         SearchTagService.getMany(),
+        FlyAirportService.getMany()
       ]);
 
       return {
         initialData,
         searchTagData,
+        airportData
       };
     },
   });

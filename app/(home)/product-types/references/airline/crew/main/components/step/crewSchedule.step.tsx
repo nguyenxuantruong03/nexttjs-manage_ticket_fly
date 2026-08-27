@@ -2,16 +2,13 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { FormInput } from "@/components/form/form-data";
-
-import { FlyCrewFormSchema } from "../form/schema";
-
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { FlyTrip } from "@/types/product-types/ticket-fly/trip/trip.types";
 import { FlyCrewDuty } from "@/types/product-types/references/airline/crew/crew-duty/fly-crew-duty";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+import { FormDatePicker, FormInput } from "@/components/form/form-data";
 import FlyCrewDutyCreateDialog from "../../../crew-duty/components/FlyCrewDutyCreateDialog";
+import { FlyCrewFormSchema } from "../schema/crew.schema";
 
 interface CrewScheduleStepProps {
   dutyData: FlyCrewDuty[];
@@ -42,16 +39,18 @@ export default function CrewScheduleStep({ dutyData }: CrewScheduleStepProps) {
       <div className="space-y-6">
         {fields.map((field, index) => (
           <div key={field.id} className="grid gap-6 md:grid-cols-2">
-            <FormInput<FlyCrewFormSchema>
+            {/* startTime/endTime are z.date() in schedule.schema.ts -
+                switched from FormInput text to FormDatePicker.
+                TODO: confirm FormDatePicker supports a time component,
+                otherwise a FormDateTimePicker is needed here */}
+            <FormDatePicker<FlyCrewFormSchema>
               name={`crewSchedule.${index}.startTime`}
               label="Start Time"
-              placeholder="2026-08-25T08:00"
             />
 
-            <FormInput<FlyCrewFormSchema>
+            <FormDatePicker<FlyCrewFormSchema>
               name={`crewSchedule.${index}.endTime`}
               label="End Time"
-              placeholder="2026-08-25T16:00"
             />
 
             <FormEntitySelector<FlyCrewFormSchema, FlyCrewDuty>
@@ -72,6 +71,16 @@ export default function CrewScheduleStep({ dutyData }: CrewScheduleStepProps) {
               label="Trip ID"
               placeholder="Enter trip ID"
             />
+
+            <div className="md:col-span-2">
+              <button
+                type="button"
+                onClick={() => remove(index)}
+                className="rounded-md border px-4 py-2 text-sm"
+              >
+                Remove Schedule
+              </button>
+            </div>
           </div>
         ))}
 

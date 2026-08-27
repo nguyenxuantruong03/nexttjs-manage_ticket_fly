@@ -46,8 +46,8 @@ export interface Payment {
 
   referenceId: string;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   amount: number;
 

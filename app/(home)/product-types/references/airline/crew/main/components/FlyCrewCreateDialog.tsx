@@ -4,11 +4,7 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 
-import {
-  AppForm,
-  FormInput,
-  FormSwitch,
-} from "@/components/form/form-data";
+import { AppForm, FormInput, FormSwitch } from "@/components/form/form-data";
 
 import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
 
@@ -21,8 +17,6 @@ import {
 import { useAppForm } from "@/hooks/useAppForm";
 
 import { useSubmit } from "@/hooks/useSubmit";
-
-import { FlyCrewFormSchema, FlyCrewSchema } from "./form/schema";
 
 import { flyCrewDefaultValues } from "./form/default-values";
 
@@ -47,13 +41,13 @@ import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { FlyAircraftType } from "@/types/product-types/references/airline/aircraft/aircraft-type.type";
 
 import FlyAircraftTypeCreateDialog from "../../../aircraft/aircraft-type/components/FlyAircraftTypeCreateDialog";
+import { FlyCrewFormSchema, FlyCrewSchema } from "./schema/crew.schema";
 
 // ======================================================
 // PROPS
 // ======================================================
 
-interface FlyCrewCreateDialogProps
-  extends EntityCreateDialogProps<FlyCrew> {
+interface FlyCrewCreateDialogProps extends EntityCreateDialogProps<FlyCrew> {
   airlineData: FlyAirline[];
 
   roleData: FlyCrewRole[];
@@ -111,29 +105,32 @@ export default function FlyCrewCreateDialog({
   // OPTIONS
   // ======================================================
 
-  const airlineEntityOptions: EntityOption<FlyAirline>[] =
-    airlineData.map((airline) => ({
+  const airlineEntityOptions: EntityOption<FlyAirline>[] = airlineData.map(
+    (airline) => ({
       value: airline.id,
       label: airline.name,
       description: airline.description ?? undefined,
       data: airline,
-    }));
+    }),
+  );
 
-  const roleEntityOptions: EntityOption<FlyCrewRole>[] =
-    roleData.map((role) => ({
+  const roleEntityOptions: EntityOption<FlyCrewRole>[] = roleData.map(
+    (role) => ({
       value: role.id,
       label: role.name,
       description: role.description ?? undefined,
       data: role,
-    }));
+    }),
+  );
 
-  const dutyEntityOptions: EntityOption<FlyCrewDuty>[] =
-    dutyData.map((duty) => ({
+  const dutyEntityOptions: EntityOption<FlyCrewDuty>[] = dutyData.map(
+    (duty) => ({
       value: duty.id,
       label: duty.name,
       description: duty.description ?? undefined,
       data: duty,
-    }));
+    }),
+  );
 
   // ======================================================
   // AIRCRAFT TYPE MASTER OPTIONS
@@ -211,9 +208,7 @@ export default function FlyCrewCreateDialog({
           ====================================================== */}
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">
-              Airline
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold">Airline</h3>
 
             <FormEntitySelector<FlyCrewFormSchema, FlyAirline>
               name="airlineId"
@@ -230,9 +225,7 @@ export default function FlyCrewCreateDialog({
           ====================================================== */}
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">
-              Employee
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold">Employee</h3>
 
             <FormInput<FlyCrewFormSchema>
               name="employeeNumber"
@@ -246,9 +239,7 @@ export default function FlyCrewCreateDialog({
           ====================================================== */}
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">
-              Basic Information
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold">Basic Information</h3>
 
             <div className="grid gap-4 md:grid-cols-2">
               <FormInput<FlyCrewFormSchema>
@@ -288,9 +279,7 @@ export default function FlyCrewCreateDialog({
           ====================================================== */}
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">
-              Crew Role
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold">Crew Role</h3>
 
             <FormEntitySelector<FlyCrewFormSchema, FlyCrewRole>
               name="roleId"
@@ -311,9 +300,7 @@ export default function FlyCrewCreateDialog({
           ====================================================== */}
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">
-              Contact
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold">Contact</h3>
 
             <div className="grid gap-4 md:grid-cols-2">
               <FormInput<FlyCrewFormSchema>
@@ -335,14 +322,9 @@ export default function FlyCrewCreateDialog({
           ====================================================== */}
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">
-              Status
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold">Status</h3>
 
-            <FormSwitch<FlyCrewFormSchema>
-              name="active"
-              label="Active"
-            />
+            <FormSwitch<FlyCrewFormSchema> name="active" label="Active" />
           </div>
 
           {/* ======================================================
@@ -350,24 +332,16 @@ export default function FlyCrewCreateDialog({
           ====================================================== */}
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">
-              Qualifications
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold">Qualifications</h3>
 
             <div className="space-y-4">
               {qualifications.fields.map((field, index) => (
-                <div
-                  key={field.id}
-                  className="grid gap-4 md:grid-cols-3"
-                >
+                <div key={field.id} className="grid gap-4 md:grid-cols-3">
                   {/* ==================================================
                       AIRCRAFT TYPE MASTER
                   ================================================== */}
 
-                  <FormEntitySelector<
-                    FlyCrewFormSchema,
-                    FlyAircraftType
-                  >
+                  <FormEntitySelector<FlyCrewFormSchema, FlyAircraftType>
                     name={`qualifications.${index}.aircraftTypeId`}
                     label="Aircraft Type"
                     placeholder="Search aircraft type..."
@@ -408,9 +382,7 @@ export default function FlyCrewCreateDialog({
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() =>
-                        qualifications.remove(index)
-                      }
+                      onClick={() => qualifications.remove(index)}
                     >
                       Remove Qualification
                     </Button>
@@ -443,16 +415,11 @@ export default function FlyCrewCreateDialog({
           ====================================================== */}
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">
-              Assignments
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold">Assignments</h3>
 
             <div className="space-y-4">
               {assignments.fields.map((field, index) => (
-                <div
-                  key={field.id}
-                  className="grid gap-4 md:grid-cols-3"
-                >
+                <div key={field.id} className="grid gap-4 md:grid-cols-3">
                   {/* ==================================================
                       TRIP ID
                   ================================================== */}
@@ -477,10 +444,7 @@ export default function FlyCrewCreateDialog({
                       DUTY
                   ================================================== */}
 
-                  <FormEntitySelector<
-                    FlyCrewFormSchema,
-                    FlyCrewDuty
-                  >
+                  <FormEntitySelector<FlyCrewFormSchema, FlyCrewDuty>
                     name={`assignments.${index}.dutyId`}
                     label="Duty"
                     placeholder="Search duty..."
@@ -520,16 +484,11 @@ export default function FlyCrewCreateDialog({
           ====================================================== */}
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">
-              Crew Schedule
-            </h3>
+            <h3 className="mb-4 text-sm font-semibold">Crew Schedule</h3>
 
             <div className="space-y-4">
               {crewSchedule.fields.map((field, index) => (
-                <div
-                  key={field.id}
-                  className="grid gap-4 md:grid-cols-2"
-                >
+                <div key={field.id} className="grid gap-4 md:grid-cols-2">
                   <FormInput<FlyCrewFormSchema>
                     name={`crewSchedule.${index}.startTime`}
                     label="Start Time"
@@ -542,10 +501,7 @@ export default function FlyCrewCreateDialog({
                     type="datetime-local"
                   />
 
-                  <FormEntitySelector<
-                    FlyCrewFormSchema,
-                    FlyCrewDuty
-                  >
+                  <FormEntitySelector<FlyCrewFormSchema, FlyCrewDuty>
                     name={`crewSchedule.${index}.dutyId`}
                     label="Duty"
                     placeholder="Search duty..."
@@ -597,13 +553,8 @@ export default function FlyCrewCreateDialog({
               Cancel
             </Button>
 
-            <Button
-              type="submit"
-              disabled={createFlyCrew.isPending}
-            >
-              {createFlyCrew.isPending
-                ? "Creating..."
-                : "Create Crew"}
+            <Button type="submit" disabled={createFlyCrew.isPending}>
+              {createFlyCrew.isPending ? "Creating..." : "Create Crew"}
             </Button>
           </div>
         </div>

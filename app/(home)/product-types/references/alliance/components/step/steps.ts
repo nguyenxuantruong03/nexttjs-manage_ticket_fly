@@ -1,10 +1,10 @@
 import { FormWizardStep } from "@/components/form/wizard/types";
 
-import { Info } from "lucide-react";
+import { Info, Plane } from "lucide-react";
 
-import { FlyAllianceFormSchema } from "../form/schema";
 
 import { flyAllianceFieldGroups } from "./field-groups";
+import { FlyAllianceFormSchema } from "../schema/alliance.schema";
 
 export const flyAllianceSteps: FormWizardStep<FlyAllianceFormSchema>[] = [
   {
@@ -13,5 +13,13 @@ export const flyAllianceSteps: FormWizardStep<FlyAllianceFormSchema>[] = [
     description: "Alliance basic information",
     icon: Info,
     fields: flyAllianceFieldGroups.basic,
+  },
+
+  {
+    id: "airlines",
+    title: "Member Airlines",
+    description: "Airlines that belong to this alliance",
+    icon: Plane,
+    fields: flyAllianceFieldGroups.airlines,
   },
 ];

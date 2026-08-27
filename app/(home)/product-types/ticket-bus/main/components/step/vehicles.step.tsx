@@ -14,7 +14,7 @@ import VehicleTypeCreateDialog from "@/app/(home)/catalog/vehicle-type/component
 import { BusVehicleStatus } from "@/types/product-types/bus/enums";
 import { FuelType } from "@/types/common/catalog/fuel-type";
 import FuelTypeCreateDialog from "@/app/(home)/catalog/fuel-type/components/FuelTypeCreateDialog";
-import FacilityCreateDialog from "@/app/(home)/features/facility/components/FacilityCreateDialog";
+import FacilityCreateDialog from "@/app/(home)/features/facility/main/components/FacilityCreateDialog";
 import { Facility } from "@/types/common/features/facility/facility";
 import { FacilityCategory } from "@/types/common/features/facility/facility-category";
 

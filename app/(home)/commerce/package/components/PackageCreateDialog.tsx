@@ -44,6 +44,7 @@ import { Currency } from "@/types/location/currency";
 import BookingTypeCreateDialog from "../../booking-type/components/BookingTypeCreateDialog";
 
 import CurrencyCreateDialog from "@/app/(home)/location/currency/components/CurrencyCreateDialog";
+import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 // ======================================================
 // PROPS
@@ -82,13 +83,13 @@ export default function PackageCreateDialog({
   // BOOKING TYPE OPTIONS
   // ======================================================
 
-  const bookingTypeOptions: EntityOption<BookingType>[] =
-    bookingTypeData?.map((bookingType) => ({
+  const bookingTypeOptions: EntityOption<BookingType>[] = bookingTypeData.map(
+    (bookingType) => ({
       value: bookingType.id,
       label: bookingType.name,
-      description: bookingType.description ?? undefined,
       data: bookingType,
-    })) ?? [];
+    }),
+  );
 
   // ======================================================
   // CURRENCY OPTIONS
@@ -212,12 +213,12 @@ export default function PackageCreateDialog({
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <FormEntitySelector<PackageFormSchema, BookingType>
-                name="bookingTypeId"
-                label="Booking Type"
-                placeholder="Search booking type..."
-                searchPlaceholder="Search booking type..."
-                emptyText="No booking type found"
+              <FormEntityMultiSelector<PackageFormSchema, BookingType>
+                name="bookingTypeIds"
+                label="Booking Types"
+                placeholder="Search booking types..."
+                searchPlaceholder="Search booking types..."
+                emptyText="No booking types found"
                 createText="Create booking type"
                 options={bookingTypeOptions}
                 enableCreate

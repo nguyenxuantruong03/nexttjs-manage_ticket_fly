@@ -25,9 +25,16 @@ export function packageColumns(
     // ======================================================
 
     {
-      id: "bookingType",
-      header: "Booking Type",
-      cell: ({ row }) => row.original.bookingType?.name ?? "-",
+      accessorKey: "bookingTypes",
+      header: "Booking Types",
+
+      cell: ({ row }) => {
+        const bookingTypes = row.original.bookingTypes;
+
+        return bookingTypes?.length
+          ? bookingTypes.map((item) => item.name).join(", ")
+          : "-";
+      },
     },
 
     // ======================================================

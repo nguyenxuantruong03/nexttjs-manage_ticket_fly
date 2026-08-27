@@ -15,7 +15,7 @@ export const vehicleTypeDefaultValues: VehicleTypeFormSchema = {
   // BOOKING TYPE
   // ======================================================
 
-  bookingTypeId: "",
+  bookingTypeIds: [],
 
   // ======================================================
   // STATUS

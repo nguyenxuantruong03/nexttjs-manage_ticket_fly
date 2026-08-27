@@ -4,8 +4,6 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput } from "@/components/form/form-data";
 
-import { FlyCrewFormSchema } from "../form/schema";
-
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { FlyCrewDuty } from "@/types/product-types/references/airline/crew/crew-duty/fly-crew-duty";
@@ -15,6 +13,7 @@ import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
 import FlyCrewDutyCreateDialog from "../../../crew-duty/components/FlyCrewDutyCreateDialog";
+import { FlyCrewFormSchema } from "../schema/crew.schema";
 
 interface AssignmentsStepProps {
   dutyData: FlyCrewDuty[];

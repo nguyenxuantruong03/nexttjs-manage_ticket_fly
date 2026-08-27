@@ -25,8 +25,8 @@ export interface Facility {
 
   icon?: string | null;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   hotels?: HotelFacilityMapper[];
   rooms?: RoomFacility[];

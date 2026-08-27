@@ -1,5 +1,4 @@
-import { Gender } from "@/types/common/enums";
-import { FlyCrewFormSchema } from "./schema";
+import { FlyCrewFormSchema } from "../schema/crew.schema";
 
 export const flyCrewDefaultValues: FlyCrewFormSchema = {
   // ======================================================
@@ -22,9 +21,13 @@ export const flyCrewDefaultValues: FlyCrewFormSchema = {
 
   lastName: "",
 
-  gender: Gender.FEMALE,
+  // gender is optional in the schema - leave unset instead of
+  // defaulting to a specific value so the field starts empty
+  gender: undefined,
 
-  birthDate: new Date(),
+  // birthDate is optional - defaulting to "today" made the field
+  // look pre-filled with a fake birth date
+  birthDate: undefined,
 
   nationality: "",
 

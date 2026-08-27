@@ -3,8 +3,7 @@
 import FormSection from "@/components/form/FormSection";
 
 import { FormInput } from "@/components/form/form-data";
-
-import { FlyCrewFormSchema } from "../form/schema";
+import { FlyCrewFormSchema } from "../schema/crew.schema";
 
 export default function EmployeeStep() {
   return (

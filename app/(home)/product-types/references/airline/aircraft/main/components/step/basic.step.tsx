@@ -3,16 +3,43 @@
 import FormSection from "@/components/form/FormSection";
 
 import { FormInput } from "@/components/form/form-data";
+import { FlyAircraftFormSchema } from "../schema/aircraft.schema";
+import { FlyAirline } from "@/types/product-types/references/airline/airline.types";
+import { EntityOption } from "@/components/entity-selector";
+import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+import FlyAirlineCreateDialog from "../../../../main/components/FlyAirlineCreateDialog";
 
-import { FlyAircraftFormSchema } from "../form/schema";
+interface BasicStepPorps {
+  airlineData: FlyAirline[];
+}
 
-export default function BasicStep() {
+export default function BasicStep({ airlineData }: BasicStepPorps) {
+  const airlineOptions: EntityOption<FlyAirline>[] = airlineData.map(
+    (airline) => ({
+      value: airline.id,
+      label: airline.name,
+      description: airline.description ?? undefined,
+      data: airline,
+    }),
+  );
   return (
     <FormSection
       title="Basic Information"
       description="Basic fly aircraft information"
     >
       <div className="grid gap-6 md:grid-cols-2">
+        <FormEntitySelector<FlyAircraftFormSchema, FlyAirline>
+          name="airlineId"
+          label="Airline"
+          placeholder="Search airline..."
+          searchPlaceholder="Search airline..."
+          emptyText="No airline found"
+          createText="Create airline"
+          options={airlineOptions}
+          enableCreate
+          renderCreateDialog={(props) => <FlyAirlineCreateDialog {...props} />}
+        />
+
         <FormInput<FlyAircraftFormSchema>
           name="manufacturer"
           label="Manufacturer"

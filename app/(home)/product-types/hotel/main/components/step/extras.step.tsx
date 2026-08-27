@@ -9,19 +9,24 @@ import { HotelSchemaForm } from "../schema/core/hotel.schema";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { Extra } from "@/types/common/commerce/extra/extra.type";
-import ExtraCreateDialog from "@/app/(home)/commerce/extra/components/ExtraCreateDialog";
+import ExtraCreateDialog from "@/app/(home)/commerce/extra/main/components/ExtraCreateDialog";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import { Currency } from "@/types/location/currency";
 import { ExtraType } from "@/types/common/commerce/extra/extra-type.type";
 
 interface ExtrasStepProps {
   extraData: Extra[];
-  bookingTypeData: BookingType[]
-  currencyData: Currency[]
-  extraTypeData: ExtraType[]
+  bookingTypeData: BookingType[];
+  currencyData: Currency[];
+  extraTypeData: ExtraType[];
 }
 
-export default function ExtrasStep({ extraData,bookingTypeData,currencyData,extraTypeData }: ExtrasStepProps) {
+export default function ExtrasStep({
+  extraData,
+  bookingTypeData,
+  currencyData,
+  extraTypeData,
+}: ExtrasStepProps) {
   const extraOptions: EntityOption<Extra>[] = extraData.map((extra) => ({
     value: extra.id,
     label: extra.name,

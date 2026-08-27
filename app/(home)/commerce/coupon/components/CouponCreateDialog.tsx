@@ -32,6 +32,7 @@ import { DiscountType } from "@/types/common/commerce/promotion/promotion";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import BookingTypeCreateDialog from "../../booking-type/components/BookingTypeCreateDialog";
 import { BookingType } from "@/types/common/commerce/booking-type";
+import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 // ======================================================
 // PROPS
@@ -94,13 +95,13 @@ export default function CouponCreateDialog({
     });
   };
 
-  const bookingTypeOptions: EntityOption<BookingType>[] =
-    bookingTypeData?.map((type) => ({
-      value: type.id,
-      label: type.name,
-      description: type.description ?? undefined,
-      data: type,
-    })) ?? [];
+  const bookingTypeOptions: EntityOption<BookingType>[] = bookingTypeData.map(
+    (bookingType) => ({
+      value: bookingType.id,
+      label: bookingType.name,
+      data: bookingType,
+    }),
+  );
 
   return (
     <EntityCreateDialog
@@ -177,12 +178,12 @@ export default function CouponCreateDialog({
                 ]}
               />
 
-              <FormEntitySelector<CouponFormSchema, BookingType>
-                name="bookingTypeId"
-                label="Booking Type"
-                placeholder="Search booking type..."
-                searchPlaceholder="Search booking type..."
-                emptyText="No booking type found"
+              <FormEntityMultiSelector<CouponFormSchema, BookingType>
+                name="bookingTypeIds"
+                label="Booking Types"
+                placeholder="Search booking types..."
+                searchPlaceholder="Search booking types..."
+                emptyText="No booking types found"
                 createText="Create booking type"
                 options={bookingTypeOptions}
                 enableCreate

@@ -15,7 +15,7 @@ export const priceRuleTypeDefaultValues: PriceRuleTypeFormSchema = {
   // BOOKING TYPE
   // ======================================================
 
-  bookingTypeId: "",
+  bookingTypeIds: [],
 
   // ======================================================
   // STATUS

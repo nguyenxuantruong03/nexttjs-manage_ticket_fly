@@ -1,7 +1,6 @@
 import { z } from "zod";
 
-import { FlyCrewAssignmentSchema } from "../crew/assignment.schema";
-
+import { FlyCrewAssignmentSchema } from "../../../../../references/airline/crew/main/components/schema/assignment.schema";
 
 export const FlyInventoryFareSchema = z.object({
   // ======================================================
@@ -11,7 +10,6 @@ export const FlyInventoryFareSchema = z.object({
   cabinInventoryId: z.string(),
 
   fareId: z.string(),
-
 
   // ======================================================
   // INVENTORY

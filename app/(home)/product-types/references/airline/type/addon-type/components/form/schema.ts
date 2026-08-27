@@ -1,25 +1,30 @@
+import { FlyAddonSchema } from "@/app/(home)/product-types/references/airline/main/components/schema/addon.schema";
 import { z } from "zod";
+
+// ======================================================
+// ADDON TYPE
+// ======================================================
 
 export const FlyAddonTypeSchema = z.object({
   // ======================================================
   // BASIC
   // ======================================================
 
-  name: z.string().trim().min(1, "Name is required"),
+  name: z.string().min(1),
 
-  description: z.string().trim().optional(),
+  description: z.string().optional(),
 
-  icon: z.string().trim().optional(),
+  icon: z.string().optional(),
 
-  // ======================================================
-  // STATUS
-  // ======================================================
-
-  sortOrder: z.coerce.number().int().min(0),
+  sortOrder: z.number().int().min(0),
 
   active: z.boolean(),
+
+  // ======================================================
+  // ADDONS
+  // ======================================================
+
+  addons: z.array(FlyAddonSchema).optional(),
 });
 
-export type FlyAddonTypeFormSchema = z.infer<
-  typeof FlyAddonTypeSchema
->;
+export type FlyAddonTypeFormSchema = z.infer<typeof FlyAddonTypeSchema>;

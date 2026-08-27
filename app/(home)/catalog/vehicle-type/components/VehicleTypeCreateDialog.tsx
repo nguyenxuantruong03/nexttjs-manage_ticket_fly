@@ -34,6 +34,7 @@ import { BookingType } from "@/types/common/commerce/booking-type";
 import { VehicleType } from "@/types/common/catalog/vehicle-type.type";
 import { useCreateVehicleType } from "@/hooks/catalog/vehicle-type";
 import BookingTypeCreateDialog from "@/app/(home)/commerce/booking-type/components/BookingTypeCreateDialog";
+import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 // ======================================================
 // PROPS
@@ -69,13 +70,13 @@ export default function VehicleTypeCreateDialog({
   // BOOKING TYPE OPTIONS
   // ======================================================
 
-  const bookingTypeEntityOptions: EntityOption<BookingType>[] =
-    bookingTypeData.map((bookingType) => ({
+  const bookingTypeOptions: EntityOption<BookingType>[] = bookingTypeData.map(
+    (bookingType) => ({
       value: bookingType.id,
       label: bookingType.name,
-      description: bookingType.description ?? undefined,
       data: bookingType,
-    }));
+    }),
+  );
 
   // ======================================================
   // RESET
@@ -161,14 +162,14 @@ export default function VehicleTypeCreateDialog({
           ====================================================== */}
 
           <div className="grid gap-4 md:grid-cols-2">
-            <FormEntitySelector<VehicleTypeFormSchema, BookingType>
-              name="bookingTypeId"
-              label="Booking Type"
-              placeholder="Search booking type..."
-              searchPlaceholder="Search booking type..."
-              emptyText="No booking type found"
+            <FormEntityMultiSelector<VehicleTypeFormSchema, BookingType>
+              name="bookingTypeIds"
+              label="Booking Types"
+              placeholder="Search booking types..."
+              searchPlaceholder="Search booking types..."
+              emptyText="No booking types found"
               createText="Create booking type"
-              options={bookingTypeEntityOptions}
+              options={bookingTypeOptions}
               enableCreate
               renderCreateDialog={(props) => (
                 <BookingTypeCreateDialog {...props} />

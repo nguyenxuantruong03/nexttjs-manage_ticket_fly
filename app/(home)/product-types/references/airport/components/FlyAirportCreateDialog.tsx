@@ -81,7 +81,7 @@ export default function FlyAirportCreateDialog({
     data: address,
   }));
 
-  const onSubmit = (values: FlyAirportFormSchema) => {
+  const onSubmit = (values: any) => {
     submit({
       mutation: createflyAirport.mutateAsync(values),
       success: "Airport created",

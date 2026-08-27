@@ -12,6 +12,10 @@ import { useAppForm } from "@/hooks/useAppForm";
 import { useSubmit } from "@/hooks/useSubmit";
 
 import BasicStep from "./step/basic.step";
+import SpecificationStep from "./step/specification.step";
+import FacilitiesStep from "./step/facilities.step";
+import CabinsStep from "./step/cabins.step";
+import ImagesStep from "./step/images.step";
 import StatusStep from "./step/status.step";
 
 import { useEffect, useMemo, useRef } from "react";
@@ -25,8 +29,6 @@ import { DraftEntity } from "@/components/daft/draft-config";
 import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
 import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
 
-import { FlyAircraftFormSchema, FlyAircraftSchema } from "./form/schema";
-
 import { flyAircraftDefaultValues } from "./form/default-values";
 import { initFlyAircraftFormValues } from "./form/init-value";
 import { flyAircraftSteps } from "./step/steps";
@@ -36,14 +38,23 @@ import {
   useUpdateFlyAircraft,
 } from "@/hooks/product-types/references/airline/aircraft";
 import { FlyAircraft } from "@/types/product-types/references/airline/aircraft/aircraft.types";
+import {
+  FlyAircraftFormSchema,
+  FlyAircraftSchema,
+} from "./schema/aircraft.schema";
+import SeatMapStep from "./step/seat map.step";
+import ScheduleStep from "./step/schedule.step";
+import { FlyAirline } from "@/types/product-types/references/airline/airline.types";
 
 interface FlyAircraftFormProps {
   initialData?: FlyAircraft;
+  airlineData: FlyAirline[]
   redirect?: boolean;
 }
 
 export default function FlyAircraftForm({
   initialData,
+  airlineData,
   redirect = true,
 }: FlyAircraftFormProps) {
   const redirectDefault = "/product-types/references/airline/aircraft";
@@ -90,7 +101,7 @@ export default function FlyAircraftForm({
     setDirty(form.formState.isDirty);
   }, [form.formState.isDirty, setDirty]);
 
-  const onSubmit = (values: FlyAircraftFormSchema) => {
+  const onSubmit = (values: any) => {
     submit({
       mutation: initialData
         ? updateFlyAircraft.mutateAsync({
@@ -142,11 +153,35 @@ export default function FlyAircraftForm({
 
           <FormWizardContent>
             <FormWizardStep index={0}>
-              <BasicStep />
+              <BasicStep airlineData={airlineData}/>
             </FormWizardStep>
 
             <FormWizardStep index={1}>
+              <SpecificationStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={2}>
+              <FacilitiesStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={3}>
+              <CabinsStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={4}>
+              <ImagesStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={5}>
+              <SeatMapStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={6}>
               <StatusStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={7}>
+              <ScheduleStep />
             </FormWizardStep>
           </FormWizardContent>
 

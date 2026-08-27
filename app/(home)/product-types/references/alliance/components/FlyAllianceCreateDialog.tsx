@@ -20,8 +20,11 @@ import { useCreateFlyAlliance } from "@/hooks/product-types/references/alliance"
 
 import { flyAllianceDefaultValues } from "./form/default-values";
 
-import { FlyAllianceFormSchema, FlyAllianceSchema } from "./form/schema";
 import { FlyAlliance } from "@/types/product-types/references/alliance/alliance.types";
+import {
+  FlyAllianceFormSchema,
+  FlyAllianceSchema,
+} from "./schema/alliance.schema";
 
 interface FlyAllianceCreateDialogProps extends EntityCreateDialogProps<FlyAlliance> {}
 
@@ -51,7 +54,7 @@ export default function FlyAllianceCreateDialog({
     });
   }, [open, defaultKeyword, form]);
 
-  const onSubmit = (values: FlyAllianceFormSchema) => {
+  const onSubmit = (values: any) => {
     submit({
       mutation: createFlyAlliance.mutateAsync(values),
 

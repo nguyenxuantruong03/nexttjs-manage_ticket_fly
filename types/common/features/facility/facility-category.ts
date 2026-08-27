@@ -4,8 +4,8 @@ import { Facility } from "./facility";
 export interface FacilityCategory {
   id: string;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   name: string;
   slug: string;

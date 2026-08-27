@@ -9,8 +9,8 @@ import { Yacht } from "@/types/product-types/yacht/core/yacht.types";
 export interface BookingItemType {
   id: string;
 
-  bookingTypeId: string;
-  bookingType?: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   name: string;
   slug: string;

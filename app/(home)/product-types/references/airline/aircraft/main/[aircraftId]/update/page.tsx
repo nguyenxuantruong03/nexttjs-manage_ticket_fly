@@ -25,5 +25,5 @@ export default function FlyAircraftEditPage() {
     return <ErrorPage />;
   }
 
-  return <FlyAircraftForm initialData={data.initialData} />;
+  return <FlyAircraftForm initialData={data.initialData} airlineData={data.airlineData}/>;
 }

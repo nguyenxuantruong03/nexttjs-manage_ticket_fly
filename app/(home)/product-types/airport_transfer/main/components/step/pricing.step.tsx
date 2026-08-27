@@ -11,7 +11,7 @@ import { ExtraFeeType } from "@/types/common/commerce/extra-fee-type.type";
 import { VehicleType } from "@/types/common/catalog/vehicle-type.type";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import VehicleTypeCreateDialog from "@/app/(home)/catalog/vehicle-type/components/VehicleTypeCreateDialog";
-import ExtraFeeTypeCreateDialog from "@/app/(home)/commerce/extra-fee-type/components/ExtraFeeTypeCreateDialog";
+import ExtraFeeTypeCreateDialog from "@/app/(home)/commerce/extra/extra-fee-type/components/ExtraFeeTypeCreateDialog";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceruleTypeCreateDialog";
 import { PriceCalculationType } from "@/types/common/enums";

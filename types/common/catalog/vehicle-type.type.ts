@@ -15,9 +15,8 @@ export type VehicleType = {
   sortOrder: number;
   active: boolean;
 
-  bookingTypeId: string;
-
-  bookingType: BookingType;
+  bookingTypeIds: string[];
+  bookingTypes?: BookingType[];
 
   airportTransferVehicles: AirportTransferVehicle[];
 

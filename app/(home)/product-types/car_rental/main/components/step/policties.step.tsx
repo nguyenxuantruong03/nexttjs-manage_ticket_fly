@@ -7,7 +7,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 
 import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
-import PolicyCreateDialog from "@/app/(home)/features/policy/components/PolicyCreateDialog";
+import PolicyCreateDialog from "@/app/(home)/features/policy/main/components/PolicyCreateDialog";
 import { Policy } from "@/types/common/features/policy/policy";
 import { EntityOption } from "@/components/entity-selector";
 import { PolicyType } from "@/types/common/features/policy/policy-type";

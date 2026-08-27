@@ -16,7 +16,7 @@ import { City } from "@/types/location/city";
 import { District } from "@/types/location/district";
 import { Ward } from "@/types/location/ward";
 import { Facility } from "@/types/common/features/facility/facility";
-import FacilityCreateDialog from "@/app/(home)/features/facility/components/FacilityCreateDialog";
+import FacilityCreateDialog from "@/app/(home)/features/facility/main/components/FacilityCreateDialog";
 import { FacilityCategory } from "@/types/common/features/facility/facility-category";
 import { BookingType } from "@/types/common/commerce/booking-type";
 

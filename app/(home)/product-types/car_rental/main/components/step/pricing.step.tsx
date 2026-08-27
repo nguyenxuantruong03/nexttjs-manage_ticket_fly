@@ -12,7 +12,7 @@ import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
 import { EntityOption } from "@/components/entity-selector";
 import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceruleTypeCreateDialog";
 import { Extra } from "@/types/common/commerce/extra/extra.type";
-import ExtraCreateDialog from "@/app/(home)/commerce/extra/components/ExtraCreateDialog";
+import ExtraCreateDialog from "@/app/(home)/commerce/extra/main/components/ExtraCreateDialog";
 import { Currency } from "@/types/location/currency";
 
 const durationTypeOptions = Object.values(RentalDurationType).map((value) => ({
@@ -33,7 +33,7 @@ export default function PricingStep({
   priceRuleTypeData,
   extraTypeData,
   extraData,
-  currencyData
+  currencyData,
 }: PricingStepProps) {
   const priceRuleTypeOptions: EntityOption<PriceRuleType>[] =
     priceRuleTypeData.map((priceRuleType) => ({

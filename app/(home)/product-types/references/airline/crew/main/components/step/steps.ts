@@ -12,9 +12,9 @@ import {
   CalendarDays,
 } from "lucide-react";
 
-import { FlyCrewFormSchema } from "../form/schema";
 
 import { flyCrewFieldGroups } from "./field-groups";
+import { FlyCrewFormSchema } from "../schema/crew.schema";
 
 export const flyCrewSteps: FormWizardStep<FlyCrewFormSchema>[] = [
   {

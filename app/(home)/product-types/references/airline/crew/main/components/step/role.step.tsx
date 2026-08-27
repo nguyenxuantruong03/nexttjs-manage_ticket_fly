@@ -2,12 +2,11 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { FlyCrewFormSchema } from "../form/schema";
-
 import { FlyCrewRole } from "@/types/product-types/references/airline/crew/crew-role/fly-crew-role";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import FlyCrewRoleCreateDialog from "../../../crew-role/components/FlyCrewRoleCreateDialog";
+import { FlyCrewFormSchema } from "../schema/crew.schema";
 
 interface RoleStepProps {
   roleData: FlyCrewRole[];

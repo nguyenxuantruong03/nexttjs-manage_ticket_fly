@@ -40,9 +40,18 @@ export function fuelTypeColumns(
     // ======================================================
 
     {
-      accessorKey: "bookingType",
-      header: "Booking Type",
-      cell: ({ row }) => row.original.bookingType?.name ?? "-",
+      accessorKey: "bookingTypes",
+      header: "Booking Types",
+
+      cell: ({ row }) => {
+        const bookingTypes = row.original.bookingTypes;
+
+        if (!bookingTypes?.length) {
+          return "-";
+        }
+
+        return bookingTypes.map((item) => item.name).join(", ");
+      },
     },
 
     // ======================================================

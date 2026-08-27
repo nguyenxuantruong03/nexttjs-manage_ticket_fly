@@ -7,9 +7,7 @@ export const schema = z.object({
 
   name: z.string().trim().min(1, "Tag name is required"),
 
-  bookingTypeIds: z
-    .array(z.string())
-    .min(1, "At least one booking type is required"),
+bookingTypeIds: z.array(z.string()).default([]),
 
   // ======================================================
   // STATUS

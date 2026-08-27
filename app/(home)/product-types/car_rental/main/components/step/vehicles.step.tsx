@@ -19,7 +19,7 @@ import {
   RentalVehicleStatus,
 } from "@/types/product-types/car_rental/enums";
 import { Facility } from "@/types/common/features/facility/facility";
-import FacilityCreateDialog from "@/app/(home)/features/facility/components/FacilityCreateDialog";
+import FacilityCreateDialog from "@/app/(home)/features/facility/main/components/FacilityCreateDialog";
 import { FacilityCategory } from "@/types/common/features/facility/facility-category";
 
 const vehicleStatusOptions = Object.values(RentalVehicleStatus).map(

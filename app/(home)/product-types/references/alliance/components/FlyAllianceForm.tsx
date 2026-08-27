@@ -24,7 +24,6 @@ import { useSearchParams } from "next/navigation";
 
 import BasicStep from "./step/basic.step";
 
-import { FlyAllianceFormSchema, FlyAllianceSchema } from "./form/schema";
 import { initFlyAllianceFormValues } from "./form/init-value";
 import { flyAllianceDefaultValues } from "./form/default-values";
 import { flyAllianceSteps } from "./step/steps";
@@ -34,6 +33,8 @@ import {
   useUpdateFlyAlliance,
 } from "@/hooks/product-types/references/alliance";
 import { FlyAlliance } from "@/types/product-types/references/alliance/alliance.types";
+import AirlinesStep from "./step/airlines.step";
+import { FlyAllianceFormSchema, FlyAllianceSchema } from "./schema/alliance.schema";
 
 interface FlyAllianceFormProps {
   initialData?: FlyAlliance;
@@ -87,7 +88,7 @@ export default function FlyAllianceForm({
     setDirty(form.formState.isDirty);
   }, [form.formState.isDirty, setDirty]);
 
-  const onSubmit = (values: FlyAllianceFormSchema) => {
+  const onSubmit = (values: any) => {
     submit({
       mutation: initialData
         ? updateFlyAlliance.mutateAsync({
@@ -137,6 +138,10 @@ export default function FlyAllianceForm({
           <FormWizardContent>
             <FormWizardStep index={0}>
               <BasicStep />
+            </FormWizardStep>
+
+            <FormWizardStep index={1}>
+              <AirlinesStep />
             </FormWizardStep>
           </FormWizardContent>
 

@@ -9,7 +9,7 @@ import { BookingType } from "@/types/common/commerce/booking-type";
 import YachtConditionCreateDialog from "../../../condition/components/YachtConditionCreateDialog";
 import { YachtCondition } from "@/types/product-types/yacht/yacht-condition";
 import { Facility } from "@/types/common/features/facility/facility";
-import FacilityCreateDialog from "@/app/(home)/features/facility/components/FacilityCreateDialog";
+import FacilityCreateDialog from "@/app/(home)/features/facility/main/components/FacilityCreateDialog";
 import { FacilityCategory } from "@/types/common/features/facility/facility-category";
 
 interface VehicleStepProps {

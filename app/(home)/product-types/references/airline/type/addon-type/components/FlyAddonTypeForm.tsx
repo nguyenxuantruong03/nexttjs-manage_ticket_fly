@@ -90,7 +90,7 @@ export default function FlyAddonTypeForm({
     setDirty(form.formState.isDirty);
   }, [form.formState.isDirty, setDirty]);
 
-  const onSubmit = (values: FlyAddonTypeFormSchema) => {
+  const onSubmit = (values: any) => {
     submit({
       mutation: initialData
         ? updateFlyAddonType.mutateAsync({

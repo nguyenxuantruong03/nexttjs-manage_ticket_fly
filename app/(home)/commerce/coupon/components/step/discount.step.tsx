@@ -9,19 +9,20 @@ import { BookingType } from "@/types/common/commerce/booking-type";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import BookingTypeCreateDialog from "../../../booking-type/components/BookingTypeCreateDialog";
+import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 interface DiscountStepProps {
   bookingTypeData: BookingType[];
 }
 
 export default function DiscountStep({ bookingTypeData }: DiscountStepProps) {
-  const bookingTypeOptions: EntityOption<BookingType>[] =
-    bookingTypeData?.map((type) => ({
-      value: type.id,
-      label: type.name,
-      description: type.description ?? undefined,
-      data: type,
-    })) ?? [];
+  const bookingTypeOptions: EntityOption<BookingType>[] = bookingTypeData.map(
+    (bookingType) => ({
+      value: bookingType.id,
+      label: bookingType.name,
+      data: bookingType,
+    }),
+  );
 
   return (
     <FormSection title="Discount" description="Configure the coupon discount">
@@ -41,18 +42,17 @@ export default function DiscountStep({ bookingTypeData }: DiscountStepProps) {
           ]}
         />
 
-        <FormEntitySelector<CouponFormSchema, BookingType>
-          name="bookingTypeId"
-          label="Booking Type"
-          placeholder="Search booking type..."
-          searchPlaceholder="Search booking type..."
-          emptyText="No booking type found"
+        <FormEntityMultiSelector<CouponFormSchema, BookingType>
+          name="bookingTypeIds"
+          label="Booking Types"
+          placeholder="Search booking types..."
+          searchPlaceholder="Search booking types..."
+          emptyText="No booking types found"
           createText="Create booking type"
           options={bookingTypeOptions}
           enableCreate
           renderCreateDialog={(props) => <BookingTypeCreateDialog {...props} />}
         />
-
         <FormInput<CouponFormSchema>
           name="value"
           label="Value"

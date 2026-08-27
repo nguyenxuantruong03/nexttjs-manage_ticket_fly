@@ -4,15 +4,14 @@ import FormSection from "@/components/form/FormSection";
 
 import { useFieldArray, useFormContext } from "react-hook-form";
 
-import { FlyCrewFormSchema } from "../form/schema";
-
 import { EntityOption } from "@/components/entity-selector";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
-import { FormDatePicker, FormInput } from "@/components/form/form-data";
+import { FormDatePicker } from "@/components/form/form-data";
 import { FlyAircraftType } from "@/types/product-types/references/airline/aircraft/aircraft-type.type";
 import FlyAircraftTypeCreateDialog from "../../../../aircraft/aircraft-type/components/FlyAircraftTypeCreateDialog";
+import { FlyCrewFormSchema } from "../schema/crew.schema";
 
 interface QualificationsStepProps {
   aircraftTypeData: FlyAircraftType[];
@@ -53,6 +52,8 @@ export default function QualificationsStep({
           <div key={field.id} className="grid gap-6 md:grid-cols-3">
             {/* ======================================================
                 AIRCRAFT TYPE MASTER
+                NOTE: qualification.schema.ts names this field
+                "aircraftType" (not "aircraftTypeId") - fixed to match
             ====================================================== */}
 
             <FormEntitySelector<FlyCrewFormSchema, FlyAircraftType>

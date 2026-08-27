@@ -1,19 +1,51 @@
+import { FlyDiversionSchema } from "@/app/(home)/product-types/ticket-fly/main/components/schema/operation/diversion.schema";
 import { z } from "zod";
+import { FlyMinimumConnectionTimeSchema } from "./minimum-connection.schema";
+
+// ======================================================
+// AIRPORT
+// ======================================================
 
 export const FlyAirportSchema = z.object({
-  name: z.string().trim().min(1, "Name is required"),
+  // ======================================================
+  // BASIC
+  // ======================================================
 
-  code: z.string().trim().min(1, "Code is required"),
+  name: z.string().min(1),
 
-  iataCode: z.string().trim().min(1, "IATA code is required"),
+  code: z.string().min(1),
 
-  icaoCode: z.string().trim().optional(),
+  iataCode: z.string().min(1),
 
-  terminalCount: z.coerce.number().optional(),
-  lat: z.coerce.number().optional(),
-  lng: z.coerce.number().optional(),
+  icaoCode: z.string().optional(),
 
-  addressId: z.string().trim().optional(),
+  // ======================================================
+  // CAPACITY
+  // ======================================================
+
+  terminalCount: z.number().optional(),
+
+  // ======================================================
+  // LOCATION
+  // ======================================================
+
+  lat: z.number().optional(),
+
+  lng: z.number().optional(),
+
+  addressId: z.string().optional(),
+
+  // ======================================================
+  // OPERATIONS
+  // ======================================================
+
+  diversions: z.array(FlyDiversionSchema).optional(),
+
+  // ======================================================
+  // CONNECTION
+  // ======================================================
+
+  minimumConnectionTime: z.array(FlyMinimumConnectionTimeSchema).optional(),
 });
 
 export type FlyAirportFormSchema = z.infer<typeof FlyAirportSchema>;

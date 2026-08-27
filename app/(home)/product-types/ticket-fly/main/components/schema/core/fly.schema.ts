@@ -8,7 +8,7 @@ import { FlyNoticeSchema } from "./notice.schema";
 import { FlyExtraMapperSchema } from "../fly-extra-mapper.schema";
 import { FlyPackageMapperSchema } from "../fly-package-mapper.schema";
 import { FlyPolicyMapperSchema } from "../policy/policies.schema";
-import { FlyScheduleSchema } from "../airline/schedule.schema";
+import { FlyScheduleSchema } from "@/app/(home)/product-types/references/airline/aircraft/main/components/schema/schedule.schema";
 
 export const TicketFlySchema = z.object({
   // ======================================================
@@ -35,33 +35,21 @@ export const TicketFlySchema = z.object({
   // RELATIONS
   // ======================================================
 
-  flyExtraMapper: z.array(
-    z.lazy(() => FlyExtraMapperSchema),
-  ),
+  flyExtraMapper: z.array(z.lazy(() => FlyExtraMapperSchema)),
 
-  flyPackageMapper: z.array(
-    z.lazy(() => FlyPackageMapperSchema),
-  ),
+  flyPackageMapper: z.array(z.lazy(() => FlyPackageMapperSchema)),
 
-  routes: z.array(
-    z.lazy(() => FlyRouteSchema),
-  ),
+  routes: z.array(z.lazy(() => FlyRouteSchema)),
 
-  policies: z.array(
-    z.lazy(() => FlyPolicyMapperSchema),
-  ),
+  policies: z.array(z.lazy(() => FlyPolicyMapperSchema)),
 
   price: FlyPriceSchema.nullable(),
 
   notice: FlyNoticeSchema.nullable(),
 
-  images: z.array(
-    z.lazy(() => FlyImageSchema),
-  ),
+  images: z.array(z.lazy(() => FlyImageSchema)),
 
-  schedule: z.array(
-    z.lazy(() => FlyScheduleSchema),
-  ),
+  schedule: z.array(z.lazy(() => FlyScheduleSchema)),
 
   // ======================================================
   // STATUS
@@ -79,19 +67,13 @@ export const TicketFlySchema = z.object({
   // SEARCH CONFIGURATION
   // ======================================================
 
-  tagIds: z.array(
-    z.string(),
-  ).default([]),
+  tagIds: z.array(z.string()).default([]),
 
   featured: z.boolean(),
 
   searchable: z.boolean(),
 
-  searchPriority: z.coerce
-    .number()
-    .default(0),
+  searchPriority: z.coerce.number().default(0),
 });
 
-export type FlyFormSchema = z.infer<
-  typeof TicketFlySchema
->;
+export type FlyFormSchema = z.infer<typeof TicketFlySchema>;

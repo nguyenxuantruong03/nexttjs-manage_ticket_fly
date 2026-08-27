@@ -4,25 +4,29 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { FormInput, FormSwitch, FormTextarea } from "@/components/form/form-data";
+import {
+  FormInput,
+  FormSwitch,
+  FormTextarea,
+} from "@/components/form/form-data";
 import { HotelSchemaForm } from "../schema/core/hotel.schema";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { Policy } from "@/types/common/features/policy/policy";
-import PolicyCreateDialog from "@/app/(home)/features/policy/components/PolicyCreateDialog";
+import PolicyCreateDialog from "@/app/(home)/features/policy/main/components/PolicyCreateDialog";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import { PolicyType } from "@/types/common/features/policy/policy-type";
 
 interface HotelPolicyMapperStepProps {
   policyData: Policy[];
-  policyTypeData: PolicyType[]
-  bookingTypeData: BookingType[]
+  policyTypeData: PolicyType[];
+  bookingTypeData: BookingType[];
 }
 
 export default function HotelPolicyMapperStep({
   policyData,
   policyTypeData,
-  bookingTypeData
+  bookingTypeData,
 }: HotelPolicyMapperStepProps) {
   const policyOptions: EntityOption<Policy>[] = policyData.map((policy) => ({
     value: policy.id,
@@ -50,12 +54,19 @@ export default function HotelPolicyMapperStep({
             createText="Create policy"
             options={policyOptions}
             enableCreate
-            renderCreateDialog={(props) => <PolicyCreateDialog
-              policyTypeData={policyTypeData} bookingTypeData={bookingTypeData}
-              {...props} />}
+            renderCreateDialog={(props) => (
+              <PolicyCreateDialog
+                policyTypeData={policyTypeData}
+                bookingTypeData={bookingTypeData}
+                {...props}
+              />
+            )}
           />
 
-          <FormSwitch<HotelSchemaForm> name="policies.0.active" label="Active" />
+          <FormSwitch<HotelSchemaForm>
+            name="policies.0.active"
+            label="Active"
+          />
         </div>
 
         <div className="grid gap-6 md:grid-cols-3 mt-6">

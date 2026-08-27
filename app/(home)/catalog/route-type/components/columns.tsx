@@ -47,8 +47,18 @@ export function routeTypeColumns(
     // ======================================================
 
     {
-      accessorKey: "bookingTypeId",
-      header: "Booking Type ID",
+      accessorKey: "bookingTypes",
+      header: "Booking Types",
+
+      cell: ({ row }) => {
+        const bookingTypes = row.original.bookingTypes;
+
+        if (!bookingTypes?.length) {
+          return "-";
+        }
+
+        return bookingTypes.map((item) => item.name).join(", ");
+      },
     },
 
     // ======================================================

@@ -19,7 +19,7 @@ const FlyAircraftCreatePage = () => {
     return <ErrorPage />;
   }
 
-  return <FlyAircraftForm />;
+  return <FlyAircraftForm airlineData={data.airlineData}/>;
 };
 
 export default FlyAircraftCreatePage;
