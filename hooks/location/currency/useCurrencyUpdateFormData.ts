@@ -1,25 +1,24 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-
-import { CurrencyService } from "@/services/location/currency/client";
+import { useCurrency } from "@/hooks/location/currency";
 
 export const useCurrencyUpdateFormData = (
   currencyId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["currency-update-form-data", currencyId],
-    enabled: enabled && !!currencyId,
-    staleTime: 1000 * 60 * 5,
-    queryFn: async () => {
-      const [initialData] = await Promise.all([
-        CurrencyService.getOne(currencyId),
-      ]);
+  const currencyQuery = useCurrency(currencyId, enabled);
 
-      return {
-        initialData,
-      };
+  return {
+    data: currencyQuery.data ? { initialData: currencyQuery.data } : undefined,
+
+    isLoading: currencyQuery.isLoading,
+    isFetching: currencyQuery.isFetching,
+
+    isError: currencyQuery.isError,
+    errors: {
+      currency: currencyQuery.error as Error | null,
     },
-  });
+
+    refetch: currencyQuery.refetch,
+  };
 };

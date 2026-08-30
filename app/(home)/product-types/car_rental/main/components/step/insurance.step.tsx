@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 
-import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 import { EntityOption } from "@/components/entity-selector";
 import {
   InsuranceBenefitType,

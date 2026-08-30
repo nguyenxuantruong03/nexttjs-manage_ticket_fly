@@ -9,17 +9,23 @@ import ErrorPage from "@/components/ui/error-page";
 
 export default function DistrictEditPage() {
   const params = useParams();
-
   const districtId = params.districtId as string;
 
-  const { data, isLoading, error } = useDistrictUpdateFormData(districtId);
+  const { data, isLoading, isError, errors, refetch } =
+    useDistrictUpdateFormData(districtId);
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.district?.message ??
+          "Không tải được dữ liệu quận/huyện, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

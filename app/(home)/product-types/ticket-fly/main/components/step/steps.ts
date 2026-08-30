@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 import { flyFieldGroups } from "./field-groups";
-import { FlyFormSchema } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../form/schema/core/fly.schema";
 
 export const flySteps: FormWizardStep<FlyFormSchema>[] = [
   {

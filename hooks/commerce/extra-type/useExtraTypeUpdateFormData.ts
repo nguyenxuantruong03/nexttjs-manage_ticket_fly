@@ -1,30 +1,38 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { ExtraTypeService } from "@/services/commerce/extra-type/client";
-import { useQuery } from "@tanstack/react-query";
+import { useExtraType } from "@/hooks/commerce/extra-type";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useExtraTypeUpdateFormData = (
   extraTypeId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["extra-type-update", extraTypeId],
+  const extraTypeQuery = useExtraType(extraTypeId, enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled: enabled && !!extraTypeId,
+  return {
+    data:
+      extraTypeQuery.data && bookingTypeQuery.data
+        ? {
+            extraTypeData: extraTypeQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+          }
+        : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading: extraTypeQuery.isLoading || bookingTypeQuery.isLoading,
+    isFetching: extraTypeQuery.isFetching || bookingTypeQuery.isFetching,
 
-    queryFn: async () => {
-      const [extraTypeData, bookingTypeData] = await Promise.all([
-        ExtraTypeService.getOne(extraTypeId),
-        BookingTypeService.getMany(),
-      ]);
-
-      return {
-        extraTypeData,
-        bookingTypeData,
-      };
+    isError: extraTypeQuery.isError || bookingTypeQuery.isError,
+    errors: {
+      extraType: extraTypeQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all([
+        extraTypeQuery.refetch(),
+        bookingTypeQuery.refetch(),
+      ]);
+    },
+  };
 };

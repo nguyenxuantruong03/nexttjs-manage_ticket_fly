@@ -1,17 +1,8 @@
-import {
-  Car,
-  Armchair,
-  LucideIcon,
-} from "lucide-react";
+import { Step } from "@/components/stepper/types";
+import { Car, Armchair, LucideIcon } from "lucide-react";
 
-export type Step = [id: string, title: string, icon: LucideIcon];
-
-export const mainSteps: Step[] = [
-  ["seat", "Seat", Armchair],
-];
+export const mainSteps: Step[] = [["seat", "Seat", Armchair]];
 
 export const subSteps: Record<string, Step[]> = {
-  seat: [
-    ["seat-type", "Seat Type", Armchair],
-  ],
+  seat: [["seat-type", "Seat Type", Armchair]],
 };

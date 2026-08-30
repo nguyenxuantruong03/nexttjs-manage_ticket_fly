@@ -1,7 +1,8 @@
 "use client";
 
-import { FlyAircraftTypeService } from "@/services/product-types/references/airline/aircraft/aircraft-type/client";
 import { useQuery } from "@tanstack/react-query";
+
+import { FlyAircraftTypeService } from "@/services/product-types/references/airline/aircraft/aircraft-type/client";
 
 export const useFlyAircraftTypeUpdateFormData = (
   flyAircraftTypeId: string,
@@ -26,11 +27,17 @@ export const useFlyAircraftTypeUpdateFormData = (
 
   return {
     data: query.data,
-    isPending: query.isPending,
+
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    // Chỉ có 1 nguồn dữ liệu (initialData) nên chỉ có 1 key, đặt tên
+    // "aircraftType" cho nhất quán với entity.
+    errors: {
+      aircraftType: query.error as Error | null,
+    },
+
     refetch: query.refetch,
   };
 };

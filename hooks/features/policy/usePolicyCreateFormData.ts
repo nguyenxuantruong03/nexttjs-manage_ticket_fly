@@ -1,30 +1,32 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-
-import { PolicyTypeService } from "@/services/features/policy-type/client";
-
-import { useQuery } from "@tanstack/react-query";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
+import { usePolicyTypes } from "@/hooks/features/policy-type";
 
 export const usePolicyCreateFormData = (enabled = true) => {
-  return useQuery({
-    queryKey: ["policy-create"],
+  const bookingTypeQuery = useBookingTypes(enabled);
+  const policyTypeQuery = usePolicyTypes(enabled);
 
-    enabled,
-
-    staleTime: 1000 * 60 * 5,
-
-    queryFn: async () => {
-      const [bookingTypeData, policyTypeData] = await Promise.all([
-        BookingTypeService.getMany(),
-
-        PolicyTypeService.getMany(),
-      ]);
-
-      return {
-        bookingTypeData,
-        policyTypeData,
-      };
+  return {
+    data:
+      bookingTypeQuery.data && policyTypeQuery.data
+        ? {
+            bookingTypeData: bookingTypeQuery.data,
+            policyTypeData: policyTypeQuery.data,
+          }
+        : undefined,
+    isLoading: bookingTypeQuery.isLoading || policyTypeQuery.isLoading,
+    isFetching: bookingTypeQuery.isFetching || policyTypeQuery.isFetching,
+    isError: bookingTypeQuery.isError || policyTypeQuery.isError,
+    errors: {
+      bookingType: bookingTypeQuery.error as Error | null,
+      policyType: policyTypeQuery.error as Error | null,
     },
-  });
+    refetch: async () => {
+      await Promise.all([
+        bookingTypeQuery.refetch(),
+        policyTypeQuery.refetch(),
+      ]);
+    },
+  };
 };

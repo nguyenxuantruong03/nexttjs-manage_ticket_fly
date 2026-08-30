@@ -14,21 +14,30 @@ export default function PriceRuleTypeEditPage() {
 
   const priceRuleTypeId = params.priceRuleTypeId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     usePriceRuleTypeUpdateFormData(priceRuleTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.priceRuleType?.message ??
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu quy tắc giá, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (
     <PriceRuleTypeForm
       initialData={data.priceRuleTypeData}
-      bookingTypeData={data.bookingTypes}
+      bookingTypeData={data.bookingTypeData}
     />
   );
 }

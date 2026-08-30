@@ -11,7 +11,7 @@ import { EntityOption } from "@/components/entity-selector";
 import { ProviderBooking } from "@/types/users/provider-bookings";
 import { ServiceType } from "@/types/common/catalog/service-type.type";
 import { BookingItemType } from "@/types/common/commerce/booking-item-type.type";
-import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 import ProviderBookingCreateDialog from "@/app/(home)/provider_booking/components/ProviderBookingCreateDialog";
 import ServiceTypeCreateDialog from "@/app/(home)/catalog/service-type/components/ServiceTypeCreateDialog";
 import BookingItemTypeCreateDialog from "@/app/(home)/commerce/booking-item-type/components/BookingItemTypeCreateDialog";

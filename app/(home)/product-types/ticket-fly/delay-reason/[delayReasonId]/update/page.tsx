@@ -14,16 +14,20 @@ export default function FlyDelayReasonEditPage() {
 
   const delayReasonId = params.delayReasonId as string;
 
-  const { data, isLoading, error } =
-    useFlyDelayReasonUpdateFormData(delayReasonId);
+const { data, isLoading, isError, errors, refetch } = useFlyDelayReasonUpdateFormData(delayReasonId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
-  }
+ if (isError || !data) {
+  return (
+    <ErrorPage
+      description={errors.delayReason?.message ?? "Không tải được dữ liệu lý do trễ chuyến, vui lòng thử lại."}
+      onRetry={refetch}
+    />
+  );
+}
 
   return <FlyDelayReasonForm initialData={data.initialData} />;
 }

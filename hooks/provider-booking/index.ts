@@ -1,37 +1,62 @@
-"use client"
+"use client";
 import { ProviderBookingService } from "@/services/provider-booking/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["provider-booking"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useProviderBookings() {
+export const providerBookingQueryKeys = {
+  all: ["provider-booking"] as const,
+  list: () => [...providerBookingQueryKeys.all, "list"] as const,
+  detail: (id: string) =>
+    [...providerBookingQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useProviderBookings(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: providerBookingQueryKeys.list(),
     queryFn: () => ProviderBookingService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useProviderBooking(id: string) {
+export function useProviderBooking(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: providerBookingQueryKeys.detail(id),
     queryFn: () => ProviderBookingService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateProviderBooking() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ProviderBookingService.create,
+    mutationFn: (data: Parameters<typeof ProviderBookingService.create>[0]) =>
+      ProviderBookingService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: providerBookingQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateProviderBooking() {
   const queryClient = useQueryClient();
@@ -45,28 +70,38 @@ export function useUpdateProviderBooking() {
       data: Parameters<typeof ProviderBookingService.update>[1];
     }) => ProviderBookingService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: providerBookingQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: providerBookingQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteProviderBooking() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ProviderBookingService.delete,
+    mutationFn: (id: string) => ProviderBookingService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: providerBookingQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: providerBookingQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

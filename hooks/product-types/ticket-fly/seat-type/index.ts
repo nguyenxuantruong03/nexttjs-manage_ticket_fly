@@ -3,36 +3,60 @@
 import { FlySeatTypeService } from "@/services/product-types/ticket-fly/seat-type/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["fly-seat-type"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useFlySeatTypes() {
+export const flySeatTypeQueryKeys = {
+  all: ["fly-seat-type"] as const,
+  list: () => [...flySeatTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...flySeatTypeQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useFlySeatTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: flySeatTypeQueryKeys.list(),
     queryFn: () => FlySeatTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useFlySeatType(id: string) {
+export function useFlySeatType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: flySeatTypeQueryKeys.detail(id),
     queryFn: () => FlySeatTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateFlySeatType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlySeatTypeService.create,
+    mutationFn: (data: Parameters<typeof FlySeatTypeService.create>[0]) =>
+      FlySeatTypeService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: flySeatTypeQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateFlySeatType() {
   const queryClient = useQueryClient();
@@ -46,28 +70,38 @@ export function useUpdateFlySeatType() {
       data: Parameters<typeof FlySeatTypeService.update>[1];
     }) => FlySeatTypeService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flySeatTypeQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: flySeatTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteFlySeatType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlySeatTypeService.delete,
+    mutationFn: (id: string) => FlySeatTypeService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flySeatTypeQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: flySeatTypeQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

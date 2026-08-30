@@ -11,5 +11,23 @@ export function initPolicyTypeFormValues(
     return structuredClone(policyTypeDefaultValues);
   }
 
-  return structuredClone(policyType);
+  return {
+    // ======================================================
+    // BASIC
+    // ======================================================
+
+    name: policyType.name ?? "",
+    description: policyType.description ?? null,
+    icon: policyType.icon ?? null,
+
+    bookingTypeIds:
+      policyType.bookingTypes?.map((bookingType) => bookingType.id) ?? [],
+
+    // ======================================================
+    // STATUS
+    // ======================================================
+
+    active: policyType.active ?? true,
+    sortOrder: policyType.sortOrder ?? 0,
+  };
 }

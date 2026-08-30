@@ -13,14 +13,23 @@ export default function BusSeatTypeEditPage() {
 
   const seatTypeId = params.seatTypeId as string;
 
-  const { data, isLoading, error } = useBusSeatTypeUpdateFormData(seatTypeId);
+  const { data, isLoading, isError, errors, refetch } =
+    useBusSeatTypeUpdateFormData(seatTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.seatType?.message ??
+          "Không tải được dữ liệu loại ghế, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <BusSeatTypeForm initialData={data.initialData} />;

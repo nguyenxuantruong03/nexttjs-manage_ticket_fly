@@ -6,14 +6,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const RatePlanTypeCreatePage = () => {
-  const { data, isLoading, error } = useHotelRatePlanTypeCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelRatePlanTypeCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.ratePlanType?.message ??
+          "Không tải được dữ liệu loại giá phòng, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <RatePlanTypeForm />;

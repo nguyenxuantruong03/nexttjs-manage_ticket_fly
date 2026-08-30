@@ -1,26 +1,32 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { FacilityCategoryService } from "@/services/features/facility-category/client";
-import { FacilityService } from "@/services/features/facility/client";
-import { useQuery } from "@tanstack/react-query";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
+import { useFacilityCategories } from "@/hooks/features/facility-category";
 
 export const useFacilityCreateFormData = (enabled = true) => {
-  return useQuery({
-    queryKey: ["facility-create"],
-    enabled,
-    staleTime: 1000 * 60 * 5,
+  const bookingTypeQuery = useBookingTypes(enabled);
+  const facilityCategoryQuery = useFacilityCategories(enabled);
 
-    queryFn: async () => {
-      const [bookingTypeData, facilityCategoryData] = await Promise.all([
-        BookingTypeService.getMany(),
-        FacilityCategoryService.getMany(),
-      ]);
-
-      return {
-        bookingTypeData,
-        facilityCategoryData,
-      };
+  return {
+    data:
+      bookingTypeQuery.data && facilityCategoryQuery.data
+        ? {
+            bookingTypeData: bookingTypeQuery.data,
+            facilityCategoryData: facilityCategoryQuery.data,
+          }
+        : undefined,
+    isLoading: bookingTypeQuery.isLoading || facilityCategoryQuery.isLoading,
+    isFetching: bookingTypeQuery.isFetching || facilityCategoryQuery.isFetching,
+    isError: bookingTypeQuery.isError || facilityCategoryQuery.isError,
+    errors: {
+      bookingType: bookingTypeQuery.error as Error | null,
+      facilityCategory: facilityCategoryQuery.error as Error | null,
     },
-  });
+    refetch: async () => {
+      await Promise.all([
+        bookingTypeQuery.refetch(),
+        facilityCategoryQuery.refetch(),
+      ]);
+    },
+  };
 };

@@ -8,14 +8,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const FlyDelayReasonCreatePage = () => {
-  const { data, isLoading, error } = useFlyDelayReasonCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyDelayReasonCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.delayReason?.message ??
+          "Không tải được dữ liệu lý do trễ chuyến, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyDelayReasonForm />;

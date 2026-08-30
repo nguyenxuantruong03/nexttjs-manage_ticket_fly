@@ -3,8 +3,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation"; // Import router để refresh dữ liệu
 import {
   Form,
   FormControl,
@@ -13,9 +11,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import UploadImage from "./upload-image";
-// import { postUser } from "@/lib/post-user";
-import { UpdateImageSchema } from "@/schemas/user";
-import { useUpdateUser } from "@/hooks/user";
+import { useUpdateUserMe } from "@/hooks/user";
+import { useSubmit } from "@/hooks/useSubmit";
+
+export const UpdateImageSchema = z.object({
+  image: z.optional(z.string()),
+});
 
 interface FormUploadImageProps {
   image?: string | null | undefined;
@@ -23,7 +24,9 @@ interface FormUploadImageProps {
 }
 
 export const FormUploadImage = ({ image, name }: FormUploadImageProps) => {
-  const router = useRouter();
+  const submit = useSubmit();
+  const updateUserMe = useUpdateUserMe();
+
   const form = useForm<z.infer<typeof UpdateImageSchema>>({
     resolver: zodResolver(UpdateImageSchema),
     defaultValues: {
@@ -31,18 +34,17 @@ export const FormUploadImage = ({ image, name }: FormUploadImageProps) => {
     },
   });
 
-  const { mutateAsync: updateMe } = useUpdateUser();
-
   const onSubmit = async (values: z.infer<typeof UpdateImageSchema>) => {
     try {
-      await updateMe({
-        image: values.image,
+      await submit({
+        form,
+        mutation: updateUserMe.mutateAsync({
+          image: values.image,
+        }),
+        success: "Cập nhật ảnh thành công",
       });
-
-      toast.success("Cập nhật ảnh thành công");
-      router.refresh();
     } catch {
-      toast.error("Đã có lỗi xảy ra");
+      // lỗi đã được useSubmit xử lý (toast + setError nếu có field lỗi)
     }
   };
 
@@ -59,8 +61,8 @@ export const FormUploadImage = ({ image, name }: FormUploadImageProps) => {
                   name={name}
                   image={image}
                   onChange={(url) => {
-                    field.onChange(url); // Cập nhật giá trị vào form
-                    form.handleSubmit(onSubmit)(); // Tự động gửi lên Database
+                    field.onChange(url);
+                    form.handleSubmit(onSubmit)();
                   }}
                 />
               </FormControl>

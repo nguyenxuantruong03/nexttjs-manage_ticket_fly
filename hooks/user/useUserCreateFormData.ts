@@ -3,14 +3,30 @@
 import { useQuery } from "@tanstack/react-query";
 
 export const useUserCreateFormData = (enabled = true) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: ["user-create-form-data"],
     enabled,
+
     staleTime: 1000 * 60 * 5,
+
     queryFn: async () => {
       const [] = await Promise.all([]);
 
       return {};
     },
   });
+
+  return {
+    data: query.data,
+
+    isLoading: query.isLoading,
+    isFetching: query.isFetching,
+
+    isError: query.isError,
+    errors: {
+      user: query.error as Error | null,
+    },
+
+    refetch: query.refetch,
+  };
 };

@@ -2,7 +2,7 @@
 
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch } from "@/components/form/form-data";
-import { FlyFormSchema } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../form/schema/core/fly.schema";
 import { Policy } from "@/types/common/features/policy/policy";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";

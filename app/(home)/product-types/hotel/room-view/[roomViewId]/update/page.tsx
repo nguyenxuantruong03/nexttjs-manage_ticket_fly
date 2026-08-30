@@ -11,14 +11,23 @@ export default function RoomViewEditPage() {
 
   const roomViewId = params.roomViewId as string;
 
-  const { data, isLoading, error } = useHotelRoomViewUpdateFormData(roomViewId);
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelRoomViewUpdateFormData(roomViewId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.roomView?.message ??
+          "Không tải được dữ liệu view phòng, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <RoomViewForm initialData={data.initialData} />;

@@ -6,14 +6,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 export default function CarrentalCreatePage() {
-  const { data, isLoading, error } = useCarrentalCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useCarrentalCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.carRental?.message ??
+          "Không tải được dữ liệu xe cho thuê, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

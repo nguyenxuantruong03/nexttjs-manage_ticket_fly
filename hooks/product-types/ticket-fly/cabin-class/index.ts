@@ -3,40 +3,61 @@
 import { FlyCabinClassService } from "@/services/product-types/ticket-fly/cabin-class/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["fly-cabin-class"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
+export const flyCabinClassQueryKeys = {
+  all: ["fly-cabin-class"] as const,
+  list: () => [...flyCabinClassQueryKeys.all, "list"] as const,
+  detail: (id: string) =>
+    [...flyCabinClassQueryKeys.all, "detail", id] as const,
+};
 
-export function useFlyCabinClasses() {
+// ======================================================
+// Queries
+// ======================================================
+
+export function useFlyCabinClasses(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: flyCabinClassQueryKeys.list(),
     queryFn: () => FlyCabinClassService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-
-export function useFlyCabinClass(id: string) {
+export function useFlyCabinClass(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: flyCabinClassQueryKeys.detail(id),
     queryFn: () => FlyCabinClassService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateFlyCabinClass() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlyCabinClassService.create,
+    mutationFn: (data: Parameters<typeof FlyCabinClassService.create>[0]) =>
+      FlyCabinClassService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: flyCabinClassQueryKeys.list(),
       });
     },
   });
 }
 
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateFlyCabinClass() {
   const queryClient = useQueryClient();
@@ -48,32 +69,40 @@ export function useUpdateFlyCabinClass() {
     }: {
       id: string;
       data: Parameters<typeof FlyCabinClassService.update>[1];
-    }) =>
-      FlyCabinClassService.update(id, data),
+    }) => FlyCabinClassService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flyCabinClassQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: flyCabinClassQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
 
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteFlyCabinClass() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlyCabinClassService.delete,
+    mutationFn: (id: string) => FlyCabinClassService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flyCabinClassQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: flyCabinClassQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

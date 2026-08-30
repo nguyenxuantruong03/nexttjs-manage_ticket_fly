@@ -4,7 +4,7 @@ import { Country } from "./country/country";
 import { Ward } from "./ward";
 import { District } from "./district";
 import { Place } from "./place/place";
-import { HotelInformation } from "@/app/(home)/product-types/hotel/main/components/schema/core/hotel-information.schema";
+import { HotelInformation } from "@/app/(home)/product-types/hotel/main/components/form/schema/core/hotel-information.schema";
 import { BusRouteStop } from "../product-types/bus/routes/stop.types";
 import { BusBoardingPoint } from "../product-types/bus/routes/boarding-point.types";
 import { BusDropoffPoint } from "../product-types/bus/routes/dropoff-point.types";

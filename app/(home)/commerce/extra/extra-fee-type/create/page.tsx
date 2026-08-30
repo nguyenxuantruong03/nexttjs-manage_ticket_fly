@@ -8,14 +8,23 @@ import { useExtraFeeTypeCreateFormData } from "@/hooks/commerce/extra-fee-type/u
 import ExtraFeeTypeForm from "../components/ExtraFeeTypeForm";
 
 export default function ExtraFeeTypeCreatePage() {
-  const { data, isLoading, error } = useExtraFeeTypeCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useExtraFeeTypeCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu loại đặt chỗ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <ExtraFeeTypeForm bookingTypeData={data.bookingTypes} />;

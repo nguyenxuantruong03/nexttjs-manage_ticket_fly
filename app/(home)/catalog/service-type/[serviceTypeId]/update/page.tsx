@@ -15,15 +15,24 @@ export default function ServiceTypeEditPage() {
 
   const serviceTypeId = params.serviceTypeId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useServiceTypeUpdateFormData(serviceTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.serviceType?.message ??
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu loại dịch vụ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

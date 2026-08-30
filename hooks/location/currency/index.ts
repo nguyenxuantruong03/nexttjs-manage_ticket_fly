@@ -1,21 +1,29 @@
-"use client"
+"use client";
+
 import { CurrencyService } from "@/services/location/currency/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["currency"] as const;
+export const currencyQueryKeys = {
+  all: ["currency"] as const,
+  list: () => [...currencyQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...currencyQueryKeys.all, "detail", id] as const,
+};
 
-export function useCurrencies() {
+export function useCurrencies(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: currencyQueryKeys.list(),
     queryFn: () => CurrencyService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useCurrency(id: string) {
+export function useCurrency(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: currencyQueryKeys.detail(id),
     queryFn: () => CurrencyService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
@@ -23,11 +31,11 @@ export function useCreateCurrency() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: CurrencyService.create,
-
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    mutationFn: (data: Parameters<typeof CurrencyService.create>[0]) =>
+      CurrencyService.create(data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: currencyQueryKeys.list(),
       });
     },
   });
@@ -44,15 +52,13 @@ export function useUpdateCurrency() {
       id: string;
       data: Parameters<typeof CurrencyService.update>[1];
     }) => CurrencyService.update(id, data),
-
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: currencyQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: currencyQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
@@ -61,12 +67,12 @@ export function useDeleteCurrency() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: CurrencyService.delete,
-
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    mutationFn: (id: string) => CurrencyService.delete(id),
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: currencyQueryKeys.list() }),
+        queryClient.removeQueries({ queryKey: currencyQueryKeys.detail(id) }),
+      ]);
     },
   });
 }

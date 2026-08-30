@@ -1,22 +1,29 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { useQuery } from "@tanstack/react-query";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useFuelTypeCreateFormData = (enabled = true) => {
-  return useQuery({
-    queryKey: ["fuel-type-create"],
-    enabled,
-    staleTime: 1000 * 60 * 5,
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    queryFn: async () => {
-      const [bookingTypes] = await Promise.all([
-        BookingTypeService.getMany(),
-      ]);
+  return {
+    data: bookingTypeQuery.data
+      ? { bookingTypes: bookingTypeQuery.data }
+      : undefined,
 
-      return {
-        bookingTypes,
-      };
+    isLoading: bookingTypeQuery.isLoading,
+    isFetching: bookingTypeQuery.isFetching,
+
+    // isError là field bool duy nhất dùng để check "có lỗi hay không"
+    // ở component (if (isError || !data) ...). "errors" bên dưới chỉ
+    // dùng khi cần hiển thị message/nguồn lỗi cụ thể, không thay thế
+    // isError.
+    isError: bookingTypeQuery.isError,
+    // Type rõ ràng (Error | null) thay vì để TS suy ra unknown -
+    // component gọi errors.bookingType?.message không bị báo lỗi type.
+    errors: {
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: bookingTypeQuery.refetch,
+  };
 };

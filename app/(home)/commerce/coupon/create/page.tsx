@@ -6,14 +6,23 @@ import CouponForm from "../components/CouponForm";
 import { useCouponCreateFormData } from "@/hooks/commerce/coupon/useCouponCreateFormData";
 
 export default function CouponCreatePage() {
-  const { data, isLoading, error } = useCouponCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useCouponCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu loại đặt chỗ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <CouponForm bookingTypeData={data.bookingTypeData} />;

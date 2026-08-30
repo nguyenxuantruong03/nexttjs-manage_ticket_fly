@@ -1,27 +1,26 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { useQuery } from "@tanstack/react-query";
+import { useBookingType } from "@/hooks/commerce/booking-type";
 
 export const useBookingTypeUpdateFormData = (
   bookingTypeId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["booking-type-update", bookingTypeId],
+  const bookingTypeQuery = useBookingType(bookingTypeId, enabled);
 
-    enabled: enabled && !!bookingTypeId,
+  return {
+    data: bookingTypeQuery.data
+      ? { bookingTypeData: bookingTypeQuery.data }
+      : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading: bookingTypeQuery.isLoading,
+    isFetching: bookingTypeQuery.isFetching,
 
-    queryFn: async () => {
-      const [bookingTypeData] = await Promise.all([
-        BookingTypeService.getOne(bookingTypeId),
-      ]);
-
-      return {
-        bookingTypeData,
-      };
+    isError: bookingTypeQuery.isError,
+    errors: {
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: bookingTypeQuery.refetch,
+  };
 };

@@ -26,7 +26,7 @@ import { PolicyTypeService } from "@/services/features/policy-type/client";
 import { LanguageService } from "@/services/location/language/client";
 
 export const useAirportTransferCreateFormData = (enabled = true) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: ["airport-transfer-create-form-data"],
     enabled,
     staleTime: 1000 * 60 * 5,
@@ -105,4 +105,23 @@ export const useAirportTransferCreateFormData = (enabled = true) => {
       };
     },
   });
+
+  return {
+    data: query.data,
+
+    isLoading: query.isLoading,
+    isFetching: query.isFetching,
+
+    // isError là field bool duy nhất dùng để check "có lỗi hay không"
+    // ở component (if (isError || !data) ...). "errors" bên dưới chỉ
+    // dùng khi cần hiển thị message/nguồn lỗi cụ thể, không thay thế
+    // isError.
+    isError: query.isError,
+    // Chỉ có 1 nguồn dữ liệu (Promise.all gộp chung) nên chỉ có 1 key.
+    errors: {
+      airportTransfer: query.error as Error | null,
+    },
+
+    refetch: query.refetch,
+  };
 };

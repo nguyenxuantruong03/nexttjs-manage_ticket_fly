@@ -1,30 +1,32 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { PromotionService } from "@/services/commerce/promotion/client";
-import { useQuery } from "@tanstack/react-query";
+import { usePromotion } from "@/hooks/commerce/promotion";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const usePromotionUpdateFormData = (
   promotionId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["promotion-update", promotionId],
+  const promotionQuery = usePromotion(promotionId, enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled: enabled && !!promotionId,
-
-    staleTime: 1000 * 60 * 5,
-
-    queryFn: async () => {
-      const [promotionData, bookingTypeData] = await Promise.all([
-        PromotionService.getOne(promotionId),
-        BookingTypeService.getMany(),
-      ]);
-
-      return {
-        promotionData,
-        bookingTypeData,
-      };
+  return {
+    data:
+      promotionQuery.data && bookingTypeQuery.data
+        ? {
+            promotionData: promotionQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+          }
+        : undefined,
+    isLoading: promotionQuery.isLoading || bookingTypeQuery.isLoading,
+    isFetching: promotionQuery.isFetching || bookingTypeQuery.isFetching,
+    isError: promotionQuery.isError || bookingTypeQuery.isError,
+    errors: {
+      promotion: promotionQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+    refetch: async () => {
+      await Promise.all([promotionQuery.refetch(), bookingTypeQuery.refetch()]);
+    },
+  };
 };

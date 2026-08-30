@@ -3,7 +3,7 @@
 import FormSection from "@/components/form/FormSection";
 
 import { FormInput } from "@/components/form/form-data";
-import { HotelSchemaForm } from "../schema/core/hotel.schema";
+import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
 import { EntityOption } from "@/components/entity-selector";
 import ProviderBookingCreateDialog from "@/app/(home)/provider_booking/components/ProviderBookingCreateDialog";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
@@ -15,7 +15,6 @@ import { City } from "@/types/location/city";
 import { District } from "@/types/location/district";
 import { Ward } from "@/types/location/ward";
 import { BookingType } from "@/types/common/commerce/booking-type";
-
 
 interface InformationStepProps {
   providerBookingData: ProviderBooking[];
@@ -53,7 +52,6 @@ export default function InformationStep({
       data: address,
     }),
   );
-
 
   return (
     <>
@@ -95,8 +93,6 @@ export default function InformationStep({
         description="Hotel type and building information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-         
-
           <FormInput<HotelSchemaForm>
             name="information.tower"
             label="Tower"

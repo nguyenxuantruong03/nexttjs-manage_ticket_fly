@@ -1,25 +1,23 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-
-import { useQuery } from "@tanstack/react-query";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const usePriceRuleTypeCreateFormData = (enabled = true) => {
-  return useQuery({
-    queryKey: ["price-rule-type-create"],
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled,
+  return {
+    data: bookingTypeQuery.data
+      ? { bookingTypeData: bookingTypeQuery.data }
+      : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading: bookingTypeQuery.isLoading,
+    isFetching: bookingTypeQuery.isFetching,
 
-    queryFn: async () => {
-      const [bookingTypes] = await Promise.all([
-        BookingTypeService.getMany(),
-      ]);
-
-      return {
-        bookingTypes,
-      };
+    isError: bookingTypeQuery.isError,
+    errors: {
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: bookingTypeQuery.refetch,
+  };
 };

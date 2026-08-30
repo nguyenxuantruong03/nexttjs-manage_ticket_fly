@@ -3,51 +3,60 @@
 import { HotelRoomTypeService } from "@/services/product-types/hotel/hotel-room-type/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["hotel-room-type"] as const;
-
 // ======================================================
-// GET MANY
+// Query Keys
 // ======================================================
 
-export function useHotelRoomTypes() {
+export const hotelRoomTypeQueryKeys = {
+  all: ["hotel-room-type"] as const,
+  list: () => [...hotelRoomTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) =>
+    [...hotelRoomTypeQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useHotelRoomTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: hotelRoomTypeQueryKeys.list(),
     queryFn: () => HotelRoomTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-// ======================================================
-// GET ONE
-// ======================================================
-
-export function useHotelRoomType(id: string) {
+export function useHotelRoomType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: hotelRoomTypeQueryKeys.detail(id),
     queryFn: () => HotelRoomTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
 // ======================================================
-// CREATE
+// Create
 // ======================================================
 
 export function useCreateHotelRoomType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: HotelRoomTypeService.create,
+    mutationFn: (data: Parameters<typeof HotelRoomTypeService.create>[0]) =>
+      HotelRoomTypeService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: hotelRoomTypeQueryKeys.list(),
       });
     },
   });
 }
 
 // ======================================================
-// UPDATE
+// Update
 // ======================================================
 
 export function useUpdateHotelRoomType() {
@@ -62,32 +71,38 @@ export function useUpdateHotelRoomType() {
       data: Parameters<typeof HotelRoomTypeService.update>[1];
     }) => HotelRoomTypeService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: hotelRoomTypeQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: hotelRoomTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
 
 // ======================================================
-// DELETE
+// Delete
 // ======================================================
 
 export function useDeleteHotelRoomType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: HotelRoomTypeService.delete,
+    mutationFn: (id: string) => HotelRoomTypeService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: hotelRoomTypeQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: hotelRoomTypeQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

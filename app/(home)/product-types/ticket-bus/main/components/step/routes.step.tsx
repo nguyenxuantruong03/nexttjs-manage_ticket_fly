@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 
-import { BusFormSchema } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../form/schema/core/bus.schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";
 import { EntityOption } from "@/components/entity-selector";

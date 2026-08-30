@@ -6,14 +6,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const AccessibilityCreatePage = () => {
-  const { data, isLoading, error } = useHotelAccessibilityCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelAccessibilityCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.accessibility?.message ??
+          "Không tải được dữ liệu accessibility, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <AccessibilityForm />;

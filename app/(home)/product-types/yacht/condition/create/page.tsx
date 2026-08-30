@@ -6,14 +6,23 @@ import ErrorPage from "@/components/ui/error-page";
 import { useYachtConditionCreateFormData } from "@/hooks/product-types/yacht/condition/useYachtConditionCreateFormData";
 
 const YachtConditionCreatePage = () => {
-  const { data, isLoading, error } = useYachtConditionCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useYachtConditionCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.condition?.message ??
+          "Không tải được dữ liệu tình trạng du thuyền, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <YachtConditionForm />;

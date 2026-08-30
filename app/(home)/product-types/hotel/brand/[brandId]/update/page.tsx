@@ -11,14 +11,23 @@ export default function BrandEditPage() {
 
   const brandId = params.brandId as string;
 
-  const { data, isLoading, error } = useHotelBrandUpdateFormData(brandId);
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelBrandUpdateFormData(brandId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.brand?.message ??
+          "Không tải được dữ liệu thương hiệu, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <BrandForm initialData={data.initialData} />;

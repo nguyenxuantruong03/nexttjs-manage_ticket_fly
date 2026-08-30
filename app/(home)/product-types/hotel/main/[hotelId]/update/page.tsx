@@ -12,14 +12,24 @@ export default function HotelEditPage() {
 
   const hotelId = params.hotelId as string;
 
-  const { data, isLoading, error } = useHotelUpdateFormData(hotelId);
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelUpdateFormData(hotelId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.location?.message ??
+          errors.hotel?.message ??
+          "Không tải được dữ liệu khách sạn, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

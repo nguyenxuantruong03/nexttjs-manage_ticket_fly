@@ -8,14 +8,23 @@ import ErrorPage from "@/components/ui/error-page";
 import { useSearchTagCreateFormData } from "@/hooks/search/tag/useSearchTagCreateFormData";
 
 export default function SearchTagCreatePage() {
-  const { data, isLoading, error } = useSearchTagCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useSearchTagCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.searchTag?.message ??
+          "Không tải được dữ liệu thẻ tìm kiếm, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <SearchTagForm bookingTypeData={data.bookingTypeData} />;

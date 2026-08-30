@@ -1,27 +1,29 @@
 "use client";
 
-
 import { ContinentService } from "@/services/location/country/continent/client";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["continent"] as const;
+export const continentQueryKeys = {
+  all: ["continent"] as const,
+  list: () => [...continentQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...continentQueryKeys.all, "detail", id] as const,
+};
 
-export function useContinents() {
+export function useContinents(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: continentQueryKeys.list(),
     queryFn: () => ContinentService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useContinent(id: string) {
+export function useContinent(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: continentQueryKeys.detail(id),
     queryFn: () => ContinentService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
@@ -29,11 +31,11 @@ export function useCreateContinent() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ContinentService.create,
-
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    mutationFn: (data: Parameters<typeof ContinentService.create>[0]) =>
+      ContinentService.create(data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: continentQueryKeys.list(),
       });
     },
   });
@@ -50,15 +52,13 @@ export function useUpdateContinent() {
       id: string;
       data: Parameters<typeof ContinentService.update>[1];
     }) => ContinentService.update(id, data),
-
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: continentQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: continentQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
@@ -67,12 +67,12 @@ export function useDeleteContinent() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ContinentService.delete,
-
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    mutationFn: (id: string) => ContinentService.delete(id),
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: continentQueryKeys.list() }),
+        queryClient.removeQueries({ queryKey: continentQueryKeys.detail(id) }),
+      ]);
     },
   });
 }

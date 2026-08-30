@@ -2,6 +2,19 @@ import { SidebarItem } from "@/components/Sidebar/types";
 
 export const catalogTypeSidebar: SidebarItem[] = [
   {
+    id: 300,
+    title: "Catalog",
+    icon: "folder",
+    categories: [
+      {
+        id: 200,
+        name: "Catalog",
+        link: "/catalog",
+      },
+    ],
+  },
+
+  {
     id: 301,
     title: "Fuel Type",
     icon: "fuel",
@@ -13,6 +26,7 @@ export const catalogTypeSidebar: SidebarItem[] = [
       },
     ],
   },
+
   {
     id: 302,
     title: "Route Type",
@@ -25,6 +39,7 @@ export const catalogTypeSidebar: SidebarItem[] = [
       },
     ],
   },
+
   {
     id: 303,
     title: "Service Type",
@@ -37,6 +52,7 @@ export const catalogTypeSidebar: SidebarItem[] = [
       },
     ],
   },
+
   {
     id: 304,
     title: "Vehicle Type",

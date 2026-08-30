@@ -6,7 +6,7 @@ import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
 import { EntityOption } from "@/components/entity-selector";
 
-import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 import { YachtCrewRole } from "@/types/product-types/yacht/yacht-crew-role";
 import YachtCrewRoleCreateDialog from "../../../crew-role/components/YachtCrewRoleCreateDialog";
 

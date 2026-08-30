@@ -1,82 +1,92 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-
-import { AddressService } from "@/services/location/address/client";
-import { CityService } from "@/services/location/city/client";
-import { CountryService } from "@/services/location/country/client";
-import { DistrictService } from "@/services/location/district/client";
-import { WardService } from "@/services/location/ward/client";
-import { TimezoneService } from "@/services/location/timezone/client";
-import { LanguageService } from "@/services/location/language/client";
-import { CurrencyService } from "@/services/location/currency/client";
-import { SearchTagService } from "@/services/search/tag/client";
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { ContinentService } from "@/services/location/country/continent/client";
+import { useAddress } from "@/hooks/location/address";
+import { useCities } from "@/hooks/location/city";
+import { useDistricts } from "@/hooks/location/district";
+import { useWards } from "@/hooks/location/ward";
+import { useCountries } from "@/hooks/location/country";
+import { useTimezones } from "@/hooks/location/timezone";
+import { useLanguages } from "@/hooks/location/language";
+import { useCurrencies } from "@/hooks/location/currency";
+import { useSearchTags } from "@/hooks/search/tag";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
+import { useContinents } from "@/hooks/location/country/continent";
 
 export const useAddressUpdateFormData = (addressId: string, enabled = true) => {
-  return useQuery({
-    queryKey: ["address-update", addressId],
+  const addressQuery = useAddress(addressId, enabled);
+  const cityQuery = useCities(enabled);
+  const districtQuery = useDistricts(enabled);
+  const wardQuery = useWards(enabled);
+  const countryQuery = useCountries(enabled);
+  const timezoneQuery = useTimezones(enabled);
+  const languageQuery = useLanguages(enabled);
+  const currencyQuery = useCurrencies(enabled);
+  const searchTagQuery = useSearchTags(enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
+  const continentQuery = useContinents(enabled);
 
-    enabled: enabled && !!addressId,
+  const queries = [
+    addressQuery,
+    cityQuery,
+    districtQuery,
+    wardQuery,
+    countryQuery,
+    timezoneQuery,
+    languageQuery,
+    currencyQuery,
+    searchTagQuery,
+    bookingTypeQuery,
+    continentQuery,
+  ];
 
-    staleTime: 1000 * 60 * 5,
+  return {
+    data:
+      addressQuery.data &&
+      cityQuery.data &&
+      districtQuery.data &&
+      wardQuery.data &&
+      countryQuery.data &&
+      timezoneQuery.data &&
+      languageQuery.data &&
+      currencyQuery.data &&
+      searchTagQuery.data &&
+      bookingTypeQuery.data &&
+      continentQuery.data
+        ? {
+            addressData: addressQuery.data,
+            cityData: cityQuery.data,
+            districtData: districtQuery.data,
+            wardData: wardQuery.data,
+            countryData: countryQuery.data,
+            timezoneData: timezoneQuery.data,
+            languageData: languageQuery.data,
+            currencyData: currencyQuery.data,
+            searchTagData: searchTagQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+            continentsData: continentQuery.data,
+          }
+        : undefined,
 
-    queryFn: async () => {
-      const [
-        addressData,
-        cityData,
-        districtData,
-        wardData,
-        countryData,
-        timezoneData,
-        languageData,
-        currencyData,
-        searchTagData,
-        bookingTypeData,
-        continentsData,
-      ] = await Promise.all([
-        AddressService.getOne(addressId),
+    isLoading: queries.some((q) => q.isLoading),
+    isFetching: queries.some((q) => q.isFetching),
+    isError: queries.some((q) => q.isError),
 
-        CityService.getMany(),
-
-        DistrictService.getMany(),
-
-        WardService.getMany(),
-
-        CountryService.getMany(),
-
-        TimezoneService.getMany(),
-
-        LanguageService.getMany(),
-
-        CurrencyService.getMany(),
-
-        SearchTagService.getMany(),
-        BookingTypeService.getMany(),
-        ContinentService.getMany(),
-      ]);
-
-      return {
-        // Current Address
-        addressData,
-
-        // Location
-        cityData,
-        districtData,
-        wardData,
-        countryData,
-
-        // Master Data
-        timezoneData,
-        languageData,
-        currencyData,
-
-        // Search
-        searchTagData,
-        bookingTypeData,
-        continentsData,
-      };
+    errors: {
+      address: addressQuery.error as Error | null,
+      city: cityQuery.error as Error | null,
+      district: districtQuery.error as Error | null,
+      ward: wardQuery.error as Error | null,
+      country: countryQuery.error as Error | null,
+      timezone: timezoneQuery.error as Error | null,
+      language: languageQuery.error as Error | null,
+      currency: currencyQuery.error as Error | null,
+      searchTag: searchTagQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
+      continent: continentQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all(queries.map((q) => q.refetch()));
+    },
+  };
 };

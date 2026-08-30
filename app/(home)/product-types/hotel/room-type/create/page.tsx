@@ -6,14 +6,23 @@ import ErrorPage from "@/components/ui/error-page";
 import { useHotelRoomTypeCreateFormData } from "@/hooks/product-types/hotel/hotel-room-type/useHotelRoomTypeCreateFormData";
 
 const RoomTypeCreatePage = () => {
-  const { data, isLoading, error } = useHotelRoomTypeCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelRoomTypeCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.roomType?.message ??
+          "Không tải được dữ liệu loại phòng, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

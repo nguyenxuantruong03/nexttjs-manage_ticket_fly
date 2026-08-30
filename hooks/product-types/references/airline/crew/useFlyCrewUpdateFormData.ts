@@ -9,7 +9,7 @@ import { FlyCrewDutyService } from "@/services/product-types/references/airline/
 import { FlyAircraftTypeService } from "@/services/product-types/references/airline/aircraft/aircraft-type/client";
 
 export const useFlyCrewUpdateFormData = (flyCrewId: string, enabled = true) => {
-  const flyCrewQuery = useQuery({
+  const query = useQuery({
     queryKey: ["fly-crew-update-form-data", flyCrewId],
 
     enabled: enabled && !!flyCrewId,
@@ -23,16 +23,13 @@ export const useFlyCrewUpdateFormData = (flyCrewId: string, enabled = true) => {
           FlyAirlineService.getMany(),
           FlyCrewRoleService.getMany(),
           FlyCrewDutyService.getMany(),
-          FlyAircraftTypeService.getMany()
+          FlyAircraftTypeService.getMany(),
         ]);
 
       return {
         initialData,
-
         airlines,
-
         roles,
-
         duties,
         aircraftTypeData,
       };
@@ -40,26 +37,19 @@ export const useFlyCrewUpdateFormData = (flyCrewId: string, enabled = true) => {
   });
 
   return {
-    data: flyCrewQuery.data,
+    data: query.data,
 
-    initialData: flyCrewQuery.data?.initialData,
+    isLoading: query.isLoading,
+    isFetching: query.isFetching,
 
-    airlines: flyCrewQuery.data?.airlines ?? [],
+    isError: query.isError,
+    // Chỉ có 1 nguồn dữ liệu (Promise.all gộp chung, gồm cả
+    // initialData) nên chỉ có 1 key, đặt tên "crew" cho nhất quán
+    // với entity.
+    errors: {
+      crew: query.error as Error | null,
+    },
 
-    roles: flyCrewQuery.data?.roles ?? [],
-
-    duties: flyCrewQuery.data?.duties ?? [],
-
-    isPending: flyCrewQuery.isPending,
-
-    isLoading: flyCrewQuery.isLoading,
-
-    isFetching: flyCrewQuery.isFetching,
-
-    isError: flyCrewQuery.isError,
-
-    error: flyCrewQuery.error,
-
-    refetch: flyCrewQuery.refetch,
+    refetch: query.refetch,
   };
 };

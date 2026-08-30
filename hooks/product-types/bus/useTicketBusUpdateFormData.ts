@@ -32,7 +32,7 @@ export const useTicketBusUpdateFormData = (
   ticketBusId: string,
   enabled = true,
 ) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: ["ticket-bus-update-form-data", ticketBusId],
     enabled: enabled && !!ticketBusId,
     staleTime: 1000 * 60 * 5,
@@ -89,8 +89,7 @@ export const useTicketBusUpdateFormData = (
         RouteTypeService.getMany(),
         ProviderBookingService.getMany(),
         BookingItemTypeService.getMany(),
-        ServiceTypeService.getMany()
-
+        ServiceTypeService.getMany(),
       ]);
 
       return {
@@ -122,4 +121,21 @@ export const useTicketBusUpdateFormData = (
       };
     },
   });
+
+  return {
+    data: query.data,
+
+    isLoading: query.isLoading,
+    isFetching: query.isFetching,
+
+    isError: query.isError,
+    // Chỉ có 1 nguồn dữ liệu (Promise.all gộp chung, gồm cả
+    // initialData) nên chỉ có 1 key, đặt tên "ticketBus" cho nhất
+    // quán với entity.
+    errors: {
+      ticketBus: query.error as Error | null,
+    },
+
+    refetch: query.refetch,
+  };
 };

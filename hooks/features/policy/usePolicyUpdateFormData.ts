@@ -1,37 +1,46 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
+import { usePolicy } from "@/hooks/features/policy";
+import { usePolicyTypes } from "@/hooks/features/policy-type";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
-import { PolicyTypeService } from "@/services/features/policy-type/client";
+export const usePolicyUpdateFormData = (policyId: string, enabled = true) => {
+  const policyQuery = usePolicy(policyId, enabled);
+  const policyTypeQuery = usePolicyTypes(enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-import { PolicyService } from "@/services/features/policy/client";
-
-import { useQuery } from "@tanstack/react-query";
-
-export const usePolicyUpdateFormData = (
-  policyId: string,
-  enabled = true,
-) => {
-  return useQuery({
-    queryKey: ["policy-update", policyId],
-
-    enabled: enabled && !!policyId,
-
-    staleTime: 1000 * 60 * 5,
-
-    queryFn: async () => {
-      const [policyData, policyTypeData, bookingTypeData] =
-        await Promise.all([
-          PolicyService.getOne(policyId),
-          PolicyTypeService.getMany(),
-          BookingTypeService.getMany(),
-        ]);
-
-      return {
-        policyData,
-        policyTypeData,
-        bookingTypeData,
-      };
+  return {
+    data:
+      policyQuery.data && policyTypeQuery.data && bookingTypeQuery.data
+        ? {
+            policyData: policyQuery.data,
+            policyTypeData: policyTypeQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+          }
+        : undefined,
+    isLoading:
+      policyQuery.isLoading ||
+      policyTypeQuery.isLoading ||
+      bookingTypeQuery.isLoading,
+    isFetching:
+      policyQuery.isFetching ||
+      policyTypeQuery.isFetching ||
+      bookingTypeQuery.isFetching,
+    isError:
+      policyQuery.isError ||
+      policyTypeQuery.isError ||
+      bookingTypeQuery.isError,
+    errors: {
+      policy: policyQuery.error as Error | null,
+      policyType: policyTypeQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+    refetch: async () => {
+      await Promise.all([
+        policyQuery.refetch(),
+        policyTypeQuery.refetch(),
+        bookingTypeQuery.refetch(),
+      ]);
+    },
+  };
 };

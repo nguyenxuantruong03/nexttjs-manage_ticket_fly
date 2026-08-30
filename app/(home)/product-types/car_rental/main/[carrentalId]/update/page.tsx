@@ -12,14 +12,23 @@ export default function CarrentalEditPage() {
 
   const carrentalId = params.carrentalId as string;
 
-  const { data, isLoading, error } = useCarrentalUpdateFormData(carrentalId);
+  const { data, isLoading, isError, errors, refetch } =
+    useCarrentalUpdateFormData(carrentalId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.carRental?.message ??
+          "Không tải được dữ liệu xe cho thuê, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

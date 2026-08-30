@@ -1,6 +1,6 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
-import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 import { FuelType } from "@/types/common/catalog/fuel-type";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";

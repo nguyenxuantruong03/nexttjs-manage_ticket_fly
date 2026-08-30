@@ -27,8 +27,8 @@ interface LocationStepProps {
   currencyData: Currency[];
   languageData: Language[];
   searchTagData: SearchTag[];
-  bookingTypeData: BookingType[]
-  continentData: Continent[]
+  bookingTypeData: BookingType[];
+  continentData: Continent[];
 }
 
 export default function LocationStep({
@@ -38,7 +38,7 @@ export default function LocationStep({
   searchTagData,
   languageData,
   bookingTypeData,
-  continentData
+  continentData,
 }: LocationStepProps) {
   const countryOptions: EntityOption<Country>[] =
     countryData?.map((country) => ({
@@ -70,7 +70,7 @@ export default function LocationStep({
           enableCreate
           renderCreateDialog={(props) => (
             <CountryCreateDialog
-              continents={continentData} 
+              continents={continentData}
               bookingTypeData={bookingTypeData}
               currencies={currencyData}
               languages={languageData}

@@ -3,36 +3,61 @@
 import { FlyDelayReasonService } from "@/services/product-types/ticket-fly/delay-reason/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["fly-delay-reason"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useFlyDelayReasons() {
+export const flyDelayReasonQueryKeys = {
+  all: ["fly-delay-reason"] as const,
+  list: () => [...flyDelayReasonQueryKeys.all, "list"] as const,
+  detail: (id: string) =>
+    [...flyDelayReasonQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useFlyDelayReasons(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: flyDelayReasonQueryKeys.list(),
     queryFn: () => FlyDelayReasonService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useFlyDelayReason(id: string) {
+export function useFlyDelayReason(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: flyDelayReasonQueryKeys.detail(id),
     queryFn: () => FlyDelayReasonService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateFlyDelayReason() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlyDelayReasonService.create,
+    mutationFn: (data: Parameters<typeof FlyDelayReasonService.create>[0]) =>
+      FlyDelayReasonService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: flyDelayReasonQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateFlyDelayReason() {
   const queryClient = useQueryClient();
@@ -46,28 +71,38 @@ export function useUpdateFlyDelayReason() {
       data: Parameters<typeof FlyDelayReasonService.update>[1];
     }) => FlyDelayReasonService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flyDelayReasonQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: flyDelayReasonQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteFlyDelayReason() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlyDelayReasonService.delete,
+    mutationFn: (id: string) => FlyDelayReasonService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flyDelayReasonQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: flyDelayReasonQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

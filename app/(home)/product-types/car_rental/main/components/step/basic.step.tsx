@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch, FormSelect } from "@/components/form/form-data";
 
-import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
 import { SearchTag } from "@/types/searchs/search/tag.types";
 import { DriverOption } from "@/types/product-types/car_rental/enums";

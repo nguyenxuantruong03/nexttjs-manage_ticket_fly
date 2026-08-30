@@ -15,15 +15,24 @@ export default function ExtraFeeTypeEditPage() {
 
   const extraFeeTypeId = params.extraFeeTypeId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useExtraFeeTypeUpdateFormData(extraFeeTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.extraFeeType?.message ??
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu loại phí phụ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

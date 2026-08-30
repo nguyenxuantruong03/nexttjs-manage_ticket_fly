@@ -6,14 +6,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const RoomViewCreatePage = () => {
-  const { data, isLoading, error } = useHotelRoomViewCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelRoomViewCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.roomView?.message ??
+          "Không tải được dữ liệu loại view phòng, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <RoomViewForm />;

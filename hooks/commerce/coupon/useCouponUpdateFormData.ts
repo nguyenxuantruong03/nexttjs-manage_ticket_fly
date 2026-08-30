@@ -1,27 +1,32 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { CouponService } from "@/services/commerce/coupon/client";
-import { useQuery } from "@tanstack/react-query";
+import { useCoupon } from "@/hooks/commerce/coupon";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useCouponUpdateFormData = (couponId: string, enabled = true) => {
-  return useQuery({
-    queryKey: ["coupon-update", couponId],
+  const couponQuery = useCoupon(couponId, enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled: enabled && !!couponId,
+  return {
+    data:
+      couponQuery.data && bookingTypeQuery.data
+        ? {
+            couponData: couponQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+          }
+        : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading: couponQuery.isLoading || bookingTypeQuery.isLoading,
+    isFetching: couponQuery.isFetching || bookingTypeQuery.isFetching,
 
-    queryFn: async () => {
-      const [couponData, bookingTypeData] = await Promise.all([
-        CouponService.getOne(couponId),
-        BookingTypeService.getMany(),
-      ]);
-
-      return {
-        couponData,
-        bookingTypeData,
-      };
+    isError: couponQuery.isError || bookingTypeQuery.isError,
+    errors: {
+      coupon: couponQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all([couponQuery.refetch(), bookingTypeQuery.refetch()]);
+    },
+  };
 };

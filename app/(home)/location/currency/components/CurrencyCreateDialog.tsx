@@ -1,26 +1,21 @@
 "use client";
 
-import * as React from "react";
-
-import { AppForm, FormInput, FormSwitch } from "@/components/form/form-data";
-
-import { Button } from "@/components/ui/button";
-
-import { useCreateCurrency } from "@/hooks/location/currency";
-import { useSubmit } from "@/hooks/useSubmit";
-import { useAppForm } from "@/hooks/useAppForm";
-
-import { CurrencyFormSchema, schema as CurrencySchema } from "./form/schema";
-
-import { currencyDefaultValues } from "./form/default-values";
+import { FormInput, FormSwitch } from "@/components/form/form-data";
 
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
 } from "@/components/entity-selector";
 
-import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { useCreateCurrency } from "@/hooks/location/currency";
+
+import { CurrencyFormSchema, schema as CurrencySchema } from "./form/schema";
+
+import { currencyDefaultValues } from "./form/default-values";
+
 import { Currency } from "@/types/location/currency";
+
+import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
 // ======================================================
 // PROPS
@@ -38,197 +33,138 @@ export default function CurrencyCreateDialog({
   defaultKeyword,
   onCreated,
 }: CurrencyCreateDialogProps) {
-  const dialogRef = React.useRef<HTMLDivElement>(null);
-
-  const submit = useSubmit();
-
   const createCurrency = useCreateCurrency();
 
-  const { form } = useAppForm<CurrencyFormSchema>({
-    schema: CurrencySchema,
-    defaultValues: currencyDefaultValues,
-  });
-
-  React.useEffect(() => {
-    if (!open) return;
-
-    form.reset({
-      ...currencyDefaultValues,
-      name: defaultKeyword ?? "",
-    });
-  }, [open, defaultKeyword, form]);
-
-  const onSubmit = (values: CurrencyFormSchema) => {
-    submit({
-      mutation: createCurrency.mutateAsync(values),
-
-      success: "Currency created",
-
-      onSuccess: (response) => {
-        const result: EntityCreateResult<Currency> = {
+  return (
+    <EntityCreateFormDialog<CurrencyFormSchema, Currency>
+      open={open}
+      onOpenChange={onOpenChange}
+      defaultKeyword={defaultKeyword}
+      onCreated={onCreated}
+      mutation={createCurrency}
+      config={{
+        schema: CurrencySchema,
+        defaultValues: currencyDefaultValues,
+        title: "Create Currency",
+        description: "Create a new currency",
+        success: "Currency created",
+        submitText: "Create Currency",
+        submittingText: "Creating...",
+        getResult: (response): EntityCreateResult<Currency> => ({
           value: response.id,
           label: response.name,
           data: response,
-        };
-
-        onCreated(result);
-
-        form.reset();
-
-        onOpenChange(false);
-      },
-    });
-  };
-
-  return (
-    <EntityCreateDialog
-      dialogRef={dialogRef}
-      open={open}
-      onOpenChange={onOpenChange}
-      title="Create Currency"
-      description="Create a new currency"
+        }),
+      }}
     >
-      <AppForm
-        form={form}
-        onSubmit={onSubmit}
-        loading={createCurrency.isPending}
-      >
-        <div className="space-y-6">
-          {/* ====================================================== */}
-          {/* BASIC */}
-          {/* ====================================================== */}
+      {/* ====================================================== */}
+      {/* BASIC */}
+      {/* ====================================================== */}
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <FormInput<CurrencyFormSchema>
-              name="name"
-              label="Currency Name"
-              placeholder="Currency name"
-            />
+      <div className="grid gap-4 md:grid-cols-2">
+        <FormInput<CurrencyFormSchema>
+          name="name"
+          label="Currency Name"
+          placeholder="Currency name"
+        />
 
-            <FormInput<CurrencyFormSchema>
-              name="nativeName"
-              label="Native Name"
-              placeholder="Native name"
-            />
+        <FormInput<CurrencyFormSchema>
+          name="nativeName"
+          label="Native Name"
+          placeholder="Native name"
+        />
 
-            <FormInput<CurrencyFormSchema>
-              name="code"
-              label="Currency Code"
-              placeholder="USD"
-            />
+        <FormInput<CurrencyFormSchema>
+          name="code"
+          label="Currency Code"
+          placeholder="USD"
+        />
 
-            <FormInput<CurrencyFormSchema>
-              name="numericCode"
-              label="Numeric Code"
-              placeholder="840"
-            />
+        <FormInput<CurrencyFormSchema>
+          name="numericCode"
+          label="Numeric Code"
+          placeholder="840"
+        />
 
-            <FormInput<CurrencyFormSchema>
-              name="symbol"
-              label="Symbol"
-              placeholder="$"
-            />
+        <FormInput<CurrencyFormSchema>
+          name="symbol"
+          label="Symbol"
+          placeholder="$"
+        />
 
-            <FormInput<CurrencyFormSchema>
-              name="symbolNative"
-              label="Native Symbol"
-              placeholder="$"
-            />
+        <FormInput<CurrencyFormSchema>
+          name="symbolNative"
+          label="Native Symbol"
+          placeholder="$"
+        />
 
-            <FormInput<CurrencyFormSchema>
-              name="decimalDigits"
-              label="Decimal Digits"
-              type="number"
-              placeholder="2"
-            />
+        <FormInput<CurrencyFormSchema>
+          name="decimalDigits"
+          label="Decimal Digits"
+          type="number"
+          placeholder="2"
+        />
 
-            <FormInput<CurrencyFormSchema>
-              name="rounding"
-              label="Rounding"
-              type="number"
-              placeholder="0"
-            />
-          </div>
-          {/* ====================================================== */}
-          {/* DISPLAY */}
-          {/* ====================================================== */}
+        <FormInput<CurrencyFormSchema>
+          name="rounding"
+          label="Rounding"
+          type="number"
+          placeholder="0"
+        />
+      </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <FormInput<CurrencyFormSchema>
-              name="flagEmoji"
-              label="Flag Emoji"
-              placeholder="🇺🇸"
-            />
+      {/* ====================================================== */}
+      {/* DISPLAY */}
+      {/* ====================================================== */}
 
-            <FormInput<CurrencyFormSchema>
-              name="locale"
-              label="Locale"
-              placeholder="en-US"
-            />
-          </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <FormInput<CurrencyFormSchema>
+          name="flagEmoji"
+          label="Flag Emoji"
+          placeholder="🇺🇸"
+        />
 
-          <div className="grid gap-6 md:grid-cols-2">
-            <FormInput<CurrencyFormSchema>
-              name="thumbnail"
-              label="Thumbnail URL"
-            />
+        <FormInput<CurrencyFormSchema>
+          name="locale"
+          label="Locale"
+          placeholder="en-US"
+        />
+      </div>
 
-            <FormInput<CurrencyFormSchema>
-              name="coverImage"
-              label="Cover Image URL"
-            />
+      {/* ====================================================== */}
+      {/* MEDIA */}
+      {/* ====================================================== */}
 
-            <FormInput<CurrencyFormSchema>
-              name="bannerImage"
-              label="Banner Image URL"
-            />
+      <div className="grid gap-6 md:grid-cols-2">
+        <FormInput<CurrencyFormSchema> name="thumbnail" label="Thumbnail URL" />
 
-            <FormInput<CurrencyFormSchema> name="video" label="Video URL" />
+        <FormInput<CurrencyFormSchema>
+          name="coverImage"
+          label="Cover Image URL"
+        />
 
-            <FormInput<CurrencyFormSchema> name="images.0" label="Image URL" />
-          </div>
+        <FormInput<CurrencyFormSchema>
+          name="bannerImage"
+          label="Banner Image URL"
+        />
 
-          {/* ====================================================== */}
-          {/* STATUS */}
-          {/* ====================================================== */}
+        <FormInput<CurrencyFormSchema> name="video" label="Video URL" />
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <FormSwitch<CurrencyFormSchema> name="active" label="Active" />
+        <FormInput<CurrencyFormSchema> name="images.0" label="Image URL" />
+      </div>
 
-            <FormSwitch<CurrencyFormSchema>
-              name="isDefault"
-              label="Default Currency"
-            />
-          </div>
+      {/* ====================================================== */}
+      {/* STATUS */}
+      {/* ====================================================== */}
 
-          {/* ====================================================== */}
-          {/* ACTION */}
-          {/* ====================================================== */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <FormSwitch<CurrencyFormSchema> name="active" label="Active" />
 
-          <div
-            className="
-            flex
-            justify-end
-            gap-3
-            "
-          >
-            <Button
-              type="button"
-              variant="outline"
-              disabled={createCurrency.isPending}
-              onClick={() => {
-                onOpenChange(false);
-              }}
-            >
-              Cancel
-            </Button>
-
-            <Button type="submit" disabled={createCurrency.isPending}>
-              {createCurrency.isPending ? "Creating..." : "Create Currency"}
-            </Button>
-          </div>
-        </div>
-      </AppForm>
-    </EntityCreateDialog>
+        <FormSwitch<CurrencyFormSchema>
+          name="isDefault"
+          label="Default Currency"
+        />
+      </div>
+    </EntityCreateFormDialog>
   );
 }

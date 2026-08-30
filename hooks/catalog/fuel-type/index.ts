@@ -3,36 +3,60 @@
 import { FuelTypeService } from "@/services/catalog/fuel-type/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["fuel-type"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useFuelTypes() {
+export const fuelTypeQueryKeys = {
+  all: ["fuel-type"] as const,
+  list: () => [...fuelTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...fuelTypeQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useFuelTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: fuelTypeQueryKeys.list(),
     queryFn: () => FuelTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useFuelType(id: string) {
+export function useFuelType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: fuelTypeQueryKeys.detail(id),
     queryFn: () => FuelTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateFuelType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FuelTypeService.create,
+    mutationFn: (data: Parameters<typeof FuelTypeService.create>[0]) =>
+      FuelTypeService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: fuelTypeQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateFuelType() {
   const queryClient = useQueryClient();
@@ -46,28 +70,32 @@ export function useUpdateFuelType() {
       data: Parameters<typeof FuelTypeService.update>[1];
     }) => FuelTypeService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: fuelTypeQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: fuelTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteFuelType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FuelTypeService.delete,
+    mutationFn: (id: string) => FuelTypeService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: fuelTypeQueryKeys.list() }),
+        queryClient.removeQueries({ queryKey: fuelTypeQueryKeys.detail(id) }),
+      ]);
     },
   });
 }

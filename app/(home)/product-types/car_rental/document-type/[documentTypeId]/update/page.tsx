@@ -15,18 +15,24 @@ export default function CarRentalDocumentTypeEditPage() {
 
   const documentTypeId = params.documentTypeId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useCarRentalDocumentTypeUpdateFormData(documentTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.documentType?.message ??
+          "Không tải được dữ liệu loại giấy tờ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
-  return (
-    <CarRentalDocumentTypeForm initialData={data.initialData} />
-  );
+  return <CarRentalDocumentTypeForm initialData={data.initialData} />;
 }

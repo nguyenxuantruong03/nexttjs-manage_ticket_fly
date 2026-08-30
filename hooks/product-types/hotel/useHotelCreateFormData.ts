@@ -69,7 +69,7 @@ export const useHotelCreateFormData = (enabled = true) => {
         extraTypeData,
         extraData,
         serviceTypeData,
-        bookingItemTypeData
+        bookingItemTypeData,
       ] = await Promise.all([
         SearchTagService.getMany(),
         ProviderBookingService.getMany(),
@@ -98,7 +98,7 @@ export const useHotelCreateFormData = (enabled = true) => {
         ExtraTypeService.getMany(),
         ExtraService.getMany(),
         ServiceTypeService.getMany(),
-        BookingItemTypeService.getMany()
+        BookingItemTypeService.getMany(),
       ]);
 
       return {
@@ -129,7 +129,7 @@ export const useHotelCreateFormData = (enabled = true) => {
         extraTypeData,
         extraData,
         serviceTypeData,
-        bookingItemTypeData
+        bookingItemTypeData,
       };
     },
   });
@@ -143,11 +143,16 @@ export const useHotelCreateFormData = (enabled = true) => {
           }
         : undefined,
 
-    isPending: locationQuery.isPending || hotelQuery.isPending,
     isLoading: locationQuery.isLoading || hotelQuery.isLoading,
     isFetching: locationQuery.isFetching || hotelQuery.isFetching,
+
     isError: locationQuery.isError || hotelQuery.isError,
-    error: locationQuery.error ?? hotelQuery.error,
+    // 2 nguồn dữ liệu độc lập (location, hotel) nên tách riêng để biết
+    // lỗi đến từ nguồn nào khi cần hiển thị message cụ thể.
+    errors: {
+      location: locationQuery.error as Error | null,
+      hotel: hotelQuery.error as Error | null,
+    },
 
     refetch: async () => {
       await Promise.all([locationQuery.refetch(), hotelQuery.refetch()]);

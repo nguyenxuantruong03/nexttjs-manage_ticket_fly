@@ -11,5 +11,52 @@ export function initPackageFormValues(
     return structuredClone(packageDefaultValues);
   }
 
-  return structuredClone(packageData);
+  return {
+    // ======================================================
+    // BOOKING TYPE
+    // ======================================================
+
+    bookingTypeIds:
+      packageData.bookingTypes?.map((bookingType) => bookingType.id) ?? [],
+
+    // ======================================================
+    // BASIC
+    // ======================================================
+
+    name: packageData.name ?? "",
+    description: packageData.description ?? null,
+
+    // ======================================================
+    // DURATION
+    // ======================================================
+
+    duration: packageData.duration ?? null,
+    durationType: packageData.durationType ?? null,
+
+    // ======================================================
+    // CAPACITY
+    // ======================================================
+
+    maxGuests: packageData.maxGuests ?? null,
+
+    // ======================================================
+    // BASE PRICE
+    // ======================================================
+
+    price: packageData.price ?? 0,
+    currencyId: packageData.currencyId ?? "",
+
+    // ======================================================
+    // CONTENT
+    // ======================================================
+
+    includedItems: packageData.includedItems ?? [],
+
+    // ======================================================
+    // STATUS
+    // ======================================================
+
+    active: packageData.active ?? true,
+    sortOrder: packageData.sortOrder ?? 0,
+  };
 }

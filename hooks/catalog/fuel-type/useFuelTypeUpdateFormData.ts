@@ -1,30 +1,35 @@
 "use client";
 
-import { FuelTypeService } from "@/services/catalog/fuel-type/client";
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { useQuery } from "@tanstack/react-query";
+import { useFuelType } from "@/hooks/catalog/fuel-type";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useFuelTypeUpdateFormData = (
   fuelTypeId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["fuel-type-update", fuelTypeId],
+  const fuelTypeQuery = useFuelType(fuelTypeId, enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled: enabled && !!fuelTypeId,
+  return {
+    data:
+      fuelTypeQuery.data && bookingTypeQuery.data
+        ? {
+            fuelTypeData: fuelTypeQuery.data,
+            bookingTypes: bookingTypeQuery.data,
+          }
+        : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading: fuelTypeQuery.isLoading || bookingTypeQuery.isLoading,
+    isFetching: fuelTypeQuery.isFetching || bookingTypeQuery.isFetching,
 
-    queryFn: async () => {
-      const [fuelTypeData, bookingTypes] = await Promise.all([
-        FuelTypeService.getOne(fuelTypeId),
-        BookingTypeService.getMany(),
-      ]);
-
-      return {
-        fuelTypeData,
-        bookingTypes,
-      };
+    isError: fuelTypeQuery.isError || bookingTypeQuery.isError,
+    errors: {
+      fuelType: fuelTypeQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all([fuelTypeQuery.refetch(), bookingTypeQuery.refetch()]);
+    },
+  };
 };

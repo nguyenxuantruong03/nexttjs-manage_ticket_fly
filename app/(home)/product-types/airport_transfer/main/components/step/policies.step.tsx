@@ -7,7 +7,7 @@ import {
   FormSwitch,
   FormTextarea,
 } from "@/components/form/form-data";
-import { AirportTransferFormSchema } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../form/schema/core/schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { Policy } from "@/types/common/features/policy/policy";
 import { EntityOption } from "@/components/entity-selector";

@@ -11,14 +11,23 @@ export default function MealPlanEditPage() {
 
   const mealPlanId = params.mealPlanId as string;
 
-  const { data, isLoading, error } = useHotelMealPlanUpdateFormData(mealPlanId);
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelMealPlanUpdateFormData(mealPlanId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.mealPlan?.message ??
+          "Không tải được dữ liệu gói bữa ăn, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <MealPlanForm initialData={data.initialData} />;

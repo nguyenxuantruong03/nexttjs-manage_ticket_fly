@@ -14,15 +14,26 @@ export default function FuelTypeEditPage() {
 
   const fuelTypeId = params.fuelTypeId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useFuelTypeUpdateFormData(fuelTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    // Có 2 nguồn lỗi khả dĩ (fuelType, bookingType) - ưu tiên hiện
+    // message của fuelType trước vì đó là dữ liệu chính của trang này.
+    return (
+      <ErrorPage
+        description={
+          errors.fuelType?.message ??
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu loại nhiên liệu, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

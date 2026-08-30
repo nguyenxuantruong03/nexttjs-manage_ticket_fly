@@ -15,14 +15,23 @@ export default function FlyCrewRoleEditPage() {
 
   const crewRoleId = params.crewRoleId as string;
 
-  const { data, isLoading, error } = useFlyCrewRoleUpdateFormData(crewRoleId);
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyCrewRoleUpdateFormData(crewRoleId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.crewRole?.message ??
+          "Không tải được dữ liệu vai trò tổ bay, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyCrewRoleForm initialData={data.initialData} />;

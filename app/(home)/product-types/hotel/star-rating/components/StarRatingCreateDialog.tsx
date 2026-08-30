@@ -1,24 +1,21 @@
 "use client";
 
-import * as React from "react";
-
-import { AppForm, FormInput } from "@/components/form/form-data";
-import { Button } from "@/components/ui/button";
-
-import { useSubmit } from "@/hooks/useSubmit";
-import { useAppForm } from "@/hooks/useAppForm";
-
-import { StarRatingFormSchema, StarRatingSchema } from "./form/schema";
-import { starRatingDefaultValues } from "./form/default-values";
+import { FormInput } from "@/components/form/form-data";
 
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
 } from "@/components/entity-selector";
 
-import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { StarRatingFormSchema, StarRatingSchema } from "./form/schema";
+
+import { starRatingDefaultValues } from "./form/default-values";
+
 import { HotelStarRating } from "@/types/product-types/hotel/hotel-detail";
+
 import { useCreateHotelStarRating } from "@/hooks/product-types/hotel/hotel-star-rating";
+
+import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
 // ======================================================
 // PROPS
@@ -36,101 +33,50 @@ export default function StarRatingCreateDialog({
   defaultKeyword,
   onCreated,
 }: StarRatingCreateDialogProps) {
-  const dialogRef = React.useRef<HTMLDivElement>(null);
-
-  const submit = useSubmit();
-
   const createStarRating = useCreateHotelStarRating();
 
-  const { form } = useAppForm<StarRatingFormSchema>({
-    schema: StarRatingSchema,
-    defaultValues: starRatingDefaultValues,
-  });
-
-  React.useEffect(() => {
-    if (!open) return;
-
-    form.reset({
-      ...starRatingDefaultValues,
-      name: defaultKeyword ?? "",
-    });
-  }, [open, defaultKeyword, form]);
-
-  const onSubmit = (values: StarRatingFormSchema) => {
-    submit({
-      mutation: createStarRating.mutateAsync(values),
-
-      success: "Star rating created",
-
-      onSuccess: (response) => {
-        const result: EntityCreateResult<HotelStarRating> = {
+  return (
+    <EntityCreateFormDialog<StarRatingFormSchema, HotelStarRating>
+      open={open}
+      onOpenChange={onOpenChange}
+      defaultKeyword={defaultKeyword}
+      onCreated={onCreated}
+      mutation={createStarRating}
+      config={{
+        schema: StarRatingSchema,
+        defaultValues: starRatingDefaultValues,
+        title: "Create Star Rating",
+        description: "Create a new star rating",
+        success: "Star rating created",
+        submitText: "Create Star Rating",
+        submittingText: "Creating...",
+        getResult: (response): EntityCreateResult<HotelStarRating> => ({
           value: response.id,
           label: response.name ?? "Star Rating",
           data: response,
-        };
-
-        onCreated(result);
-
-        form.reset();
-
-        onOpenChange(false);
-      },
-    });
-  };
-
-  return (
-    <EntityCreateDialog
-      dialogRef={dialogRef}
-      open={open}
-      onOpenChange={onOpenChange}
-      title="Create Star Rating"
-      description="Create a new star rating"
+        }),
+      }}
     >
-      <AppForm
-        form={form}
-        onSubmit={onSubmit}
-        loading={createStarRating.isPending}
-      >
-        <div className="space-y-6">
-          <div className="grid gap-4 md:grid-cols-2">
-            <FormInput<StarRatingFormSchema>
-              name="name"
-              label="Name"
-              placeholder="Star rating name"
-            />
+      <div className="grid gap-4 md:grid-cols-2">
+        <FormInput<StarRatingFormSchema>
+          name="name"
+          label="Name"
+          placeholder="Star rating name"
+        />
 
-            <FormInput<StarRatingFormSchema>
-              name="star"
-              label="Star"
-              type="number"
-              placeholder="1"
-            />
+        <FormInput<StarRatingFormSchema>
+          name="star"
+          label="Star"
+          type="number"
+          placeholder="1"
+        />
 
-            <FormInput<StarRatingFormSchema>
-              name="description"
-              label="Description"
-              placeholder="Description"
-            />
-          </div>
-
-          <div className="flex justify-end gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              disabled={createStarRating.isPending}
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-
-            <Button type="submit" disabled={createStarRating.isPending}>
-              {createStarRating.isPending
-                ? "Creating..."
-                : "Create Star Rating"}
-            </Button>
-          </div>
-        </div>
-      </AppForm>
-    </EntityCreateDialog>
+        <FormInput<StarRatingFormSchema>
+          name="description"
+          label="Description"
+          placeholder="Description"
+        />
+      </div>
+    </EntityCreateFormDialog>
   );
 }

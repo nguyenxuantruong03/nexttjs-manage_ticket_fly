@@ -9,15 +9,23 @@ import ErrorPage from "@/components/ui/error-page";
 import { useCarRentalDocumentTypeCreateFormData } from "@/hooks/product-types/car-rental/document-type/useDocumentTypeCreateFormData";
 
 const CarRentalDocumentTypeCreatePage = () => {
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useCarRentalDocumentTypeCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.documentType?.message ??
+          "Không tải được dữ liệu loại giấy tờ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <CarRentalDocumentTypeForm />;

@@ -10,7 +10,7 @@ import {
   FormSwitch,
 } from "@/components/form/form-data";
 
-import { HotelSchemaForm } from "../schema/core/hotel.schema";
+import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
 import { EntityOption } from "@/components/entity-selector";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
@@ -26,7 +26,7 @@ import { PolicyType } from "@/types/common/features/policy/policy-type";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
 import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
-import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceruleTypeCreateDialog";
+import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceRuleTypeCreateDialog";
 
 const ADJUSTMENT_TYPE_OPTIONS = [
   { value: "PERCENTAGE", label: "Percentage" },

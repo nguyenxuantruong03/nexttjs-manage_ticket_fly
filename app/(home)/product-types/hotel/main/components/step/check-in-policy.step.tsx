@@ -2,7 +2,7 @@
 
 import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
-import { HotelSchemaForm } from "../schema/core/hotel.schema";
+import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
 
 export default function CheckInCheckOutStep() {
   return (

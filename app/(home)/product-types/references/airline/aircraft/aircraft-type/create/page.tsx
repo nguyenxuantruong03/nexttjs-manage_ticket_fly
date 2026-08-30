@@ -9,15 +9,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const FlyAircraftTypeCreatePage = () => {
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useFlyAircraftTypeCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.aircraftType?.message ??
+          "Không tải được dữ liệu loại tàu bay, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyAircraftTypeForm />;

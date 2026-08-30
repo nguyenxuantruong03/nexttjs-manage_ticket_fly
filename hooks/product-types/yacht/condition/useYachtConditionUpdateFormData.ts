@@ -27,11 +27,13 @@ export const useYachtConditionUpdateFormData = (
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    errors: {
+      condition: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

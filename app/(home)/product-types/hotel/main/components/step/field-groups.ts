@@ -1,5 +1,5 @@
 import { FieldPath } from "react-hook-form";
-import { HotelSchemaForm } from "../schema/core/hotel.schema";
+import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
 
 type HotelFieldPath = FieldPath<HotelSchemaForm>;
 

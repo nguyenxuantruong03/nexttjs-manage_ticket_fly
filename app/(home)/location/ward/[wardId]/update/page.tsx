@@ -9,17 +9,23 @@ import LoadingPage from "@/components/ui/loading-page";
 
 export default function WardEditPage() {
   const params = useParams();
-
   const wardId = params.wardId as string;
 
-  const { data, isLoading, error } = useWardUpdateFormData(wardId);
+  const { data, isLoading, isError, errors, refetch } =
+    useWardUpdateFormData(wardId);
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.ward?.message ??
+          "Không tải được dữ liệu phường/xã, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

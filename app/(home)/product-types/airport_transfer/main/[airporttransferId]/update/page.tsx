@@ -12,15 +12,25 @@ export default function AirportTransferEditPage() {
 
   const airportTransferId = params.airporttransferId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useAirportTransferUpdateFormData(airportTransferId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    // Chỉ có 1 nguồn dữ liệu (airportTransfer, gộp từ Promise.all,
+    // bao gồm cả initialData) nên lấy thẳng message của nó.
+    return (
+      <ErrorPage
+        description={
+          errors.airportTransfer?.message ??
+          "Không tải được dữ liệu airport transfer, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

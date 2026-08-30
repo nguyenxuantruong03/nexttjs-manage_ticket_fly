@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect } from "@/components/form/form-data";
 
-import { BusFormSchema } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../form/schema/core/bus.schema";
 import {
   BusBoardingStatus,
   BusTripStatus,

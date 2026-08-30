@@ -3,36 +3,62 @@
 import { HotelCheckInPolicyService } from "@/services/product-types/hotel/hotel-check-in-policy/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["hotel-check-in-policy"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useHotelCheckInPolicies() {
+export const hotelCheckInPolicyQueryKeys = {
+  all: ["hotel-check-in-policy"] as const,
+  list: () => [...hotelCheckInPolicyQueryKeys.all, "list"] as const,
+  detail: (id: string) =>
+    [...hotelCheckInPolicyQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useHotelCheckInPolicies(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: hotelCheckInPolicyQueryKeys.list(),
     queryFn: () => HotelCheckInPolicyService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useHotelCheckInPolicy(id: string) {
+export function useHotelCheckInPolicy(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: hotelCheckInPolicyQueryKeys.detail(id),
     queryFn: () => HotelCheckInPolicyService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateHotelCheckInPolicy() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: HotelCheckInPolicyService.create,
+    mutationFn: (
+      data: Parameters<typeof HotelCheckInPolicyService.create>[0],
+    ) => HotelCheckInPolicyService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: hotelCheckInPolicyQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateHotelCheckInPolicy() {
   const queryClient = useQueryClient();
@@ -46,28 +72,38 @@ export function useUpdateHotelCheckInPolicy() {
       data: Parameters<typeof HotelCheckInPolicyService.update>[1];
     }) => HotelCheckInPolicyService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: hotelCheckInPolicyQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: hotelCheckInPolicyQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteHotelCheckInPolicy() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: HotelCheckInPolicyService.delete,
+    mutationFn: (id: string) => HotelCheckInPolicyService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: hotelCheckInPolicyQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: hotelCheckInPolicyQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

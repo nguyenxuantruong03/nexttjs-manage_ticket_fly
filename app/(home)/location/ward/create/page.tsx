@@ -6,14 +6,17 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 export default function WardCreatePage() {
-  const { data, isLoading, error } = useWardCreateFormData();
+  const { data, isLoading, isError, refetch } = useWardCreateFormData();
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description="Không tải được dữ liệu phường/xã, vui lòng thử lại."
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

@@ -6,14 +6,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 export default function TicketBusCreatePage() {
-  const { data, isLoading, error } = useTicketBusCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useTicketBusCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.ticketBus?.message ??
+          "Không tải được dữ liệu vé xe bus, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

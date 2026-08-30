@@ -1,25 +1,24 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-
-import { LanguageService } from "@/services/location/language/client";
+import { useLanguage } from "@/hooks/location/language";
 
 export const useLanguageUpdateFormData = (
   languageId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["language-update-form-data", languageId],
-    enabled: enabled && !!languageId,
-    staleTime: 1000 * 60 * 5,
-    queryFn: async () => {
-      const [initialData] = await Promise.all([
-        LanguageService.getOne(languageId),
-      ]);
+  const languageQuery = useLanguage(languageId, enabled);
 
-      return {
-        initialData,
-      };
+  return {
+    data: languageQuery.data ? { initialData: languageQuery.data } : undefined,
+
+    isLoading: languageQuery.isLoading,
+    isFetching: languageQuery.isFetching,
+
+    isError: languageQuery.isError,
+    errors: {
+      language: languageQuery.error as Error | null,
     },
-  });
+
+    refetch: languageQuery.refetch,
+  };
 };

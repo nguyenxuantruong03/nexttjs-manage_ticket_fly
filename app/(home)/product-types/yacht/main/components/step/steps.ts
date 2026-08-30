@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 import { FormWizardStep } from "@/components/form/wizard/types";
-import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 import { yachtFieldGroups } from "./field-groups";
 
 export const yachtSteps: FormWizardStep<YachtFormSchema>[] = [

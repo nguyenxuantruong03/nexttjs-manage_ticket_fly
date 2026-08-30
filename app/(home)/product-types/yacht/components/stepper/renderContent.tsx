@@ -29,7 +29,7 @@ export function renderYachtStepperContent({ mainStep, subStep, hooks }: Props) {
       return <LoadingPage />;
     }
 
-    if (crewRole.error || condition.error) {
+    if (crewRole.isError || condition.isError) {
       return <ErrorPage />;
     }
 

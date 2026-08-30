@@ -14,15 +14,23 @@ export default function FlyFareRuleTypeEditPage() {
 
   const fareRuleTypeId = params.fareRuleTypeId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useFlyFareRuleTypeUpdateFormData(fareRuleTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.fareRuleType?.message ??
+          "Không tải được dữ liệu loại quy tắc giá vé, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyFareRuleTypeForm initialData={data.initialData} />;

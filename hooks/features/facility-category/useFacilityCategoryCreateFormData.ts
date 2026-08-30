@@ -1,21 +1,18 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { FacilityCategoryService } from "@/services/features/facility-category/client";
-import { useQuery } from "@tanstack/react-query";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useFacilityCategoryCreateFormData = (enabled = true) => {
-  return useQuery({
-    queryKey: ["facility-category-create"],
-    enabled,
-    staleTime: 1000 * 60 * 5,
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    queryFn: async () => {
-      const [bookingTypeData] = await Promise.all([
-         BookingTypeService.getMany(),
-      ]);
-
-      return {bookingTypeData};
-    },
-  });
+  return {
+    data: bookingTypeQuery.data
+      ? { bookingTypeData: bookingTypeQuery.data }
+      : undefined,
+    isLoading: bookingTypeQuery.isLoading,
+    isFetching: bookingTypeQuery.isFetching,
+    isError: bookingTypeQuery.isError,
+    errors: { bookingType: bookingTypeQuery.error as Error | null },
+    refetch: bookingTypeQuery.refetch,
+  };
 };

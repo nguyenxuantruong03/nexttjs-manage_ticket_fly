@@ -2,7 +2,7 @@
 
 import { FieldPath } from "react-hook-form";
 
-import { FlyAirportFormSchema } from "../form/schema";
+import { FlyAirportFormSchema } from "../schema/schema";
 
 type FlyAirportFieldPath = FieldPath<FlyAirportFormSchema>;
 

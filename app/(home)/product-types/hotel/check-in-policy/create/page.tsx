@@ -6,14 +6,23 @@ import ErrorPage from "@/components/ui/error-page";
 import HotelCheckInPolicyForm from "../components/CheckInPolicyForm";
 
 const HotelCheckInPolicyCreatePage = () => {
-  const { data, isLoading, error } = useHotelCheckInPolicyCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelCheckInPolicyCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.hotel?.message ??
+          "Không tải được dữ liệu khách sạn, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <HotelCheckInPolicyForm hotelData={data.hotels} />;

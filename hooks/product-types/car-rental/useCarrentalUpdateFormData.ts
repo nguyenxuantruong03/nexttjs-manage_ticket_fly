@@ -31,7 +31,7 @@ export const useCarrentalUpdateFormData = (
   carrentalId: string,
   enabled = true,
 ) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: ["carrental-update-form-data", carrentalId],
     enabled: enabled && !!carrentalId,
     staleTime: 1000 * 60 * 5,
@@ -85,7 +85,7 @@ export const useCarrentalUpdateFormData = (
         PolicyTypeService.getMany(),
         CarRentalDocumentTypeService.getMany(),
         FacilityService.getMany(),
-        FacilityCategoryService.getMany()
+        FacilityCategoryService.getMany(),
       ]);
 
       return {
@@ -116,4 +116,20 @@ export const useCarrentalUpdateFormData = (
       };
     },
   });
+
+  return {
+    data: query.data,
+
+    isLoading: query.isLoading,
+    isFetching: query.isFetching,
+
+    isError: query.isError,
+    // Chỉ có 1 nguồn dữ liệu (Promise.all gộp chung, gồm cả initialData)
+    // nên chỉ có 1 key, đặt tên "carRental" cho nhất quán với entity.
+    errors: {
+      carRental: query.error as Error | null,
+    },
+
+    refetch: query.refetch,
+  };
 };

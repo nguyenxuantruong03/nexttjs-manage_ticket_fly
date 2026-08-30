@@ -1,7 +1,8 @@
 "use client";
 
-import { HotelSustainabilityService } from "@/services/product-types/hotel/hotel-sustainability/client";
 import { useQuery } from "@tanstack/react-query";
+
+import { HotelSustainabilityService } from "@/services/product-types/hotel/hotel-sustainability/client";
 
 export const useHotelSustainabilityUpdateFormData = (
   id: string,
@@ -11,6 +12,7 @@ export const useHotelSustainabilityUpdateFormData = (
     queryKey: ["hotel-sustainability-update-form-data", id],
     enabled: enabled && !!id,
     staleTime: 1000 * 60 * 5,
+
     queryFn: async () => {
       const [initialData] = await Promise.all([
         HotelSustainabilityService.getOne(id),
@@ -25,11 +27,16 @@ export const useHotelSustainabilityUpdateFormData = (
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    // Chỉ có 1 nguồn dữ liệu (Promise.all gộp chung, gồm cả
+    // initialData) nên chỉ có 1 key, đặt tên "sustainability" cho
+    // nhất quán với entity.
+    errors: {
+      sustainability: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

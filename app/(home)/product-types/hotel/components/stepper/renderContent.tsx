@@ -80,7 +80,7 @@ export function renderHotelStepperContent({ mainStep, subStep, hooks }: Props) {
       return <LoadingPage />;
     }
 
-    if (roomCategory.error || roomType.error) {
+    if (roomCategory.isError || roomType.isError) {
       return <ErrorPage />;
     }
 
@@ -144,7 +144,7 @@ export function renderHotelStepperContent({ mainStep, subStep, hooks }: Props) {
       return <LoadingPage />;
     }
 
-    if (mealPlan.error || diningServiceType.error) {
+    if (mealPlan.isError || diningServiceType.isError) {
       return <ErrorPage />;
     }
 

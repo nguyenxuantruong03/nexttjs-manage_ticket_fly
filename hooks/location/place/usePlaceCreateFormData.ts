@@ -1,52 +1,74 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-
-import { AddressService } from "@/services/location/address/client";
-import { CountryService } from "@/services/location/country/client";
-import { CityService } from "@/services/location/city/client";
-import { DistrictService } from "@/services/location/district/client";
-import { WardService } from "@/services/location/ward/client";
-import { SearchTagService } from "@/services/search/tag/client";
-import { PlaceTypeService } from "@/services/location/place/place-type/client";
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
+import { useAddresses } from "@/hooks/location/address";
+import { useCountries } from "@/hooks/location/country";
+import { useCities } from "@/hooks/location/city";
+import { useDistricts } from "@/hooks/location/district";
+import { useWards } from "@/hooks/location/ward";
+import { useSearchTags } from "@/hooks/search/tag";
+import { usePlaceTypes } from "@/hooks/location/place/place-type";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const usePlaceCreateFormData = (enabled = true) => {
-  return useQuery({
-    queryKey: ["place-create-form-data"],
-    enabled,
-    staleTime: 1000 * 60 * 5,
-    queryFn: async () => {
-      const [
-        addresses,
-        countries,
-        cities,
-        districts,
-        wards,
-        searchTag,
-        placeTypeData,
-        bookingTypeData,
-      ] = await Promise.all([
-        AddressService.getMany(),
-        CountryService.getMany(),
-        CityService.getMany(),
-        DistrictService.getMany(),
-        WardService.getMany(),
-        SearchTagService.getMany(),
-        PlaceTypeService.getMany(),
-        BookingTypeService.getMany()
-      ]);
+  const addressQuery = useAddresses(enabled);
+  const countryQuery = useCountries(enabled);
+  const cityQuery = useCities(enabled);
+  const districtQuery = useDistricts(enabled);
+  const wardQuery = useWards(enabled);
+  const searchTagQuery = useSearchTags(enabled);
+  const placeTypeQuery = usePlaceTypes(enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-      return {
-        addresses,
-        countries,
-        cities,
-        districts,
-        wards,
-        searchTag,
-        placeTypeData,
-        bookingTypeData,
-      };
+  const queries = [
+    addressQuery,
+    countryQuery,
+    cityQuery,
+    districtQuery,
+    wardQuery,
+    searchTagQuery,
+    placeTypeQuery,
+    bookingTypeQuery,
+  ];
+
+  return {
+    data:
+      addressQuery.data &&
+      countryQuery.data &&
+      cityQuery.data &&
+      districtQuery.data &&
+      wardQuery.data &&
+      searchTagQuery.data &&
+      placeTypeQuery.data &&
+      bookingTypeQuery.data
+        ? {
+            addresses: addressQuery.data,
+            countries: countryQuery.data,
+            cities: cityQuery.data,
+            districts: districtQuery.data,
+            wards: wardQuery.data,
+            searchTag: searchTagQuery.data,
+            placeTypeData: placeTypeQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+          }
+        : undefined,
+
+    isLoading: queries.some((q) => q.isLoading),
+    isFetching: queries.some((q) => q.isFetching),
+    isError: queries.some((q) => q.isError),
+
+    errors: {
+      address: addressQuery.error as Error | null,
+      country: countryQuery.error as Error | null,
+      city: cityQuery.error as Error | null,
+      district: districtQuery.error as Error | null,
+      ward: wardQuery.error as Error | null,
+      searchTag: searchTagQuery.error as Error | null,
+      placeType: placeTypeQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all(queries.map((q) => q.refetch()));
+    },
+  };
 };

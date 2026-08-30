@@ -1,4 +1,4 @@
-import { FlyAirportFormSchema } from "./schema";
+import { FlyAirportFormSchema } from "../schema/schema";
 
 export const flyAirportDefaultValues: FlyAirportFormSchema = {
   // ======================================================

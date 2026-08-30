@@ -6,14 +6,22 @@ import FacilityForm from "../components/FacilityForm";
 import { useFacilityCreateFormData } from "@/hooks/features/facility/useFacilityCreateFormData";
 
 export default function FacilityCreatePage() {
-  const { data, isLoading, error } = useFacilityCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useFacilityCreateFormData();
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.bookingType?.message ??
+          errors.facilityCategory?.message ??
+          "Không tải được dữ liệu tiện ích, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

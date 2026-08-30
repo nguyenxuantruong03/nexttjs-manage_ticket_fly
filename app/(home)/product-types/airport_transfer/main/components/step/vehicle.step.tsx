@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch, FormSelect } from "@/components/form/form-data";
 
-import { AirportTransferFormSchema } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../form/schema/core/schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import VehicleTypeCreateDialog from "@/app/(home)/catalog/vehicle-type/components/VehicleTypeCreateDialog";
 import { EntityOption } from "@/components/entity-selector";

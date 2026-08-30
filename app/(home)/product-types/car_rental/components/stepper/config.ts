@@ -1,6 +1,5 @@
+import { Step } from "@/components/stepper/types";
 import { Car, Gift, ShieldCheck, FileText, LucideIcon } from "lucide-react";
-
-export type Step = [id: string, title: string, icon: LucideIcon];
 
 export const mainSteps: Step[] = [
   ["insurance", "Insurance", ShieldCheck],

@@ -8,14 +8,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const FlyFareRuleTypeCreatePage = () => {
-  const { data, isLoading, error } = useFlyFareRuleTypeCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyFareRuleTypeCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.fareRuleType?.message ??
+          "Không tải được dữ liệu loại quy tắc giá vé, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyFareRuleTypeForm />;

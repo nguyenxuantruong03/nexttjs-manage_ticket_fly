@@ -1,7 +1,8 @@
 "use client";
 
-import { HotelStarRatingService } from "@/services/product-types/hotel/hotel-star-rating/client";
 import { useQuery } from "@tanstack/react-query";
+
+import { HotelStarRatingService } from "@/services/product-types/hotel/hotel-star-rating/client";
 
 export const useHotelStarRatingUpdateFormData = (
   id: string,
@@ -11,6 +12,7 @@ export const useHotelStarRatingUpdateFormData = (
     queryKey: ["hotel-star-rating-update-form-data", id],
     enabled: enabled && !!id,
     staleTime: 1000 * 60 * 5,
+
     queryFn: async () => {
       const [initialData] = await Promise.all([
         HotelStarRatingService.getOne(id),
@@ -25,11 +27,16 @@ export const useHotelStarRatingUpdateFormData = (
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    // Chỉ có 1 nguồn dữ liệu (Promise.all gộp chung, gồm cả
+    // initialData) nên chỉ có 1 key, đặt tên "starRating" cho nhất
+    // quán với entity.
+    errors: {
+      starRating: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

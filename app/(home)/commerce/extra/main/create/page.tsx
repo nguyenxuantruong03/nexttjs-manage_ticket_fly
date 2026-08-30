@@ -8,14 +8,25 @@ import { useExtraCreateFormData } from "@/hooks/commerce/extra/useExtraCreateFor
 import ExtraForm from "../components/ExtraForm";
 
 export default function ExtraCreatePage() {
-  const { data, isLoading, error } = useExtraCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useExtraCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.bookingType?.message ??
+          errors.extraType?.message ??
+          errors.currency?.message ??
+          "Không tải được dữ liệu, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

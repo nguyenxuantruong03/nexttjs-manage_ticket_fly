@@ -14,14 +14,23 @@ export default function FlyMealTypeEditPage() {
 
   const mealTypeId = params.mealTypeId as string;
 
-  const { data, isLoading, error } = useFlyMealTypeUpdateFormData(mealTypeId);
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyMealTypeUpdateFormData(mealTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.mealType?.message ??
+          "Không tải được dữ liệu loại suất ăn, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyMealTypeForm initialData={data.initialData} />;

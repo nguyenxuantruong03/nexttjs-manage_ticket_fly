@@ -3,36 +3,62 @@
 import { CarRentalInsuranceBenefitTypeService } from "@/services/product-types/car-rental/insurance-benefit-type/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["car-rental-insurance-benefit-type"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useCarRentalInsuranceBenefitTypes() {
+export const carRentalInsuranceBenefitTypeQueryKeys = {
+  all: ["car-rental-insurance-benefit-type"] as const,
+  list: () => [...carRentalInsuranceBenefitTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) =>
+    [...carRentalInsuranceBenefitTypeQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useCarRentalInsuranceBenefitTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: carRentalInsuranceBenefitTypeQueryKeys.list(),
     queryFn: () => CarRentalInsuranceBenefitTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useCarRentalInsuranceBenefitType(id: string) {
+export function useCarRentalInsuranceBenefitType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: carRentalInsuranceBenefitTypeQueryKeys.detail(id),
     queryFn: () => CarRentalInsuranceBenefitTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateCarRentalInsuranceBenefitType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: CarRentalInsuranceBenefitTypeService.create,
+    mutationFn: (
+      data: Parameters<typeof CarRentalInsuranceBenefitTypeService.create>[0],
+    ) => CarRentalInsuranceBenefitTypeService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: carRentalInsuranceBenefitTypeQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateCarRentalInsuranceBenefitType() {
   const queryClient = useQueryClient();
@@ -46,28 +72,38 @@ export function useUpdateCarRentalInsuranceBenefitType() {
       data: Parameters<typeof CarRentalInsuranceBenefitTypeService.update>[1];
     }) => CarRentalInsuranceBenefitTypeService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: carRentalInsuranceBenefitTypeQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: carRentalInsuranceBenefitTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteCarRentalInsuranceBenefitType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: CarRentalInsuranceBenefitTypeService.delete,
+    mutationFn: (id: string) => CarRentalInsuranceBenefitTypeService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: carRentalInsuranceBenefitTypeQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: carRentalInsuranceBenefitTypeQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

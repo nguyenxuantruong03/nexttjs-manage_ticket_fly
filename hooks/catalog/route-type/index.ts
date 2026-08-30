@@ -1,39 +1,62 @@
 "use client";
 
 import { RouteTypeService } from "@/services/catalog/route-type/client";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["route-type"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useRouteTypes() {
+export const routeTypeQueryKeys = {
+  all: ["route-type"] as const,
+  list: () => [...routeTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...routeTypeQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useRouteTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: routeTypeQueryKeys.list(),
     queryFn: () => RouteTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useRouteType(id: string) {
+export function useRouteType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: routeTypeQueryKeys.detail(id),
     queryFn: () => RouteTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateRouteType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: RouteTypeService.create,
+    mutationFn: (data: Parameters<typeof RouteTypeService.create>[0]) =>
+      RouteTypeService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: routeTypeQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateRouteType() {
   const queryClient = useQueryClient();
@@ -47,28 +70,32 @@ export function useUpdateRouteType() {
       data: Parameters<typeof RouteTypeService.update>[1];
     }) => RouteTypeService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: routeTypeQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: routeTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteRouteType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: RouteTypeService.delete,
+    mutationFn: (id: string) => RouteTypeService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: routeTypeQueryKeys.list() }),
+        queryClient.removeQueries({ queryKey: routeTypeQueryKeys.detail(id) }),
+      ]);
     },
   });
 }

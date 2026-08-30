@@ -7,7 +7,7 @@ export const useFlyAirlineUpdateFormData = (
   flyAirlineId: string,
   enabled = true,
 ) => {
-  const flyAirlineQuery = useQuery({
+  const query = useQuery({
     queryKey: ["fly-airline-update-form-data", flyAirlineId],
     enabled: enabled && !!flyAirlineId,
     staleTime: 1000 * 60 * 5,
@@ -15,18 +15,18 @@ export const useFlyAirlineUpdateFormData = (
   });
 
   return {
-    data: flyAirlineQuery.data,
+    data: query.data,
 
-    isPending: flyAirlineQuery.isPending,
+    isLoading: query.isLoading,
+    isFetching: query.isFetching,
 
-    isLoading: flyAirlineQuery.isLoading,
+    isError: query.isError,
+    // Chỉ có 1 nguồn dữ liệu (getOne) nên chỉ có 1 key, đặt tên
+    // "airline" cho nhất quán với entity.
+    errors: {
+      airline: query.error as Error | null,
+    },
 
-    isFetching: flyAirlineQuery.isFetching,
-
-    isError: flyAirlineQuery.isError,
-
-    error: flyAirlineQuery.error,
-
-    refetch: flyAirlineQuery.refetch,
+    refetch: query.refetch,
   };
 };

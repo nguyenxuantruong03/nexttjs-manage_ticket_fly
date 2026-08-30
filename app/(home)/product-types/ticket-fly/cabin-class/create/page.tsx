@@ -8,14 +8,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const FlyCabinClassCreatePage = () => {
-  const { data, isLoading, error } = useFlyCabinClassCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyCabinClassCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.cabinClass?.message ??
+          "Không tải được dữ liệu hạng ghế, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyCabinClassForm />;

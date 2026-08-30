@@ -3,7 +3,6 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 
 import { Switch } from "@/components/ui/switch";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
@@ -18,19 +17,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import FormError from "@/components/form-notification/form-error";
-import FormSuccess from "@/components/form-notification/form-success";
-import { SettingSchema } from "@/schemas/user";
-import { useUpdateUser } from "@/hooks/user";
+import { useUpdateUserMe } from "@/hooks/user";
+import { useSubmit } from "@/hooks/useSubmit";
 import { User } from "@/types/users/auth/users";
+import { SettingSchema } from "./schema";
 
 interface SettingFormProps {
   user: User;
 }
 
 const SettingForm: React.FC<SettingFormProps> = ({ user }) => {
-  const [error, setError] = useState<string>();
-  const [success, setSuccess] = useState<string>();
+  const submit = useSubmit();
 
   const form = useForm<z.infer<typeof SettingSchema>>({
     resolver: zodResolver(SettingSchema),
@@ -43,21 +40,23 @@ const SettingForm: React.FC<SettingFormProps> = ({ user }) => {
     },
   });
 
-  const { mutateAsync: updateMe } = useUpdateUser();
+  const updateUserMe = useUpdateUserMe();
+  const isSubmitting = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof SettingSchema>) => {
-    setSuccess("");
-    setError("");
     try {
-      await updateMe({
-        password: values.password,
-        name: values.name,
-        isTwoFactorEnabled: values.isTwoFactorEnabled,
+      await submit({
+        form, // để useSubmit tự setError field-level nếu BE trả lỗi validation
+        mutation: updateUserMe.mutateAsync({
+          password: values.password,
+          name: values.name,
+          isTwoFactorEnabled: values.isTwoFactorEnabled,
+        }),
+        success: "Thay đổi thành công!",
       });
-      setSuccess("Thay đổi thành công!");
     } catch {
-      setError("Cập nhật thất bại");
-    } finally {
+      // lỗi field đã được setError bên trong useSubmit,
+      // lỗi chung đã hiện qua toast, không cần xử lý gì thêm ở đây
     }
   };
 
@@ -79,6 +78,7 @@ const SettingForm: React.FC<SettingFormProps> = ({ user }) => {
                     <FormControl>
                       <Input {...field} placeholder="Xuan Truong" />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -135,16 +135,15 @@ const SettingForm: React.FC<SettingFormProps> = ({ user }) => {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
                     name="isTwoFactorEnabled"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadpw-sm">
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
                         <div className="space-y-0.5">
                           <FormLabel>Two Factor Authentication</FormLabel>
                           <FormDescription>
-                            Enable two factor authentication for your
+                            Enable two factor authentication for your account
                           </FormDescription>
                         </div>
                         <FormControl>
@@ -163,12 +162,13 @@ const SettingForm: React.FC<SettingFormProps> = ({ user }) => {
             {user?.account?.id && (
               <p className="bg-blue-600/20 text-blue-600 font-semibold p-2 text-sm border-l-4 border-blue-600 rounded-md">
                 Bạn đang đăng nhập bằng OAuth chúng tôi sẽ không có nhiều lựa
-                chọn để chỉnh sửa tài khoản!{" "}
+                chọn để chỉnh sửa tài khoản!
               </p>
             )}
-            {error && <FormError content={error || ""} />}
-            {success && <FormSuccess content={success || ""} />}
-            <Button type="submit">Save</Button>
+
+            <Button type="submit" disabled={isSubmitting}>
+              Save
+            </Button>
           </form>
         </Form>
       </CardContent>

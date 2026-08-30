@@ -1,30 +1,38 @@
 "use client";
 
-import { VehicleTypeService } from "@/services/catalog/vehicle-type/client";
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { useQuery } from "@tanstack/react-query";
+import { useVehicleType } from "@/hooks/catalog/vehicle-type";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useVehicleTypeUpdateFormData = (
   vehicleTypeId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["vehicle-type-update", vehicleTypeId],
+  const vehicleTypeQuery = useVehicleType(vehicleTypeId, enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled: enabled && !!vehicleTypeId,
+  return {
+    data:
+      vehicleTypeQuery.data && bookingTypeQuery.data
+        ? {
+            vehicleTypeData: vehicleTypeQuery.data,
+            bookingTypes: bookingTypeQuery.data,
+          }
+        : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading: vehicleTypeQuery.isLoading || bookingTypeQuery.isLoading,
+    isFetching: vehicleTypeQuery.isFetching || bookingTypeQuery.isFetching,
 
-    queryFn: async () => {
-      const [vehicleTypeData, bookingTypes] = await Promise.all([
-        VehicleTypeService.getOne(vehicleTypeId),
-        BookingTypeService.getMany(),
-      ]);
-
-      return {
-        vehicleTypeData,
-        bookingTypes,
-      };
+    isError: vehicleTypeQuery.isError || bookingTypeQuery.isError,
+    errors: {
+      vehicleType: vehicleTypeQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all([
+        vehicleTypeQuery.refetch(),
+        bookingTypeQuery.refetch(),
+      ]);
+    },
+  };
 };

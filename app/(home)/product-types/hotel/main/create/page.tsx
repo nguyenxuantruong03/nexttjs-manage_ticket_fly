@@ -8,14 +8,26 @@ import ErrorPage from "@/components/ui/error-page";
 import LoadingPage from "@/components/ui/loading-page";
 
 export default function HotelCreatePage() {
-  const { data, isLoading, error } = useHotelCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    // Ưu tiên hiện message của location trước vì form cần dữ liệu vị
+    // trí (địa chỉ, quốc gia, thành phố...) để render trước tiên.
+    return (
+      <ErrorPage
+        description={
+          errors.location?.message ??
+          errors.hotel?.message ??
+          "Không tải được dữ liệu khách sạn, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

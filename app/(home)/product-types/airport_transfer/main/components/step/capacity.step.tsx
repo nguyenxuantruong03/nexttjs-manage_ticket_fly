@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 
-import { AirportTransferFormSchema } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../form/schema/core/schema";
 
 export default function CapacityStep() {
   return (

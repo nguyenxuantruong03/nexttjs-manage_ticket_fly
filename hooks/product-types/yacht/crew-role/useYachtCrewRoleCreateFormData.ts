@@ -18,11 +18,13 @@ export const useYachtCrewRoleCreateFormData = (enabled = true) => {
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    errors: {
+      crewRole: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

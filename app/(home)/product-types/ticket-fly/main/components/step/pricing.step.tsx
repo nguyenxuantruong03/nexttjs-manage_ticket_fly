@@ -6,10 +6,10 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 
-import { FlyFormSchema } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../form/schema/core/fly.schema";
 import FlyCabinClassCreateDialog from "../../../cabin-class/components/FlyCabinClassCreateDialog";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
-import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceruleTypeCreateDialog";
+import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceRuleTypeCreateDialog";
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
 import { EntityOption } from "@/components/entity-selector";
 import { FlyCabinClass } from "@/types/product-types/ticket-fly/fly-cabin-class";

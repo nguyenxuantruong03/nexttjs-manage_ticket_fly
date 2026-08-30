@@ -9,17 +9,23 @@ import ErrorPage from "@/components/ui/error-page";
 
 export default function CountryEditPage() {
   const params = useParams();
-
   const countryId = params.countryId as string;
 
-  const { data, isLoading, error } = useCountryUpdateFormData(countryId);
+  const { data, isLoading, isError, errors, refetch } =
+    useCountryUpdateFormData(countryId);
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.country?.message ??
+          "Không tải được dữ liệu quốc gia, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

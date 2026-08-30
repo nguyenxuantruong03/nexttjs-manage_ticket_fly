@@ -6,14 +6,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const SustainabilityCreatePage = () => {
-  const { data, isLoading, error } = useHotelSustainabilityCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelSustainabilityCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.sustainability?.message ??
+          "Không tải được dữ liệu tiêu chí bền vững, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <SustainabilityForm />;

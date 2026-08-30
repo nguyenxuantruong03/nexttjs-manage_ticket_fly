@@ -6,14 +6,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const BathroomTypeCreatePage = () => {
-  const { data, isLoading, error } = useHotelBathroomTypeCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelBathroomTypeCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.bathroomType?.message ??
+          "Không tải được dữ liệu loại phòng tắm, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <BathroomTypeForm />;

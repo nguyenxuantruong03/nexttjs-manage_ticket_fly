@@ -12,14 +12,24 @@ export default function YachtEditPage() {
 
   const yachtId = params.yachtId as string;
 
-  const { data, isLoading, error } = useYachtUpdateFormData(yachtId);
+  const { data, isLoading, isError, errors, refetch } =
+    useYachtUpdateFormData(yachtId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.yacht?.message ??
+          errors.location?.message ??
+          "Không tải được dữ liệu du thuyền, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

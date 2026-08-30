@@ -9,17 +9,25 @@ import { useFacilityUpdateFormData } from "@/hooks/features/facility/useFacility
 
 export default function FacilityEditPage() {
   const params = useParams();
-
   const facilityId = params.facilityId as string;
 
-  const { data, isLoading, error } = useFacilityUpdateFormData(facilityId);
+  const { data, isLoading, isError, errors, refetch } =
+    useFacilityUpdateFormData(facilityId);
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.facility?.message ??
+          errors.facilityCategory?.message ??
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu tiện ích, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

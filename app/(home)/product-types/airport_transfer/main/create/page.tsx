@@ -6,14 +6,25 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 export default function AirportTransferCreatePage() {
-  const { data, isLoading, error } = useAirportTransferCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useAirportTransferCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    // Chỉ có 1 nguồn dữ liệu (airportTransfer, gộp từ Promise.all) nên
+    // lấy thẳng message của nó.
+    return (
+      <ErrorPage
+        description={
+          errors.airportTransfer?.message ??
+          "Không tải được dữ liệu airport transfer, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

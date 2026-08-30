@@ -4,7 +4,7 @@
 
 import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
-import { FlyFormSchema } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../form/schema/core/fly.schema";
 
 export default function NoticeStep() {
   return (

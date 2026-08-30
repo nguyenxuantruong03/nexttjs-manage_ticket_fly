@@ -52,7 +52,7 @@ export function renderTicketFlyStepperContent({
       return <LoadingPage />;
     }
 
-    if (airport.error || cabinClass.error) {
+    if (airport.isError || cabinClass.isError) {
       return <ErrorPage />;
     }
 
@@ -86,7 +86,7 @@ export function renderTicketFlyStepperContent({
       return <LoadingPage />;
     }
 
-    if (crewDuty.error || delayReason.error) {
+    if (crewDuty.isError || delayReason.isError) {
       return <ErrorPage />;
     }
 
@@ -110,7 +110,7 @@ export function renderTicketFlyStepperContent({
       return <LoadingPage />;
     }
 
-    if (seatType.error || mealType.error) {
+    if (seatType.isError || mealType.isError) {
       return <ErrorPage />;
     }
 
@@ -146,7 +146,7 @@ export function renderTicketFlyStepperContent({
       return <LoadingPage />;
     }
 
-    if (addonType.error) {
+    if (addonType.isError) {
       return <ErrorPage />;
     }
 

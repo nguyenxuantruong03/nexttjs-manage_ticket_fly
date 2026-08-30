@@ -3,20 +3,27 @@
 import { FacilityService } from "@/services/features/facility/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["facility"] as const;
+export const facilityQueryKeys = {
+  all: ["facility"] as const,
+  list: () => [...facilityQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...facilityQueryKeys.all, "detail", id] as const,
+};
 
-export function useFacilities() {
+export function useFacilities(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: facilityQueryKeys.list(),
     queryFn: () => FacilityService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useFacility(id: string) {
+export function useFacility(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: facilityQueryKeys.detail(id),
     queryFn: () => FacilityService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
@@ -24,11 +31,11 @@ export function useCreateFacility() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FacilityService.create,
-
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    mutationFn: (data: Parameters<typeof FacilityService.create>[0]) =>
+      FacilityService.create(data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: facilityQueryKeys.list(),
       });
     },
   });
@@ -45,15 +52,13 @@ export function useUpdateFacility() {
       id: string;
       data: Parameters<typeof FacilityService.update>[1];
     }) => FacilityService.update(id, data),
-
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: facilityQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: facilityQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
@@ -62,12 +67,12 @@ export function useDeleteFacility() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FacilityService.delete,
-
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    mutationFn: (id: string) => FacilityService.delete(id),
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: facilityQueryKeys.list() }),
+        queryClient.removeQueries({ queryKey: facilityQueryKeys.detail(id) }),
+      ]);
     },
   });
 }

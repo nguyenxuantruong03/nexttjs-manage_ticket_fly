@@ -4,7 +4,7 @@
 
 import FormSection from "@/components/form/FormSection";
 import { FormSelect, FormSwitch } from "@/components/form/form-data";
-import { FlyFormSchema } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../form/schema/core/fly.schema";
 import { SearchTag } from "@/types/searchs/search/tag.types";
 import { SEARCH_PRIORITY_OPTIONS } from "@/types/searchs/search-prioty-score";
 import { EntityOption } from "@/components/entity-selector";

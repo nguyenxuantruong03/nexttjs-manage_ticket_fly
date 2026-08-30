@@ -1,7 +1,7 @@
 // field-groups.ts
 
 import { FieldPath } from "react-hook-form";
-import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 
 type CarRentalFieldPath = FieldPath<CarRentalFormSchema>;
 

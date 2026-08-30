@@ -1,32 +1,45 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-
-import { DistrictService } from "@/services/location/district/client";
-import { CityService } from "@/services/location/city/client";
-import { SearchTagService } from "@/services/search/tag/client";
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
+import { useDistricts } from "@/hooks/location/district";
+import { useCities } from "@/hooks/location/city";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
+import { useSearchTags } from "@/hooks/search/tag";
 
 export const useWardCreateFormData = (enabled = true) => {
-  return useQuery({
-    queryKey: ["ward-create-form-data"],
-    enabled,
-    staleTime: 1000 * 60 * 5,
-    queryFn: async () => {
-      const [districtData, cityData, bookingTypeData, searchTagData] =
-        await Promise.all([
-          DistrictService.getMany(),
-          CityService.getMany(),
-          BookingTypeService.getMany(),
-          SearchTagService.getMany(),
-        ]);
+  const districtQuery = useDistricts(enabled);
+  const cityQuery = useCities(enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
+  const searchTagQuery = useSearchTags(enabled);
 
-      return {
-        districtData,
-        cityData,
-        bookingTypeData,
-        searchTagData,
-      };
+  const queries = [districtQuery, cityQuery, bookingTypeQuery, searchTagQuery];
+
+  return {
+    data:
+      districtQuery.data &&
+      cityQuery.data &&
+      bookingTypeQuery.data &&
+      searchTagQuery.data
+        ? {
+            districtData: districtQuery.data,
+            cityData: cityQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+            searchTagData: searchTagQuery.data,
+          }
+        : undefined,
+
+    isLoading: queries.some((q) => q.isLoading),
+    isFetching: queries.some((q) => q.isFetching),
+    isError: queries.some((q) => q.isError),
+
+    errors: {
+      district: districtQuery.error as Error | null,
+      city: cityQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
+      searchTag: searchTagQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all(queries.map((q) => q.refetch()));
+    },
+  };
 };

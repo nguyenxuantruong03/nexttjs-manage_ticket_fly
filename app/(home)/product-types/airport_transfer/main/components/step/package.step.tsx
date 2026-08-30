@@ -2,7 +2,7 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { AirportTransferFormSchema } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../form/schema/core/schema";
 import { Package } from "@/types/common/commerce/package/package.type";
 import { EntityOption } from "@/components/entity-selector";
 import PackageCreateDialog from "@/app/(home)/commerce/package/components/PackageCreateDialog";

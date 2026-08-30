@@ -9,19 +9,30 @@ import { useFacilityCategoryUpdateFormData } from "@/hooks/features/facility-cat
 
 export default function FacilityCategoryEditPage() {
   const params = useParams();
-
   const facilityCategoryId = params.facilityCategoryId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useFacilityCategoryUpdateFormData(facilityCategoryId);
 
-  if (isLoading) {
-    return <LoadingPage />;
+  if (isLoading) return <LoadingPage />;
+
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.facilityCategory?.message ??
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu danh mục tiện ích, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
-  }
-
-  return <FacilityCategoryForm initialData={data.facilityCategoryData} bookingTypeData={data.bookingTypeData}/>;
+  return (
+    <FacilityCategoryForm
+      initialData={data.facilityCategoryData}
+      bookingTypeData={data.bookingTypeData}
+    />
+  );
 }

@@ -1,5 +1,5 @@
 import { FieldPath } from "react-hook-form";
-import { BusFormSchema } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../form/schema/core/bus.schema";
 
 type BusFieldPath = FieldPath<BusFormSchema>;
 

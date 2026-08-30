@@ -11,7 +11,7 @@ import { WardService } from "@/services/location/ward/client";
 import { BookingTypeService } from "@/services/commerce/booking-type/client";
 
 export const useProviderBookingCreateFormData = (enabled = true) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: ["provider-booking-create-form-data"],
     enabled,
     staleTime: 1000 * 60 * 5,
@@ -45,4 +45,18 @@ export const useProviderBookingCreateFormData = (enabled = true) => {
       };
     },
   });
+
+  return {
+    data: query.data,
+
+    isLoading: query.isLoading,
+    isFetching: query.isFetching,
+
+    isError: query.isError,
+    errors: {
+      providerBooking: query.error as Error | null,
+    },
+
+    refetch: query.refetch,
+  };
 };

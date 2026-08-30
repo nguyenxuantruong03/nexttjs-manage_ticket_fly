@@ -11,5 +11,27 @@ export function initExtraFeeTypeFormValues(
     return structuredClone(extraFeeTypeDefaultValues);
   }
 
-  return structuredClone(extraFeeType);
+  return {
+    // ======================================================
+    // BASIC
+    // ======================================================
+
+    name: extraFeeType.name ?? "",
+    description: extraFeeType.description ?? null,
+    icon: extraFeeType.icon ?? null,
+
+    // ======================================================
+    // BOOKING TYPE
+    // ======================================================
+
+    bookingTypeIds:
+      extraFeeType.bookingTypes?.map((bookingType) => bookingType.id) ?? [],
+
+    // ======================================================
+    // STATUS
+    // ======================================================
+
+    active: extraFeeType.active ?? true,
+    sortOrder: extraFeeType.sortOrder ?? 0,
+  };
 }

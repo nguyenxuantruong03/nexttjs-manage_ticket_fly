@@ -11,15 +11,23 @@ export default function StarRatingEditPage() {
 
   const starRatingId = params.starRatingId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useHotelStarRatingUpdateFormData(starRatingId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.starRating?.message ??
+          "Không tải được dữ liệu hạng sao, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <StarRatingForm initialData={data.initialData} />;

@@ -2,8 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { FlySeatTypeService } from "@/services/product-types/ticket-fly/seat-type/client";
-
 export const useFlySeatTypeCreateFormData = (enabled = true) => {
   const query = useQuery({
     queryKey: ["fly-seat-type-create-form-data"],
@@ -21,11 +19,13 @@ export const useFlySeatTypeCreateFormData = (enabled = true) => {
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    errors: {
+      seatType: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

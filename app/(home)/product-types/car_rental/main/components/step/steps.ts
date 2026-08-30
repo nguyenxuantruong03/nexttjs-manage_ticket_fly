@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 import { carRentalFieldGroups } from "./field-groups";
-import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 
 export const carRentalSteps: FormWizardStep<CarRentalFormSchema>[] = [
   // ======================================================

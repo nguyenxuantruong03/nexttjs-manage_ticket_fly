@@ -6,14 +6,24 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const FlyAirportCreatePage = () => {
-  const { data, isLoading, error } = useFlyAirportCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyAirportCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.location?.message ??
+          errors.flyAirport?.message ??
+          "Không tải được dữ liệu sân bay, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

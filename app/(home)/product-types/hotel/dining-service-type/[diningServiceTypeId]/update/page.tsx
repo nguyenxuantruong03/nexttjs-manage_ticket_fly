@@ -9,17 +9,25 @@ import ErrorPage from "@/components/ui/error-page";
 export default function DiningServiceTypeEditPage() {
   const params = useParams();
 
-  const accessibilityId = params.accessibilityId as string;
+  const diningServiceTypeId = params.diningServiceTypeId as string;
 
-  const { data, isLoading, error } =
-    useHotelDiningServiceTypeUpdateFormData(accessibilityId);
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelDiningServiceTypeUpdateFormData(diningServiceTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.diningServiceType?.message ??
+          "Không tải được dữ liệu loại dịch vụ ăn uống, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <DiningServiceTypeForm initialData={data.initialData} />;

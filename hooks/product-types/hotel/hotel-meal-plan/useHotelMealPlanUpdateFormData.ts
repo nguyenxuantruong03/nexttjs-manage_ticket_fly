@@ -22,11 +22,14 @@ export const useHotelMealPlanUpdateFormData = (id: string, enabled = true) => {
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    // Chỉ có 1 nguồn dữ liệu (mealPlan) nên lấy thẳng message của nó.
+    errors: {
+      mealPlan: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

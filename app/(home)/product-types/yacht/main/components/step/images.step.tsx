@@ -1,6 +1,6 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch } from "@/components/form/form-data";
-import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 
 export default function ImagesStep() {
   return (

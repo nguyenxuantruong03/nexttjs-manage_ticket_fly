@@ -14,14 +14,23 @@ export default function FlyAddonTypeEditPage() {
 
   const addonTypeId = params.addonTypeId as string;
 
-  const { data, isLoading, error } = useFlyAddonTypeUpdateFormData(addonTypeId);
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyAddonTypeUpdateFormData(addonTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.addonType?.message ??
+          "Không tải được dữ liệu loại dịch vụ bổ sung, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyAddonTypeForm initialData={data.initialData} />;

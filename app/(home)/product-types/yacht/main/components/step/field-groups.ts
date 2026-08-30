@@ -1,5 +1,5 @@
 import { FieldPath } from "react-hook-form";
-import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 
 type YachtFieldPath = FieldPath<YachtFormSchema>;
 

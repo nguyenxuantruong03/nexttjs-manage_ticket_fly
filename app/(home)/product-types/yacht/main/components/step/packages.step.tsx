@@ -6,7 +6,7 @@ import { EntityOption } from "@/components/entity-selector";
 
 import { Package } from "@/types/common/commerce/package/package.type";
 
-import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 import PackageCreateDialog from "@/app/(home)/commerce/package/components/PackageCreateDialog";
 import { Currency } from "@/types/location/currency";
 import { BookingType } from "@/types/common/commerce/booking-type";

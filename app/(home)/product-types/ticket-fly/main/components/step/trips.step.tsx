@@ -2,7 +2,7 @@
 
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect } from "@/components/form/form-data";
-import { FlyFormSchema } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../form/schema/core/fly.schema";
 import { FlyTripStatus } from "@/types/product-types/ticket-fly/enums";
 import FlyAircraftCreateDialog from "@/app/(home)/product-types/references/airline/aircraft/main/components/FlyAircraftCreateDialog";
 import { FlyAircraft } from "@/types/product-types/references/airline/aircraft/aircraft.types";

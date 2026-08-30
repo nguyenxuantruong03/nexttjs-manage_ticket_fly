@@ -3,7 +3,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 
-import { FlyAirportFormSchema } from "../form/schema";
+import { FlyAirportFormSchema } from "../schema/schema";
 
 export default function AirportStep() {
   return (

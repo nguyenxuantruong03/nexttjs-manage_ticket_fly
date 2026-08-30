@@ -22,6 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
 import {
   EntityMultiSelectorProps,
   EntityOption,
@@ -34,31 +35,18 @@ const EntityMultiSelector = React.forwardRef<
 >(function EntityMultiSelector(
   {
     value = [],
-
     portalContainer,
-
     onChange,
-
     options,
-
     placeholder = "Select options",
-
     searchPlaceholder = "Search...",
-
     emptyText = "No data found",
-
     createText = "Create new",
-
     disabled,
-
     loading,
-
     enableCreate,
-
     renderCreateDialog,
-
     onCreated,
-
     className,
   },
   ref,
@@ -73,45 +61,103 @@ const EntityMultiSelector = React.forwardRef<
     EntityOption<unknown>[]
   >([]);
 
-  const items = [...options, ...createdItems];
+  // ======================================================
+  // Merge options + createdItems
+  // Remove duplicate by value
+  // ======================================================
+
+  const items = React.useMemo(() => {
+    const map = new Map<string, EntityOption<unknown>>();
+
+    [...options, ...createdItems].forEach((item) => {
+      map.set(String(item.value), item);
+    });
+
+    return Array.from(map.values());
+  }, [options, createdItems]);
+
+  // ======================================================
+  // Selected Items
+  // ======================================================
 
   const selectedItems = React.useMemo(() => {
-    return items.filter((item) =>
-      value.some((v) => String(v) === String(item.value)),
-    );
+    const selectedValueSet = new Set(value.map((item) => String(item)));
+
+    return items.filter((item) => selectedValueSet.has(String(item.value)));
   }, [items, value]);
 
-  const toggleItem = (itemValue: string) => {
-    const exists = value.some((v) => String(v) === String(itemValue));
+  // ======================================================
+  // Toggle Item
+  // ======================================================
 
-    if (exists) {
-      onChange(value.filter((v) => String(v) !== String(itemValue)));
-    } else {
+  const toggleItem = React.useCallback(
+    (itemValue: string) => {
+      const exists = value.some((v) => String(v) === String(itemValue));
+
+      if (exists) {
+        onChange(value.filter((v) => String(v) !== String(itemValue)));
+
+        return;
+      }
+
       onChange([...value, itemValue]);
-    }
-  };
+    },
+    [onChange, value],
+  );
 
-  const removeItem = (itemValue: string) => {
-    onChange(value.filter((v) => String(v) !== String(itemValue)));
-  };
+  // ======================================================
+  // Remove Item
+  // ======================================================
+
+  const removeItem = React.useCallback(
+    (itemValue: string) => {
+      onChange(value.filter((v) => String(v) !== String(itemValue)));
+    },
+    [onChange, value],
+  );
+
+  // ======================================================
+  // Handle Created
+  // ======================================================
 
   const handleCreated = React.useCallback(
     (item: EntityCreateResult) => {
-      const option: EntityOption = {
+      const option: EntityOption<unknown> = {
         value: item.value,
         label: item.label,
         description: item.description,
         data: item.data,
       };
 
-      setCreatedItems((prev) => [...prev, option]);
+      // Prevent duplicate created item
+      setCreatedItems((prev) => {
+        const exists = prev.some(
+          (current) => String(current.value) === String(option.value),
+        );
 
-      onChange([...value, item.value]);
+        if (exists) {
+          return prev;
+        }
+
+        return [...prev, option];
+      });
+
+      // Prevent duplicate selected value
+      const existsInValue = value.some(
+        (current) => String(current) === String(item.value),
+      );
+
+      if (!existsInValue) {
+        onChange([...value, item.value]);
+      }
 
       onCreated?.(item);
 
       setCreateOpen(false);
+
       setOpen(false);
+
+      setKeyword("");
     },
     [onChange, onCreated, value],
   );
@@ -135,25 +181,26 @@ const EntityMultiSelector = React.forwardRef<
               {selectedItems.length
                 ? selectedItems.map((item) => (
                     <span
-                      key={item.value}
+                      key={String(item.value)}
                       className="
-                      flex
-                      items-center
-                      gap-1
-                      rounded-md
-                      bg-muted
-                      px-2
-                      py-1
-                      text-xs
-                    "
+                        flex
+                        items-center
+                        gap-1
+                        rounded-md
+                        bg-muted
+                        px-2
+                        py-1
+                        text-xs
+                      "
                     >
                       {item.label}
 
                       <X
-                        className="h-3 w-3"
+                        className="h-3 w-3 cursor-pointer"
                         onClick={(e) => {
                           e.stopPropagation();
-                          removeItem(item.value);
+
+                          removeItem(String(item.value));
                         }}
                       />
                     </span>
@@ -166,6 +213,7 @@ const EntityMultiSelector = React.forwardRef<
                 ml-2
                 h-4
                 w-4
+                shrink-0
                 opacity-50
               "
             />
@@ -206,9 +254,9 @@ const EntityMultiSelector = React.forwardRef<
 
                       return (
                         <CommandItem
-                          key={item.value}
-                          value={item.label}
-                          onSelect={() => toggleItem(item.value)}
+                          key={String(item.value)}
+                          value={String(item.label)}
+                          onSelect={() => toggleItem(String(item.value))}
                         >
                           <Check
                             className={cn(
@@ -223,9 +271,9 @@ const EntityMultiSelector = React.forwardRef<
                             {item.description && (
                               <div
                                 className="
-                                text-xs
-                                text-muted-foreground
-                              "
+                                  text-xs
+                                  text-muted-foreground
+                                "
                               >
                                 {item.description}
                               </div>
@@ -245,6 +293,7 @@ const EntityMultiSelector = React.forwardRef<
                           value={`__create__${keyword}`}
                           onSelect={() => {
                             setOpen(false);
+
                             setCreateOpen(true);
                           }}
                         >
@@ -265,12 +314,17 @@ const EntityMultiSelector = React.forwardRef<
       {createOpen &&
         renderCreateDialog?.({
           open: createOpen,
+
           onOpenChange: setCreateOpen,
+
           defaultKeyword: keyword,
+
           onCreated: handleCreated,
         })}
     </>
   );
 });
+
+EntityMultiSelector.displayName = "EntityMultiSelector";
 
 export default EntityMultiSelector;

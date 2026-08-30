@@ -2,8 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { FlyDelayReasonService } from "@/services/product-types/ticket-fly/delay-reason/client";
-
 export const useFlyDelayReasonCreateFormData = (enabled = true) => {
   const query = useQuery({
     queryKey: ["fly-delay-reason-create-form-data"],
@@ -21,11 +19,13 @@ export const useFlyDelayReasonCreateFormData = (enabled = true) => {
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    errors: {
+      delayReason: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

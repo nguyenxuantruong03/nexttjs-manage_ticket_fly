@@ -3,36 +3,60 @@
 import { ExtraTypeService } from "@/services/commerce/extra-type/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["extra-type"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useExtraTypes() {
+export const extraTypeQueryKeys = {
+  all: ["extra-type"] as const,
+  list: () => [...extraTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...extraTypeQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useExtraTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: extraTypeQueryKeys.list(),
     queryFn: () => ExtraTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useExtraType(id: string) {
+export function useExtraType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: extraTypeQueryKeys.detail(id),
     queryFn: () => ExtraTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateExtraType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ExtraTypeService.create,
+    mutationFn: (data: Parameters<typeof ExtraTypeService.create>[0]) =>
+      ExtraTypeService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: extraTypeQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateExtraType() {
   const queryClient = useQueryClient();
@@ -46,28 +70,38 @@ export function useUpdateExtraType() {
       data: Parameters<typeof ExtraTypeService.update>[1];
     }) => ExtraTypeService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: extraTypeQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: extraTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteExtraType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ExtraTypeService.delete,
+    mutationFn: (id: string) => ExtraTypeService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: extraTypeQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: extraTypeQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

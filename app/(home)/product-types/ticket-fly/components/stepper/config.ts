@@ -1,3 +1,4 @@
+import { Step } from "@/components/stepper/types";
 import {
   Accessibility,
   Armchair,
@@ -14,8 +15,6 @@ import {
   ShieldCheck,
   Utensils,
 } from "lucide-react";
-
-export type Step = [id: string, title: string, icon: LucideIcon];
 
 export const mainSteps: Step[] = [
   ["basic", "Basic", Plane],
@@ -41,11 +40,7 @@ export const subSteps: Record<string, Step[]> = {
     ["meal-type", "Meal Type", Utensils],
   ],
 
-  pricing: [
-    ["fare-rule-type", "Fare Rule Type", Receipt],
-  ],
+  pricing: [["fare-rule-type", "Fare Rule Type", Receipt]],
 
-  addon: [
-    ["addon-type", "Addon Type", Gift],
-  ],
+  addon: [["addon-type", "Addon Type", Gift]],
 };

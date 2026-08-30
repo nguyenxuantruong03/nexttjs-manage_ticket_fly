@@ -12,15 +12,23 @@ export default function YachtConditionEditPage() {
 
   const conditionId = params.conditionId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useYachtConditionUpdateFormData(conditionId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.condition?.message ??
+          "Không tải được dữ liệu tình trạng du thuyền, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <YachtConditionForm initialData={data.initialData} />;

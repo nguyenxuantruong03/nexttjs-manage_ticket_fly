@@ -1,19 +1,13 @@
 "use client";
 
-import * as React from "react";
-
-import { Button } from "@/components/ui/button";
-import { AppForm, FormInput, FormSwitch } from "@/components/form/form-data";
-
-import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { FormInput, FormSwitch } from "@/components/form/form-data";
 
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
 } from "@/components/entity-selector";
 
-import { useAppForm } from "@/hooks/useAppForm";
-import { useSubmit } from "@/hooks/useSubmit";
+import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
 import { useCreateFlyMealType } from "@/hooks/product-types/ticket-fly/meal-type";
 
@@ -39,117 +33,66 @@ export default function FlyMealTypeCreateDialog({
   defaultKeyword,
   onCreated,
 }: FlyMealTypeCreateDialogProps) {
-  const dialogRef = React.useRef<HTMLDivElement>(null);
-
-  const submit = useSubmit();
-
   const createFlyMealType = useCreateFlyMealType();
 
-  const { form } = useAppForm<FlyMealTypeFormSchema>({
-    schema: FlyMealTypeSchema,
-    defaultValues: flyMealTypeDefaultValues,
-  });
-
-  React.useEffect(() => {
-    if (!open) return;
-
-    form.reset({
-      ...flyMealTypeDefaultValues,
-      name: defaultKeyword ?? "",
-    });
-  }, [open, defaultKeyword, form]);
-
-  const onSubmit = (values: FlyMealTypeFormSchema) => {
-    submit({
-      mutation: createFlyMealType.mutateAsync(values),
-
-      success: "Fly meal type created",
-
-      onSuccess(response) {
-        const result: EntityCreateResult<FlyMealType> = {
+  return (
+    <EntityCreateFormDialog<FlyMealTypeFormSchema, FlyMealType>
+      open={open}
+      onOpenChange={onOpenChange}
+      defaultKeyword={defaultKeyword}
+      onCreated={onCreated}
+      mutation={createFlyMealType}
+      config={{
+        schema: FlyMealTypeSchema,
+        defaultValues: flyMealTypeDefaultValues,
+        title: "Create Fly Meal Type",
+        description: "Create a new fly meal type",
+        success: "Fly meal type created",
+        submitText: "Create Meal Type",
+        submittingText: "Creating...",
+        getResult: (response): EntityCreateResult<FlyMealType> => ({
           value: response.id,
           label: response.name,
           data: response,
-        };
-
-        onCreated(result);
-
-        form.reset();
-
-        onOpenChange(false);
-      },
-    });
-  };
-
-  return (
-    <EntityCreateDialog
-      dialogRef={dialogRef}
-      open={open}
-      onOpenChange={onOpenChange}
-      title="Create Fly Meal Type"
-      description="Create a new fly meal type"
+        }),
+      }}
     >
-      <AppForm
-        form={form}
-        onSubmit={onSubmit}
-        loading={createFlyMealType.isPending}
-      >
-        <div className="space-y-6">
-          {/* BASIC */}
+      <div className="space-y-6">
+        {/* BASIC */}
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormInput<FlyMealTypeFormSchema>
+            name="name"
+            label="Name"
+            placeholder="Vegetarian"
+          />
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <FormInput<FlyMealTypeFormSchema>
+            name="icon"
+            label="Icon"
+            placeholder="https://..."
+          />
+
+          <div className="md:col-span-2">
             <FormInput<FlyMealTypeFormSchema>
-              name="name"
-              label="Name"
-              placeholder="Vegetarian"
+              name="description"
+              label="Description"
+              placeholder="Describe meal type"
             />
-
-            <FormInput<FlyMealTypeFormSchema>
-              name="icon"
-              label="Icon"
-              placeholder="https://..."
-            />
-
-            <div className="md:col-span-2">
-              <FormInput<FlyMealTypeFormSchema>
-                name="description"
-                label="Description"
-                placeholder="Describe meal type"
-              />
-            </div>
-          </div>
-
-          {/* STATUS */}
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <FormSwitch<FlyMealTypeFormSchema> name="active" label="Active" />
-
-            <FormInput<FlyMealTypeFormSchema>
-              name="sortOrder"
-              label="Sort Order"
-              type="number"
-              placeholder="0"
-            />
-          </div>
-
-          {/* ACTION */}
-
-          <div className="flex justify-end gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              disabled={createFlyMealType.isPending}
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-
-            <Button type="submit" disabled={createFlyMealType.isPending}>
-              {createFlyMealType.isPending ? "Creating..." : "Create Meal Type"}
-            </Button>
           </div>
         </div>
-      </AppForm>
-    </EntityCreateDialog>
+
+        {/* STATUS */}
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormSwitch<FlyMealTypeFormSchema> name="active" label="Active" />
+
+          <FormInput<FlyMealTypeFormSchema>
+            name="sortOrder"
+            label="Sort Order"
+            type="number"
+            placeholder="0"
+          />
+        </div>
+      </div>
+    </EntityCreateFormDialog>
   );
 }

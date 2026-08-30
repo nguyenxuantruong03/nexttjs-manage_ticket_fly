@@ -11,15 +11,23 @@ export default function BathRoomTypeEditPage() {
 
   const bathroomTypeId = params.bathroomTypeId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useHotelBathroomTypeUpdateFormData(bathroomTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.bathroomType?.message ??
+          "Không tải được dữ liệu loại phòng tắm, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <BathRoomTypeForm initialData={data.initialData} />;

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { WeekDay } from "@/types/common/enums";
-import { FlyTripSchema } from "@/app/(home)/product-types/ticket-fly/main/components/schema/trip/trip.schema";
+import { FlyTripSchema } from "@/app/(home)/product-types/ticket-fly/main/components/form/schema/trip/trip.schema";
 
 
 // ======================================================

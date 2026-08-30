@@ -102,11 +102,16 @@ export const useTicketFlyCreateFormData = (enabled = true) => {
           }
         : undefined,
 
-    isPending: locationQuery.isPending || ticketFlyQuery.isPending,
     isLoading: locationQuery.isLoading || ticketFlyQuery.isLoading,
     isFetching: locationQuery.isFetching || ticketFlyQuery.isFetching,
+
     isError: locationQuery.isError || ticketFlyQuery.isError,
-    error: locationQuery.error ?? ticketFlyQuery.error,
+    // Có 2 nguồn dữ liệu độc lập (location + ticketFly) nên tách 2 key
+    // trong "errors" để biết lỗi đến từ nguồn nào.
+    errors: {
+      ticketFly: ticketFlyQuery.error as Error | null,
+      location: locationQuery.error as Error | null,
+    },
 
     refetch: async () => {
       await Promise.all([locationQuery.refetch(), ticketFlyQuery.refetch()]);

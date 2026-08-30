@@ -3,7 +3,7 @@
 "use client";
 
 import FormSection from "@/components/form/FormSection";
-import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";
 import { EntityOption } from "@/components/entity-selector";

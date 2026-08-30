@@ -13,15 +13,23 @@ export default function HotelCheckInPolicyEditPage() {
 
   const checkInPolicyId = params.checkInPolicyId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useHotelCheckInPolicyUpdateFormData(checkInPolicyId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.checkInPolicy?.message ??
+          "Không tải được dữ liệu chính sách nhận phòng, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

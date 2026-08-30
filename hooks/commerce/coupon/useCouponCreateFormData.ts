@@ -1,21 +1,25 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { CouponService } from "@/services/commerce/coupon/client";
-import { useQuery } from "@tanstack/react-query";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useCouponCreateFormData = (enabled = true) => {
-  return useQuery({
-    queryKey: ["coupon-create"],
-    enabled,
-    staleTime: 1000 * 60 * 5,
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    queryFn: async () => {
-      const [bookingTypeData] = await Promise.all([
-        BookingTypeService.getMany(),
-      ]);
+  return {
+    // Giữ tên field "bookingTypeData" (không phải "bookingTypes") vì
+    // component CouponForm đang đọc data.bookingTypeData.
+    data: bookingTypeQuery.data
+      ? { bookingTypeData: bookingTypeQuery.data }
+      : undefined,
 
-      return { bookingTypeData };
+    isLoading: bookingTypeQuery.isLoading,
+    isFetching: bookingTypeQuery.isFetching,
+
+    isError: bookingTypeQuery.isError,
+    errors: {
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: bookingTypeQuery.refetch,
+  };
 };

@@ -6,14 +6,24 @@ import ErrorPage from "@/components/ui/error-page";
 import LoadingPage from "@/components/ui/loading-page";
 
 export default function TicketFlyCreatePage() {
-  const { data, isLoading, error } = useTicketFlyCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useTicketFlyCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.ticketFly?.message ??
+          errors.location?.message ??
+          "Không tải được dữ liệu vé máy bay, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

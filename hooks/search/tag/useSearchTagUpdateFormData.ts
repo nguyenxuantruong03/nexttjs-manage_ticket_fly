@@ -6,7 +6,7 @@ import { SearchTagService } from "@/services/search/tag/client";
 import { BookingTypeService } from "@/services/commerce/booking-type/client";
 
 export const useSearchTagUpdateFormData = (tagId: string, enabled = true) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: ["search-tag-update-form-data", tagId],
     enabled: enabled && !!tagId,
     staleTime: 1000 * 60 * 5,
@@ -22,4 +22,18 @@ export const useSearchTagUpdateFormData = (tagId: string, enabled = true) => {
       };
     },
   });
+
+  return {
+    data: query.data,
+
+    isLoading: query.isLoading,
+    isFetching: query.isFetching,
+
+    isError: query.isError,
+    errors: {
+      searchTag: query.error as Error | null,
+    },
+
+    refetch: query.refetch,
+  };
 };

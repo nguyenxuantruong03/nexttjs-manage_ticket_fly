@@ -15,15 +15,29 @@ export default function FlyAircraftEditPage() {
 
   const aircraftId = params.aircraftId as string;
 
-  const { data, isLoading, error } = useFlyAircraftUpdateFormData(aircraftId);
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyAircraftUpdateFormData(aircraftId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.aircraft?.message ??
+          "Không tải được dữ liệu tàu bay, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
-  return <FlyAircraftForm initialData={data.initialData} airlineData={data.airlineData}/>;
+  return (
+    <FlyAircraftForm
+      initialData={data.initialData}
+      airlineData={data.airlineData}
+    />
+  );
 }

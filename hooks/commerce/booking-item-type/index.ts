@@ -1,39 +1,63 @@
 "use client";
 
 import { BookingItemTypeService } from "@/services/commerce/booking-item-type/client";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["booking-item-type"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useBookingItemTypes() {
+export const bookingItemTypeQueryKeys = {
+  all: ["booking-item-type"] as const,
+  list: () => [...bookingItemTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) =>
+    [...bookingItemTypeQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useBookingItemTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: bookingItemTypeQueryKeys.list(),
     queryFn: () => BookingItemTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useBookingItemType(id: string) {
+export function useBookingItemType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: bookingItemTypeQueryKeys.detail(id),
     queryFn: () => BookingItemTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateBookingItemType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: BookingItemTypeService.create,
+    mutationFn: (data: Parameters<typeof BookingItemTypeService.create>[0]) =>
+      BookingItemTypeService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: bookingItemTypeQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateBookingItemType() {
   const queryClient = useQueryClient();
@@ -47,28 +71,38 @@ export function useUpdateBookingItemType() {
       data: Parameters<typeof BookingItemTypeService.update>[1];
     }) => BookingItemTypeService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: bookingItemTypeQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: bookingItemTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteBookingItemType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: BookingItemTypeService.delete,
+    mutationFn: (id: string) => BookingItemTypeService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: bookingItemTypeQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: bookingItemTypeQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

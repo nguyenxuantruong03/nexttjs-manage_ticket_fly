@@ -15,14 +15,28 @@ export default function ExtraEditPage() {
 
   const extraId = params.extraId as string;
 
-  const { data, isLoading, error } = useExtraUpdateFormData(extraId);
+  const { data, isLoading, isError, errors, refetch } =
+    useExtraUpdateFormData(extraId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    // Ưu tiên hiện message của extra trước vì đó là dữ liệu chính của
+    // trang này, sau đó mới đến các dependency (bookingType/extraType/currency).
+    return (
+      <ErrorPage
+        description={
+          errors.extra?.message ??
+          errors.bookingType?.message ??
+          errors.extraType?.message ??
+          errors.currency?.message ??
+          "Không tải được dữ liệu extra, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

@@ -12,14 +12,23 @@ export default function CurrencyEditPage() {
 
   const currencyId = params.currencyId as string;
 
-  const { data, isLoading, error } = useCurrencyUpdateFormData(currencyId);
+  const { data, isLoading, isError, errors, refetch } =
+    useCurrencyUpdateFormData(currencyId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.currency?.message ??
+          "Không tải được dữ liệu tiền tệ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <CurrencyForm initialData={data.initialData} />;

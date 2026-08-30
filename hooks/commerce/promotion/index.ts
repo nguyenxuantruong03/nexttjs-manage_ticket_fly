@@ -3,20 +3,27 @@
 import { PromotionService } from "@/services/commerce/promotion/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["promotion"] as const;
+export const promotionQueryKeys = {
+  all: ["promotion"] as const,
+  list: () => [...promotionQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...promotionQueryKeys.all, "detail", id] as const,
+};
 
-export function usePromotions() {
+export function usePromotions(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: promotionQueryKeys.list(),
     queryFn: () => PromotionService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function usePromotion(id: string) {
+export function usePromotion(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: promotionQueryKeys.detail(id),
     queryFn: () => PromotionService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
@@ -24,11 +31,11 @@ export function useCreatePromotion() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: PromotionService.create,
-
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    mutationFn: (data: Parameters<typeof PromotionService.create>[0]) =>
+      PromotionService.create(data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: promotionQueryKeys.list(),
       });
     },
   });
@@ -45,15 +52,13 @@ export function useUpdatePromotion() {
       id: string;
       data: Parameters<typeof PromotionService.update>[1];
     }) => PromotionService.update(id, data),
-
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: promotionQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: promotionQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
@@ -62,12 +67,12 @@ export function useDeletePromotion() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: PromotionService.delete,
-
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    mutationFn: (id: string) => PromotionService.delete(id),
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: promotionQueryKeys.list() }),
+        queryClient.removeQueries({ queryKey: promotionQueryKeys.detail(id) }),
+      ]);
     },
   });
 }

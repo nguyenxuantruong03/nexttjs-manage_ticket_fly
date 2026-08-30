@@ -1,28 +1,32 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { CurrencyService } from "@/services/location/currency/client";
-
-import { useQuery } from "@tanstack/react-query";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
+import { useCurrencies } from "@/hooks/location/currency";
 
 export const usePackageCreateFormData = (enabled = true) => {
-  return useQuery({
-    queryKey: ["package-create"],
+  const bookingTypeQuery = useBookingTypes(enabled);
+  const currencyQuery = useCurrencies(enabled);
 
-    enabled,
+  return {
+    data:
+      bookingTypeQuery.data && currencyQuery.data
+        ? {
+            bookingTypeData: bookingTypeQuery.data,
+            currencyData: currencyQuery.data,
+          }
+        : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading: bookingTypeQuery.isLoading || currencyQuery.isLoading,
+    isFetching: bookingTypeQuery.isFetching || currencyQuery.isFetching,
 
-    queryFn: async () => {
-      const [bookingTypeData,currencyData] = await Promise.all([
-        BookingTypeService.getMany(),
-        CurrencyService.getMany()
-      ]);
-
-      return {
-        bookingTypeData,
-        currencyData
-      };
+    isError: bookingTypeQuery.isError || currencyQuery.isError,
+    errors: {
+      bookingType: bookingTypeQuery.error as Error | null,
+      currency: currencyQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all([bookingTypeQuery.refetch(), currencyQuery.refetch()]);
+    },
+  };
 };

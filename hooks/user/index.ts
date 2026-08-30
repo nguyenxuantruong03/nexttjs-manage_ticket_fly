@@ -1,79 +1,108 @@
 "use client";
 
 import { UserService } from "@/services/users/client";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["user"] as const;
-const ME_QUERY_KEY = ["user", "me"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useUsers() {
+export const userQueryKeys = {
+  all: ["user"] as const,
+  list: () => [...userQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...userQueryKeys.all, "detail", id] as const,
+  me: () => [...userQueryKeys.all, "me"] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useUsers(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
-    queryFn: UserService.getMany,
+    queryKey: userQueryKeys.list(),
+    queryFn: () => UserService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useUser(id: string) {
+export function useUser(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: userQueryKeys.detail(id),
     queryFn: () => UserService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useUserMe() {
-  return useQuery({
-    queryKey: ME_QUERY_KEY,
-    queryFn: UserService.getMe,
-  });
-}
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: UserService.create,
+    mutationFn: (data: Parameters<typeof UserService.create>[0]) =>
+      UserService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: userQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: UserService.updateMe,
+    mutationFn: ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Parameters<typeof UserService.update>[1];
+    }) => UserService.update(id, data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ME_QUERY_KEY,
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: userQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: userQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: UserService.delete,
+    mutationFn: (id: string) => UserService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: userQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: userQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }
@@ -82,11 +111,12 @@ export function useUpdateUserMe() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: UserService.updateMe,
+    mutationFn: (data: Parameters<typeof UserService.updateMe>[0]) =>
+      UserService.updateMe(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: ME_QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: userQueryKeys.me(),
       });
     },
   });

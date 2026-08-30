@@ -7,14 +7,23 @@ import ExtraTypeForm from "../components/ExtraTypeForm";
 import { useExtraTypeCreateFormData } from "@/hooks/commerce/extra-type/useExtraTypeCreateFormData";
 
 export default function ExtraTypeCreatePage() {
-  const { data, isLoading, error } = useExtraTypeCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useExtraTypeCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu loại đặt chỗ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <ExtraTypeForm bookingTypeData={data.bookingTypeData} />;

@@ -28,11 +28,15 @@ export const useHotelCheckInPolicyUpdateFormData = (
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    // Gộp chung trong 1 Promise.all (initialData + hotels) nên chỉ có
+    // 1 key, đặt tên "checkInPolicy" cho nhất quán với entity.
+    errors: {
+      checkInPolicy: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

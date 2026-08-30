@@ -3,7 +3,7 @@ import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
 import { SearchTag } from "@/types/searchs/search/tag.types";
 import { SEARCH_PRIORITY_OPTIONS } from "@/types/searchs/search-prioty-score";
-import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import { EntityOption } from "@/components/entity-selector";
 import SearchTagCreateDialog from "@/app/(home)/search/tag/components/SearchTagCreateDialog";

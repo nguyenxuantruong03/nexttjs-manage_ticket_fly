@@ -27,7 +27,7 @@ export function renderCarRentalStepperContent({
       return <LoadingPage />;
     }
 
-    if (insuranceType.error || insuranceBenefitType.error) {
+    if (insuranceType.isError || insuranceBenefitType.isError) {
       return <ErrorPage />;
     }
 
@@ -45,7 +45,7 @@ export function renderCarRentalStepperContent({
       return <LoadingPage />;
     }
 
-    if (documentType.error) {
+    if (documentType.isError) {
       return <ErrorPage />;
     }
 

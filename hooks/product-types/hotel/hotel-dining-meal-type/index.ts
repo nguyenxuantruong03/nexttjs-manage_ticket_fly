@@ -2,36 +2,62 @@
 import { HotelDiningMealTypeService } from "@/services/product-types/hotel/hotel-dining-meal-type/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["hotel-dining-meal-type"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useHotelDiningMealTypes() {
+export const hotelDiningMealTypeQueryKeys = {
+  all: ["hotel-dining-meal-type"] as const,
+  list: () => [...hotelDiningMealTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) =>
+    [...hotelDiningMealTypeQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useHotelDiningMealTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: hotelDiningMealTypeQueryKeys.list(),
     queryFn: () => HotelDiningMealTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useHotelDiningMealType(id: string) {
+export function useHotelDiningMealType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: hotelDiningMealTypeQueryKeys.detail(id),
     queryFn: () => HotelDiningMealTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateHotelDiningMealType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: HotelDiningMealTypeService.create,
+    mutationFn: (
+      data: Parameters<typeof HotelDiningMealTypeService.create>[0],
+    ) => HotelDiningMealTypeService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: hotelDiningMealTypeQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateHotelDiningMealType() {
   const queryClient = useQueryClient();
@@ -45,28 +71,38 @@ export function useUpdateHotelDiningMealType() {
       data: Parameters<typeof HotelDiningMealTypeService.update>[1];
     }) => HotelDiningMealTypeService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: hotelDiningMealTypeQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: hotelDiningMealTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteHotelDiningMealType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: HotelDiningMealTypeService.delete,
+    mutationFn: (id: string) => HotelDiningMealTypeService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: hotelDiningMealTypeQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: hotelDiningMealTypeQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

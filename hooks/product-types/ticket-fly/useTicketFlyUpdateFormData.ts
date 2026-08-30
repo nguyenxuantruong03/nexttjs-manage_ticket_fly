@@ -108,11 +108,14 @@ export const useTicketFlyUpdateFormData = (
           }
         : undefined,
 
-    isPending: locationQuery.isPending || ticketFlyQuery.isPending,
     isLoading: locationQuery.isLoading || ticketFlyQuery.isLoading,
     isFetching: locationQuery.isFetching || ticketFlyQuery.isFetching,
+
     isError: locationQuery.isError || ticketFlyQuery.isError,
-    error: locationQuery.error ?? ticketFlyQuery.error,
+    errors: {
+      ticketFly: ticketFlyQuery.error as Error | null,
+      location: locationQuery.error as Error | null,
+    },
 
     refetch: async () => {
       await Promise.all([locationQuery.refetch(), ticketFlyQuery.refetch()]);

@@ -1,0 +1,37 @@
+import { EntityFormWizardConfig } from "@/components/form/wizard/EntityFormWizard";
+
+import { DraftEntity } from "@/components/daft/draft-config";
+
+import {
+  CarRentalFormSchema,
+  CarRentalSchema,
+} from "./form/schema/core/car-rental.schema";
+
+import { defaultCarRentalValues } from "./form/default-values";
+
+import { carRentalSteps } from "./step/steps";
+
+import { CarRental } from "@/types/product-types/car_rental/core/car-rental.types";
+import { initCarRentalFormValues } from "./form/init-values";
+
+export const carRentalFormConfig: EntityFormWizardConfig<
+  CarRentalFormSchema,
+  CarRental
+> = {
+  schema: CarRentalSchema,
+
+  defaultValues: defaultCarRentalValues,
+
+  initValues: initCarRentalFormValues,
+
+  steps: carRentalSteps,
+
+  draftEntity: DraftEntity.CarRental,
+
+  messages: {
+    create: "Car Rental created",
+    update: "Car Rental updated",
+  },
+
+  redirectDefault: "/car-rental",
+};

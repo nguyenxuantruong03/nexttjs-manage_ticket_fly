@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch } from "@/components/form/form-data";
-import { AirportTransferFormSchema } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../form/schema/core/schema";
 import { EntityOption } from "@/components/entity-selector";
 import { Extra } from "@/types/common/commerce/extra/extra.type";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";

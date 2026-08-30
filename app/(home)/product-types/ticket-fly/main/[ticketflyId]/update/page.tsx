@@ -12,14 +12,24 @@ export default function TicketFlyEditPage() {
 
   const ticketflyId = params.ticketflyId as string;
 
-  const { data, isLoading, error } = useTicketFlyUpdateFormData(ticketflyId);
+  const { data, isLoading, isError, errors, refetch } =
+    useTicketFlyUpdateFormData(ticketflyId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.ticketFly?.message ??
+          errors.location?.message ??
+          "Không tải được dữ liệu vé máy bay, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

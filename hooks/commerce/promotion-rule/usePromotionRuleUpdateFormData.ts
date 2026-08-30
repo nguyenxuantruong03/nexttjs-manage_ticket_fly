@@ -1,36 +1,49 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-
-import { PromotionRuleService } from "@/services/commerce/promotion-rule/client";
-import { PromotionService } from "@/services/commerce/promotion/client";
-
-import { useQuery } from "@tanstack/react-query";
+import { usePromotionRule } from "@/hooks/commerce/promotion-rule";
+import { usePromotions } from "@/hooks/commerce/promotion";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const usePromotionRuleUpdateFormData = (
   promotionRuleId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["promotion-rule-update", promotionRuleId],
+  const promotionRuleQuery = usePromotionRule(promotionRuleId, enabled);
+  const promotionQuery = usePromotions(enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled: enabled && !!promotionRuleId,
-
-    staleTime: 1000 * 60 * 5,
-
-    queryFn: async () => {
-      const [promotionRuleData, promotionData, bookingTypeData] =
-        await Promise.all([
-          PromotionRuleService.getOne(promotionRuleId),
-          PromotionService.getMany(),
-          BookingTypeService.getMany(),
-        ]);
-
-      return {
-        promotionRuleData,
-        promotionData,
-        bookingTypeData,
-      };
+  return {
+    data:
+      promotionRuleQuery.data && promotionQuery.data && bookingTypeQuery.data
+        ? {
+            promotionRuleData: promotionRuleQuery.data,
+            promotionData: promotionQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+          }
+        : undefined,
+    isLoading:
+      promotionRuleQuery.isLoading ||
+      promotionQuery.isLoading ||
+      bookingTypeQuery.isLoading,
+    isFetching:
+      promotionRuleQuery.isFetching ||
+      promotionQuery.isFetching ||
+      bookingTypeQuery.isFetching,
+    isError:
+      promotionRuleQuery.isError ||
+      promotionQuery.isError ||
+      bookingTypeQuery.isError,
+    errors: {
+      promotionRule: promotionRuleQuery.error as Error | null,
+      promotion: promotionQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+    refetch: async () => {
+      await Promise.all([
+        promotionRuleQuery.refetch(),
+        promotionQuery.refetch(),
+        bookingTypeQuery.refetch(),
+      ]);
+    },
+  };
 };

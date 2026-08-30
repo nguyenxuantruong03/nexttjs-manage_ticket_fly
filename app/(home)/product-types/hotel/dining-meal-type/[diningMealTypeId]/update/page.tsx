@@ -11,15 +11,23 @@ export default function DiningMealTypeEditPage() {
 
   const diningMealTypeId = params.diningMealTypeId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useHotelDiningMealTypeUpdateFormData(diningMealTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.diningMealType?.message ??
+          "Không tải được dữ liệu loại bữa ăn, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <DiningMealTypeForm initialData={data.initialData} />;

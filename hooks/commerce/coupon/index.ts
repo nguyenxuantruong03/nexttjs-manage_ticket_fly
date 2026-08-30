@@ -3,36 +3,60 @@
 import { CouponService } from "@/services/commerce/coupon/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["coupon"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useCoupons() {
+export const couponQueryKeys = {
+  all: ["coupon"] as const,
+  list: () => [...couponQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...couponQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useCoupons(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: couponQueryKeys.list(),
     queryFn: () => CouponService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useCoupon(id: string) {
+export function useCoupon(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: couponQueryKeys.detail(id),
     queryFn: () => CouponService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateCoupon() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: CouponService.create,
+    mutationFn: (data: Parameters<typeof CouponService.create>[0]) =>
+      CouponService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: couponQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateCoupon() {
   const queryClient = useQueryClient();
@@ -46,28 +70,32 @@ export function useUpdateCoupon() {
       data: Parameters<typeof CouponService.update>[1];
     }) => CouponService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: couponQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: couponQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteCoupon() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: CouponService.delete,
+    mutationFn: (id: string) => CouponService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: couponQueryKeys.list() }),
+        queryClient.removeQueries({ queryKey: couponQueryKeys.detail(id) }),
+      ]);
     },
   });
 }

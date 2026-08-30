@@ -4,7 +4,7 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { HotelSchemaForm } from "../schema/core/hotel.schema";
+import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import StarRatingCreateDialog from "../../../star-rating/components/StarRatingCreateDialog";
@@ -46,9 +46,7 @@ export default function RatingStep({ starRatingData }: RatingStepProps) {
           createText="Create star rating"
           options={starRatingEntityOptions}
           enableCreate
-          renderCreateDialog={(props) => (
-            <StarRatingCreateDialog {...props} />
-          )}
+          renderCreateDialog={(props) => <StarRatingCreateDialog {...props} />}
         />
       </FormSection>
     </>

@@ -106,15 +106,14 @@ export const useYachtCreateFormData = (enabled = true) => {
           }
         : undefined,
 
-    isPending: locationQuery.isPending || yachtQuery.isPending,
-
     isLoading: locationQuery.isLoading || yachtQuery.isLoading,
-
     isFetching: locationQuery.isFetching || yachtQuery.isFetching,
 
     isError: locationQuery.isError || yachtQuery.isError,
-
-    error: locationQuery.error ?? yachtQuery.error,
+    errors: {
+      yacht: yachtQuery.error as Error | null,
+      location: locationQuery.error as Error | null,
+    },
 
     refetch: async () => {
       await Promise.all([locationQuery.refetch(), yachtQuery.refetch()]);

@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
-import { AirportTransferFormSchema } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../form/schema/core/schema";
 import { EntityOption } from "@/components/entity-selector";
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
 import { ExtraFeeType } from "@/types/common/commerce/extra-fee-type.type";
@@ -13,7 +13,7 @@ import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import VehicleTypeCreateDialog from "@/app/(home)/catalog/vehicle-type/components/VehicleTypeCreateDialog";
 import ExtraFeeTypeCreateDialog from "@/app/(home)/commerce/extra/extra-fee-type/components/ExtraFeeTypeCreateDialog";
 import { BookingType } from "@/types/common/commerce/booking-type";
-import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceruleTypeCreateDialog";
+import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceRuleTypeCreateDialog";
 import { PriceCalculationType } from "@/types/common/enums";
 import { RouteType } from "@/types/common/catalog/route-type.type";
 

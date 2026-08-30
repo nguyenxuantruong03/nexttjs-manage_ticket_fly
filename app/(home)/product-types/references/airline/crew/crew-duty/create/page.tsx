@@ -8,14 +8,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const FlyCrewDutyCreatePage = () => {
-  const { data, isLoading, error } = useFlyCrewDutyCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyCrewDutyCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.crewDuty?.message ??
+          "Không tải được dữ liệu nhiệm vụ tổ bay, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyCrewDutyForm />;

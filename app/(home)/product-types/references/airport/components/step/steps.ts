@@ -2,7 +2,7 @@ import { FormWizardStep } from "@/components/form/wizard/types";
 
 import { Info, Plane, MapPinned, Route, Timer } from "lucide-react";
 
-import { FlyAirportFormSchema } from "../form/schema";
+import { FlyAirportFormSchema } from "../schema/schema";
 import { flyAirportFieldGroups } from "./field-groups";
 
 export const flyAirportSteps: FormWizardStep<FlyAirportFormSchema>[] = [

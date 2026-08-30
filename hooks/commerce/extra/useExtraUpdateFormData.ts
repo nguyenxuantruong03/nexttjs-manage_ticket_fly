@@ -1,34 +1,62 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { ExtraTypeService } from "@/services/commerce/extra-type/client";
-import { ExtraService } from "@/services/commerce/extra/client";
-import { CurrencyService } from "@/services/location/currency/client";
-import { useQuery } from "@tanstack/react-query";
+import { useExtra } from "@/hooks/commerce/extra";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
+import { useExtraTypes } from "@/hooks/commerce/extra-type";
+import { useCurrencies } from "@/hooks/location/currency";
 
 export const useExtraUpdateFormData = (extraId: string, enabled = true) => {
-  return useQuery({
-    queryKey: ["extra-update", extraId],
+  const extraQuery = useExtra(extraId, enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
+  const extraTypeQuery = useExtraTypes(enabled);
+  const currencyQuery = useCurrencies(enabled);
 
-    enabled: enabled && !!extraId,
+  return {
+    data:
+      extraQuery.data &&
+      bookingTypeQuery.data &&
+      extraTypeQuery.data &&
+      currencyQuery.data
+        ? {
+            extraData: extraQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+            extraTypeData: extraTypeQuery.data,
+            currencyData: currencyQuery.data,
+          }
+        : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading:
+      extraQuery.isLoading ||
+      bookingTypeQuery.isLoading ||
+      extraTypeQuery.isLoading ||
+      currencyQuery.isLoading,
 
-    queryFn: async () => {
-      const [extraData, bookingTypeData, extraTypeData, currencyData] =
-        await Promise.all([
-          ExtraService.getOne(extraId),
-          BookingTypeService.getMany(),
-          ExtraTypeService.getMany(),
-          CurrencyService.getMany(),
-        ]);
+    isFetching:
+      extraQuery.isFetching ||
+      bookingTypeQuery.isFetching ||
+      extraTypeQuery.isFetching ||
+      currencyQuery.isFetching,
 
-      return {
-        extraData,
-        bookingTypeData,
-        extraTypeData,
-        currencyData,
-      };
+    isError:
+      extraQuery.isError ||
+      bookingTypeQuery.isError ||
+      extraTypeQuery.isError ||
+      currencyQuery.isError,
+
+    errors: {
+      extra: extraQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
+      extraType: extraTypeQuery.error as Error | null,
+      currency: currencyQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all([
+        extraQuery.refetch(),
+        bookingTypeQuery.refetch(),
+        extraTypeQuery.refetch(),
+        currencyQuery.refetch(),
+      ]);
+    },
+  };
 };

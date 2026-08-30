@@ -1,42 +1,62 @@
 "use client";
 
 import { PackageService } from "@/services/commerce/package/client";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["package"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function usePackages() {
+export const packageQueryKeys = {
+  all: ["package"] as const,
+  list: () => [...packageQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...packageQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function usePackages(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
-
+    queryKey: packageQueryKeys.list(),
     queryFn: () => PackageService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function usePackage(id: string) {
+export function usePackage(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
-
+    queryKey: packageQueryKeys.detail(id),
     queryFn: () => PackageService.getOne(id),
-
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreatePackage() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: PackageService.create,
+    mutationFn: (data: Parameters<typeof PackageService.create>[0]) =>
+      PackageService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: packageQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdatePackage() {
   const queryClient = useQueryClient();
@@ -50,28 +70,38 @@ export function useUpdatePackage() {
       data: Parameters<typeof PackageService.update>[1];
     }) => PackageService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: packageQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: packageQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeletePackage() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: PackageService.delete,
+    mutationFn: (id: string) => PackageService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: packageQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: packageQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

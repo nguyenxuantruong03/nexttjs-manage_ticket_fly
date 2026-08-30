@@ -3,35 +3,60 @@
 import { FlyAllianceService } from "@/services/product-types/references/alliance/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["fly-alliance"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useFlyAlliances() {
+export const flyAllianceQueryKeys = {
+  all: ["fly-alliance"] as const,
+  list: () => [...flyAllianceQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...flyAllianceQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useFlyAlliances(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: flyAllianceQueryKeys.list(),
     queryFn: () => FlyAllianceService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useFlyAlliance(id: string) {
+export function useFlyAlliance(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: flyAllianceQueryKeys.detail(id),
     queryFn: () => FlyAllianceService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateFlyAlliance() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlyAllianceService.create,
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    mutationFn: (data: Parameters<typeof FlyAllianceService.create>[0]) =>
+      FlyAllianceService.create(data),
+
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: flyAllianceQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateFlyAlliance() {
   const queryClient = useQueryClient();
@@ -45,27 +70,38 @@ export function useUpdateFlyAlliance() {
       data: Parameters<typeof FlyAllianceService.update>[1];
     }) => FlyAllianceService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flyAllianceQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: flyAllianceQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteFlyAlliance() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlyAllianceService.delete,
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    mutationFn: (id: string) => FlyAllianceService.delete(id),
+
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flyAllianceQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: flyAllianceQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

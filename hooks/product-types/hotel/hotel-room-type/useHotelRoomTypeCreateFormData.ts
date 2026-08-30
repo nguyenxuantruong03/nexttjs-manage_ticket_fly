@@ -29,11 +29,20 @@ export const useHotelRoomTypeCreateFormData = (enabled = true) => {
 
   return {
     data: query.data,
-    isPending: query.isPending,
+
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
+    // isError là field bool duy nhất dùng để check "có lỗi hay không"
+    // ở component (if (isError || !data) ...). "errors" bên dưới chỉ
+    // dùng khi cần hiển thị message/nguồn lỗi cụ thể, không thay thế
+    // isError.
     isError: query.isError,
-    error: query.error,
+    // Chỉ có 1 nguồn dữ liệu (Promise.all gộp chung) nên chỉ có 1 key.
+    errors: {
+      roomType: query.error as Error | null,
+    },
+
     refetch: query.refetch,
   };
 };

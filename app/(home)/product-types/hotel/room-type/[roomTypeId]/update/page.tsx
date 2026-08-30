@@ -11,14 +11,23 @@ export default function RoomTypeEditPage() {
 
   const roomTypeId = params.roomTypeId as string;
 
-  const { data, isLoading, error } = useHotelRoomTypeUpdateFormData(roomTypeId);
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelRoomTypeUpdateFormData(roomTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.roomType?.message ??
+          "Không tải được dữ liệu loại phòng, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

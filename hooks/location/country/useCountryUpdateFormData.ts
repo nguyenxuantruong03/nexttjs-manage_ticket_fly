@@ -1,48 +1,68 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-
-import { CountryService } from "@/services/location/country/client";
-import { CurrencyService } from "@/services/location/currency/client";
-import { LanguageService } from "@/services/location/language/client";
-import { TimezoneService } from "@/services/location/timezone/client";
-import { SearchTagService } from "@/services/search/tag/client";
-import { ContinentService } from "@/services/location/country/continent/client";
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
+import { useCountry } from "@/hooks/location/country";
+import { useCurrencies } from "@/hooks/location/currency";
+import { useSearchTags } from "@/hooks/search/tag";
+import { useTimezones } from "@/hooks/location/timezone";
+import { useLanguages } from "@/hooks/location/language";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
+import { useContinents } from "@/hooks/location/country/continent";
 
 export const useCountryUpdateFormData = (countryId: string, enabled = true) => {
-  return useQuery({
-    queryKey: ["country-update-form-data", countryId],
-    enabled: enabled && !!countryId,
-    staleTime: 1000 * 60 * 5,
-    queryFn: async () => {
-      const [
-        initialData,
-        currencyData,
-        searchTagData,
-        timezoneData,
-        languageData,
-        bookingTypeData,
-        continentData,
-      ] = await Promise.all([
-        CountryService.getOne(countryId),
-        CurrencyService.getMany(),
-        SearchTagService.getMany(),
-        TimezoneService.getMany(),
-        LanguageService.getMany(),
-        BookingTypeService.getMany(),
-        ContinentService.getMany(),
-      ]);
+  const countryQuery = useCountry(countryId, enabled);
+  const currencyQuery = useCurrencies(enabled);
+  const searchTagQuery = useSearchTags(enabled);
+  const timezoneQuery = useTimezones(enabled);
+  const languageQuery = useLanguages(enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
+  const continentQuery = useContinents(enabled);
 
-      return {
-        initialData,
-        currencyData,
-        searchTagData,
-        timezoneData,
-        languageData,
-        bookingTypeData,
-        continentData,
-      };
+  const queries = [
+    countryQuery,
+    currencyQuery,
+    searchTagQuery,
+    timezoneQuery,
+    languageQuery,
+    bookingTypeQuery,
+    continentQuery,
+  ];
+
+  return {
+    data:
+      countryQuery.data &&
+      currencyQuery.data &&
+      searchTagQuery.data &&
+      timezoneQuery.data &&
+      languageQuery.data &&
+      bookingTypeQuery.data &&
+      continentQuery.data
+        ? {
+            initialData: countryQuery.data,
+            currencyData: currencyQuery.data,
+            searchTagData: searchTagQuery.data,
+            timezoneData: timezoneQuery.data,
+            languageData: languageQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+            continentData: continentQuery.data,
+          }
+        : undefined,
+
+    isLoading: queries.some((q) => q.isLoading),
+    isFetching: queries.some((q) => q.isFetching),
+    isError: queries.some((q) => q.isError),
+
+    errors: {
+      country: countryQuery.error as Error | null,
+      currency: currencyQuery.error as Error | null,
+      searchTag: searchTagQuery.error as Error | null,
+      timezone: timezoneQuery.error as Error | null,
+      language: languageQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
+      continent: continentQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all(queries.map((q) => q.refetch()));
+    },
+  };
 };

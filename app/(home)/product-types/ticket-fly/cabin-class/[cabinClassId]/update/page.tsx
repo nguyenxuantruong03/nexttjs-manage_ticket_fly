@@ -14,15 +14,23 @@ export default function FlyCabinClassEditPage() {
 
   const cabinClassId = params.cabinClassId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useFlyCabinClassUpdateFormData(cabinClassId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.cabinClass?.message ??
+          "Không tải được dữ liệu hạng ghế, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyCabinClassForm initialData={data.initialData} />;

@@ -12,14 +12,24 @@ export default function ExtraTypeEditPage() {
 
   const extraTypeId = params.extraTypeId as string;
 
-  const { data, isLoading, error } = useExtraTypeUpdateFormData(extraTypeId);
+  const { data, isLoading, isError, errors, refetch } =
+    useExtraTypeUpdateFormData(extraTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.extraType?.message ??
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu loại extra, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

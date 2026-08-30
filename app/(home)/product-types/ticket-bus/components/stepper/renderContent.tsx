@@ -30,7 +30,7 @@ export function renderTicketBusStepperContent({
       return <LoadingPage />;
     }
 
-    if (seatType.error) {
+    if (seatType.isError) {
       return <ErrorPage />;
     }
 

@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect } from "@/components/form/form-data";
 
-import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 import { DriverStatus } from "@/types/product-types/car_rental/enums";
 
 const driverStatusOptions = Object.values(DriverStatus).map((value) => ({

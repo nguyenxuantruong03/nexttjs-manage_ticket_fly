@@ -11,15 +11,23 @@ export default function SustainabilityEditPage() {
 
   const sustainabilityId = params.sustainabilityId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useHotelSustainabilityUpdateFormData(sustainabilityId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.sustainability?.message ??
+          "Không tải được dữ liệu tiêu chí bền vững, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <SustainabilityForm initialData={data.initialData} />;

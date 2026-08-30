@@ -1,23 +1,26 @@
 "use client";
 
-import { PlaceTypeService } from "@/services/location/place/place-type/client";
-import { useQuery } from "@tanstack/react-query";
+import { usePlaceType } from "@/hooks/location/place/place-type";
 
 export const usePlaceTypeUpdateFormData = (
   placeTypeId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["place-type-update-form-data", placeTypeId],
-    enabled: enabled && !!placeTypeId,
-    staleTime: 1000 * 60 * 5,
+  const placeTypeQuery = usePlaceType(placeTypeId, enabled);
 
-    queryFn: async () => {
-      const initialData = await PlaceTypeService.getOne(placeTypeId);
+  return {
+    data: placeTypeQuery.data
+      ? { initialData: placeTypeQuery.data }
+      : undefined,
 
-      return {
-        initialData,
-      };
+    isLoading: placeTypeQuery.isLoading,
+    isFetching: placeTypeQuery.isFetching,
+
+    isError: placeTypeQuery.isError,
+    errors: {
+      placeType: placeTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: placeTypeQuery.refetch,
+  };
 };

@@ -8,7 +8,7 @@ import { EntityOption } from "@/components/entity-selector";
 
 import { Package } from "@/types/common/commerce/package/package.type";
 
-import { FlyFormSchema } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../form/schema/core/fly.schema";
 import PackageCreateDialog from "@/app/(home)/commerce/package/components/PackageCreateDialog";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import { Currency } from "@/types/location/currency";

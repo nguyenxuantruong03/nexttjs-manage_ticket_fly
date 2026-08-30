@@ -6,15 +6,23 @@ import { useCarRentalInsuranceBenefitTypeCreateFormData } from "@/hooks/product-
 import CarRentalInsuranceBenefitTypeForm from "../components/CarRentalInsuranceBenefitTypeTypeForm";
 
 const CarRentalInsuranceBenefitTypeCreatePage = () => {
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useCarRentalInsuranceBenefitTypeCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.insuranceBenefitType?.message ??
+          "Không tải được dữ liệu loại quyền lợi bảo hiểm, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <CarRentalInsuranceBenefitTypeForm />;

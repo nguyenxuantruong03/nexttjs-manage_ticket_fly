@@ -25,11 +25,14 @@ export const useHotelRoomCategoryUpdateFormData = (
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    // Chỉ có 1 nguồn dữ liệu (roomCategory) nên lấy thẳng message của nó.
+    errors: {
+      roomCategory: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

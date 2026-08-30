@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSelect } from "@/components/form/form-data";
 
-import { AirportTransferFormSchema } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../form/schema/core/schema";
 import { AirportTransferTripStatus } from "@/types/product-types/airport-transfer/enums";
 
 const tripStatusOptions = Object.values(AirportTransferTripStatus).map(

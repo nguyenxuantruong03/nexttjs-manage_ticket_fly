@@ -1,29 +1,38 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { FacilityCategoryService } from "@/services/features/facility-category/client";
-import { useQuery } from "@tanstack/react-query";
+import { useFacilityCategory } from "@/hooks/features/facility-category";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useFacilityCategoryUpdateFormData = (
   facilityCategoryId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["facility-category-update", facilityCategoryId],
+  const facilityCategoryQuery = useFacilityCategory(
+    facilityCategoryId,
+    enabled,
+  );
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled: enabled && !!facilityCategoryId,
-
-    staleTime: 1000 * 60 * 5,
-
-    queryFn: async () => {
-      const [facilityCategoryData,bookingTypeData] = await Promise.all([
-        FacilityCategoryService.getOne(facilityCategoryId),
-        BookingTypeService.getMany(),
-      ]);
-
-      return {
-        facilityCategoryData,bookingTypeData
-      };
+  return {
+    data:
+      facilityCategoryQuery.data && bookingTypeQuery.data
+        ? {
+            facilityCategoryData: facilityCategoryQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+          }
+        : undefined,
+    isLoading: facilityCategoryQuery.isLoading || bookingTypeQuery.isLoading,
+    isFetching: facilityCategoryQuery.isFetching || bookingTypeQuery.isFetching,
+    isError: facilityCategoryQuery.isError || bookingTypeQuery.isError,
+    errors: {
+      facilityCategory: facilityCategoryQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+    refetch: async () => {
+      await Promise.all([
+        facilityCategoryQuery.refetch(),
+        bookingTypeQuery.refetch(),
+      ]);
+    },
+  };
 };

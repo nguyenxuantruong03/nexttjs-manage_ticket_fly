@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 import { hotelFieldGroups } from "./field-groups";
-import { HotelSchemaForm } from "../schema/core/hotel.schema";
+import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
 
 export const hotelSteps: FormWizardStep<HotelSchemaForm>[] = [
   // ======================================================

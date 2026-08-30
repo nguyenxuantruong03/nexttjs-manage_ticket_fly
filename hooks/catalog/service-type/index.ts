@@ -1,39 +1,62 @@
 "use client";
 
 import { ServiceTypeService } from "@/services/catalog/service-type/client";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["service-type"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useServiceTypes() {
+export const serviceTypeQueryKeys = {
+  all: ["service-type"] as const,
+  list: () => [...serviceTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...serviceTypeQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useServiceTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: serviceTypeQueryKeys.list(),
     queryFn: () => ServiceTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useServiceType(id: string) {
+export function useServiceType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: serviceTypeQueryKeys.detail(id),
     queryFn: () => ServiceTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateServiceType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ServiceTypeService.create,
+    mutationFn: (data: Parameters<typeof ServiceTypeService.create>[0]) =>
+      ServiceTypeService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: serviceTypeQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateServiceType() {
   const queryClient = useQueryClient();
@@ -47,28 +70,38 @@ export function useUpdateServiceType() {
       data: Parameters<typeof ServiceTypeService.update>[1];
     }) => ServiceTypeService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: serviceTypeQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: serviceTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteServiceType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ServiceTypeService.delete,
+    mutationFn: (id: string) => ServiceTypeService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: serviceTypeQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: serviceTypeQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

@@ -1,25 +1,25 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-
-import { useQuery } from "@tanstack/react-query";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useBookingItemTypeCreateFormData = (enabled = true) => {
-  return useQuery({
-    queryKey: ["booking-item-type-create"],
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled,
+  return {
+    // Giữ tên field "bookingTypeData" (không phải "bookingTypes") vì
+    // component BookingItemTypeForm đang đọc data.bookingTypeData.
+    data: bookingTypeQuery.data
+      ? { bookingTypeData: bookingTypeQuery.data }
+      : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading: bookingTypeQuery.isLoading,
+    isFetching: bookingTypeQuery.isFetching,
 
-    queryFn: async () => {
-      const [bookingTypeData] = await Promise.all([
-        BookingTypeService.getMany(),
-      ]);
-
-      return {
-        bookingTypeData,
-      };
+    isError: bookingTypeQuery.isError,
+    errors: {
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: bookingTypeQuery.refetch,
+  };
 };

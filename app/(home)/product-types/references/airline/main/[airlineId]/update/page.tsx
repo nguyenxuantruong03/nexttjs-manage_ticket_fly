@@ -14,14 +14,23 @@ export default function FlyAirlineEditPage() {
 
   const airlineId = params.airlineId as string;
 
-  const { data, isLoading, error } = useFlyAirlineUpdateFormData(airlineId);
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyAirlineUpdateFormData(airlineId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.airline?.message ??
+          "Không tải được dữ liệu hãng bay, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyAirlineForm initialData={data} />;

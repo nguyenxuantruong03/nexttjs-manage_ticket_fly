@@ -2,20 +2,26 @@
 
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
-
 import PolicyForm from "../components/PolicyForm";
-
 import { usePolicyCreateFormData } from "@/hooks/features/policy/usePolicyCreateFormData";
 
 export default function PolicyCreatePage() {
-  const { data, isLoading, error } = usePolicyCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    usePolicyCreateFormData();
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.bookingType?.message ??
+          errors.policyType?.message ??
+          "Không tải được dữ liệu chính sách, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

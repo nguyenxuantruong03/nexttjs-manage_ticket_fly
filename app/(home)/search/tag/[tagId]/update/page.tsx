@@ -12,14 +12,23 @@ export default function SearchTagEditPage() {
 
   const tagId = params.tagId as string;
 
-  const { data, isLoading, error } = useSearchTagUpdateFormData(tagId);
+  const { data, isLoading, isError, errors, refetch } =
+    useSearchTagUpdateFormData(tagId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.searchTag?.message ??
+          "Không tải được dữ liệu thẻ tìm kiếm, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

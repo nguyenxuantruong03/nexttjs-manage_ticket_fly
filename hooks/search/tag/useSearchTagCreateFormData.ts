@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { BookingTypeService } from "@/services/commerce/booking-type/client";
 
 export const useSearchTagCreateFormData = (enabled = true) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: ["search-tag-create-form-data"],
 
     enabled,
@@ -22,4 +22,18 @@ export const useSearchTagCreateFormData = (enabled = true) => {
       };
     },
   });
+
+  return {
+    data: query.data,
+
+    isLoading: query.isLoading,
+    isFetching: query.isFetching,
+
+    isError: query.isError,
+    errors: {
+      searchTag: query.error as Error | null,
+    },
+
+    refetch: query.refetch,
+  };
 };

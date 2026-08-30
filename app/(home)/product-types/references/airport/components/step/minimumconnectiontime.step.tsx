@@ -7,7 +7,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 import { Button } from "@/components/ui/button";
 
-import { FlyAirportFormSchema } from "../form/schema";
+import { FlyAirportFormSchema } from "../schema/schema";
 
 export default function MinimumConnectionTimeStep() {
   const { control } = useFormContext<FlyAirportFormSchema>();

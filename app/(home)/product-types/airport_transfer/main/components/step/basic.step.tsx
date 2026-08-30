@@ -8,7 +8,7 @@ import {
   FormTextarea,
 } from "@/components/form/form-data";
 
-import { AirportTransferFormSchema } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../form/schema/core/schema";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { ServiceType } from "@/types/common/catalog/service-type.type";

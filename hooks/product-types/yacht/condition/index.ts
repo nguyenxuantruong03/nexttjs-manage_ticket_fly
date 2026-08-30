@@ -3,36 +3,61 @@
 import { YachtConditionService } from "@/services/product-types/yacht/condition/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["yacht-condition"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useYachtConditions() {
+export const yachtConditionQueryKeys = {
+  all: ["yacht-condition"] as const,
+  list: () => [...yachtConditionQueryKeys.all, "list"] as const,
+  detail: (id: string) =>
+    [...yachtConditionQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useYachtConditions(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: yachtConditionQueryKeys.list(),
     queryFn: () => YachtConditionService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useYachtCondition(id: string) {
+export function useYachtCondition(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: yachtConditionQueryKeys.detail(id),
     queryFn: () => YachtConditionService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateYachtCondition() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: YachtConditionService.create,
+    mutationFn: (data: Parameters<typeof YachtConditionService.create>[0]) =>
+      YachtConditionService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: yachtConditionQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateYachtCondition() {
   const queryClient = useQueryClient();
@@ -46,28 +71,38 @@ export function useUpdateYachtCondition() {
       data: Parameters<typeof YachtConditionService.update>[1];
     }) => YachtConditionService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: yachtConditionQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: yachtConditionQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteYachtCondition() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: YachtConditionService.delete,
+    mutationFn: (id: string) => YachtConditionService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: yachtConditionQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: yachtConditionQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

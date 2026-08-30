@@ -2,8 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { FlyMealTypeService } from "@/services/product-types/ticket-fly/meal-type/client";
-
 export const useFlyMealTypeCreateFormData = (enabled = true) => {
   const query = useQuery({
     queryKey: ["fly-meal-type-create-form-data"],
@@ -21,11 +19,13 @@ export const useFlyMealTypeCreateFormData = (enabled = true) => {
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    errors: {
+      mealType: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

@@ -1,27 +1,51 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { ExtraTypeService } from "@/services/commerce/extra-type/client";
-import { CurrencyService } from "@/services/location/currency/client";
-
-import { useQuery } from "@tanstack/react-query";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
+import { useExtraTypes } from "@/hooks/commerce/extra-type";
+import { useCurrencies } from "@/hooks/location/currency";
 
 export const useExtraCreateFormData = (enabled = true) => {
-  return useQuery({
-    queryKey: ["extra-create"],
+  const bookingTypeQuery = useBookingTypes(enabled);
+  const extraTypeQuery = useExtraTypes(enabled);
+  const currencyQuery = useCurrencies(enabled);
 
-    enabled,
+  return {
+    data:
+      bookingTypeQuery.data && extraTypeQuery.data && currencyQuery.data
+        ? {
+            bookingTypeData: bookingTypeQuery.data,
+            extraTypeData: extraTypeQuery.data,
+            currencyData: currencyQuery.data,
+          }
+        : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading:
+      bookingTypeQuery.isLoading ||
+      extraTypeQuery.isLoading ||
+      currencyQuery.isLoading,
 
-    queryFn: async () => {
-      const [bookingTypeData, extraTypeData, currencyData] = await Promise.all([
-        BookingTypeService.getMany(),
-        ExtraTypeService.getMany(),
-        CurrencyService.getMany(),
-      ]);
+    isFetching:
+      bookingTypeQuery.isFetching ||
+      extraTypeQuery.isFetching ||
+      currencyQuery.isFetching,
 
-      return { bookingTypeData, extraTypeData, currencyData };
+    isError:
+      bookingTypeQuery.isError ||
+      extraTypeQuery.isError ||
+      currencyQuery.isError,
+
+    errors: {
+      bookingType: bookingTypeQuery.error as Error | null,
+      extraType: extraTypeQuery.error as Error | null,
+      currency: currencyQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all([
+        bookingTypeQuery.refetch(),
+        extraTypeQuery.refetch(),
+        currencyQuery.refetch(),
+      ]);
+    },
+  };
 };

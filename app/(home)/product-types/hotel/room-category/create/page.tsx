@@ -6,14 +6,23 @@ import ErrorPage from "@/components/ui/error-page";
 import LoadingPage from "@/components/ui/loading-page";
 
 const RoomCategoryCreatePage = () => {
-  const { data, isLoading, error } = useHotelRoomCategoryCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelRoomCategoryCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.roomCategory?.message ??
+          "Không tải được dữ liệu loại phòng, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <RoomCategoryForm />;

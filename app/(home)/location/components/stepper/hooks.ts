@@ -5,7 +5,6 @@ import { useCityCreateFormData } from "@/hooks/location/city/useCityCreateFormDa
 import { useContinentCreateFormData } from "@/hooks/location/country/continent/useContinentCreateFormData";
 import { useCountryCreateFormData } from "@/hooks/location/country/useCountryCreateFormData";
 import { useDistrictCreateFormData } from "@/hooks/location/district/useDistrictCreateFormData";
-import { usePlaceTypeCreateFormData } from "@/hooks/location/place/place-type/usePlaceCreateFormData";
 import { usePlaceCreateFormData } from "@/hooks/location/place/usePlaceCreateFormData";
 import { useWardCreateFormData } from "@/hooks/location/ward/useWardCreateFormData";
 import { useFlyAirportCreateFormData } from "@/hooks/product-types/references/airport/useFlyAirportCreateFormData";
@@ -41,10 +40,6 @@ export function useLocationStepperHooks(mainStep: string, subStep: string) {
    * ==========================
    */
 
-  const placeType = usePlaceTypeCreateFormData(
-    mainStep === "address" && subStep === "place-type",
-  );
-
   const place = usePlaceCreateFormData(subStep === "place");
 
   const address = useAddressCreateFormData(mainStep === "address");
@@ -57,7 +52,6 @@ export function useLocationStepperHooks(mainStep: string, subStep: string) {
     city,
     district,
     ward,
-    placeType,
     place,
     address,
     flyairport,

@@ -1,31 +1,25 @@
 "use client";
 
-import * as React from "react";
-
 import {
-  AppForm,
   FormInput,
   FormTextarea,
   FormSwitch,
 } from "@/components/form/form-data";
-
-import { Button } from "@/components/ui/button";
-
-import { useSubmit } from "@/hooks/useSubmit";
-import { useAppForm } from "@/hooks/useAppForm";
-
-import { MealPlanFormSchema, MealPlanSchema } from "./form/schema";
-
-import { mealPlanDefaultValues } from "./form/default-values";
 
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
 } from "@/components/entity-selector";
 
-import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { MealPlanFormSchema, MealPlanSchema } from "./form/schema";
+
+import { mealPlanDefaultValues } from "./form/default-values";
+
 import { MealPlan } from "@/types/product-types/hotel/pricing/rate-plan.types";
+
 import { useCreateHotelMealPlan } from "@/hooks/product-types/hotel/hotel-meal-plan";
+
+import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
 // ======================================================
 // PROPS
@@ -43,109 +37,60 @@ export default function MealPlanCreateDialog({
   defaultKeyword,
   onCreated,
 }: MealPlanCreateDialogProps) {
-  const dialogRef = React.useRef<HTMLDivElement>(null);
-
-  const submit = useSubmit();
-
   const createMealPlan = useCreateHotelMealPlan();
 
-  const { form } = useAppForm<MealPlanFormSchema>({
-    schema: MealPlanSchema,
-    defaultValues: mealPlanDefaultValues,
-  });
-
-  React.useEffect(() => {
-    if (!open) return;
-
-    form.reset({
-      ...mealPlanDefaultValues,
-      name: defaultKeyword ?? "",
-    });
-  }, [open, defaultKeyword, form]);
-
-  const onSubmit = (values: MealPlanFormSchema) => {
-    submit({
-      mutation: createMealPlan.mutateAsync(values),
-
-      success: "Meal Plan created",
-
-      onSuccess: (response) => {
-        const result: EntityCreateResult<MealPlan> = {
+  return (
+    <EntityCreateFormDialog<MealPlanFormSchema, MealPlan>
+      open={open}
+      onOpenChange={onOpenChange}
+      defaultKeyword={defaultKeyword}
+      onCreated={onCreated}
+      mutation={createMealPlan}
+      config={{
+        schema: MealPlanSchema,
+        defaultValues: mealPlanDefaultValues,
+        title: "Create Meal Plan",
+        description: "Create a new meal plan",
+        success: "Meal Plan created",
+        submitText: "Create Meal Plan",
+        submittingText: "Creating...",
+        getResult: (response): EntityCreateResult<MealPlan> => ({
           value: response.id,
           label: response.name,
           data: response,
-        };
-
-        onCreated(result);
-
-        form.reset();
-
-        onOpenChange(false);
-      },
-    });
-  };
-
-  return (
-    <EntityCreateDialog
-      dialogRef={dialogRef}
-      open={open}
-      onOpenChange={onOpenChange}
-      title="Create Meal Plan"
-      description="Create a new meal plan"
+        }),
+      }}
     >
-      <AppForm
-        form={form}
-        onSubmit={onSubmit}
-        loading={createMealPlan.isPending}
-      >
-        <div className="space-y-6">
-          <div className="grid gap-4 md:grid-cols-2">
-            <FormInput<MealPlanFormSchema>
-              name="name"
-              label="Name"
-              placeholder="Meal plan name"
-            />
+      <div className="grid gap-4 md:grid-cols-2">
+        <FormInput<MealPlanFormSchema>
+          name="name"
+          label="Name"
+          placeholder="Meal plan name"
+        />
 
-            <FormInput<MealPlanFormSchema>
-              name="icon"
-              label="Icon"
-              placeholder="Icon"
-            />
+        <FormInput<MealPlanFormSchema>
+          name="icon"
+          label="Icon"
+          placeholder="Icon"
+        />
 
-            <div className="md:col-span-2">
-              <FormTextarea<MealPlanFormSchema>
-                name="description"
-                label="Description"
-                placeholder="Description"
-              />
-            </div>
-
-            <FormInput<MealPlanFormSchema>
-              name="sortOrder"
-              label="Sort Order"
-              type="number"
-              placeholder="0"
-            />
-
-            <FormSwitch<MealPlanFormSchema> name="active" label="Active" />
-          </div>
-
-          <div className="flex justify-end gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              disabled={createMealPlan.isPending}
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-
-            <Button type="submit" disabled={createMealPlan.isPending}>
-              {createMealPlan.isPending ? "Creating..." : "Create Meal Plan"}
-            </Button>
-          </div>
+        <div className="md:col-span-2">
+          <FormTextarea<MealPlanFormSchema>
+            name="description"
+            label="Description"
+            placeholder="Description"
+          />
         </div>
-      </AppForm>
-    </EntityCreateDialog>
+
+        <FormInput<MealPlanFormSchema>
+          name="sortOrder"
+          label="Sort Order"
+          type="number"
+          placeholder="0"
+        />
+
+        <FormSwitch<MealPlanFormSchema> name="active" label="Active" />
+      </div>
+    </EntityCreateFormDialog>
   );
 }

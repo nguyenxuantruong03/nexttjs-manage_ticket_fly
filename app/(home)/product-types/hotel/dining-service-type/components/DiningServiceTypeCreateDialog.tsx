@@ -1,18 +1,15 @@
 "use client";
 
-import * as React from "react";
-
 import {
-  AppForm,
   FormInput,
   FormTextarea,
   FormSwitch,
 } from "@/components/form/form-data";
 
-import { Button } from "@/components/ui/button";
-
-import { useSubmit } from "@/hooks/useSubmit";
-import { useAppForm } from "@/hooks/useAppForm";
+import {
+  EntityCreateDialogProps,
+  EntityCreateResult,
+} from "@/components/entity-selector";
 
 import {
   DiningServiceTypeFormSchema,
@@ -21,14 +18,11 @@ import {
 
 import { diningServiceTypeDefaultValues } from "./form/default-values";
 
-import {
-  EntityCreateDialogProps,
-  EntityCreateResult,
-} from "@/components/entity-selector";
-
-import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
 import { useCreateHotelDiningServiceType } from "@/hooks/product-types/hotel/hotel-dining-service-type";
+
 import { DiningServiceType } from "@/types/product-types/hotel/service/dinner-option.type";
+
+import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
 // ======================================================
 // PROPS
@@ -46,114 +40,60 @@ export default function DiningServiceTypeCreateDialog({
   defaultKeyword,
   onCreated,
 }: DiningServiceTypeCreateDialogProps) {
-  const dialogRef = React.useRef<HTMLDivElement>(null);
-
-  const submit = useSubmit();
-
   const createDiningServiceType = useCreateHotelDiningServiceType();
 
-  const { form } = useAppForm<DiningServiceTypeFormSchema>({
-    schema: DiningServiceTypeSchema,
-    defaultValues: diningServiceTypeDefaultValues,
-  });
-
-  React.useEffect(() => {
-    if (!open) return;
-
-    form.reset({
-      ...diningServiceTypeDefaultValues,
-      name: defaultKeyword ?? "",
-    });
-  }, [open, defaultKeyword, form]);
-
-  const onSubmit = (values: DiningServiceTypeFormSchema) => {
-    submit({
-      mutation: createDiningServiceType.mutateAsync(values),
-
-      success: "Dining Service Type created",
-
-      onSuccess: (response) => {
-        const result: EntityCreateResult<DiningServiceType> = {
+  return (
+    <EntityCreateFormDialog<DiningServiceTypeFormSchema, DiningServiceType>
+      open={open}
+      onOpenChange={onOpenChange}
+      defaultKeyword={defaultKeyword}
+      onCreated={onCreated}
+      mutation={createDiningServiceType}
+      config={{
+        schema: DiningServiceTypeSchema,
+        defaultValues: diningServiceTypeDefaultValues,
+        title: "Create Dining Service Type",
+        description: "Create a new dining service type",
+        success: "Dining Service Type created",
+        submitText: "Create Dining Service Type",
+        submittingText: "Creating...",
+        getResult: (response): EntityCreateResult<DiningServiceType> => ({
           value: response.id,
           label: response.name,
           data: response,
-        };
-
-        onCreated(result);
-
-        form.reset();
-
-        onOpenChange(false);
-      },
-    });
-  };
-
-  return (
-    <EntityCreateDialog
-      dialogRef={dialogRef}
-      open={open}
-      onOpenChange={onOpenChange}
-      title="Create Dining Service Type"
-      description="Create a new dining service type"
+        }),
+      }}
     >
-      <AppForm
-        form={form}
-        onSubmit={onSubmit}
-        loading={createDiningServiceType.isPending}
-      >
-        <div className="space-y-6">
-          <div className="grid gap-4 md:grid-cols-2">
-            <FormInput<DiningServiceTypeFormSchema>
-              name="name"
-              label="Name"
-              placeholder="Dining service type name"
-            />
+      <div className="grid gap-4 md:grid-cols-2">
+        <FormInput<DiningServiceTypeFormSchema>
+          name="name"
+          label="Name"
+          placeholder="Dining service type name"
+        />
 
-            <FormInput<DiningServiceTypeFormSchema>
-              name="icon"
-              label="Icon"
-              placeholder="Icon"
-            />
+        <FormInput<DiningServiceTypeFormSchema>
+          name="icon"
+          label="Icon"
+          placeholder="Icon"
+        />
 
-            <div className="md:col-span-2">
-              <FormTextarea<DiningServiceTypeFormSchema>
-                name="description"
-                label="Description"
-                placeholder="Description"
-              />
-            </div>
-
-            <FormInput<DiningServiceTypeFormSchema>
-              name="sortOrder"
-              label="Sort Order"
-              type="number"
-              placeholder="0"
-            />
-
-            <FormSwitch<DiningServiceTypeFormSchema>
-              name="active"
-              label="Active"
-            />
-          </div>
-
-          <div className="flex justify-end gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              disabled={createDiningServiceType.isPending}
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-
-            <Button type="submit" disabled={createDiningServiceType.isPending}>
-              {createDiningServiceType.isPending
-                ? "Creating..."
-                : "Create Dining Service Type"}
-            </Button>
-          </div>
+        <div className="md:col-span-2">
+          <FormTextarea<DiningServiceTypeFormSchema>
+            name="description"
+            label="Description"
+            placeholder="Description"
+          />
         </div>
-      </AppForm>
-    </EntityCreateDialog>
+
+        <FormInput<DiningServiceTypeFormSchema>
+          name="sortOrder"
+          label="Sort Order"
+          type="number"
+          placeholder="0"
+        />
+
+        <FormSwitch<DiningServiceTypeFormSchema> name="active" label="Active" />
+      </div>
+    </EntityCreateFormDialog>
   );
 }

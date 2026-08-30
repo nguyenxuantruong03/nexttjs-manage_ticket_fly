@@ -1,34 +1,49 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { FacilityCategoryService } from "@/services/features/facility-category/client";
-import { FacilityService } from "@/services/features/facility/client";
-import { useQuery } from "@tanstack/react-query";
+import { useFacility } from "@/hooks/features/facility";
+import { useFacilityCategories } from "@/hooks/features/facility-category";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useFacilityUpdateFormData = (
   facilityId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["facility-update", facilityId],
+  const facilityQuery = useFacility(facilityId, enabled);
+  const facilityCategoryQuery = useFacilityCategories(enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled: enabled && !!facilityId,
-
-    staleTime: 1000 * 60 * 5,
-
-    queryFn: async () => {
-      const [facilityData, facilityCategoryData, bookingTypeData] =
-        await Promise.all([
-          FacilityService.getOne(facilityId),
-          FacilityCategoryService.getMany(),
-          BookingTypeService.getMany(),
-        ]);
-
-      return {
-        facilityData,
-        facilityCategoryData,
-        bookingTypeData,
-      };
+  return {
+    data:
+      facilityQuery.data && facilityCategoryQuery.data && bookingTypeQuery.data
+        ? {
+            facilityData: facilityQuery.data,
+            facilityCategoryData: facilityCategoryQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+          }
+        : undefined,
+    isLoading:
+      facilityQuery.isLoading ||
+      facilityCategoryQuery.isLoading ||
+      bookingTypeQuery.isLoading,
+    isFetching:
+      facilityQuery.isFetching ||
+      facilityCategoryQuery.isFetching ||
+      bookingTypeQuery.isFetching,
+    isError:
+      facilityQuery.isError ||
+      facilityCategoryQuery.isError ||
+      bookingTypeQuery.isError,
+    errors: {
+      facility: facilityQuery.error as Error | null,
+      facilityCategory: facilityCategoryQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+    refetch: async () => {
+      await Promise.all([
+        facilityQuery.refetch(),
+        facilityCategoryQuery.refetch(),
+        bookingTypeQuery.refetch(),
+      ]);
+    },
+  };
 };

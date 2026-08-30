@@ -26,11 +26,14 @@ export const useCarRentalInsuranceTypeUpdateFormData = (
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    // Chỉ có 1 nguồn dữ liệu (insuranceType) nên lấy thẳng message của nó.
+    errors: {
+      insuranceType: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

@@ -1,21 +1,29 @@
 "use client";
+
 import { CountryService } from "@/services/location/country/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["country"] as const;
+export const countryQueryKeys = {
+  all: ["country"] as const,
+  list: () => [...countryQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...countryQueryKeys.all, "detail", id] as const,
+};
 
-export function useCountries() {
+export function useCountries(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: countryQueryKeys.list(),
     queryFn: () => CountryService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useCountry(id: string) {
+export function useCountry(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: countryQueryKeys.detail(id),
     queryFn: () => CountryService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
@@ -23,11 +31,11 @@ export function useCreateCountry() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: CountryService.create,
-
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    mutationFn: (data: Parameters<typeof CountryService.create>[0]) =>
+      CountryService.create(data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: countryQueryKeys.list(),
       });
     },
   });
@@ -44,15 +52,13 @@ export function useUpdateCountry() {
       id: string;
       data: Parameters<typeof CountryService.update>[1];
     }) => CountryService.update(id, data),
-
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: countryQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: countryQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
@@ -61,12 +67,12 @@ export function useDeleteCountry() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: CountryService.delete,
-
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    mutationFn: (id: string) => CountryService.delete(id),
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: countryQueryKeys.list() }),
+        queryClient.removeQueries({ queryKey: countryQueryKeys.detail(id) }),
+      ]);
     },
   });
 }

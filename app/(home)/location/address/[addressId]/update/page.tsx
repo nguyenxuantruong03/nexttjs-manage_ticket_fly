@@ -9,17 +9,23 @@ import ErrorPage from "@/components/ui/error-page";
 
 export default function AddressEditPage() {
   const params = useParams();
-
   const addressId = params.addressId as string;
 
-  const { data, isLoading, error } = useAddressUpdateFormData(addressId);
+  const { data, isLoading, isError, errors, refetch } =
+    useAddressUpdateFormData(addressId);
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.address?.message ??
+          "Không tải được dữ liệu địa chỉ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

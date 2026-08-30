@@ -21,11 +21,16 @@ export const useBusSeatTypeUpdateFormData = (id: string, enabled = true) => {
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    // Chỉ có 1 nguồn dữ liệu (Promise.all gộp chung, gồm cả
+    // initialData) nên chỉ có 1 key, đặt tên "seatType" cho nhất
+    // quán với entity.
+    errors: {
+      seatType: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

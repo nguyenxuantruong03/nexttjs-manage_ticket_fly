@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
-import { BusFormSchema } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../form/schema/core/bus.schema";
 import { EntityOption } from "@/components/entity-selector";
 import { VehicleType } from "@/types/common/catalog/vehicle-type.type";
 import { BookingType } from "@/types/common/commerce/booking-type";

@@ -1,7 +1,6 @@
 "use client";
 
 import LoadingPage from "@/components/ui/loading-page";
-
 import ErrorPage from "@/components/ui/error-page";
 
 import PackageForm from "../components/PackageForm";
@@ -9,14 +8,24 @@ import PackageForm from "../components/PackageForm";
 import { usePackageCreateFormData } from "@/hooks/commerce/package/usePackageCreateFormData";
 
 export default function PackageCreatePage() {
-  const { data, isLoading, error } = usePackageCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    usePackageCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.bookingType?.message ??
+          errors.currency?.message ??
+          "Không tải được dữ liệu gói dịch vụ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

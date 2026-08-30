@@ -6,14 +6,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const MealPlanCreatePage = () => {
-  const { data, isLoading, error } = useHotelMealPlanCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelMealPlanCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.mealPlan?.message ??
+          "Không tải được dữ liệu gói bữa ăn, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <MealPlanForm />;

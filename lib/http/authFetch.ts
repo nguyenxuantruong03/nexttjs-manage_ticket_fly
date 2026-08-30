@@ -1,12 +1,8 @@
 "use server";
 
-import {
-  requireSession,
-  refreshToken,
-} from "../session";
+import { requireSession, refreshToken } from "../session";
 
-const BACKEND_URL =
-  process.env.BACKEND_INTERNAL_URL!;
+const BACKEND_URL = process.env.BACKEND_INTERNAL_URL!;
 
 export async function authFetch(
   url: string,
@@ -16,18 +12,12 @@ export async function authFetch(
 
   const headers = new Headers(init.headers);
 
-  headers.set(
-    "Authorization",
-    `Bearer ${session.accessToken}`,
-  );
+  headers.set("Authorization", `Bearer ${session.accessToken}`);
 
-  let response = await fetch(
-    `${BACKEND_URL}${url}`,
-    {
-      ...init,
-      headers,
-    },
-  );
+  let response = await fetch(`${BACKEND_URL}${url}`, {
+    ...init,
+    headers,
+  });
 
   /**
    * Token còn hạn
@@ -39,18 +29,13 @@ export async function authFetch(
   /**
    * Refresh Token
    */
-  const newAccessToken = await refreshToken(
-    session.refreshToken,
-  );
+  const newAccessToken = await refreshToken(session.refreshToken);
 
   if (!newAccessToken) {
     throw new Error("Refresh token failed");
   }
 
-  headers.set(
-    "Authorization",
-    `Bearer ${newAccessToken}`,
-  );
+  headers.set("Authorization", `Bearer ${newAccessToken}`);
 
   /**
    * Retry

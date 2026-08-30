@@ -3,20 +3,27 @@
 import { PolicyTypeService } from "@/services/features/policy-type/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["policy-type"] as const;
+export const policyTypeQueryKeys = {
+  all: ["policy-type"] as const,
+  list: () => [...policyTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...policyTypeQueryKeys.all, "detail", id] as const,
+};
 
-export function usePolicyTypes() {
+export function usePolicyTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: policyTypeQueryKeys.list(),
     queryFn: () => PolicyTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function usePolicyType(id: string) {
+export function usePolicyType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: policyTypeQueryKeys.detail(id),
     queryFn: () => PolicyTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
@@ -24,10 +31,11 @@ export function useCreatePolicyType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: PolicyTypeService.create,
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    mutationFn: (data: Parameters<typeof PolicyTypeService.create>[0]) =>
+      PolicyTypeService.create(data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: policyTypeQueryKeys.list(),
       });
     },
   });
@@ -44,15 +52,13 @@ export function useUpdatePolicyType() {
       id: string;
       data: Parameters<typeof PolicyTypeService.update>[1];
     }) => PolicyTypeService.update(id, data),
-
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: policyTypeQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: policyTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
@@ -61,11 +67,12 @@ export function useDeletePolicyType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: PolicyTypeService.delete,
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    mutationFn: (id: string) => PolicyTypeService.delete(id),
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: policyTypeQueryKeys.list() }),
+        queryClient.removeQueries({ queryKey: policyTypeQueryKeys.detail(id) }),
+      ]);
     },
   });
 }

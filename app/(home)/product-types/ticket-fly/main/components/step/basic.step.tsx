@@ -2,7 +2,7 @@
 
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch } from "@/components/form/form-data";
-import { FlyFormSchema } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../form/schema/core/fly.schema";
 import { ProviderBooking } from "@/types/users/provider-bookings";
 import { ServiceType } from "@/types/common/catalog/service-type.type";
 import { BookingItemType } from "@/types/common/commerce/booking-item-type.type";

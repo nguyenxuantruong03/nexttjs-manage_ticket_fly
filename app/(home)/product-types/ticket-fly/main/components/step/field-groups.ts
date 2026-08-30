@@ -1,5 +1,5 @@
 import { FieldPath } from "react-hook-form";
-import { FlyFormSchema } from "../schema/core/fly.schema";
+import { FlyFormSchema } from "../form/schema/core/fly.schema";
 
 
 type FlyFieldPath = FieldPath<FlyFormSchema>;

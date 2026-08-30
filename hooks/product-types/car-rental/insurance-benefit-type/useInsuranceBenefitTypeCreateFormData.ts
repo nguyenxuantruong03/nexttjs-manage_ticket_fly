@@ -19,11 +19,22 @@ export const useCarRentalInsuranceBenefitTypeCreateFormData = (
 
   return {
     data: query.data,
-    isPending: query.isPending,
+
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
+    // isError là field bool duy nhất dùng để check "có lỗi hay không"
+    // ở component (if (isError || !data) ...). "errors" bên dưới chỉ
+    // dùng khi cần hiển thị message/nguồn lỗi cụ thể, không thay thế
+    // isError.
     isError: query.isError,
-    error: query.error,
+    // Trang create hiện chưa gọi service nào (Promise.all rỗng), giữ
+    // key "insuranceBenefitType" để đồng bộ với update, phòng khi thêm
+    // nguồn dữ liệu về sau.
+    errors: {
+      insuranceBenefitType: query.error as Error | null,
+    },
+
     refetch: query.refetch,
   };
 };

@@ -2,22 +2,30 @@
 
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
-import PromotionForm from "../components/PromotionRuleForm";
+import PromotionRuleForm from "../components/PromotionRuleForm";
 import { usePromotionRuleCreateFormData } from "@/hooks/commerce/promotion-rule/usePromotionRuleCreateFormData";
 
-export default function PromotionCreatePage() {
-  const { data, isLoading, error } = usePromotionRuleCreateFormData();
+export default function PromotionRuleCreatePage() {
+  const { data, isLoading, isError, errors, refetch } =
+    usePromotionRuleCreateFormData();
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.bookingType?.message ??
+          errors.promotion?.message ??
+          "Không tải được dữ liệu quy tắc khuyến mãi, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (
-    <PromotionForm
+    <PromotionRuleForm
       promotionData={data.promotionData}
       bookingTypeData={data.bookingTypeData}
     />

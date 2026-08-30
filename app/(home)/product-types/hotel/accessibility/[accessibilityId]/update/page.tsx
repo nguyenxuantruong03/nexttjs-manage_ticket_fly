@@ -11,15 +11,23 @@ export default function AccessibilityEditPage() {
 
   const accessibilityId = params.accessibilityId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useHotelAccessibilityUpdateFormData(accessibilityId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.accessibility?.message ??
+          "Không tải được dữ liệu accessibility, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <AccessibilityForm initialData={data.initialData} />;

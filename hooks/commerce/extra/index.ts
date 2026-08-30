@@ -1,38 +1,62 @@
 "use client";
 
 import { ExtraService } from "@/services/commerce/extra/client";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["extra"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useExtras() {
+export const extraQueryKeys = {
+  all: ["extra"] as const,
+  list: () => [...extraQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...extraQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useExtras(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: extraQueryKeys.list(),
     queryFn: () => ExtraService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useExtra(id: string) {
+export function useExtra(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: extraQueryKeys.detail(id),
     queryFn: () => ExtraService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateExtra() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ExtraService.create,
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    mutationFn: (data: Parameters<typeof ExtraService.create>[0]) =>
+      ExtraService.create(data),
+
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: extraQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateExtra() {
   const queryClient = useQueryClient();
@@ -46,28 +70,32 @@ export function useUpdateExtra() {
       data: Parameters<typeof ExtraService.update>[1];
     }) => ExtraService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: extraQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: extraQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteExtra() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ExtraService.delete,
+    mutationFn: (id: string) => ExtraService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: extraQueryKeys.list() }),
+        queryClient.removeQueries({ queryKey: extraQueryKeys.detail(id) }),
+      ]);
     },
   });
 }

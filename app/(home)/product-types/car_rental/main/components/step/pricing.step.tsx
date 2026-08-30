@@ -3,14 +3,14 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
-import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { RentalDurationType } from "@/types/product-types/car_rental/enums";
 import { ExtraType } from "@/types/common/commerce/extra/extra-type.type";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
 import { EntityOption } from "@/components/entity-selector";
-import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceruleTypeCreateDialog";
+import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceRuleTypeCreateDialog";
 import { Extra } from "@/types/common/commerce/extra/extra.type";
 import ExtraCreateDialog from "@/app/(home)/commerce/extra/main/components/ExtraCreateDialog";
 import { Currency } from "@/types/location/currency";

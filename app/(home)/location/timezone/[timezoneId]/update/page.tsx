@@ -12,14 +12,23 @@ export default function TimezoneEditPage() {
 
   const timezoneId = params.timezoneId as string;
 
-  const { data, isLoading, error } = useTimezoneUpdateFormData(timezoneId);
+  const { data, isLoading, isError, errors, refetch } =
+    useTimezoneUpdateFormData(timezoneId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.timezone?.message ??
+          "Không tải được dữ liệu loại múi giờ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <TimezoneForm initialData={data.initialData} />;

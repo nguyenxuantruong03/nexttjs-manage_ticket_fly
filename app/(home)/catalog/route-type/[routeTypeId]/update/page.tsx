@@ -14,14 +14,26 @@ export default function RouteTypeEditPage() {
 
   const routeTypeId = params.routeTypeId as string;
 
-  const { data, isLoading, error } = useRouteTypeUpdateFormData(routeTypeId);
+  const { data, isLoading, isError, errors, refetch } =
+    useRouteTypeUpdateFormData(routeTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    // Ưu tiên hiện message của routeType trước vì đó là dữ liệu chính
+    // của trang này, fallback sang bookingType rồi mới đến message mặc định.
+    return (
+      <ErrorPage
+        description={
+          errors.routeType?.message ??
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu loại tuyến, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

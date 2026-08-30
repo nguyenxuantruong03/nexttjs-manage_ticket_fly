@@ -12,14 +12,24 @@ export default function CouponEditPage() {
 
   const couponId = params.couponId as string;
 
-  const { data, isLoading, error } = useCouponUpdateFormData(couponId);
+  const { data, isLoading, isError, errors, refetch } =
+    useCouponUpdateFormData(couponId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.coupon?.message ??
+          errors.bookingType?.message ??
+          "Không tải được dữ liệu coupon, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

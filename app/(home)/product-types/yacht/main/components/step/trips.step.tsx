@@ -1,6 +1,6 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect } from "@/components/form/form-data";
-import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 import {
   YachtRepeatType,
   YachtTripStatus,

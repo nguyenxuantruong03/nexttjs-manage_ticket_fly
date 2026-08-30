@@ -12,14 +12,23 @@ export default function TicketBusEditPage() {
 
   const ticketbusId = params.ticketbusId as string;
 
-  const { data, isLoading, error } = useTicketBusUpdateFormData(ticketbusId);
+  const { data, isLoading, isError, errors, refetch } =
+    useTicketBusUpdateFormData(ticketbusId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.ticketBus?.message ??
+          "Không tải được dữ liệu vé xe bus, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

@@ -11,14 +11,23 @@ export default function BedTypeEditPage() {
 
   const bedTypeId = params.bedTypeId as string;
 
-  const { data, isLoading, error } = useHotelBedTypeUpdateFormData(bedTypeId);
+  const { data, isLoading, isError, errors, refetch } =
+    useHotelBedTypeUpdateFormData(bedTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.bedType?.message ??
+          "Không tải được dữ liệu loại giường, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <BedTypeForm initialData={data.initialData} />;

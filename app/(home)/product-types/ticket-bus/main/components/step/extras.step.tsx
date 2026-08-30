@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 
-import { BusFormSchema } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../form/schema/core/bus.schema";
 import { Extra } from "@/types/common/commerce/extra/extra.type";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";

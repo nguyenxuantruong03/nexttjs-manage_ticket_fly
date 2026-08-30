@@ -1,19 +1,13 @@
 "use client";
 
-import * as React from "react";
-
-import { Button } from "@/components/ui/button";
-import { AppForm, FormInput, FormSwitch } from "@/components/form/form-data";
-
-import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { FormInput, FormSwitch } from "@/components/form/form-data";
 
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
 } from "@/components/entity-selector";
 
-import { useAppForm } from "@/hooks/useAppForm";
-import { useSubmit } from "@/hooks/useSubmit";
+import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
 import { useCreateFlyCabinClass } from "@/hooks/product-types/ticket-fly/cabin-class";
 
@@ -39,122 +33,68 @@ export default function FlyCabinClassCreateDialog({
   defaultKeyword,
   onCreated,
 }: FlyCabinClassCreateDialogProps) {
-  const dialogRef = React.useRef<HTMLDivElement>(null);
-
-  const submit = useSubmit();
-
   const createFlyCabinClass = useCreateFlyCabinClass();
 
-  const { form } = useAppForm<FlyCabinClassFormSchema>({
-    schema: FlyCabinClassSchema,
-    defaultValues: flyCabinClassDefaultValues,
-  });
-
-  React.useEffect(() => {
-    if (!open) return;
-
-    form.reset({
-      ...flyCabinClassDefaultValues,
-
-      name: defaultKeyword ?? "",
-    });
-  }, [open, defaultKeyword, form]);
-
-  const onSubmit = (values: FlyCabinClassFormSchema) => {
-    submit({
-      mutation: createFlyCabinClass.mutateAsync(values),
-
-      success: "Fly cabin class created",
-
-      onSuccess(response) {
-        const result: EntityCreateResult<FlyCabinClass> = {
-          value: response.id,
-
-          label: response.name,
-
-          data: response,
-        };
-
-        onCreated(result);
-
-        form.reset();
-
-        onOpenChange(false);
-      },
-    });
-  };
-
   return (
-    <EntityCreateDialog
-      dialogRef={dialogRef}
+    <EntityCreateFormDialog<FlyCabinClassFormSchema, FlyCabinClass>
       open={open}
       onOpenChange={onOpenChange}
-      title="Create Fly Cabin Class"
-      description="Create a new fly cabin class"
+      defaultKeyword={defaultKeyword}
+      onCreated={onCreated}
+      mutation={createFlyCabinClass}
+      config={{
+        schema: FlyCabinClassSchema,
+        defaultValues: flyCabinClassDefaultValues,
+        title: "Create Fly Cabin Class",
+        description: "Create a new fly cabin class",
+        success: "Fly cabin class created",
+        submitText: "Create Cabin Class",
+        submittingText: "Creating...",
+        getResult: (response): EntityCreateResult<FlyCabinClass> => ({
+          value: response.id,
+          label: response.name,
+          data: response,
+        }),
+      }}
     >
-      <AppForm
-        form={form}
-        onSubmit={onSubmit}
-        loading={createFlyCabinClass.isPending}
-      >
-        <div className="space-y-6">
-          {/* BASIC */}
+      <div className="space-y-6">
+        {/* BASIC */}
 
-          <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormInput<FlyCabinClassFormSchema>
+            name="name"
+            label="Name"
+            placeholder="Business Class"
+          />
+
+          <FormInput<FlyCabinClassFormSchema>
+            name="icon"
+            label="Icon"
+            placeholder="https://..."
+          />
+
+          <div className="md:col-span-2">
             <FormInput<FlyCabinClassFormSchema>
-              name="name"
-              label="Name"
-              placeholder="Business Class"
+              name="description"
+              label="Description"
+              placeholder="Describe cabin class"
             />
-
-            <FormInput<FlyCabinClassFormSchema>
-              name="icon"
-              label="Icon"
-              placeholder="https://..."
-            />
-
-            <div className="md:col-span-2">
-              <FormInput<FlyCabinClassFormSchema>
-                name="description"
-                label="Description"
-                placeholder="Describe cabin class"
-              />
-            </div>
-          </div>
-
-          {/* STATUS */}
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <FormSwitch<FlyCabinClassFormSchema> name="active" label="Active" />
-
-            <FormInput<FlyCabinClassFormSchema>
-              name="sortOrder"
-              label="Sort Order"
-              type="number"
-              placeholder="0"
-            />
-          </div>
-
-          {/* ACTION */}
-
-          <div className="flex justify-end gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              disabled={createFlyCabinClass.isPending}
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-
-            <Button type="submit" disabled={createFlyCabinClass.isPending}>
-              {createFlyCabinClass.isPending
-                ? "Creating..."
-                : "Create Cabin Class"}
-            </Button>
           </div>
         </div>
-      </AppForm>
-    </EntityCreateDialog>
+
+        {/* STATUS */}
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormSwitch<FlyCabinClassFormSchema> name="active" label="Active" />
+
+          <FormInput<FlyCabinClassFormSchema>
+            name="sortOrder"
+            label="Sort Order"
+            type="number"
+            placeholder="0"
+          />
+        </div>
+      </div>
+    </EntityCreateFormDialog>
   );
 }

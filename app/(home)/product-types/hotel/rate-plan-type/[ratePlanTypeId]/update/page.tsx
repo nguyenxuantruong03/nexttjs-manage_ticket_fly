@@ -11,15 +11,23 @@ export default function RatePlanTypeEditPage() {
 
   const ratePlanTypeId = params.ratePlanTypeId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useHotelRatePlanTypeUpdateFormData(ratePlanTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.ratePlanType?.message ??
+          "Không tải được dữ liệu loại giá phòng, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <RatePlanTypeForm initialData={data.initialData} />;

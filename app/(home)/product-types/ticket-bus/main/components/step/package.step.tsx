@@ -4,7 +4,7 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { BusFormSchema } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../form/schema/core/bus.schema";
 import { Package } from "@/types/common/commerce/package/package.type";
 import { EntityOption } from "@/components/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";

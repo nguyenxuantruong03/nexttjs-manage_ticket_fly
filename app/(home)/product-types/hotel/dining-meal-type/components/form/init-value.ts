@@ -1,13 +1,21 @@
 import { DiningMealType } from "@/types/product-types/hotel/service/dinner-option.type";
+
 import { diningMealTypeDefaultValues } from "./default-values";
+
 import { DiningMealTypeFormSchema } from "./schema";
 
 export function initDiningMealTypeFormValues(
-  dinningMealType: DiningMealType,
+  diningMealType?: DiningMealType,
 ): DiningMealTypeFormSchema {
-  if (!dinningMealType) {
+  if (!diningMealType) {
     return structuredClone(diningMealTypeDefaultValues);
   }
 
-  return structuredClone(dinningMealType);
+  return {
+    name: diningMealType.name ?? "",
+    description: diningMealType.description ?? null,
+    icon: diningMealType.icon ?? null,
+    active: diningMealType.active ?? true,
+    sortOrder: diningMealType.sortOrder ?? 0,
+  };
 }

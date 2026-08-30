@@ -9,17 +9,23 @@ import ErrorPage from "@/components/ui/error-page";
 
 export default function CityEditPage() {
   const params = useParams();
-
   const cityId = params.cityId as string;
 
-  const { data, isLoading, error } = useCityUpdateFormData(cityId);
+  const { data, isLoading, isError, errors, refetch } =
+    useCityUpdateFormData(cityId);
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.city?.message ??
+          "Không tải được dữ liệu thành phố, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

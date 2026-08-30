@@ -1,32 +1,35 @@
 "use client";
 
-import { RouteTypeService } from "@/services/catalog/route-type/client";
-
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-
-import { useQuery } from "@tanstack/react-query";
+import { useRouteType } from "@/hooks/catalog/route-type";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useRouteTypeUpdateFormData = (
   routeTypeId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["route-type-update", routeTypeId],
+  const routeTypeQuery = useRouteType(routeTypeId, enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled: enabled && !!routeTypeId,
+  return {
+    data:
+      routeTypeQuery.data && bookingTypeQuery.data
+        ? {
+            routeTypeData: routeTypeQuery.data,
+            bookingTypes: bookingTypeQuery.data,
+          }
+        : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading: routeTypeQuery.isLoading || bookingTypeQuery.isLoading,
+    isFetching: routeTypeQuery.isFetching || bookingTypeQuery.isFetching,
 
-    queryFn: async () => {
-      const [routeTypeData, bookingTypes] = await Promise.all([
-        RouteTypeService.getOne(routeTypeId),
-        BookingTypeService.getMany(),
-      ]);
-
-      return {
-        routeTypeData,
-        bookingTypes,
-      };
+    isError: routeTypeQuery.isError || bookingTypeQuery.isError,
+    errors: {
+      routeType: routeTypeQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all([routeTypeQuery.refetch(), bookingTypeQuery.refetch()]);
+    },
+  };
 };

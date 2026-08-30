@@ -1,31 +1,38 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { PriceRuleTypeService } from "@/services/commerce/price-rule-type/client";
-
-import { useQuery } from "@tanstack/react-query";
+import { usePriceRuleType } from "@/hooks/commerce/price-rule-type";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const usePriceRuleTypeUpdateFormData = (
   priceRuleTypeId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["price-rule-type-update", priceRuleTypeId],
+  const priceRuleTypeQuery = usePriceRuleType(priceRuleTypeId, enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled: enabled && !!priceRuleTypeId,
+  return {
+    data:
+      priceRuleTypeQuery.data && bookingTypeQuery.data
+        ? {
+            priceRuleTypeData: priceRuleTypeQuery.data,
+            bookingTypeData: bookingTypeQuery.data,
+          }
+        : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading: priceRuleTypeQuery.isLoading || bookingTypeQuery.isLoading,
+    isFetching: priceRuleTypeQuery.isFetching || bookingTypeQuery.isFetching,
 
-    queryFn: async () => {
-      const [priceRuleTypeData, bookingTypes] = await Promise.all([
-        PriceRuleTypeService.getOne(priceRuleTypeId),
-        BookingTypeService.getMany(),
-      ]);
-
-      return {
-        priceRuleTypeData,
-        bookingTypes,
-      };
+    isError: priceRuleTypeQuery.isError || bookingTypeQuery.isError,
+    errors: {
+      priceRuleType: priceRuleTypeQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all([
+        priceRuleTypeQuery.refetch(),
+        bookingTypeQuery.refetch(),
+      ]);
+    },
+  };
 };

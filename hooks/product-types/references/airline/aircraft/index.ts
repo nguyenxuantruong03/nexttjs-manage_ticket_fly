@@ -4,35 +4,60 @@ import { FlyAircraftService } from "@/services/product-types/references/airline/
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["fly-aircraft"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useFlyAircrafts() {
+export const flyAircraftQueryKeys = {
+  all: ["fly-aircraft"] as const,
+  list: () => [...flyAircraftQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...flyAircraftQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useFlyAircrafts(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: flyAircraftQueryKeys.list(),
     queryFn: () => FlyAircraftService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useFlyAircraft(id: string) {
+export function useFlyAircraft(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: flyAircraftQueryKeys.detail(id),
     queryFn: () => FlyAircraftService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateFlyAircraft() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlyAircraftService.create,
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    mutationFn: (data: Parameters<typeof FlyAircraftService.create>[0]) =>
+      FlyAircraftService.create(data),
+
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: flyAircraftQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateFlyAircraft() {
   const queryClient = useQueryClient();
@@ -46,27 +71,38 @@ export function useUpdateFlyAircraft() {
       data: Parameters<typeof FlyAircraftService.update>[1];
     }) => FlyAircraftService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flyAircraftQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: flyAircraftQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteFlyAircraft() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlyAircraftService.delete,
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    mutationFn: (id: string) => FlyAircraftService.delete(id),
+
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flyAircraftQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: flyAircraftQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

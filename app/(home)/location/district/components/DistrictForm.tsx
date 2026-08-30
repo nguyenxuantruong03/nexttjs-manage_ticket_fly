@@ -1,181 +1,111 @@
 "use client";
 
-import { AppForm } from "@/components/form/form-data";
+import EntityFormWizard from "@/components/form/wizard/EntityFormWizard";
 
-import FormWizard from "@/components/form/wizard/FormWizard";
-import FormWizardHeader from "@/components/form/wizard/FormWizardHeader";
-import FormWizardContent from "@/components/form/wizard/FormWizardContent";
-import FormWizardFooter from "@/components/form/wizard/FormWizardFooter";
 import FormWizardStep from "@/components/form/wizard/FormWizardStep";
 
-import { useAppForm } from "@/hooks/useAppForm";
-import { useSubmit } from "@/hooks/useSubmit";
-
-import BasicStep from "./step/basic.step";
-import LocationStep from "./step/location.step";
-
-import { useEffect, useMemo, useRef } from "react";
-import { useFormPage } from "@/components/form/form-context";
-import { useSearchParams } from "next/navigation";
-import { useFormDraft } from "@/hooks/useFormDraft";
-import { DraftEntity } from "@/components/daft/draft-config";
-import { DistrictFormSchema, DistrictSchema } from "./form/schema";
-import { DistrictSteps } from "./step/steps";
 import {
   useCreateDistrict,
   useUpdateDistrict,
 } from "@/hooks/location/district";
-import { initDistrictFormValues } from "./form/init-value";
-import { districtDefaultValues } from "./form/default-values";
-import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
-import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
+
 import { District } from "@/types/location/district";
+
 import { City } from "@/types/location/city";
+
 import { Country } from "@/types/location/country/country";
-import StatusStep from "./step/status.step";
-import SearchStep from "./step/search.step";
+
 import { BookingType } from "@/types/common/commerce/booking-type";
+
 import { SearchTag } from "@/types/searchs/search/tag.types";
-import MediaStep from "./step/media.step";
+
 import { Timezone } from "@/types/location/timezone";
+
+import { DistrictFormSchema } from "./form/schema";
+
+import { districtFormConfig } from "./config";
+
+import BasicStep from "./step/basic.step";
+
+import LocationStep from "./step/location.step";
+
+import MediaStep from "./step/media.step";
+
+import SearchStep from "./step/search.step";
+
+import StatusStep from "./step/status.step";
+
 interface DistrictFormProps {
   initialData?: District;
+
   cityData: City[];
+
   countryData: Country[];
+
   bookingTypeData: BookingType[];
+
   searchTagData: SearchTag[];
-  timezones: Timezone[]
+
+  timezones: Timezone[];
+
   redirect?: boolean;
 }
 
 export default function DistrictForm({
   initialData,
+
   cityData,
+
   timezones,
+
   countryData,
+
   bookingTypeData,
+
   searchTagData,
+
   redirect = true,
 }: DistrictFormProps) {
-  const redirectDefault = "/district";
-
-  const resetWizardRef = useRef<(() => void) | null>(null);
-
-  const { confirmDialog, openDialog, shouldShow, cancelDialog } =
-    useConfirmDialogStorage("confirm-redirect");
-
-  const submit = useSubmit();
-  const { setDirty } = useFormPage();
   const createDistrict = useCreateDistrict();
+
   const updateDistrict = useUpdateDistrict();
 
-  const searchParams = useSearchParams();
-
-  const currentDraftId = useMemo(() => {
-    if (initialData) {
-      return `edit-${initialData.id}`;
-    }
-
-    return searchParams.get("draft") ?? crypto.randomUUID();
-  }, [initialData, searchParams]);
-
-  const { form, mode, isUpdate } = useAppForm<DistrictFormSchema>({
-    schema: DistrictSchema,
-    defaultValues: initialData
-      ? initDistrictFormValues(initialData)
-      : districtDefaultValues,
-  });
-
-  const isSubmitting = form.formState.isSubmitting;
-
-  const { clearDraft } = useFormDraft({
-    form,
-    entity: DraftEntity.District,
-    draftId: currentDraftId,
-  });
-
-  useEffect(() => {
-    setDirty(form.formState.isDirty);
-  }, [form.formState.isDirty]);
-
-  const onSubmit = (values: DistrictFormSchema) => {
-    submit({
-      mutation: initialData
-        ? updateDistrict.mutateAsync({
-            id: initialData.id,
-            data: values,
-          })
-        : createDistrict.mutateAsync(values),
-      success: isUpdate ? "District updated" : "District created",
-      redirect: redirect ? redirectDefault : undefined,
-    });
-
-    clearDraft();
-
-    if (!redirect) {
-      openDialog();
-      form.reset(districtDefaultValues);
-      resetWizardRef.current?.();
-      return;
-    }
-
-    form.reset(districtDefaultValues);
-  };
-
   return (
-    <>
-      <ConfirmRedirectDialog
-        redirectDefault={redirectDefault}
-        confirmDialog={confirmDialog}
-        shouldShow={shouldShow}
-        cancelDialog={cancelDialog}
-      />
-      <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
-        <FormWizard
-          form={form}
-          steps={DistrictSteps}
-          loading={isSubmitting}
-          unlockAll={!!initialData}
-          onResetReady={(reset) => {
-            resetWizardRef.current = reset;
-          }}
-        >
-          <FormWizardHeader steps={DistrictSteps} />
+    <EntityFormWizard<DistrictFormSchema, District>
+      initialData={initialData}
+      redirect={redirect}
+      config={districtFormConfig}
+      createMutation={createDistrict}
+      updateMutation={updateDistrict}
+    >
+      <FormWizardStep index={0}>
+        <BasicStep
+          timezones={timezones}
+          searchTagData={searchTagData}
+          bookingTypeData={bookingTypeData}
+          cityData={cityData}
+          countryData={countryData}
+        />
+      </FormWizardStep>
 
-          <FormWizardContent>
-            <FormWizardStep index={0}>
-              <BasicStep
-                timezones={timezones}
-                searchTagData={searchTagData}
-                bookingTypeData={bookingTypeData}
-                cityData={cityData}
-                countryData={countryData}
-              />
-            </FormWizardStep>
+      <FormWizardStep index={1}>
+        <MediaStep />
+      </FormWizardStep>
 
-            <FormWizardStep index={1}>
-              <MediaStep />
-            </FormWizardStep>
+      <FormWizardStep index={2}>
+        <LocationStep />
+      </FormWizardStep>
 
-            <FormWizardStep index={2}>
-              <LocationStep />
-            </FormWizardStep>
+      <FormWizardStep index={3}>
+        <SearchStep
+          searchTagData={searchTagData}
+          bookingTypeData={bookingTypeData}
+        />
+      </FormWizardStep>
 
-            <FormWizardStep index={3}>
-              <SearchStep
-                searchTagData={searchTagData}
-                bookingTypeData={bookingTypeData}
-              />
-            </FormWizardStep>
-
-            <FormWizardStep index={4}>
-              <StatusStep />
-            </FormWizardStep>
-          </FormWizardContent>
-
-          <FormWizardFooter form={form} onSubmit={onSubmit} />
-        </FormWizard>
-      </AppForm>
-    </>
+      <FormWizardStep index={4}>
+        <StatusStep />
+      </FormWizardStep>
+    </EntityFormWizard>
   );
 }

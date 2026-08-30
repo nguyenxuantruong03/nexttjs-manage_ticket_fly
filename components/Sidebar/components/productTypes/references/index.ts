@@ -11,7 +11,13 @@ export const referencesSidebar: SidebarItem = {
 
   icon: "book_open",
 
-  categories: [],
+  categories: [
+    {
+      id: 201,
+      name: "References",
+      link: "/references",
+    },
+  ],
 
   children: [airlineSidebar, airportSidebar, allianceSidebar],
 };

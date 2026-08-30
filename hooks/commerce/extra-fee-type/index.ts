@@ -1,39 +1,62 @@
 "use client";
 
 import { ExtraFeeTypeService } from "@/services/commerce/extra-fee-type/client";
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["extra-fee-type"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useExtraFeeTypes() {
+export const extraFeeTypeQueryKeys = {
+  all: ["extra-fee-type"] as const,
+  list: () => [...extraFeeTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) => [...extraFeeTypeQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useExtraFeeTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: extraFeeTypeQueryKeys.list(),
     queryFn: () => ExtraFeeTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useExtraFeeType(id: string) {
+export function useExtraFeeType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: extraFeeTypeQueryKeys.detail(id),
     queryFn: () => ExtraFeeTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateExtraFeeType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ExtraFeeTypeService.create,
+    mutationFn: (data: Parameters<typeof ExtraFeeTypeService.create>[0]) =>
+      ExtraFeeTypeService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: extraFeeTypeQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateExtraFeeType() {
   const queryClient = useQueryClient();
@@ -47,28 +70,38 @@ export function useUpdateExtraFeeType() {
       data: Parameters<typeof ExtraFeeTypeService.update>[1];
     }) => ExtraFeeTypeService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: extraFeeTypeQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: extraFeeTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteExtraFeeType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ExtraFeeTypeService.delete,
+    mutationFn: (id: string) => ExtraFeeTypeService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: extraFeeTypeQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: extraFeeTypeQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

@@ -11,14 +11,24 @@ export default function FlyAiportEditPage() {
 
   const flyairportId = params.flyairportId as string;
 
-  const { data, isLoading, error } = useFlyAirportUpdateFormData(flyairportId);
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyAirportUpdateFormData(flyairportId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.location?.message ??
+          errors.flyAirport?.message ??
+          "Không tải được dữ liệu sân bay, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

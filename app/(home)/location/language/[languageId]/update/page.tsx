@@ -12,14 +12,23 @@ export default function LanguageEditPage() {
 
   const languageId = params.languageId as string;
 
-  const { data, isLoading, error } = useLanguageUpdateFormData(languageId);
+  const { data, isLoading, isError, errors, refetch } =
+    useLanguageUpdateFormData(languageId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.language?.message ??
+          "Không tải được dữ liệu ngôn ngữ, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <LanguageForm initialData={data.initialData} />;

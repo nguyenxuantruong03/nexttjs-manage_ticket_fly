@@ -1,27 +1,34 @@
 "use client";
 
-import * as React from "react";
-import { AppForm, FormCombobox, FormSwitch } from "@/components/form/form-data";
-import { Button } from "@/components/ui/button";
-import { FormInput } from "@/components/form/form-data";
-
-import { useCreateAddress } from "@/hooks/location/address";
-import { useSubmit } from "@/hooks/useSubmit";
-import { useAppForm } from "@/hooks/useAppForm";
-import { AddressFormSchema, AddressSchema } from "./form/schema";
-import { addressDefaultValues } from "./form/default-values";
+import {
+  FormCombobox,
+  FormInput,
+  FormSwitch,
+} from "@/components/form/form-data";
 
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
 } from "@/components/entity-selector";
 
-import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import { useCreateAddress } from "@/hooks/location/address";
+
+import { AddressFormSchema, AddressSchema } from "./form/schema";
+
+import { addressDefaultValues } from "./form/default-values";
+
 import { Address } from "@/types/location/address";
+
 import { Country } from "@/types/location/country/country";
+
 import { City } from "@/types/location/city";
+
 import { District } from "@/types/location/district";
+
 import { Ward } from "@/types/location/ward";
+
+import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+
 // ======================================================
 // PROPS
 // ======================================================
@@ -47,201 +54,141 @@ export default function AddressCreateDialog({
   districts,
   wards,
 }: AddressCreateDialogProps) {
-  const dialogRef = React.useRef<HTMLDivElement>(null);
-  const submit = useSubmit();
-
   const createAddress = useCreateAddress();
 
-  const { form, isUpdate } = useAppForm<AddressFormSchema>({
-    schema: AddressSchema,
-
-    defaultValues: addressDefaultValues,
-  });
-
-  React.useEffect(() => {
-    if (!open) return;
-
-    form.reset({
-      ...addressDefaultValues,
-
-      name: defaultKeyword ?? "",
-    });
-  }, [open, defaultKeyword, form]);
-
-  const onSubmit = (values: AddressFormSchema) => {
-    submit({
-      mutation: createAddress.mutateAsync(values),
-
-      success: "Address created",
-      onSuccess: (response) => {
-        const result: EntityCreateResult<Address> = {
+  return (
+    <EntityCreateFormDialog<AddressFormSchema, Address>
+      open={open}
+      onOpenChange={onOpenChange}
+      defaultKeyword={defaultKeyword}
+      onCreated={onCreated}
+      mutation={createAddress}
+      config={{
+        schema: AddressSchema,
+        defaultValues: addressDefaultValues,
+        title: "Create Address",
+        description: "Create a new location address",
+        success: "Address created",
+        submitText: "Create Address",
+        submittingText: "Creating...",
+        getResult: (response): EntityCreateResult<Address> => ({
           value: response.id,
           label: response.name ?? "Address",
           data: response,
-        };
-
-        onCreated(result);
-        form.reset();
-        onOpenChange(false);
-      },
-    });
-  };
-
-  return (
-    <EntityCreateDialog
-      dialogRef={dialogRef}
-      open={open}
-      onOpenChange={onOpenChange}
-      title="Create Address"
-      description="Create a new location address"
+        }),
+      }}
     >
-      <AppForm
-        form={form}
-        onSubmit={onSubmit}
-        loading={createAddress.isPending}
-      >
-        <div
-          className="
-          space-y-6
-          "
-        >
-          <div
-            className="
-            grid
-            gap-4
-            md:grid-cols-2
-            "
-          >
-            <FormInput<AddressFormSchema>
-              name="name"
-              label="Name"
-              placeholder="Address name"
-            />
+      {/* ======================================================
+          BASIC
+      ====================================================== */}
 
-            <FormInput<AddressFormSchema>
-              name="houseNumber"
-              label="House Number"
-              placeholder="House number"
-            />
+      <div className="grid gap-4 md:grid-cols-2">
+        <FormInput<AddressFormSchema>
+          name="name"
+          label="Name"
+          placeholder="Address name"
+        />
 
-            <FormInput<AddressFormSchema>
-              name="street"
-              label="Street"
-              placeholder="Street"
-            />
+        <FormInput<AddressFormSchema>
+          name="houseNumber"
+          label="House Number"
+          placeholder="House number"
+        />
 
-            <FormInput<AddressFormSchema>
-              name="postcode"
-              label="Postcode"
-              placeholder="Postcode"
-            />
-          </div>
+        <FormInput<AddressFormSchema>
+          name="street"
+          label="Street"
+          placeholder="Street"
+        />
 
-          <div
-            className="
-            grid
-            gap-4
-            md:grid-cols-2
-            "
-          >
-            <FormCombobox<AddressFormSchema>
-              portalContainer={dialogRef.current}
-              name="countryId"
-              label="Country"
-              placeholder="Select country"
-              searchPlaceholder="Search country..."
-              options={countries.map((country) => ({
-                label: country.name,
-                value: country.id,
-              }))}
-            />
+        <FormInput<AddressFormSchema>
+          name="postcode"
+          label="Postcode"
+          placeholder="Postcode"
+        />
+      </div>
 
-            <FormCombobox<AddressFormSchema>
-              portalContainer={dialogRef.current}
-              name="cityId"
-              label="City"
-              placeholder="Select city"
-              searchPlaceholder="Search city..."
-              options={cities.map((city) => ({
-                label: city.name,
-                value: city.id,
-              }))}
-            />
-            <FormCombobox<AddressFormSchema>
-              portalContainer={dialogRef.current}
-              name="districtId"
-              label="District"
-              placeholder="Select district"
-              searchPlaceholder="Search district..."
-              options={districts.map((district) => ({
-                label: district.name,
-                value: district.id,
-              }))}
-            />
+      {/* ======================================================
+          LOCATION
+      ====================================================== */}
 
-            <FormCombobox<AddressFormSchema>
-              portalContainer={dialogRef.current}
-              name="wardId"
-              label="Ward"
-              placeholder="Select ward"
-              searchPlaceholder="Search ward..."
-              options={wards.map((ward) => ({
-                label: ward.name,
-                value: ward.id,
-              }))}
-            />
-          </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <FormCombobox<AddressFormSchema>
+          name="countryId"
+          label="Country"
+          placeholder="Select country"
+          searchPlaceholder="Search country..."
+          options={countries.map((country) => ({
+            label: country.name,
+            value: country.id,
+          }))}
+        />
 
-          <div className="grid gap-6 md:grid-cols-2">
-            <FormInput<AddressFormSchema>
-              name="thumbnail"
-              label="Thumbnail URL"
-            />
+        <FormCombobox<AddressFormSchema>
+          name="cityId"
+          label="City"
+          placeholder="Select city"
+          searchPlaceholder="Search city..."
+          options={cities.map((city) => ({
+            label: city.name,
+            value: city.id,
+          }))}
+        />
 
-            <FormInput<AddressFormSchema>
-              name="coverImage"
-              label="Cover Image URL"
-            />
+        <FormCombobox<AddressFormSchema>
+          name="districtId"
+          label="District"
+          placeholder="Select district"
+          searchPlaceholder="Search district..."
+          options={districts.map((district) => ({
+            label: district.name,
+            value: district.id,
+          }))}
+        />
 
-            <FormInput<AddressFormSchema>
-              name="bannerImage"
-              label="Banner Image URL"
-            />
+        <FormCombobox<AddressFormSchema>
+          name="wardId"
+          label="Ward"
+          placeholder="Select ward"
+          searchPlaceholder="Search ward..."
+          options={wards.map((ward) => ({
+            label: ward.name,
+            value: ward.id,
+          }))}
+        />
+      </div>
 
-            <FormInput<AddressFormSchema> name="video" label="Video URL" />
+      {/* ======================================================
+          MEDIA
+      ====================================================== */}
 
-            <FormInput<AddressFormSchema> name="images.0" label="Image URL" />
-          </div>
+      <div className="grid gap-6 md:grid-cols-2">
+        <FormInput<AddressFormSchema> name="thumbnail" label="Thumbnail URL" />
 
-          <div className="grid gap-6 md:grid-cols-2">
-            <FormSwitch<AddressFormSchema> name="verified" label="Verified" />
-            <FormSwitch<AddressFormSchema> name="active" label="Active" />
-          </div>
+        <FormInput<AddressFormSchema>
+          name="coverImage"
+          label="Cover Image URL"
+        />
 
-          <div
-            className="
-            flex
-            justify-end
-            gap-3
-            "
-          >
-            <Button
-              type="button"
-              variant="outline"
-              disabled={createAddress.isPending}
-              onClick={() => {
-                onOpenChange(false);
-              }}
-            >
-              Cancel
-            </Button>
+        <FormInput<AddressFormSchema>
+          name="bannerImage"
+          label="Banner Image URL"
+        />
 
-            <Button type="submit" disabled={createAddress.isPending}>
-              {createAddress.isPending ? "Creating..." : "Create Address"}
-            </Button>
-          </div>
-        </div>
-      </AppForm>
-    </EntityCreateDialog>
+        <FormInput<AddressFormSchema> name="video" label="Video URL" />
+
+        <FormInput<AddressFormSchema> name="images.0" label="Image URL" />
+      </div>
+
+      {/* ======================================================
+          STATUS
+      ====================================================== */}
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <FormSwitch<AddressFormSchema> name="verified" label="Verified" />
+
+        <FormSwitch<AddressFormSchema> name="active" label="Active" />
+      </div>
+    </EntityCreateFormDialog>
   );
 }

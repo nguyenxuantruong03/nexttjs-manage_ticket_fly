@@ -2,8 +2,7 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { FlyAirportFormSchema } from "../form/schema";
-
+import { FlyAirportFormSchema } from "../schema/schema";
 
 import { EntityOption } from "@/components/entity-selector";
 import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";

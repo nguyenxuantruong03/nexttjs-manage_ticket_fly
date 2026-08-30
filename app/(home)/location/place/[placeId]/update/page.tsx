@@ -9,17 +9,23 @@ import ErrorPage from "@/components/ui/error-page";
 
 export default function PlaceEditPage() {
   const params = useParams();
-
   const placeId = params.placeId as string;
 
-  const { data, isLoading, error } = usePlaceUpdateFormData(placeId);
+  const { data, isLoading, isError, errors, refetch } =
+    usePlaceUpdateFormData(placeId);
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.place?.message ??
+          "Không tải được dữ liệu địa điểm, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

@@ -5,9 +5,9 @@ import { FlyAircraftSpecificationSchema } from "./specification.schema";
 import { FlyCabinSchema } from "./cabin.schema";
 import { FlySeatMapSchema } from "./seat-map.schema";
 
-import { FlyTripSchema } from "../../../../../../ticket-fly/main/components/schema/trip/trip.schema";
 import { FlyAircraftFacilityMapperSchema } from "./facility-mapper.schema";
 import { FlyScheduleSchema } from "./schedule.schema";
+import { FlyTripSchema } from "@/app/(home)/product-types/ticket-fly/main/components/form/schema/trip/trip.schema";
 
 export const FlyAircraftSchema = z.object({
   // ======================================================

@@ -11,15 +11,23 @@ export default function RoomCategoryEditPage() {
 
   const roomCategoryId = params.roomCategoryId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useHotelRoomCategoryUpdateFormData(roomCategoryId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.roomCategory?.message ??
+          "Không tải được dữ liệu loại phòng, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <RoomCategoryForm initialData={data.initialData} />;

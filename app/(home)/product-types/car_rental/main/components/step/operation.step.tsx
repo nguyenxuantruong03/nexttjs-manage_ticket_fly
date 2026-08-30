@@ -7,7 +7,7 @@ import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
 import { WeekDay } from "@/types/common/enums";
 
-import { CarRentalFormSchema } from "../schema/core/car-rental.schema";
+import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 import { DriverOption } from "@/types/product-types/car_rental/enums";
 
 const weekDayOptions = Object.values(WeekDay).map((value) => ({

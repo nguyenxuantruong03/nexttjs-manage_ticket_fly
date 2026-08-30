@@ -8,14 +8,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const FlyMealTypeCreatePage = () => {
-  const { data, isLoading, error } = useFlyMealTypeCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyMealTypeCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.mealType?.message ??
+          "Không tải được dữ liệu loại suất ăn, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlyMealTypeForm />;

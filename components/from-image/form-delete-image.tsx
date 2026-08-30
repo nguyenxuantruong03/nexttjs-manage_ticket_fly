@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { toast } from "react-hot-toast";
 import {
   Form,
   FormControl,
@@ -11,12 +10,19 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { UpdateImageSchema } from "@/schemas/user";
+import { useUpdateUserMe } from "@/hooks/user";
+import { useSubmit } from "@/hooks/useSubmit";
+
+export const UpdateImageSchema = z.object({
+  image: z.optional(z.string()),
+});
 
 export const ForDeleteImage = () => {
+  const submit = useSubmit();
+  const updateUserMe = useUpdateUserMe();
+
   const form = useForm<z.infer<typeof UpdateImageSchema>>({
     resolver: zodResolver(UpdateImageSchema),
     defaultValues: {
@@ -24,27 +30,34 @@ export const ForDeleteImage = () => {
     },
   });
 
-  const router = useRouter();
+  const isSubmitting = form.formState.isSubmitting;
 
-  const onSubmit = (values: z.infer<typeof UpdateImageSchema>) => {
-    // if (data.error) {
-    //   toast.error("Xóa không thành công!");
-    // }
-    // if (data.success) {
-    //   toast.success("Xóa thành công!");
-    //   form.reset();
-    //   router.refresh();
-    // }
+  const onSubmit = async () => {
+    try {
+      await submit({
+        form,
+        mutation: updateUserMe.mutateAsync({
+          image: "", // hoặc null tuỳ BE quy ước "không có ảnh"
+        }),
+        success: "Xóa thành công!",
+      });
+      form.reset();
+    } catch {
+      // lỗi đã được useSubmit xử lý
+    }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
         <FormField
           control={form.control}
           name="image"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
-              <FormControl></FormControl>
+              <FormControl>
+                <></>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -53,6 +66,7 @@ export const ForDeleteImage = () => {
           type="submit"
           variant="outline"
           className="w-full cursor-pointer flex"
+          disabled={isSubmitting}
         >
           <Trash2 className="h-4 w-4 mr-2" />
           Xóa ảnh

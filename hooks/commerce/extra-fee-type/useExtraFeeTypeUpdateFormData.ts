@@ -1,32 +1,38 @@
 "use client";
 
-import { BookingTypeService } from "@/services/commerce/booking-type/client";
-
-import { ExtraFeeTypeService } from "@/services/commerce/extra-fee-type/client";
-
-import { useQuery } from "@tanstack/react-query";
+import { useExtraFeeType } from "@/hooks/commerce/extra-fee-type";
+import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
 export const useExtraFeeTypeUpdateFormData = (
   extraFeeTypeId: string,
   enabled = true,
 ) => {
-  return useQuery({
-    queryKey: ["extra-fee-type-update", extraFeeTypeId],
+  const extraFeeTypeQuery = useExtraFeeType(extraFeeTypeId, enabled);
+  const bookingTypeQuery = useBookingTypes(enabled);
 
-    enabled: enabled && !!extraFeeTypeId,
+  return {
+    data:
+      extraFeeTypeQuery.data && bookingTypeQuery.data
+        ? {
+            extraFeeTypeData: extraFeeTypeQuery.data,
+            bookingTypes: bookingTypeQuery.data,
+          }
+        : undefined,
 
-    staleTime: 1000 * 60 * 5,
+    isLoading: extraFeeTypeQuery.isLoading || bookingTypeQuery.isLoading,
+    isFetching: extraFeeTypeQuery.isFetching || bookingTypeQuery.isFetching,
 
-    queryFn: async () => {
-      const [extraFeeTypeData, bookingTypes] = await Promise.all([
-        ExtraFeeTypeService.getOne(extraFeeTypeId),
-        BookingTypeService.getMany(),
-      ]);
-
-      return {
-        extraFeeTypeData,
-        bookingTypes,
-      };
+    isError: extraFeeTypeQuery.isError || bookingTypeQuery.isError,
+    errors: {
+      extraFeeType: extraFeeTypeQuery.error as Error | null,
+      bookingType: bookingTypeQuery.error as Error | null,
     },
-  });
+
+    refetch: async () => {
+      await Promise.all([
+        extraFeeTypeQuery.refetch(),
+        bookingTypeQuery.refetch(),
+      ]);
+    },
+  };
 };

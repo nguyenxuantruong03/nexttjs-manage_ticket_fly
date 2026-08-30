@@ -8,7 +8,7 @@ import { EntityOption } from "@/components/entity-selector";
 
 import { Address } from "@/types/location/address";
 
-import { YachtFormSchema } from "../schema/core/yacht.schema";
+import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 
 import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";
 import { Country } from "@/types/location/country/country";

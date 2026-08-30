@@ -2,8 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { FlyFareRuleTypeService } from "@/services/product-types/ticket-fly/fare-rule-type/client";
-
 export const useFlyFareRuleTypeCreateFormData = (enabled = true) => {
   const query = useQuery({
     queryKey: ["fly-fare-rule-type-create-form-data"],
@@ -21,11 +19,13 @@ export const useFlyFareRuleTypeCreateFormData = (enabled = true) => {
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    errors: {
+      fareRuleType: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

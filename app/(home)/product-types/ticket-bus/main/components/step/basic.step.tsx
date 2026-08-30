@@ -5,9 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
-import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
 import { SearchTag } from "@/types/searchs/search/tag.types";
-import { BusFormSchema } from "../schema/core/bus.schema";
 import { SEARCH_PRIORITY_OPTIONS } from "@/types/searchs/search-prioty-score";
 import ServiceTypeCreateDialog from "@/app/(home)/catalog/service-type/components/ServiceTypeCreateDialog";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
@@ -21,6 +19,7 @@ import { BookingType } from "@/types/common/commerce/booking-type";
 import { Address } from "@/types/location/address";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import SearchTagCreateDialog from "@/app/(home)/search/tag/components/SearchTagCreateDialog";
+import { BusFormSchema } from "../form/schema/core/bus.schema";
 
 interface BasicStepProps {
   searchTagData: SearchTag[];

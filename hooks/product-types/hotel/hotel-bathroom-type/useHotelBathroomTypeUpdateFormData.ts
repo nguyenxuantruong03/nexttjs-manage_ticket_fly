@@ -26,11 +26,14 @@ export const useHotelBathroomTypeUpdateFormData = (
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    // Chỉ có 1 nguồn dữ liệu (bathroomType) nên lấy thẳng message của nó.
+    errors: {
+      bathroomType: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

@@ -6,14 +6,17 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const PlaceCreatePage = () => {
-  const { data, isLoading, error } = usePlaceCreateFormData();
+  const { data, isLoading, isError, refetch } = usePlaceCreateFormData();
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description="Không tải được dữ liệu địa điểm, vui lòng thử lại."
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

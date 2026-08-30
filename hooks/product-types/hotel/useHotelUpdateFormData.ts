@@ -156,11 +156,16 @@ export const useHotelUpdateFormData = (hotelId: string, enabled = true) => {
           }
         : undefined,
 
-    isPending: locationQuery.isPending || hotelQuery.isPending,
     isLoading: locationQuery.isLoading || hotelQuery.isLoading,
     isFetching: locationQuery.isFetching || hotelQuery.isFetching,
+
     isError: locationQuery.isError || hotelQuery.isError,
-    error: locationQuery.error ?? hotelQuery.error,
+    // 2 nguồn dữ liệu độc lập (location, hotel — hotel gồm cả
+    // initialData) nên tách riêng để biết lỗi đến từ nguồn nào.
+    errors: {
+      location: locationQuery.error as Error | null,
+      hotel: hotelQuery.error as Error | null,
+    },
 
     refetch: async () => {
       await Promise.all([locationQuery.refetch(), hotelQuery.refetch()]);

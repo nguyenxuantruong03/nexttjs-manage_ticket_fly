@@ -12,15 +12,23 @@ export default function CarRentalInsuranceTypeEditPage() {
 
   const insuranceTypeId = params.insuranceTypeId as string;
 
-  const { data, isLoading, error } =
+  const { data, isLoading, isError, errors, refetch } =
     useCarRentalInsuranceTypeUpdateFormData(insuranceTypeId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.insuranceType?.message ??
+          "Không tải được dữ liệu loại bảo hiểm, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <CarRentalInsuranceTypeForm initialData={data.initialData} />;

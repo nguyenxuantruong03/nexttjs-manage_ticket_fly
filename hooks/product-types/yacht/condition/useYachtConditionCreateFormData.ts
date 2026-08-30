@@ -2,8 +2,6 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { YachtConditionService } from "@/services/product-types/yacht/condition/client";
-
 export const useYachtConditionCreateFormData = (enabled = true) => {
   const query = useQuery({
     queryKey: ["yacht-condition-create-form-data"],
@@ -20,11 +18,13 @@ export const useYachtConditionCreateFormData = (enabled = true) => {
   return {
     data: query.data,
 
-    isPending: query.isPending,
     isLoading: query.isLoading,
     isFetching: query.isFetching,
+
     isError: query.isError,
-    error: query.error,
+    errors: {
+      condition: query.error as Error | null,
+    },
 
     refetch: query.refetch,
   };

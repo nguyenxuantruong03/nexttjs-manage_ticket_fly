@@ -20,16 +20,16 @@ export const useFlyAirportUpdateFormData = (
     enabled: enabled && !!flyAirportId,
     staleTime: 1000 * 60 * 5,
     queryFn: async () => {
-      const [initialData, searchTagData,airportData] = await Promise.all([
+      const [initialData, searchTagData, airportData] = await Promise.all([
         FlyAirportService.getOne(flyAirportId),
         SearchTagService.getMany(),
-        FlyAirportService.getMany()
+        FlyAirportService.getMany(),
       ]);
 
       return {
         initialData,
         searchTagData,
-        airportData
+        airportData,
       };
     },
   });
@@ -43,11 +43,16 @@ export const useFlyAirportUpdateFormData = (
           }
         : undefined,
 
-    isPending: locationQuery.isPending || flyAirportQuery.isPending,
     isLoading: locationQuery.isLoading || flyAirportQuery.isLoading,
     isFetching: locationQuery.isFetching || flyAirportQuery.isFetching,
+
     isError: locationQuery.isError || flyAirportQuery.isError,
-    error: locationQuery.error ?? flyAirportQuery.error,
+    // Có 2 nguồn dữ liệu độc lập (location + airport/search-tag, gồm
+    // cả initialData) nên tách 2 key riêng để biết lỗi đến từ đâu.
+    errors: {
+      location: locationQuery.error as Error | null,
+      flyAirport: flyAirportQuery.error as Error | null,
+    },
 
     refetch: async () => {
       await Promise.all([locationQuery.refetch(), flyAirportQuery.refetch()]);

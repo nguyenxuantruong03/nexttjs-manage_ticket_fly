@@ -8,14 +8,23 @@ import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
 const FlySeatTypeCreatePage = () => {
-  const { data, isLoading, error } = useFlySeatTypeCreateFormData();
+  const { data, isLoading, isError, errors, refetch } =
+    useFlySeatTypeCreateFormData();
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.seatType?.message ??
+          "Không tải được dữ liệu loại ghế, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return <FlySeatTypeForm />;

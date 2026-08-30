@@ -5,13 +5,13 @@
 import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 
-import { BusFormSchema } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../form/schema/core/bus.schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { BusSeatType } from "@/types/product-types/bus/bus-seat-type";
 import { EntityOption } from "@/components/entity-selector";
 import BusSeatTypeCreateDialog from "../../../seat-type/components/BusSeatTypeCreateDialog";
 import ExtraFeeTypeCreateDialog from "@/app/(home)/commerce/extra/extra-fee-type/components/ExtraFeeTypeCreateDialog";
-import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceruleTypeCreateDialog";
+import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceRuleTypeCreateDialog";
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
 import { ExtraFeeType } from "@/types/common/commerce/extra-fee-type.type";
 import { BookingType } from "@/types/common/commerce/booking-type";

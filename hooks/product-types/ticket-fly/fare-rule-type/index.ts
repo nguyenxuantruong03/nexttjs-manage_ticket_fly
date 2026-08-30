@@ -3,36 +3,61 @@
 import { FlyFareRuleTypeService } from "@/services/product-types/ticket-fly/fare-rule-type/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const QUERY_KEY = ["fly-fare-rule-type"] as const;
+// ======================================================
+// Query Keys
+// ======================================================
 
-export function useFlyFareRuleTypes() {
+export const flyFareRuleTypeQueryKeys = {
+  all: ["fly-fare-rule-type"] as const,
+  list: () => [...flyFareRuleTypeQueryKeys.all, "list"] as const,
+  detail: (id: string) =>
+    [...flyFareRuleTypeQueryKeys.all, "detail", id] as const,
+};
+
+// ======================================================
+// Queries
+// ======================================================
+
+export function useFlyFareRuleTypes(enabled = true) {
   return useQuery({
-    queryKey: QUERY_KEY,
+    queryKey: flyFareRuleTypeQueryKeys.list(),
     queryFn: () => FlyFareRuleTypeService.getMany(),
+    enabled,
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-export function useFlyFareRuleType(id: string) {
+export function useFlyFareRuleType(id: string, enabled = true) {
   return useQuery({
-    queryKey: [...QUERY_KEY, id],
+    queryKey: flyFareRuleTypeQueryKeys.detail(id),
     queryFn: () => FlyFareRuleTypeService.getOne(id),
-    enabled: !!id,
+    enabled: enabled && !!id,
+    staleTime: 1000 * 60 * 5,
   });
 }
+
+// ======================================================
+// Create
+// ======================================================
 
 export function useCreateFlyFareRuleType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlyFareRuleTypeService.create,
+    mutationFn: (data: Parameters<typeof FlyFareRuleTypeService.create>[0]) =>
+      FlyFareRuleTypeService.create(data),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: flyFareRuleTypeQueryKeys.list(),
       });
     },
   });
 }
+
+// ======================================================
+// Update
+// ======================================================
 
 export function useUpdateFlyFareRuleType() {
   const queryClient = useQueryClient();
@@ -46,28 +71,38 @@ export function useUpdateFlyFareRuleType() {
       data: Parameters<typeof FlyFareRuleTypeService.update>[1];
     }) => FlyFareRuleTypeService.update(id, data),
 
-    onSuccess(_, variables) {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEY, variables.id],
-      });
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flyFareRuleTypeQueryKeys.list(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: flyFareRuleTypeQueryKeys.detail(variables.id),
+        }),
+      ]);
     },
   });
 }
+
+// ======================================================
+// Delete
+// ======================================================
 
 export function useDeleteFlyFareRuleType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: FlyFareRuleTypeService.delete,
+    mutationFn: (id: string) => FlyFareRuleTypeService.delete(id),
 
-    onSuccess() {
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEY,
-      });
+    onSuccess: async (_, id) => {
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: flyFareRuleTypeQueryKeys.list(),
+        }),
+        queryClient.removeQueries({
+          queryKey: flyFareRuleTypeQueryKeys.detail(id),
+        }),
+      ]);
     },
   });
 }

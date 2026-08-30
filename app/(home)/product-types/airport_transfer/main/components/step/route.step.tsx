@@ -5,7 +5,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch, FormSelect } from "@/components/form/form-data";
 
 import { WeekDay } from "@/types/common/enums";
-import { AirportTransferFormSchema } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../form/schema/core/schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";
 

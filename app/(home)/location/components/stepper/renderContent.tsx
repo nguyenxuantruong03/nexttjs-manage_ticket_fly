@@ -37,7 +37,6 @@ export function renderLocationStepperContent({
     district,
     ward,
     place,
-    placeType,
     address,
     flyairport,
   } = hooks;
@@ -69,7 +68,7 @@ export function renderLocationStepperContent({
       return <LoadingPage />;
     }
 
-    if (country.error) {
+    if (country.isError) {
       return <ErrorPage />;
     }
 
@@ -99,7 +98,7 @@ export function renderLocationStepperContent({
       return <LoadingPage />;
     }
 
-    if (city.error) {
+    if (city.isError) {
       return <ErrorPage />;
     }
 

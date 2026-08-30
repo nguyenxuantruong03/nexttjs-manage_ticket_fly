@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 import { airportTransferFieldGroups } from "./field-groups";
-import { AirportTransferFormSchema } from "../schema/core/schema";
+import { AirportTransferFormSchema } from "../form/schema/core/schema";
 
 export const airportTransferSteps: FormWizardStep<AirportTransferFormSchema>[] =
   [

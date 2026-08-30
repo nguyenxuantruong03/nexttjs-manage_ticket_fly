@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 import { busFieldGroups } from "./field-groups";
-import { BusFormSchema } from "../schema/core/bus.schema";
+import { BusFormSchema } from "../form/schema/core/bus.schema";
 
 // NOTE: field-groups.ts does not define its own "schedule" group.
 // Everything schedule.step.tsx renders (trip timing/status + seat

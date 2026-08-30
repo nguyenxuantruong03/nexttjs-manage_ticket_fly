@@ -1,3 +1,4 @@
+import { Step } from "@/components/stepper/types";
 import {
   Accessibility,
   BadgeCheck,
@@ -24,8 +25,6 @@ import {
   Utensils,
   UtensilsCrossed,
 } from "lucide-react";
-
-export type Step = [id: string, title: string, icon: LucideIcon];
 
 export const mainSteps: Step[] = [
   ["basic", "Basic", Hotel],

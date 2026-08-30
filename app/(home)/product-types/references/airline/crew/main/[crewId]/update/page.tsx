@@ -15,14 +15,23 @@ export default function FlyCrewEditPage() {
 
   const crewId = params.crewId as string;
 
-  const { data, isLoading, error } = useFlyCrewUpdateFormData(crewId);
+  const { data, isLoading, isError, errors, refetch } =
+    useFlyCrewUpdateFormData(crewId);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  if (error || !data) {
-    return <ErrorPage />;
+  if (isError || !data) {
+    return (
+      <ErrorPage
+        description={
+          errors.crew?.message ??
+          "Không tải được dữ liệu tổ bay, vui lòng thử lại."
+        }
+        onRetry={refetch}
+      />
+    );
   }
 
   return (

@@ -2,7 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-
 import { RowActions } from "@/components/ui/data-table/row-actions";
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 import { Bus } from "@/types/product-types/bus/core/bus.types";
