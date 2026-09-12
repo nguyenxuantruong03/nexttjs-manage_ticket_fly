@@ -11,8 +11,18 @@ import { extraDefaultValues } from "./form/default-values";
 import { initExtraFormValues } from "./form/init-value";
 
 import { extraSteps } from "./step/steps";
+import { ExtraService } from "@/services/commerce/extra/client";
 
-export const extraFormConfig: EntityFormWizardConfig<ExtraFormSchema, Extra> = {
+export type ExtraCreateInput = Parameters<typeof ExtraService.create>[0];
+
+export type ExtraUpdateInput = Parameters<typeof ExtraService.update>[1];
+
+export const extraFormConfig: EntityFormWizardConfig<
+  ExtraFormSchema,
+  Extra,
+  ExtraCreateInput,
+  ExtraUpdateInput
+> = {
   schema,
 
   defaultValues: extraDefaultValues,

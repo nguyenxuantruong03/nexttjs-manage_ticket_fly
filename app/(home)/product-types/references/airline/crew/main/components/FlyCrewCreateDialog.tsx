@@ -10,7 +10,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useFieldArray } from "react-hook-form";
 
@@ -115,7 +115,7 @@ export default function FlyCrewCreateDialog({
   // ======================================================
 
   return (
-    <EntityCreateFormDialog<FlyCrewFormSchema, FlyCrew>
+    <EntityCreateFormDialog<FlyCrewFormSchema,Partial<FlyCrew>, FlyCrew>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

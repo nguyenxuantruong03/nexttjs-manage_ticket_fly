@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { extraColumns } from "./components/columns";
 
@@ -16,10 +16,7 @@ import LoadingPage from "@/components/ui/loading-page";
 
 import ErrorPage from "@/components/ui/error-page";
 
-import {
-  useDeleteExtra,
-  useExtras,
-} from "@/hooks/commerce/extra";
+import { useDeleteExtra, useExtras } from "@/hooks/commerce/extra";
 
 const Extra = () => {
   const router = useRouter();

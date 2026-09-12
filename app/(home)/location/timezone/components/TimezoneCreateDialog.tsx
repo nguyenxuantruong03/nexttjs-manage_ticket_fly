@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreateTimezone } from "@/hooks/location/timezone";
 
@@ -36,7 +36,7 @@ export default function TimezoneCreateDialog({
   const createTimezone = useCreateTimezone();
 
   return (
-    <EntityCreateFormDialog<TimezoneFormSchema, Timezone>
+    <EntityCreateFormDialog<TimezoneFormSchema, Partial<Timezone>, Timezone>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

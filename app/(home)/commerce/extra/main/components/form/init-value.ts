@@ -15,7 +15,9 @@ export function initExtraFormValues(extra?: Extra): ExtraFormSchema {
     // ======================================================
 
     name: extra.name ?? "",
+
     description: extra.description ?? null,
+
     icon: extra.icon ?? null,
 
     bookingTypeIds:
@@ -28,13 +30,26 @@ export function initExtraFormValues(extra?: Extra): ExtraFormSchema {
     // ======================================================
 
     price: extra.price ?? 0,
+
     currencyId: extra.currencyId ?? "",
+
+    // ======================================================
+    // MEDIA
+    // ======================================================
+
+    images:
+      extra.images?.map((image) => ({
+        mediaId: image.mediaId,
+        isPrimary: image.isPrimary,
+        sortOrder: image.sortOrder,
+      })) ?? [],
 
     // ======================================================
     // STATUS
     // ======================================================
 
     active: extra.active ?? true,
+
     sortOrder: extra.sortOrder ?? 0,
   };
 }

@@ -2,7 +2,13 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
 import { RowActions } from "@/components/ui/data-table/row-actions";
 
 import { FlyCabinClass } from "@/types/product-types/ticket-fly/fly-cabin-class";
@@ -12,45 +18,51 @@ export function flyCabinClassColumns(
 ): ColumnDef<FlyCabinClass>[] {
   return [
     // ======================================================
+    // SELECTION
+    // ======================================================
+
+    createSelectionColumn<FlyCabinClass>(),
+
+    // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<FlyCabinClass>({
       accessorKey: "id",
       header: "ID",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyCabinClass>({
       accessorKey: "name",
       header: "Name",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyCabinClass>({
       accessorKey: "description",
       header: "Description",
-      cell: ({ row }) => row.original.description ?? "-",
-    },
+      cell: (row) => row.description ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyCabinClass>({
       accessorKey: "icon",
       header: "Icon",
-      cell: ({ row }) => row.original.icon ?? "-",
-    },
+      cell: (row) => row.icon ?? "-",
+    }),
 
     // ======================================================
     // STATUS
     // ======================================================
 
-    {
+    createDataTableColumn<FlyCabinClass>({
       accessorKey: "sortOrder",
       header: "Sort Order",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyCabinClass>({
       accessorKey: "active",
       header: "Active",
-      cell: ({ row }) => (row.original.active ? "Yes" : "No"),
-    },
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
 
     // ======================================================
     // RELATIONS
@@ -81,20 +93,22 @@ export function flyCabinClassColumns(
     },
 
     // ======================================================
-    // TIMESTAMP
+    // TIMESTAMPS
     // ======================================================
 
-    {
+    createDataTableColumn<FlyCabinClass>({
       accessorKey: "createdAt",
       header: "Created At",
-      cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
-    },
+      cell: (row) =>
+        row.createdAt ? new Date(row.createdAt).toLocaleString() : "-",
+    }),
 
-    {
+    createDataTableColumn<FlyCabinClass>({
       accessorKey: "updatedAt",
       header: "Updated At",
-      cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString(),
-    },
+      cell: (row) =>
+        row.updatedAt ? new Date(row.updatedAt).toLocaleString() : "-",
+    }),
 
     // ======================================================
     // ACTIONS
@@ -103,7 +117,6 @@ export function flyCabinClassColumns(
     {
       id: "actions",
       header: "",
-
       cell: ({ row }) => <RowActions row={row.original} actions={actions} />,
     },
   ];

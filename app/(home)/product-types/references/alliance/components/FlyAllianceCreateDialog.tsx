@@ -5,7 +5,7 @@ import { FormInput } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -39,7 +39,11 @@ export default function FlyAllianceCreateDialog({
   const createFlyAlliance = useCreateFlyAlliance();
 
   return (
-    <EntityCreateFormDialog<FlyAllianceFormSchema, FlyAlliance>
+    <EntityCreateFormDialog<
+      FlyAllianceFormSchema,
+      Partial<FlyAlliance>,
+      FlyAlliance
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

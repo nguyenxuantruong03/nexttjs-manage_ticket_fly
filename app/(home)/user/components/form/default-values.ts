@@ -7,9 +7,25 @@ export const userDefaultValues: UserFormSchema = {
   password: "",
   confirmPassword: "",
   role: Role.USER,
-  image: null,
+
+  // ======================================================
+  // IMAGE
+  // ======================================================
+
+  image: {
+    key: null,
+    previewUrl: null,
+  },
+
+  // ======================================================
+  // SETTINGS
+  // ======================================================
+
   isTwoFactorEnabled: false,
-  emailVerified: false,
+
+  emailVerified: new Date(),
+
   reSendemail: 0,
+
   banUntil: null,
 };

@@ -5,7 +5,7 @@ import { FormInput } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { RoomCategoryFormSchema, RoomCategorySchema } from "./form/schema";
 
@@ -16,6 +16,7 @@ import { RoomCategory } from "@/types/product-types/hotel/room/room.types";
 import { useCreateHotelRoomCategory } from "@/hooks/product-types/hotel/hotel-room-category";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -36,7 +37,11 @@ export default function RoomCategoryCreateDialog({
   const createRoomCategory = useCreateHotelRoomCategory();
 
   return (
-    <EntityCreateFormDialog<RoomCategoryFormSchema, RoomCategory>
+    <EntityCreateFormDialog<
+      RoomCategoryFormSchema,
+      Partial<RoomCategory>,
+      RoomCategory
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -64,7 +69,7 @@ export default function RoomCategoryCreateDialog({
           placeholder="Room category name"
         />
 
-        <FormInput<RoomCategoryFormSchema>
+        <FormIcon<RoomCategoryFormSchema>
           name="icon"
           label="Icon"
           placeholder="Icon"

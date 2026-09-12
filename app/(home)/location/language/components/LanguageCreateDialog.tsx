@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreateLanguage } from "@/hooks/location/language";
 
@@ -21,8 +21,7 @@ import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDia
 // PROPS
 // ======================================================
 
-interface LanguageCreateDialogProps
-  extends EntityCreateDialogProps<Language> {}
+interface LanguageCreateDialogProps extends EntityCreateDialogProps<Language> {}
 
 // ======================================================
 // COMPONENT
@@ -37,7 +36,7 @@ export default function LanguageCreateDialog({
   const createLanguage = useCreateLanguage();
 
   return (
-    <EntityCreateFormDialog<LanguageFormSchema, Language>
+    <EntityCreateFormDialog<LanguageFormSchema, Partial<Language>, Language>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

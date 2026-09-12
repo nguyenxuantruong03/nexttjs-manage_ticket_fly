@@ -6,7 +6,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import RoomCategoryCreateDialog from "../../../room-category/components/RoomCategoryCreateDialog";
@@ -24,6 +24,9 @@ import { MediaCategory } from "@/types/common/catalog/media-category";
 import FacilityCreateDialog from "@/app/(home)/features/facility/main/components/FacilityCreateDialog";
 import { FacilityCategory } from "@/types/common/features/facility/facility-category";
 import { BookingType } from "@/types/common/commerce/booking-type";
+import MediaCategoryCreateDialog from "@/app/(home)/catalog/media-category/components/MediaCategoryCreateDialog";
+import { MediaAsset } from "@/types/common/catalog/media-asset";
+import MediaAssetCreateDialog from "@/app/(home)/catalog/media-asset/components/MediaAssetCreateDialog";
 
 interface RoomStepProps {
   roomCategoryData: RoomCategory[];
@@ -33,6 +36,8 @@ interface RoomStepProps {
   facilityData: Facility[];
   facilityCategoryData: FacilityCategory[];
   bookingTypeData: BookingType[];
+  mediaCategoryData: MediaCategory[];
+  mediaAssetData: MediaAsset[];
 }
 
 export default function RoomsStep({
@@ -43,6 +48,8 @@ export default function RoomsStep({
   facilityData,
   facilityCategoryData,
   bookingTypeData,
+  mediaCategoryData,
+  mediaAssetData,
 }: RoomStepProps) {
   const roomCategoryEntityOptions: EntityOption<RoomCategory>[] =
     roomCategoryData.map((category) => ({
@@ -84,6 +91,22 @@ export default function RoomsStep({
       label: facility.name,
       description: facility.description ?? undefined,
       data: facility,
+    }),
+  );
+
+  const mediaCategoryOptions: EntityOption<MediaCategory>[] =
+    mediaCategoryData.map((mediaCategory) => ({
+      value: mediaCategory.id,
+      label: mediaCategory.name,
+      description: mediaCategory.description ?? undefined,
+      data: mediaCategory,
+    }));
+
+  const mediaAssetOptions: EntityOption<MediaAsset>[] = mediaAssetData.map(
+    (mediaAsset) => ({
+      value: mediaAsset.id,
+      label: mediaAsset.caption ?? "",
+      data: mediaAsset,
     }),
   );
 
@@ -317,16 +340,39 @@ export default function RoomsStep({
 
       <FormSection title="Room Media" description="Photos for this room type">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<HotelSchemaForm>
+          <FormEntitySelector<HotelSchemaForm, MediaAsset>
             name="roomTypes.0.medias.0.mediaId"
-            label="Media"
-            placeholder="Search media..."
+            label="Media Asset"
+            placeholder="Search media asset..."
+            searchPlaceholder="Search media asset..."
+            emptyText="No media asset found"
+            createText="Create media asset"
+            options={mediaAssetOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <MediaAssetCreateDialog
+                folder="hotel/room"
+                bookingTypeData={bookingTypeData}
+                {...props}
+              />
+            )}
           />
 
-          <FormInput<HotelSchemaForm>
+          <FormEntitySelector<HotelSchemaForm, MediaCategory>
             name="roomTypes.0.medias.0.categoryId"
-            label="Category"
-            placeholder="Search category..."
+            label="Media Category"
+            placeholder="Search media category..."
+            searchPlaceholder="Search media category..."
+            emptyText="No media category found"
+            createText="Create media category"
+            options={mediaCategoryOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <MediaCategoryCreateDialog
+                bookingTypeData={bookingTypeData}
+                {...props}
+              />
+            )}
           />
 
           <FormInput<HotelSchemaForm>

@@ -51,6 +51,8 @@ export default function TicketBusCreatePage() {
       providerBookingData={data.providerBookingData}
       bookingItemTypeData={data.bookingItemTypeData}
       serviceTypeData={data.serviceTypeData}
+      mediaCategoryData={data.mediaCategoryData}
+      mediaAssetData={data.mediaAssetData}
     />
   );
 }

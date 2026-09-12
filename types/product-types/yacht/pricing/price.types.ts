@@ -11,13 +11,17 @@ export interface YachtPrice {
   yachtId: string;
   yacht?: Yacht;
 
+  effectiveFrom?: Date;
+  effectiveTo: Date;
+
   pricingType: YachtPricingType;
 
   basePrices: YachtPriceOption[];
-  discounts: YachtPriceRule[];
-  breakdowns: YachtPriceBreakdown[];
+
+  priceRules: YachtPriceRule[];
+
+  breakdown?: YachtPriceBreakdown;
 
   createdAt: Date;
-
   updatedAt: Date;
 }

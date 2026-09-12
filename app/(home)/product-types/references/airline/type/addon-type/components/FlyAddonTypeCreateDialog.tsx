@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreateFlyAddonType } from "@/hooks/product-types/references/airline/addon-type";
 
@@ -16,6 +16,7 @@ import { FlyAddonType } from "@/types/product-types/references/airline/fly-addon
 import { FlyAddonTypeFormSchema, FlyAddonTypeSchema } from "./form/schema";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -36,7 +37,7 @@ export default function FlyAddonTypeCreateDialog({
   const createFlyAddonType = useCreateFlyAddonType();
 
   return (
-    <EntityCreateFormDialog<FlyAddonTypeFormSchema, FlyAddonType>
+    <EntityCreateFormDialog<FlyAddonTypeFormSchema,Partial<FlyAddonType>, FlyAddonType>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -67,7 +68,7 @@ export default function FlyAddonTypeCreateDialog({
             placeholder="Extra Baggage"
           />
 
-          <FormInput<FlyAddonTypeFormSchema>
+          <FormIcon<FlyAddonTypeFormSchema>
             name="icon"
             label="Icon"
             placeholder="https://..."

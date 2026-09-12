@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormCombobox, FormInput } from "@/components/form/form-data";
 
 import { WardFormSchema } from "../form/schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import DistrictCreateDialog from "../../../district/components/DistrictCreateDialog";
 import { District } from "@/types/location/district";
@@ -16,14 +16,14 @@ interface BasicStepProps {
   districtData: District[];
   cityData: City[];
   bookingTypeData: BookingType[];
-  searchTagData: SearchTag[]
+  searchTagData: SearchTag[];
 }
 
 export default function BasicStep({
   districtData,
   cityData,
   bookingTypeData,
-  searchTagData
+  searchTagData,
 }: BasicStepProps) {
   const districtOptions: EntityOption<District>[] =
     districtData?.map((district) => ({

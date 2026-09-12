@@ -12,13 +12,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import FormError from "@/components/form-notification/form-error";
-import FormSuccess from "@/components/form-notification/form-success";
+import FormError from "@/components/form/form-notification/form-error";
+import FormSuccess from "@/components/form/form-notification/form-success";
 import axios from "axios";
 import { formatDistanceToNow } from "date-fns";
 import { vi } from "date-fns/locale";
-import FormHint from "@/components/form-notification/form-hint";
-import FormWarning from "@/components/form-notification/form-warning";
+import FormHint from "@/components/form/form-notification/form-hint";
+import FormWarning from "@/components/form/form-notification/form-warning";
 import AuthForm from "@/components/auth/form-auth";
 import { CountResendEmailVerifyCatch, TimeUnBanCatch } from "./catch";
 import { ForgotPasswordSchema } from "@/schemas/auths/auth";
@@ -50,7 +50,7 @@ const ForgotPasswordForm = () => {
       setError("Không thể gửi dữ liệu. Vui lòng thử lại sau.");
       return;
     }
-    setHint("")
+    setHint("");
     setError("");
     setSuccess("");
     try {
@@ -60,13 +60,13 @@ const ForgotPasswordForm = () => {
         {
           email: data.email,
           turnstileToken: turnstileToken,
-        }
+        },
       );
 
       const { countResendEmailVerify, success } = response.data;
 
       if (success || countResendEmailVerify) {
-        setLoading(true)
+        setLoading(true);
         setSuccess(response.data.success);
         if (countResendEmailVerify >= 2) {
           const warningReSentVerificationEmail = CountResendEmailVerifyCatch({
@@ -77,7 +77,7 @@ const ForgotPasswordForm = () => {
         }
       }
     } catch (err) {
-      setLoading(false)
+      setLoading(false);
       if (axios.isAxiosError(err)) {
         const { message, timeUnBan } = err.response?.data || {};
 

@@ -12,7 +12,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { ExtraFormSchema, schema as ExtraSchema } from "./form/schema";
 
@@ -37,6 +37,7 @@ import CurrencyCreateDialog from "@/app/(home)/location/currency/components/Curr
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -100,7 +101,7 @@ export default function ExtraCreateDialog({
     })) ?? [];
 
   return (
-    <EntityCreateFormDialog<ExtraFormSchema, Extra>
+    <EntityCreateFormDialog<ExtraFormSchema, Partial<Extra>, Extra>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -132,7 +133,7 @@ export default function ExtraCreateDialog({
           placeholder="Enter extra name"
         />
 
-        <FormInput<ExtraFormSchema>
+        <FormIcon<ExtraFormSchema>
           name="icon"
           label="Icon"
           placeholder="https://..."

@@ -7,7 +7,7 @@ import { FormInput } from "@/components/form/form-data";
 
 import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 import { Package } from "@/types/common/commerce/package/package.type";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import PackageCreateDialog from "@/app/(home)/commerce/package/components/PackageCreateDialog";
 import { BookingType } from "@/types/common/commerce/booking-type";

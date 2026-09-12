@@ -6,7 +6,7 @@ import FormWizardStep from "@/components/form/wizard/FormWizardStep";
 
 import { YachtFormSchema } from "./form/schema/core/yacht.schema";
 
-import { yachtFormConfig } from "./config";
+import { yachtFormConfig, YachtCreateInput, YachtUpdateInput } from "./config";
 
 import { useCreateYacht, useUpdateYacht } from "@/hooks/product-types/yacht";
 
@@ -85,6 +85,8 @@ import { PolicyType } from "@/types/common/features/policy/policy-type";
 import { ExtraType } from "@/types/common/commerce/extra/extra-type.type";
 
 import { Extra } from "@/types/common/commerce/extra/extra.type";
+import { MediaAsset } from "@/types/common/catalog/media-asset";
+import { MediaCategory } from "@/types/common/catalog/media-category";
 
 interface YachtFormProps {
   initialData?: Yacht;
@@ -134,6 +136,8 @@ interface YachtFormProps {
   extraData: Extra[];
 
   extraTypeData: ExtraType[];
+  mediaCategoryData: MediaCategory[];
+  mediaAssetData: MediaAsset[];
 }
 
 export default function YachtForm({
@@ -161,13 +165,20 @@ export default function YachtForm({
   policyTypeData,
   extraData,
   extraTypeData,
+  mediaCategoryData,
+  mediaAssetData,
 }: YachtFormProps) {
   const createYacht = useCreateYacht();
 
   const updateYacht = useUpdateYacht();
 
   return (
-    <EntityFormWizard<YachtFormSchema, Yacht>
+    <EntityFormWizard<
+      YachtFormSchema,
+      Yacht,
+      YachtCreateInput,
+      YachtUpdateInput
+    >
       initialData={initialData}
       config={yachtFormConfig}
       createMutation={createYacht}
@@ -189,6 +200,8 @@ export default function YachtForm({
 
       <FormWizardStep index={2}>
         <VehicleStep
+          mediaCategoryData={mediaCategoryData}
+          mediaAssetData={mediaAssetData}
           facilityData={facilityData}
           facilityCategoryData={facilityCategoryData}
           fuelTypeData={fuelTypeData}
@@ -264,7 +277,8 @@ export default function YachtForm({
       </FormWizardStep>
 
       <FormWizardStep index={12}>
-        <ImagesStep />
+        <ImagesStep mediaCategoryData={mediaCategoryData}
+          mediaAssetData={mediaAssetData} bookingTypeData={bookingTypeData}/>
       </FormWizardStep>
 
       <FormWizardStep index={13}>

@@ -1,7 +1,12 @@
 "use client";
 
 import FormSection from "@/components/form/FormSection";
-import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
+import {
+  FormDatePicker,
+  FormInput,
+  FormSelect,
+  FormSwitch,
+} from "@/components/form/form-data";
 
 import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
@@ -9,7 +14,7 @@ import { RentalDurationType } from "@/types/product-types/car_rental/enums";
 import { ExtraType } from "@/types/common/commerce/extra/extra-type.type";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceRuleTypeCreateDialog";
 import { Extra } from "@/types/common/commerce/extra/extra.type";
 import ExtraCreateDialog from "@/app/(home)/commerce/extra/main/components/ExtraCreateDialog";
@@ -71,16 +76,14 @@ export default function PricingStep({
             options={durationTypeOptions}
           />
 
-          <FormInput<CarRentalFormSchema>
-            name="vehicle.0.price.0.startDate"
-            label="Start Date"
-            type="date"
+          <FormDatePicker<CarRentalFormSchema>
+            name="vehicle.0.price.0.effectiveFrom"
+            label="Effective From"
           />
 
-          <FormInput<CarRentalFormSchema>
-            name="vehicle.0.price.0.endDate"
-            label="End Date"
-            type="date"
+          <FormDatePicker<CarRentalFormSchema>
+            name="vehicle.0.price.0.effectiveTo"
+            label="Effective To"
           />
 
           <FormInput<CarRentalFormSchema>
@@ -108,8 +111,26 @@ export default function PricingStep({
           />
 
           <FormInput<CarRentalFormSchema>
-            name="vehicle.0.price.0.originalPrice"
-            label="Original Price"
+            name="vehicle.0.price.0.originalPricePerHour"
+            label="Price Per Hour"
+            type="number"
+          />
+
+          <FormInput<CarRentalFormSchema>
+            name="vehicle.0.price.0.originalPricePerDay"
+            label="Price Per Day"
+            type="number"
+          />
+
+          <FormInput<CarRentalFormSchema>
+            name="vehicle.0.price.0.originalPricePerWeek"
+            label="Price Per Week"
+            type="number"
+          />
+
+          <FormInput<CarRentalFormSchema>
+            name="vehicle.0.price.0.originalPricePerMonth"
+            label="Price Per Month"
             type="number"
           />
 

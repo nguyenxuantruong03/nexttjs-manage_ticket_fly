@@ -9,7 +9,7 @@ import {
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreatePlaceType } from "@/hooks/location/place/place-type";
 
@@ -20,6 +20,7 @@ import { placeTypeDefaultValues } from "./form/default-values";
 import { PlaceType } from "@/types/location/place/place-type.type";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -40,7 +41,7 @@ export default function PlaceTypeCreateDialog({
   const createPlaceType = useCreatePlaceType();
 
   return (
-    <EntityCreateFormDialog<PlaceTypeFormSchema, PlaceType>
+    <EntityCreateFormDialog<PlaceTypeFormSchema, Partial<PlaceType>, PlaceType>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -98,7 +99,7 @@ export default function PlaceTypeCreateDialog({
       {/* ====================================================== */}
 
       <div className="grid gap-4 md:grid-cols-2">
-        <FormInput<PlaceTypeFormSchema>
+        <FormIcon<PlaceTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="Icon URL or icon name"

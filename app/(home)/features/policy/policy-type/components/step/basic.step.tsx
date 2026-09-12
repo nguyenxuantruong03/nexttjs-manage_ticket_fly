@@ -5,6 +5,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormTextarea } from "@/components/form/form-data";
 
 import { PolicyTypeFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
@@ -19,7 +20,7 @@ export default function BasicStep() {
           placeholder="Cancellation"
         />
 
-        <FormInput<PolicyTypeFormSchema>
+        <FormIcon<PolicyTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="https://..."

@@ -10,7 +10,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
@@ -33,6 +33,7 @@ import FacilityCategoryCreateDialog from "../../facility-category/components/Fac
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -78,7 +79,7 @@ export default function FacilityCreateDialog({
   );
 
   return (
-    <EntityCreateFormDialog<FacilityFormSchema, Facility>
+    <EntityCreateFormDialog<FacilityFormSchema, Partial<Facility>, Facility>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -110,7 +111,7 @@ export default function FacilityCreateDialog({
           placeholder="Swimming Pool"
         />
 
-        <FormInput<FacilityFormSchema>
+        <FormIcon<FacilityFormSchema>
           name="icon"
           label="Icon"
           placeholder="https://..."

@@ -4,6 +4,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 
 import { RoomCategoryFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
@@ -24,7 +25,7 @@ export default function BasicStep() {
           placeholder="Spacious room category with premium amenities"
         />
 
-        <FormInput<RoomCategoryFormSchema>
+        <FormIcon<RoomCategoryFormSchema>
           name="icon"
           label="Icon"
           placeholder="bed-double"

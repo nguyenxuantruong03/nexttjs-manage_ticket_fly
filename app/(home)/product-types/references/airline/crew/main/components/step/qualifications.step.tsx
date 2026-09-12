@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { useFieldArray, useFormContext } from "react-hook-form";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 

@@ -9,7 +9,7 @@ import { ArrowLeft, CircleHelp } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useFormPage } from "./form-context";
 import { useLeaveConfirm } from "@/hooks/useLeaveConfirm";
-import ConfirmDialog from "@/components/common/confirm-dialog";
+import ConfirmDialog from "@/components/common/confirm/confirm-dialog";
 
 import {
   Tooltip,

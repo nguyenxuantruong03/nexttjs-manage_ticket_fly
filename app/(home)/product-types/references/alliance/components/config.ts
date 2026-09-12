@@ -16,10 +16,21 @@ import { initFlyAllianceFormValues } from "./form/init-value";
 import { flyAllianceSteps } from "./step/steps";
 
 import { FlyAlliance } from "@/types/product-types/references/alliance/alliance.types";
+import { FlyAllianceService } from "@/services/product-types/references/alliance/client";
+
+export type FlyAllianceCreateInput = Parameters<
+  typeof FlyAllianceService.create
+>[0];
+
+export type FlyAllianceUpdateInput = Parameters<
+  typeof FlyAllianceService.update
+>[1];
 
 export const flyAllianceFormConfig: EntityFormWizardConfig<
   FlyAllianceFormSchema,
-  FlyAlliance
+  FlyAlliance,
+  FlyAllianceCreateInput,
+  FlyAllianceUpdateInput
 > = {
   schema: FlyAllianceSchema,
 

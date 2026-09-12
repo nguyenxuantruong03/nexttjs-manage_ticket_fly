@@ -8,7 +8,7 @@ import { FormInput } from "@/components/form/form-data";
 import { BusFormSchema } from "../form/schema/core/bus.schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { BusSeatType } from "@/types/product-types/bus/bus-seat-type";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import BusSeatTypeCreateDialog from "../../../seat-type/components/BusSeatTypeCreateDialog";
 
 interface SeatsStepProps {

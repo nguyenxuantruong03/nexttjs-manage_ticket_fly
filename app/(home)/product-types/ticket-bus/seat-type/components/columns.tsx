@@ -2,50 +2,61 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
 import { RowActions } from "@/components/ui/data-table/row-actions";
+
 import { BusSeatType } from "@/types/product-types/bus/bus-seat-type";
 
 export function busSeatTypeColumns(
-  actions: (
-    row: BusSeatType,
-  ) => ActionMenuItem<BusSeatType>[],
+  actions: (row: BusSeatType) => ActionMenuItem<BusSeatType>[],
 ): ColumnDef<BusSeatType>[] {
   return [
+    // ======================================================
+    // SELECTION
+    // ======================================================
+
+    createSelectionColumn<BusSeatType>(),
+
     // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<BusSeatType>({
       accessorKey: "id",
       header: "ID",
-    },
+    }),
 
-    {
+    createDataTableColumn<BusSeatType>({
       accessorKey: "name",
       header: "Name",
-    },
+    }),
 
-    {
+    createDataTableColumn<BusSeatType>({
       accessorKey: "description",
       header: "Description",
-      cell: ({ row }) => row.original.description ?? "-",
-    },
+      cell: (row) => row.description ?? "-",
+    }),
 
     // ======================================================
     // STATUS
     // ======================================================
 
-    {
+    createDataTableColumn<BusSeatType>({
       accessorKey: "active",
       header: "Active",
-      cell: ({ row }) => (row.original.active ? "Yes" : "No"),
-    },
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
 
-    {
+    createDataTableColumn<BusSeatType>({
       accessorKey: "sortOrder",
       header: "Sort Order",
-    },
+    }),
 
     // ======================================================
     // RELATIONS
@@ -73,11 +84,11 @@ export function busSeatTypeColumns(
     // TIMESTAMPS
     // ======================================================
 
-    {
+    createDataTableColumn<BusSeatType>({
       accessorKey: "createdAt",
       header: "Created At",
-      cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
-    },
+      cell: (row) => new Date(row.createdAt).toLocaleString(),
+    }),
 
     // ======================================================
     // ACTIONS
@@ -86,9 +97,7 @@ export function busSeatTypeColumns(
     {
       id: "actions",
       header: "",
-      cell: ({ row }) => (
-        <RowActions row={row.original} actions={actions} />
-      ),
+      cell: ({ row }) => <RowActions row={row.original} actions={actions} />,
     },
   ];
 }

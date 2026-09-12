@@ -38,6 +38,9 @@ export default function FlyAircraftEditPage() {
     <FlyAircraftForm
       initialData={data.initialData}
       airlineData={data.airlineData}
+      mediaCategoryData={data.mediaCategoryData}
+      mediaAssetData={data.mediaAssetData}
+      bookingTypeData={data.bookingTypeData}
     />
   );
 }

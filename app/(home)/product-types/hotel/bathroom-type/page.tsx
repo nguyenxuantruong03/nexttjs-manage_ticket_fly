@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { bathroomTypeColumns } from "./components/columns";
 import {
   useHotelBathroomTypes,

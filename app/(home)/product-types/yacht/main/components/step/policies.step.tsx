@@ -4,7 +4,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 import { Policy } from "@/types/common/features/policy/policy";

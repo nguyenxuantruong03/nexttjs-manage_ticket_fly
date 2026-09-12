@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { AirportTransferFormSchema } from "../form/schema/core/schema";
 import { Package } from "@/types/common/commerce/package/package.type";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import PackageCreateDialog from "@/app/(home)/commerce/package/components/PackageCreateDialog";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { Currency } from "@/types/location/currency";

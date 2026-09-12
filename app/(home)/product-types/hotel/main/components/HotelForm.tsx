@@ -1,49 +1,41 @@
 "use client";
 
 import EntityFormWizard from "@/components/form/wizard/EntityFormWizard";
-
 import FormWizardStep from "@/components/form/wizard/FormWizardStep";
 
 import { useCreateHotel, useUpdateHotel } from "@/hooks/product-types/hotel";
+
+import { HotelService } from "@/services/product-types/hotel/client";
 
 import { hotelFormConfig } from "./config";
 
 import { HotelSchemaForm } from "./form/schema/core/hotel.schema";
 
-import BasicStep from "./step/basic.step";
-
-import BrandStep from "./step/brand.step";
-
-import DetailsStep from "./step/details.step";
-
-import RoomsStep from "./step/room.step";
-
-import MealStep from "./step/meal.step";
-
-import PricingStep from "./step/pricing.step";
-
-import InformationStep from "./step/infomation.step";
-
-import RatingStep from "./step/rating.step";
-
-import InventoryStep from "./step/inventories.step";
-
-import CheckInCheckOutStep from "./step/check-in-policy.step";
-
 import { Hotel } from "@/types/product-types/hotel/core/hotel.types";
 
+import BasicStep from "./step/basic.step";
+import BrandStep from "./step/brand.step";
+import DetailsStep from "./step/details.step";
+import RoomsStep from "./step/room.step";
+import MealStep from "./step/meal.step";
+import PricingStep from "./step/pricing.step";
+import InformationStep from "./step/infomation.step";
+import RatingStep from "./step/rating.step";
+import InventoryStep from "./step/inventories.step";
+import CheckInCheckOutStep from "./step/check-in-policy.step";
+import SeoStep from "./step/seo.step";
+import PackagesStep from "./step/package.step";
+import MediaStep from "./step/media.step";
+import ExtrasStep from "./step/extras.step";
+import FacilitiesStep from "./step/facilities.step";
+import HotelPolicyMapperStep from "./step/hotel-policy.step";
+
 import { SearchTag } from "@/types/searchs/search/tag.types";
-
 import { ProviderBooking } from "@/types/users/provider-bookings";
-
 import { Address } from "@/types/location/address";
-
 import { Country } from "@/types/location/country/country";
-
 import { City } from "@/types/location/city";
-
 import { Ward } from "@/types/location/ward";
-
 import { District } from "@/types/location/district";
 
 import {
@@ -73,41 +65,27 @@ import {
 } from "@/types/product-types/hotel/hotel-detail";
 
 import { BookingType } from "@/types/common/commerce/booking-type";
-
-import SeoStep from "./step/seo.step";
-
-import PackagesStep from "./step/package.step";
-
-import MediaStep from "./step/media.step";
-
 import { FacilityCategory } from "@/types/common/features/facility/facility-category";
-
 import { Facility } from "@/types/common/features/facility/facility";
-
 import { Package } from "@/types/common/commerce/package/package.type";
-
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
-
 import { Currency } from "@/types/location/currency";
-
 import { PolicyType } from "@/types/common/features/policy/policy-type";
-
 import { Policy } from "@/types/common/features/policy/policy";
-
-import ExtrasStep from "./step/extras.step";
-
-import FacilitiesStep from "./step/facilities.step";
-
-import HotelPolicyMapperStep from "./step/hotel-policy.step";
-
 import { ExtraType } from "@/types/common/commerce/extra/extra-type.type";
-
 import { Extra } from "@/types/common/commerce/extra/extra.type";
-
 import { ServiceType } from "@/types/common/catalog/service-type.type";
-
 import { BookingItemType } from "@/types/common/commerce/booking-item-type.type";
+import { MediaAsset } from "@/types/common/catalog/media-asset";
+import { MediaCategory } from "@/types/common/catalog/media-category";
 
+// ======================================================
+// API INPUT TYPES
+// ======================================================
+
+type HotelCreateInput = Parameters<typeof HotelService.create>[0];
+
+type HotelUpdateInput = Parameters<typeof HotelService.update>[1];
 interface HotelFormProps {
   initialData?: Hotel;
 
@@ -174,6 +152,8 @@ interface HotelFormProps {
   serviceTypeData: ServiceType[];
 
   bookingItemTypeData: BookingItemType[];
+  mediaAssetData: MediaAsset[];
+  mediaCategoryData: MediaCategory[];
 }
 
 export default function HotelForm({
@@ -210,13 +190,20 @@ export default function HotelForm({
   extraData,
   serviceTypeData,
   bookingItemTypeData,
+  mediaAssetData,
+  mediaCategoryData,
 }: HotelFormProps) {
   const createHotel = useCreateHotel();
 
   const updateHotel = useUpdateHotel();
 
   return (
-    <EntityFormWizard<HotelSchemaForm, Hotel>
+    <EntityFormWizard<
+      HotelSchemaForm,
+      Hotel,
+      HotelCreateInput,
+      HotelUpdateInput
+    >
       initialData={initialData}
       config={hotelFormConfig}
       createMutation={createHotel}
@@ -240,6 +227,8 @@ export default function HotelForm({
 
       <FormWizardStep index={3}>
         <DetailsStep
+          mediaAssetData={mediaAssetData}
+          bookingTypeData={bookingTypeData}
           sustainabilityData={sustainabilityData}
           accessibilityData={accessibilityData}
         />
@@ -294,7 +283,11 @@ export default function HotelForm({
       </FormWizardStep>
 
       <FormWizardStep index={10}>
-        <MediaStep />
+        <MediaStep
+          mediaAssetData={mediaAssetData}
+          mediaCategoryData={mediaCategoryData}
+          bookingTypeData={bookingTypeData}
+        />
       </FormWizardStep>
 
       <FormWizardStep index={11}>
@@ -322,6 +315,8 @@ export default function HotelForm({
 
       <FormWizardStep index={14}>
         <RoomsStep
+          mediaAssetData={mediaAssetData}
+          mediaCategoryData={mediaCategoryData}
           bedTypeData={bedTypeData}
           hotelRoomViewData={hotelRoomViewData}
           bathroomTypeData={bathroomTypeData}

@@ -2,10 +2,15 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
+import {
+  FormDatePicker,
+  FormInput,
+  FormSelect,
+  FormSwitch,
+} from "@/components/form/form-data";
 
 import { AirportTransferFormSchema } from "../form/schema/core/schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
 import { ExtraFeeType } from "@/types/common/commerce/extra-fee-type.type";
 import { VehicleType } from "@/types/common/catalog/vehicle-type.type";
@@ -92,6 +97,16 @@ export default function PricingStep({
             label="Original To Price"
             type="number"
             placeholder="Enter original maximum price"
+          />
+
+          <FormDatePicker<AirportTransferFormSchema>
+            name="price.effectiveFrom"
+            label="Effective From"
+          />
+
+          <FormDatePicker<AirportTransferFormSchema>
+            name="price.effectiveTo"
+            label="Effective To"
           />
         </div>
       </FormSection>
@@ -273,13 +288,13 @@ export default function PricingStep({
       <FormSection title="Price Rules" description="Discount and pricing rules">
         <div className="grid gap-6 md:grid-cols-2">
           <FormInput<AirportTransferFormSchema>
-            name="price.rules.0.name"
+            name="price.priceRules.0.name"
             label="Rule Name"
             placeholder="Enter rule name"
           />
 
           <FormEntitySelector<AirportTransferFormSchema, PriceRuleType>
-            name="price.rules.0.priceRuleTypeId"
+            name="price.priceRules.0.priceRuleTypeId"
             label="Rule Type"
             placeholder="Search rule type..."
             searchPlaceholder="Search rule type..."
@@ -296,64 +311,64 @@ export default function PricingStep({
           />
 
           <FormSelect<AirportTransferFormSchema>
-            name="price.rules.0.adjustmentType"
+            name="price.priceRules.0.adjustmentType"
             label="Adjustment Type"
             options={adjustmentTypeOptions}
           />
 
           <FormInput<AirportTransferFormSchema>
-            name="price.rules.0.value"
+            name="price.priceRules.0.value"
             label="Value"
             type="number"
             placeholder="Enter adjustment value"
           />
 
           <FormInput<AirportTransferFormSchema>
-            name="price.rules.0.minimumSpend"
+            name="price.priceRules.0.minimumSpend"
             label="Minimum Spend"
             type="number"
             placeholder="Enter minimum spend"
           />
 
           <FormInput<AirportTransferFormSchema>
-            name="price.rules.0.maximumDiscount"
+            name="price.priceRules.0.maximumDiscount"
             label="Maximum Discount"
             type="number"
             placeholder="Enter maximum discount"
           />
 
           <FormInput<AirportTransferFormSchema>
-            name="price.rules.0.couponCode"
+            name="price.priceRules.0.couponCode"
             label="Coupon Code"
             placeholder="Enter coupon code"
           />
 
           <FormInput<AirportTransferFormSchema>
-            name="price.rules.0.validFrom"
+            name="price.priceRules.0.validFrom"
             label="Valid From"
             type="datetime-local"
           />
 
           <FormInput<AirportTransferFormSchema>
-            name="price.rules.0.validTo"
+            name="price.priceRules.0.validTo"
             label="Valid To"
             type="datetime-local"
           />
 
           <FormInput<AirportTransferFormSchema>
-            name="price.rules.0.priority"
+            name="price.priceRules.0.priority"
             label="Priority"
             type="number"
             placeholder="Enter rule priority"
           />
 
           <FormSwitch<AirportTransferFormSchema>
-            name="price.rules.0.combinable"
+            name="price.priceRules.0.combinable"
             label="Combinable"
           />
 
           <FormSwitch<AirportTransferFormSchema>
-            name="price.rules.0.active"
+            name="price.priceRules.0.active"
             label="Active"
           />
         </div>

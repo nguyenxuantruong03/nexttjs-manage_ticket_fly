@@ -1,273 +1,242 @@
+// features/provider-booking/provider-booking-columns.tsx
+
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
+import type { ColumnDef } from "@tanstack/react-table";
+
 import {
-  ActionMenu,
-  ActionMenuItem,
-} from "../../../../components/ui/data-table/action-menu";
+  CheckCircle2,
+  ExternalLink,
+  Mail,
+  Phone,
+  Star,
+  XCircle,
+} from "lucide-react";
+
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { Badge } from "@/components/ui/badge";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { RowActions } from "@/components/ui/data-table/row-actions";
+import { cn } from "@/lib/utils";
+
 import { ProviderBooking } from "@/types/users/provider-bookings";
+import { RowActions } from "@/components/ui/data-table/row-actions";
+import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
+const STATUS_STYLES: Record<string, string> = {
+  ACTIVE: "border-emerald-200 bg-emerald-50 text-emerald-700",
+  INACTIVE: "border-zinc-200 bg-zinc-50 text-zinc-500",
+};
+
+const STATUS_LABEL: Record<string, string> = {
+  ACTIVE: "Đang hoạt động",
+  INACTIVE: "Ngừng hoạt động",
+};
 
 export function providerBookingColumns(
   actions: (row: ProviderBooking) => ActionMenuItem<ProviderBooking>[],
 ): ColumnDef<ProviderBooking>[] {
   return [
-    // Select
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
+    createSelectionColumn<ProviderBooking>(),
 
-    // Basic
-    {
-      accessorKey: "logo",
-      header: "Logo",
-      cell: ({ row }) => (
-        <Avatar className="h-12 w-12 rounded-lg">
-          <AvatarImage
-            src={row.original.logo ?? ""}
-            alt={row.original.displayName}
-            className="object-cover"
-          />
-          <AvatarFallback>
-            {row.original.displayName.slice(0, 2).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-      ),
-    },
-    {
-      accessorKey: "banner",
-      header: "Banner",
-      cell: ({ row }) => (
-        <Avatar className="h-12 w-20 rounded-md">
-          <AvatarImage
-            src={row.original.banner ?? ""}
-            alt={row.original.displayName}
-            className="object-cover"
-          />
-          <AvatarFallback>
-            {row.original.displayName.slice(0, 2).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
-      ),
-    },
-    {
+    createDataTableColumn<ProviderBooking>({
       accessorKey: "officialName",
-      header: "Official Name",
-    },
-    {
+      header: "Tên chính thức",
+      cell: (row) => <div className="font-medium">{row.officialName}</div>,
+      meta: { align: "left" },
+    }),
+
+    createDataTableColumn<ProviderBooking>({
       accessorKey: "displayName",
-      header: "Display Name",
-    },
-    {
+      header: "Tên hiển thị",
+    }),
+
+    createDataTableColumn<ProviderBooking>({
       accessorKey: "shortName",
-      header: "Short Name",
-    },
-    {
-      accessorKey: "subtitle",
-      header: "Subtitle",
-    },
-    {
-      accessorKey: "description",
-      header: "Description",
-    },
+      header: "Tên viết tắt",
+      exclude: ["sorting", "filtering"],
+    }),
 
-    // Company
-    {
-      accessorKey: "companyType",
-      header: "Company Type",
-    },
-    {
+    createDataTableColumn<ProviderBooking>({
       accessorKey: "registrationNumber",
-      header: "Registration Number",
-    },
-    {
-      accessorKey: "taxCode",
-      header: "Tax Code",
-    },
-    {
-      accessorKey: "licenseNumber",
-      header: "License Number",
-    },
-    {
-      accessorKey: "foundedYear",
-      header: "Founded Year",
-    },
-    {
-      accessorKey: "employeeCount",
-      header: "Employees",
-    },
+      header: "Số đăng ký",
+      exclude: ["filtering"],
+    }),
 
-    // Contact
-    {
+    createDataTableColumn<ProviderBooking>({
+      accessorKey: "taxCode",
+      header: "Mã số thuế",
+    }),
+
+    createDataTableColumn<ProviderBooking>({
+      accessorKey: "employeeCount",
+      header: "Nhân viên",
+      meta: {
+        align: "right",
+        filterVariant: "number",
+        filterLabel: "Nhân viên",
+      },
+    }),
+
+    createDataTableColumn<ProviderBooking>({
       accessorKey: "email",
       header: "Email",
-    },
-    {
+      cell: (row) =>
+        row.email ? (
+          <a
+            href={`mailto:${row.email}`}
+            data-table-interactive
+            className="inline-flex items-center gap-1.5 text-sm hover:underline"
+          >
+            <Mail className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+
+            <span className="truncate">{row.email}</span>
+          </a>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        ),
+    }),
+
+    createDataTableColumn<ProviderBooking>({
       accessorKey: "phone",
-      header: "Phone",
-    },
-    {
-      accessorKey: "hotline",
-      header: "Hotline",
-    },
-    {
+      header: "Điện thoại",
+      cell: (row) =>
+        row.phone ? (
+          <a
+            href={`tel:${row.phone}`}
+            data-table-interactive
+            className="inline-flex items-center gap-1.5 text-sm hover:underline"
+          >
+            <Phone className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+
+            {row.phone}
+          </a>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        ),
+    }),
+
+    createDataTableColumn<ProviderBooking>({
       accessorKey: "website",
       header: "Website",
-    },
+      exclude: ["filtering", "sorting"],
+      cell: (row) =>
+        row.website ? (
+          <a
+            href={row.website}
+            target="_blank"
+            rel="noreferrer"
+            data-table-interactive
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+          >
+            <span className="max-w-[160px] truncate">
+              {row.website.replace(/^https?:\/\//, "")}
+            </span>
 
-    // Address
-    {
-      accessorKey: "address",
-      header: "Address",
-    },
-    {
-      accessorKey: "city",
-      header: "City",
-    },
-    {
-      accessorKey: "state",
-      header: "State",
-    },
-    {
-      accessorKey: "country",
-      header: "Country",
-    },
-    {
-      accessorKey: "postalCode",
-      header: "Postal Code",
-    },
-    {
-      accessorKey: "latitude",
-      header: "Latitude",
-    },
-    {
-      accessorKey: "longitude",
-      header: "Longitude",
-    },
+            <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+          </a>
+        ) : (
+          <span className="text-muted-foreground">—</span>
+        ),
+    }),
 
-    // Social
-    {
-      accessorKey: "facebook",
-      header: "Facebook",
-    },
-    {
-      accessorKey: "instagram",
-      header: "Instagram",
-    },
-    {
-      accessorKey: "youtube",
-      header: "YouTube",
-    },
-    {
-      accessorKey: "linkedin",
-      header: "LinkedIn",
-    },
-
-    // Rating
-    {
+    createDataTableColumn<ProviderBooking>({
       accessorKey: "averageRating",
-      header: "Average Rating",
-    },
-    {
-      accessorKey: "totalRatings",
-      header: "Total Ratings",
-    },
-    {
-      accessorKey: "totalReviews",
-      header: "Total Reviews",
-    },
-    {
-      accessorKey: "fiveStarCount",
-      header: "5★",
-    },
-    {
-      accessorKey: "fourStarCount",
-      header: "4★",
-    },
-    {
-      accessorKey: "threeStarCount",
-      header: "3★",
-    },
-    {
-      accessorKey: "twoStarCount",
-      header: "2★",
-    },
-    {
-      accessorKey: "oneStarCount",
-      header: "1★",
-    },
+      header: "Đánh giá",
+      meta: {
+        align: "right",
+        filterVariant: "number",
+        filterLabel: "Đánh giá",
+      },
+      cell: (row) =>
+        row.averageRating ? (
+          <div className="flex items-center justify-end gap-1">
+            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
 
-    // Booking
-    {
+            <span className="tabular-nums">{row.averageRating.toFixed(1)}</span>
+          </div>
+        ) : (
+          <span className="block text-right text-muted-foreground">—</span>
+        ),
+    }),
+
+    createDataTableColumn<ProviderBooking>({
       accessorKey: "totalBookings",
-      header: "Total Bookings",
-    },
-    {
-      accessorKey: "completedBookings",
-      header: "Completed",
-    },
-    {
-      accessorKey: "cancelledBookings",
-      header: "Cancelled",
-    },
-    {
-      accessorKey: "totalCustomers",
-      header: "Customers",
-    },
+      header: "Lượt đặt",
+      meta: {
+        align: "right",
+        filterVariant: "number",
+        filterLabel: "Lượt đặt",
+      },
+      cell: (row) => (
+        <span className="block text-right tabular-nums">
+          {row.totalBookings.toLocaleString("vi-VN")}
+        </span>
+      ),
+    }),
 
-    // Services
-    {
-      id: "bookingTypes",
-      header: "Services",
-      cell: ({ row }) => (
-        <div className="flex flex-wrap gap-1">
-          {row.original.bookingTypes.map((bookingType) => (
-            <Badge key={bookingType.id}>{bookingType.name}</Badge>
-          ))}
+    createDataTableColumn<ProviderBooking>({
+      accessorKey: "verified",
+      header: "Xác minh",
+      meta: {
+        align: "center",
+        filterVariant: "boolean",
+        filterLabel: "Xác minh",
+      },
+      cell: (row) => (
+        <div className="flex justify-center">
+          {row.verified ? (
+            <span className="inline-flex items-center gap-1.5 text-sm text-emerald-600">
+              <CheckCircle2 className="h-4 w-4" />
+              Đã xác minh
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
+              <XCircle className="h-4 w-4" />
+              Chưa xác minh
+            </span>
+          )}
         </div>
       ),
-    },
+    }),
 
-    // Status
-    {
-      accessorKey: "verified",
-      header: "Verified",
-    },
-    {
+    createDataTableColumn<ProviderBooking>({
       accessorKey: "status",
-      header: "Status",
-    },
+      header: "Trạng thái",
+      meta: {
+        filterVariant: "select",
+        filterLabel: "Trạng thái",
+        filterOptions: [
+          { label: "Đang hoạt động", value: "ACTIVE" },
+          { label: "Ngừng hoạt động", value: "INACTIVE" },
+        ],
+      },
+      cell: (row) => (
+        <Badge
+          variant="outline"
+          className={cn("font-normal", STATUS_STYLES[row.status])}
+        >
+          {STATUS_LABEL[row.status] ?? row.status}
+        </Badge>
+      ),
+    }),
 
-    // Time
-    {
+    createDataTableColumn<ProviderBooking>({
       accessorKey: "createdAt",
-      header: "Created At",
-    },
-    {
-      accessorKey: "updatedAt",
-      header: "Updated At",
-    },
+      header: "Ngày tạo",
+      cell: (row) => (
+        <span className="text-muted-foreground">
+          {new Date(row.createdAt).toLocaleString("vi-VN", {
+            dateStyle: "short",
+            timeStyle: "short",
+          })}
+        </span>
+      ),
+    }),
+
     {
       id: "actions",
       header: "",

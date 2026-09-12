@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -16,6 +16,7 @@ import { busSeatTypeDefaultValues } from "./form/default-values";
 import { BusSeatType } from "@/types/product-types/bus/bus-seat-type";
 
 import { useCreateBusSeatType } from "@/hooks/product-types/bus/seat-type";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -36,7 +37,11 @@ export default function BusSeatTypeCreateDialog({
   const createBusSeatType = useCreateBusSeatType();
 
   return (
-    <EntityCreateFormDialog<BusSeatTypeFormSchema, BusSeatType>
+    <EntityCreateFormDialog<
+      BusSeatTypeFormSchema,
+      Partial<BusSeatType>,
+      BusSeatType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -69,7 +74,7 @@ export default function BusSeatTypeCreateDialog({
             placeholder="Standard Seat"
           />
 
-          <FormInput<BusSeatTypeFormSchema>
+          <FormIcon<BusSeatTypeFormSchema>
             name="icon"
             label="Icon"
             placeholder="https://..."

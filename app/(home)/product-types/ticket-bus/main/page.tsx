@@ -1,5 +1,5 @@
 "use client";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { ticketBusColumns } from "./components/columns";
 import { useBuses, useDeleteBus } from "@/hooks/product-types/bus";
 import { useRouter } from "next/navigation";

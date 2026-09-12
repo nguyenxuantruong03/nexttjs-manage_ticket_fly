@@ -32,6 +32,7 @@ export default function PackageCreatePage() {
     <PackageForm
       bookingTypeData={data.bookingTypeData}
       currencyData={data.currencyData}
+      mediaAssetData={data.mediaAssetData}
     />
   );
 }

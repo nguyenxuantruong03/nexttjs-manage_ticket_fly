@@ -10,7 +10,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import {
   VehicleTypeFormSchema,
@@ -30,6 +30,7 @@ import BookingTypeCreateDialog from "@/app/(home)/commerce/booking-type/componen
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -61,7 +62,11 @@ export default function VehicleTypeCreateDialog({
   );
 
   return (
-    <EntityCreateFormDialog<VehicleTypeFormSchema, VehicleType>
+    <EntityCreateFormDialog<
+      VehicleTypeFormSchema,
+      Partial<VehicleType>,
+      VehicleType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -93,7 +98,7 @@ export default function VehicleTypeCreateDialog({
           placeholder="Enter vehicle type name"
         />
 
-        <FormInput<VehicleTypeFormSchema>
+        <FormIcon<VehicleTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="Enter vehicle type icon"

@@ -40,6 +40,7 @@ export default function PackageEditPage() {
       initialData={data.packageData}
       bookingTypeData={data.bookingTypeData}
       currencyData={data.currencyData}
+      mediaAssetData={data.mediaAssetData}
     />
   );
 }

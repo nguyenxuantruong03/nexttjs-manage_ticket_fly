@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -16,6 +16,7 @@ import { FlySeatTypeFormSchema, FlySeatTypeSchema } from "./form/schema";
 import { flySeatTypeDefaultValues } from "./form/default-values";
 
 import { FlySeatType } from "@/types/product-types/ticket-fly/fly-seat-type";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -36,7 +37,11 @@ export default function FlySeatTypeCreateDialog({
   const createFlySeatType = useCreateFlySeatType();
 
   return (
-    <EntityCreateFormDialog<FlySeatTypeFormSchema, FlySeatType>
+    <EntityCreateFormDialog<
+      FlySeatTypeFormSchema,
+      Partial<FlySeatType>,
+      FlySeatType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -66,7 +71,7 @@ export default function FlySeatTypeCreateDialog({
             placeholder="Economy"
           />
 
-          <FormInput<FlySeatTypeFormSchema>
+          <FormIcon<FlySeatTypeFormSchema>
             name="icon"
             label="Icon"
             placeholder="https://..."

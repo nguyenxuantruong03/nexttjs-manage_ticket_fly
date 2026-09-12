@@ -3,18 +3,24 @@
 "use client";
 
 import FormSection from "@/components/form/FormSection";
-import { FormInput, FormSwitch } from "@/components/form/form-data";
+import {
+  FormDatePicker,
+  FormInput,
+  FormSwitch,
+} from "@/components/form/form-data";
+import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import { BusFormSchema } from "../form/schema/core/bus.schema";
-import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+
 import { BusSeatType } from "@/types/product-types/bus/bus-seat-type";
-import { EntityOption } from "@/components/entity-selector";
-import BusSeatTypeCreateDialog from "../../../seat-type/components/BusSeatTypeCreateDialog";
-import ExtraFeeTypeCreateDialog from "@/app/(home)/commerce/extra/extra-fee-type/components/ExtraFeeTypeCreateDialog";
-import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceRuleTypeCreateDialog";
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
 import { ExtraFeeType } from "@/types/common/commerce/extra-fee-type.type";
 import { BookingType } from "@/types/common/commerce/booking-type";
+
+import BusSeatTypeCreateDialog from "../../../seat-type/components/BusSeatTypeCreateDialog";
+import ExtraFeeTypeCreateDialog from "@/app/(home)/commerce/extra/extra-fee-type/components/ExtraFeeTypeCreateDialog";
+import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceRuleTypeCreateDialog";
 
 interface PricingStepProps {
   seatTypeData: BusSeatType[];
@@ -56,6 +62,10 @@ export default function PricingStep({
 
   return (
     <>
+      {/* ======================================================
+          GENERAL PRICING
+      ====================================================== */}
+
       <FormSection title="General Pricing" description="Bus price range">
         <div className="grid gap-6 md:grid-cols-2">
           <FormInput<BusFormSchema>
@@ -82,19 +92,21 @@ export default function PricingStep({
             type="number"
           />
 
-          <FormInput<BusFormSchema>
+          <FormDatePicker<BusFormSchema>
             name="price.0.effectiveFrom"
             label="Effective From"
-            type="datetime-local"
           />
 
-          <FormInput<BusFormSchema>
+          <FormDatePicker<BusFormSchema>
             name="price.0.effectiveTo"
             label="Effective To"
-            type="datetime-local"
           />
         </div>
       </FormSection>
+
+      {/* ======================================================
+          PRICE BREAKDOWN
+      ====================================================== */}
 
       <FormSection
         title="Price Breakdown"
@@ -102,7 +114,7 @@ export default function PricingStep({
       >
         <div className="grid gap-6 md:grid-cols-2">
           <FormEntitySelector<BusFormSchema, BusSeatType>
-            name="price.0.breakdowns.0.seatTypeId"
+            name="price.0.breakdown.seatTypeId"
             label="Seat Type"
             placeholder="Search seat type..."
             searchPlaceholder="Search seat type..."
@@ -116,59 +128,63 @@ export default function PricingStep({
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.breakdowns.0.basePrice"
+            name="price.0.breakdown.basePrice"
             label="Base Price"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.breakdowns.0.originalPrice"
+            name="price.0.breakdown.originalPrice"
             label="Original Price"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.breakdowns.0.taxes"
+            name="price.0.breakdown.taxes"
             label="Taxes"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.breakdowns.0.serviceFee"
+            name="price.0.breakdown.serviceFee"
             label="Service Fee"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.breakdowns.0.bookingFee"
+            name="price.0.breakdown.bookingFee"
             label="Booking Fee"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.breakdowns.0.discount"
+            name="price.0.breakdown.discount"
             label="Discount"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.breakdowns.0.finalPrice"
+            name="price.0.breakdown.finalPrice"
             label="Final Price"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.breakdowns.0.availableSeats"
+            name="price.0.breakdown.availableSeats"
             label="Available Seats"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.breakdowns.0.includedItems"
+            name="price.0.breakdown.includedItems"
             label="Included Items"
           />
         </div>
       </FormSection>
+
+      {/* ======================================================
+          EXTRA FEES
+      ====================================================== */}
 
       <FormSection
         title="Extra Fees"
@@ -176,7 +192,7 @@ export default function PricingStep({
       >
         <div className="grid gap-6 md:grid-cols-2">
           <FormEntitySelector<BusFormSchema, ExtraFeeType>
-            name="price.0.breakdowns.0.extraFees.0.extraFeeTypeId"
+            name="price.0.breakdown.extraFees.0.extraFeeTypeId"
             label="Extra Fee Type"
             placeholder="Search extra fee type..."
             searchPlaceholder="Search extra fee type..."
@@ -193,29 +209,36 @@ export default function PricingStep({
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.breakdowns.0.extraFees.0.amount"
+            name="price.0.breakdown.extraFees.0.amount"
             label="Amount"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.breakdowns.0.extraFees.0.calculationType"
+            name="price.0.breakdown.extraFees.0.calculationType"
             label="Calculation Type"
           />
 
           <FormSwitch<BusFormSchema>
-            name="price.0.breakdowns.0.extraFees.0.active"
+            name="price.0.breakdown.extraFees.0.active"
             label="Active"
           />
         </div>
       </FormSection>
 
+      {/* ======================================================
+          PRICE RULES
+      ====================================================== */}
+
       <FormSection title="Pricing Rules" description="Discount & promo rules">
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormSchema> name="price.0.rules.0.name" label="Name" />
+          <FormInput<BusFormSchema>
+            name="price.0.priceRules.0.name"
+            label="Name"
+          />
 
           <FormEntitySelector<BusFormSchema, PriceRuleType>
-            name="price.0.rules.0.priceRuleTypeId"
+            name="price.0.priceRules.0.priceRuleTypeId"
             label="Price Rule Type"
             placeholder="Search price rule type..."
             searchPlaceholder="Search price rule type..."
@@ -232,59 +255,59 @@ export default function PricingStep({
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.rules.0.priority"
+            name="price.0.priceRules.0.priority"
             label="Priority"
             type="number"
           />
 
           <FormSwitch<BusFormSchema>
-            name="price.0.rules.0.combinable"
+            name="price.0.priceRules.0.combinable"
             label="Combinable"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.rules.0.percentage"
+            name="price.0.priceRules.0.percentage"
             label="Percentage"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.rules.0.amount"
+            name="price.0.priceRules.0.amount"
             label="Amount"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.rules.0.minimumSpend"
+            name="price.0.priceRules.0.minimumSpend"
             label="Minimum Spend"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.rules.0.maximumDiscount"
+            name="price.0.priceRules.0.maximumDiscount"
             label="Maximum Discount"
             type="number"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.rules.0.couponCode"
+            name="price.0.priceRules.0.couponCode"
             label="Coupon Code"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.rules.0.startDate"
+            name="price.0.priceRules.0.startDate"
             label="Start Date"
             type="datetime-local"
           />
 
           <FormInput<BusFormSchema>
-            name="price.0.rules.0.endDate"
+            name="price.0.priceRules.0.endDate"
             label="End Date"
             type="datetime-local"
           />
 
           <FormSwitch<BusFormSchema>
-            name="price.0.rules.0.active"
+            name="price.0.priceRules.0.active"
             label="Active"
           />
         </div>

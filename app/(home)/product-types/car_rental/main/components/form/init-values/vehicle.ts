@@ -82,13 +82,18 @@ export function initCarRentalVehicleValues(
           vehicle.price?.map((price) => ({
             vehicleId: price.vehicleId ?? "",
             pricingType: price.pricingType,
-            startDate: price.startDate ?? "",
-            endDate: price.endDate ?? "",
+            effectiveFrom: price.effectiveFrom ?? new Date(),
+            effectiveTo: price.effectiveTo ?? new Date,
             pricePerHour: price.pricePerHour ?? 0,
             pricePerDay: price.pricePerDay ?? 0,
             pricePerWeek: price.pricePerWeek ?? 0,
             pricePerMonth: price.pricePerMonth ?? 0,
-            originalPrice: price.originalPrice ?? 0,
+
+            originalPricePerHour: price.pricePerHour ?? 0,
+            originalPricePerDay: price.pricePerDay ?? 0,
+            originalPricePerWeek: price.pricePerWeek ?? 0,
+            originalPricePerMonth: price.pricePerMonth ?? 0,
+
             minimumDays: price.minimumDays ?? 1,
             maximumDays: price.maximumDays ?? 0,
 

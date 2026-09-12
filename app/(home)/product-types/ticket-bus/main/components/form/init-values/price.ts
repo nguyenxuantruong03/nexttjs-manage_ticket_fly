@@ -11,33 +11,68 @@ export function initBusPriceValues(
         toPrice: price.toPrice ?? 0,
         originalFromPrice: price.originalFromPrice ?? 0,
         originalToPrice: price.originalToPrice ?? 0,
-        effectiveFrom: price.effectiveFrom ?? "",
-        effectiveTo: price.effectiveTo ?? "",
+        effectiveFrom: price.effectiveFrom ?? new Date(),
+        effectiveTo: price.effectiveTo ?? new Date(),
 
-        breakdowns:
-          price.breakdowns?.map((breakdown) => ({
-            seatTypeId: breakdown.seatTypeId ?? "",
-            basePrice: breakdown.basePrice ?? 0,
-            originalPrice: breakdown.originalPrice ?? 0,
-            taxes: breakdown.taxes ?? 0,
-            serviceFee: breakdown.serviceFee ?? 0,
-            bookingFee: breakdown.bookingFee ?? 0,
-            discount: breakdown.discount ?? 0,
-            finalPrice: breakdown.finalPrice ?? 0,
-            availableSeats: breakdown.availableSeats ?? 0,
-            includedItems: breakdown.includedItems ?? [],
+        breakdown: price.breakdown
+          ? {
+              seatTypeId: price.breakdown.seatTypeId ?? "",
 
-            extraFees:
-              breakdown.extraFees?.map((fee) => ({
-                extraFeeTypeId: fee.extraFeeTypeId ?? "",
-                amount: fee.amount ?? 0,
-                calculationType: fee.calculationType,
-                active: fee.active ?? true,
-              })) ?? [],
-          })) ?? [],
+              basePrice: price.breakdown.basePrice ?? 0,
 
-        rules:
-          price.rules?.map((rule) => ({
+              originalPrice: price.breakdown.originalPrice ?? null,
+
+              taxes: price.breakdown.taxes ?? 0,
+
+              serviceFee: price.breakdown.serviceFee ?? 0,
+
+              bookingFee: price.breakdown.bookingFee ?? 0,
+
+              discount: price.breakdown.discount ?? 0,
+
+              finalPrice: price.breakdown.finalPrice ?? 0,
+
+              availableSeats: price.breakdown.availableSeats ?? 0,
+
+              includedItems: price.breakdown.includedItems ?? [],
+
+              extraFees:
+                price.breakdown.extraFees?.map((fee) => ({
+                  extraFeeTypeId: fee.extraFeeTypeId ?? "",
+
+                  amount: fee.amount ?? 0,
+
+                  calculationType: fee.calculationType,
+
+                  active: fee.active ?? true,
+                })) ?? [],
+            }
+          : {
+              seatTypeId: "",
+
+              basePrice: 0,
+
+              originalPrice: null,
+
+              taxes: 0,
+
+              serviceFee: 0,
+
+              bookingFee: 0,
+
+              discount: 0,
+
+              finalPrice: 0,
+
+              availableSeats: 0,
+
+              includedItems: [],
+
+              extraFees: [],
+            },
+
+        priceRules:
+          price.priceRules?.map((rule) => ({
             name: rule.name ?? "",
             priceRuleTypeId: rule.priceRuleTypeId ?? "",
             priority: rule.priority ?? 0,

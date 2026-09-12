@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  FormCheckbox,
   FormDatePicker,
   FormInput,
   FormSelect,
@@ -38,9 +37,9 @@ export default function AccountSection() {
         />
 
         <div className="flex items-center">
-          <FormCheckbox<UserFormSchema>
+          <FormDatePicker<UserFormSchema>
             name="emailVerified"
-            label="Đã xác thực email"
+            label="Xác thực email vào ngày"
           />
         </div>
       </div>

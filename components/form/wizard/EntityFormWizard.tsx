@@ -1,42 +1,84 @@
 "use client";
 
-import { ReactNode, useEffect, useMemo } from "react";
+import {
+  ReactNode,
+  useEffect,
+  useMemo,
+} from "react";
 
-import { FieldValues } from "react-hook-form";
+import {
+  FieldValues,
+} from "react-hook-form";
 
-import { useSearchParams } from "next/navigation";
+import {
+  useSearchParams,
+} from "next/navigation";
 
-import { AppForm } from "@/components/form/form-data";
+import {
+  AppForm,
+} from "@/components/form/form-data";
 
-import { useFormPage } from "@/components/form/form-context";
+import {
+  useFormPage,
+} from "@/components/form/form-context";
 
-import { DraftEntity } from "@/components/daft/draft-config";
+import {
+  DraftEntity,
+} from "@/components/daft/draft-config";
 
 import FormWizard from "./FormWizard";
-
 import FormWizardHeader from "./FormWizardHeader";
-
 import FormWizardContent from "./FormWizardContent";
-
 import FormWizardFooter from "./FormWizardFooter";
 
-import { useAppForm } from "@/hooks/useAppForm";
+import {
+  useAppForm,
+} from "@/hooks/useAppForm";
 
-import { useSubmit } from "@/hooks/useSubmit";
+import {
+  useSubmit,
+} from "@/hooks/useSubmit";
 
-import { useFormDraft } from "@/hooks/useFormDraft";
+import {
+  useFormDraft,
+} from "@/hooks/useFormDraft";
 
-import { useConfirmDialogStorage } from "@/hooks/localStorage/useConfirmDialogStorage";
+import {
+  useConfirmDialogStorage,
+} from "@/hooks/localStorage/useConfirmDialogStorage";
 
-import ConfirmRedirectDialog from "@/components/common/custom/confirm-redirect-dialog";
+import ConfirmRedirectDialog from "@/components/common/confirm/confirm-redirect-dialog";
 
 // ======================================================
-// TYPES
+// BASE ENTITY
 // ======================================================
 
 export interface BaseEntity {
   id: string;
 }
+
+// ======================================================
+// MUTATION TYPES
+// ======================================================
+
+export interface CreateMutation<TCreateInput> {
+  mutateAsync: (
+    data: TCreateInput,
+  ) => Promise<unknown>;
+}
+
+export interface UpdateMutation<TUpdateInput> {
+  mutateAsync: (
+    params: {
+      id: string;
+      data: TUpdateInput;
+    },
+  ) => Promise<unknown>;
+}
+
+// ======================================================
+// FORM CONFIG
+// ======================================================
 
 export interface EntityFormWizardConfig<
   TFormValues extends FieldValues,
@@ -44,49 +86,89 @@ export interface EntityFormWizardConfig<
   TCreateInput = TFormValues,
   TUpdateInput = TFormValues,
 > {
+  // ====================================================
+  // FORM
+  // ====================================================
+
   schema: any;
 
   defaultValues: TFormValues;
 
-  initValues: (data: TInitialData) => TFormValues;
+  initValues: (
+    data: TInitialData,
+  ) => TFormValues;
 
+  /**
+   * Form values -> API input
+   */
   transformValues?: (
     values: TFormValues,
     initialData?: TInitialData,
   ) => TCreateInput | TUpdateInput;
 
+  // ====================================================
+  // WIZARD
+  // ====================================================
+
   steps: any[];
 
   unlockAll?: boolean;
 
+  // ====================================================
+  // DRAFT
+  // ====================================================
+
+  /**
+   * Enable / disable form draft.
+   *
+   * Default: true
+   *
+   * Set false if this form should not use draft.
+   */
+  draft?: boolean;
+
+  /**
+   * Entity name used for draft storage.
+   */
   draftEntity?: DraftEntity;
+
+  // ====================================================
+  // MESSAGES
+  // ====================================================
 
   messages: {
     create: string;
-
     update: string;
   };
+
+  // ====================================================
+  // REDIRECT
+  // ====================================================
 
   redirectDefault: string;
 }
 
-interface EntityFormWizardProps<
+// ======================================================
+// PROPS
+// ======================================================
+
+export interface EntityFormWizardProps<
   TFormValues extends FieldValues,
   TInitialData extends BaseEntity,
   TCreateInput = TFormValues,
   TUpdateInput = TFormValues,
 > {
-  // ======================================================
-  // DYNAMIC DATA
-  // ======================================================
+  // ====================================================
+  // DATA
+  // ====================================================
 
   initialData?: TInitialData;
 
   redirect?: boolean;
 
-  // ======================================================
-  // STATIC CONFIG
-  // ======================================================
+  // ====================================================
+  // CONFIG
+  // ====================================================
 
   config: EntityFormWizardConfig<
     TFormValues,
@@ -95,17 +177,17 @@ interface EntityFormWizardProps<
     TUpdateInput
   >;
 
-  // ======================================================
-  // DYNAMIC MUTATIONS
-  // ======================================================
+  // ====================================================
+  // MUTATIONS
+  // ====================================================
 
-  createMutation: any;
+  createMutation?: CreateMutation<TCreateInput>;
 
-  updateMutation: any;
+  updateMutation: UpdateMutation<TUpdateInput>;
 
-  // ======================================================
-  // STEP CONTENT
-  // ======================================================
+  // ====================================================
+  // CHILDREN
+  // ====================================================
 
   children: ReactNode;
 }
@@ -132,6 +214,10 @@ export default function EntityFormWizard<
   TCreateInput,
   TUpdateInput
 >) {
+  // ====================================================
+  // CONFIG
+  // ====================================================
+
   const {
     schema,
     defaultValues,
@@ -139,145 +225,310 @@ export default function EntityFormWizard<
     transformValues,
     steps,
     unlockAll,
+
+    // Draft mặc định = true
+    draft = true,
+
     draftEntity,
+
     messages,
     redirectDefault,
   } = config;
 
-  // ======================================================
+  // ====================================================
   // CONFIRM REDIRECT
-  // ======================================================
+  // ====================================================
 
-  const { confirmDialog, openDialog, shouldShow, cancelDialog } =
-    useConfirmDialogStorage("confirm-redirect");
+  const {
+    confirmDialog,
+    openDialog,
+    shouldShow,
+    cancelDialog,
+  } = useConfirmDialogStorage(
+    "confirm-redirect",
+  );
 
-  // ======================================================
+  // ====================================================
   // HOOKS
-  // ======================================================
+  // ====================================================
 
   const submit = useSubmit();
 
-  const { setDirty } = useFormPage();
+  const {
+    setDirty,
+  } = useFormPage();
 
   const searchParams = useSearchParams();
 
-  // ======================================================
+  // ====================================================
+  // MODE
+  // ====================================================
+
+  const isEdit = Boolean(
+    initialData?.id,
+  );
+
+  // ====================================================
   // DRAFT ID
-  // ======================================================
+  // ====================================================
 
   const currentDraftId = useMemo(() => {
-    if (initialData) {
+    // Không sử dụng draft
+    if (!draft) {
+      return "";
+    }
+
+    // Edit
+    if (
+      isEdit &&
+      initialData?.id
+    ) {
       return `edit-${initialData.id}`;
     }
 
-    return searchParams.get("draft") ?? crypto.randomUUID();
-  }, [initialData, searchParams]);
+    // Create
+    return (
+      searchParams.get("draft") ??
+      crypto.randomUUID()
+    );
+  }, [
+    draft,
+    isEdit,
+    initialData?.id,
+    searchParams,
+  ]);
 
-  // ======================================================
+  // ====================================================
   // FORM
-  // ======================================================
+  // ====================================================
 
-  const { form, isUpdate } = useAppForm<TFormValues>({
-    schema,
+  const initialFormValues = useMemo(() => {
+    return initialData
+      ? initValues(initialData)
+      : defaultValues;
+  }, [
+    initialData,
+    initValues,
+    defaultValues,
+  ]);
 
-    defaultValues: initialData ? initValues(initialData) : defaultValues,
-  });
-
-  const isSubmitting = form.formState.isSubmitting;
-
-  // ======================================================
-  // DRAFT
-  // ======================================================
-
-  const { clearDraft } = useFormDraft({
+  const {
     form,
-
-    entity: draftEntity ?? "",
-
-    draftId: currentDraftId,
+  } = useAppForm<TFormValues>({
+    schema,
+    defaultValues: initialFormValues,
   });
 
-  // ======================================================
-  // DIRTY STATE
-  // ======================================================
+
+  // ====================================================
+  // SUBMITTING
+  // ====================================================
+
+  const isSubmitting =
+    form.formState.isSubmitting;
+
+  // ====================================================
+  // DRAFT
+  // ====================================================
+
+  /**
+   * Hook luôn được gọi.
+   *
+   * enabled = false sẽ disable toàn bộ
+   * draft logic bên trong useFormDraft.
+   */
+  const {
+    clearDraft,
+  } = useFormDraft({
+    form,
+    entity: draftEntity ?? "",
+    draftId: currentDraftId,
+    enabled: draft,
+  });
+
+  // ====================================================
+  // DIRTY
+  // ====================================================
 
   useEffect(() => {
-    setDirty(form.formState.isDirty);
-  }, [form.formState.isDirty, setDirty]);
+    setDirty(
+      form.formState.isDirty,
+    );
+  }, [
+    form.formState.isDirty,
+    setDirty,
+  ]);
 
-  // ======================================================
+  // ====================================================
   // SUBMIT
-  // ======================================================
+  // ====================================================
 
-  const onSubmit = async (values: TFormValues) => {
-    const payload = transformValues
-      ? transformValues(values, initialData)
-      : values;
+  const onSubmit = async (
+    values: TFormValues,
+  ) => {
+    // --------------------------------------------------
+    // UPDATE SAFETY
+    // --------------------------------------------------
+
+    if (
+      isEdit &&
+      !initialData?.id
+    ) {
+      throw new Error(
+        "Cannot update entity: missing entity id",
+      );
+    }
+
+    // --------------------------------------------------
+    // TRANSFORM
+    // --------------------------------------------------
+
+    const payload =
+      transformValues
+        ? transformValues(
+            values,
+            initialData,
+          )
+        : values;
+
+    // --------------------------------------------------
+    // MUTATION
+    // --------------------------------------------------
 
     await submit({
       form,
 
-      mutation: initialData
-        ? updateMutation.mutateAsync({
-            id: initialData.id,
+      mutation: isEdit
+        ? () =>
+            updateMutation.mutateAsync({
+              id: initialData!.id,
+              data: payload as TUpdateInput,
+            })
+        : () => {
+            if (!createMutation) {
+              throw new Error(
+                "Create mutation is required when creating an entity",
+              );
+            }
 
-            data: payload as TUpdateInput,
-          })
-        : createMutation.mutateAsync(payload as TCreateInput),
+            return createMutation.mutateAsync(
+              payload as TCreateInput,
+            );
+          },
 
-      success: isUpdate ? messages.update : messages.create,
+      success: isEdit
+        ? messages.update
+        : messages.create,
 
-      redirect: redirect ? redirectDefault : undefined,
+      redirect: redirect
+        ? redirectDefault
+        : undefined,
     });
 
-    if (draftEntity) {
+    // --------------------------------------------------
+    // CLEAR DRAFT
+    // --------------------------------------------------
+
+    if (
+      draft &&
+      draftEntity
+    ) {
       clearDraft();
     }
 
-    // ======================================================
+    // --------------------------------------------------
     // CREATE WITHOUT REDIRECT
-    // ======================================================
+    // --------------------------------------------------
 
     if (!redirect) {
       openDialog();
 
-      form.reset(defaultValues);
+      form.reset(
+        defaultValues,
+      );
 
       return;
     }
 
-    // ======================================================
+    // --------------------------------------------------
     // RESET
-    // ======================================================
+    // --------------------------------------------------
 
-    form.reset(defaultValues);
+    form.reset(
+      defaultValues,
+    );
   };
 
-  // ======================================================
+  // ====================================================
   // RENDER
-  // ======================================================
+  // ====================================================
 
   return (
     <>
+      {/* ==================================================
+          CONFIRM REDIRECT
+      ================================================== */}
+
       <ConfirmRedirectDialog
-        redirectDefault={redirectDefault}
-        confirmDialog={confirmDialog}
-        shouldShow={shouldShow}
-        cancelDialog={cancelDialog}
+        redirectDefault={
+          redirectDefault
+        }
+        confirmDialog={
+          confirmDialog
+        }
+        shouldShow={
+          shouldShow
+        }
+        cancelDialog={
+          cancelDialog
+        }
       />
 
-      <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
+      {/* ==================================================
+          FORM
+      ================================================== */}
+
+      <AppForm
+        form={form}
+        onSubmit={onSubmit}
+        loading={isSubmitting}
+      >
+        {/* ==================================================
+            WIZARD
+        ================================================== */}
+
         <FormWizard
           form={form}
           steps={steps}
           loading={isSubmitting}
-          unlockAll={unlockAll ?? !!initialData}
+          unlockAll={
+            unlockAll ?? isEdit
+          }
         >
-          <FormWizardHeader steps={steps} />
+          {/* ==================================================
+              HEADER
+          ================================================== */}
 
-          <FormWizardContent>{children}</FormWizardContent>
+          <FormWizardHeader
+            steps={steps}
+          />
 
-          <FormWizardFooter form={form} onSubmit={onSubmit} />
+          {/* ==================================================
+              CONTENT
+          ================================================== */}
+
+          <FormWizardContent>
+            {children}
+          </FormWizardContent>
+
+          {/* ==================================================
+              FOOTER
+          ================================================== */}
+
+          <FormWizardFooter
+            form={form}
+            onSubmit={onSubmit}
+          />
         </FormWizard>
       </AppForm>
     </>

@@ -9,7 +9,7 @@ import {
 } from "@/components/form/form-data";
 
 import { CityFormSchema } from "../form/schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import CountryCreateDialog from "../../../country/components/CountryCreateDialog";
 import TimezoneCreateDialog from "../../../timezone/components/TimezoneCreateDialog";

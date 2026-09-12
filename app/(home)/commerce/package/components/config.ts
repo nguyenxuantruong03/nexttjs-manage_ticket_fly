@@ -11,10 +11,17 @@ import { packageDefaultValues } from "./form/default-values";
 import { initPackageFormValues } from "./form/init-value";
 
 import { packageSteps } from "./step/steps";
+import { PackageService } from "@/services/commerce/package/client";
+
+export type PackageCreateInput = Parameters<typeof PackageService.create>[0];
+
+export type PackageUpdateInput = Parameters<typeof PackageService.update>[1];
 
 export const packageFormConfig: EntityFormWizardConfig<
   PackageFormSchema,
-  Package
+  Package,
+  PackageCreateInput,
+  PackageUpdateInput
 > = {
   schema,
 

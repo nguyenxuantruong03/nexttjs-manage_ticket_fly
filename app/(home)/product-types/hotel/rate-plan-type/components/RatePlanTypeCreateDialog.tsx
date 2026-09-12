@@ -9,7 +9,7 @@ import {
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { RatePlanTypeFormSchema, RatePlanTypeSchema } from "./form/schema";
 
@@ -20,6 +20,7 @@ import { HotelRatePlanType } from "@/types/product-types/hotel/pricing/rate-plan
 import { useCreateHotelRatePlanType } from "@/hooks/product-types/hotel/hotel-rate-plan-type";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -40,7 +41,11 @@ export default function RatePlanTypeCreateDialog({
   const createRatePlanType = useCreateHotelRatePlanType();
 
   return (
-    <EntityCreateFormDialog<RatePlanTypeFormSchema, HotelRatePlanType>
+    <EntityCreateFormDialog<
+      RatePlanTypeFormSchema,
+      Partial<HotelRatePlanType>,
+      HotelRatePlanType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -68,7 +73,7 @@ export default function RatePlanTypeCreateDialog({
           placeholder="Rate plan type name"
         />
 
-        <FormInput<RatePlanTypeFormSchema>
+        <FormIcon<RatePlanTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="Icon"

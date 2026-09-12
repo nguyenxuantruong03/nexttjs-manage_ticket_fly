@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { policyColumns } from "./components/columns";
 
@@ -16,10 +16,7 @@ import LoadingPage from "@/components/ui/loading-page";
 
 import ErrorPage from "@/components/ui/error-page";
 
-import {
-  useDeletePolicy,
-  usePolicies,
-} from "@/hooks/features/policy";
+import { useDeletePolicy, usePolicies } from "@/hooks/features/policy";
 
 const Policy = () => {
   const router = useRouter();
@@ -37,8 +34,7 @@ const Policy = () => {
     handlers,
     createActions: createPolicyActions,
     deleteTitle: "Delete policy",
-    deleteDescription:
-      "Are you sure you want to delete this policy?",
+    deleteDescription: "Are you sure you want to delete this policy?",
   });
 
   if (isPending) return <LoadingPage />;

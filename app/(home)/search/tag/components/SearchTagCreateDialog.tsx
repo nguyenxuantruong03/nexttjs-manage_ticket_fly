@@ -7,16 +7,13 @@ import FormMultiCombobox from "@/components/form/form-data/FormMultiCombobox";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
 import { useCreateSearchTag } from "@/hooks/search/tag";
 
-import {
-  SearchTagFormSchema,
-  schema as SearchTagSchema,
-} from "./form/schema";
+import { SearchTagFormSchema, schema as SearchTagSchema } from "./form/schema";
 
 import { searchTagDefaultValues } from "./form/default-values";
 
@@ -28,8 +25,7 @@ import { BookingType } from "@/types/common/commerce/booking-type";
 // PROPS
 // ======================================================
 
-interface SearchTagCreateDialogProps
-  extends EntityCreateDialogProps<SearchTag> {
+interface SearchTagCreateDialogProps extends EntityCreateDialogProps<SearchTag> {
   bookingTypeData: BookingType[];
 }
 
@@ -47,7 +43,7 @@ export default function SearchTagCreateDialog({
   const createSearchTag = useCreateSearchTag();
 
   return (
-    <EntityCreateFormDialog<SearchTagFormSchema, SearchTag>
+    <EntityCreateFormDialog<SearchTagFormSchema, Partial<SearchTag>, SearchTag>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

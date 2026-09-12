@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreateCarRentalInsuranceBenefitType } from "@/hooks/product-types/car-rental/insurance-benefit-type";
 
@@ -19,6 +19,7 @@ import { carRentalInsuranceBenefitTypeDefaultValues } from "./form/default-value
 import { InsuranceBenefitType } from "@/types/product-types/car_rental/insurance-type.type";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -42,6 +43,7 @@ export default function CarRentalInsuranceBenefitTypeCreateDialog({
   return (
     <EntityCreateFormDialog<
       CarRentalInsuranceBenefitTypeFormSchema,
+      Partial<InsuranceBenefitType>,
       InsuranceBenefitType
     >
       open={open}
@@ -75,7 +77,7 @@ export default function CarRentalInsuranceBenefitTypeCreateDialog({
           placeholder="Collision Damage Waiver"
         />
 
-        <FormInput<CarRentalInsuranceBenefitTypeFormSchema>
+        <FormIcon<CarRentalInsuranceBenefitTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="https://..."

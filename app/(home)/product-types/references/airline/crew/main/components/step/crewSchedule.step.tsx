@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { FlyCrewDuty } from "@/types/product-types/references/airline/crew/crew-duty/fly-crew-duty";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { FormDatePicker, FormInput } from "@/components/form/form-data";
 import FlyCrewDutyCreateDialog from "../../../crew-duty/components/FlyCrewDutyCreateDialog";

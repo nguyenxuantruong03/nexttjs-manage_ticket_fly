@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import RoomTypeCreateDialog from "../../../room-type/components/RoomTypeCreateDialog";
 import { HotelRoomType } from "@/types/product-types/hotel/room/room-type.types";

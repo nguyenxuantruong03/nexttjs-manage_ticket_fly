@@ -10,7 +10,7 @@ import {
 
 import { AddressFormSchema } from "../form/schema";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import CityCreateDialog from "../../../city/components/CityCreateDialog";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import CountryCreateDialog from "../../../country/components/CountryCreateDialog";
@@ -31,8 +31,8 @@ interface LocationStepProps {
   currencyData: Currency[];
   searchTags: SearchTag[];
   languageData: Language[];
-  bookingTypeData: BookingType[]
-  continentsData: Continent[]
+  bookingTypeData: BookingType[];
+  continentsData: Continent[];
 }
 
 export default function LocationStep({
@@ -43,7 +43,7 @@ export default function LocationStep({
   searchTags,
   languageData,
   continentsData,
-  bookingTypeData
+  bookingTypeData,
 }: LocationStepProps) {
   const countryOptions: EntityOption<Country>[] =
     countryData?.map((country) => ({

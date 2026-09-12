@@ -11,7 +11,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { CouponFormSchema, schema as CouponSchema } from "./form/schema";
 
@@ -61,7 +61,7 @@ export default function CouponCreateDialog({
   );
 
   return (
-    <EntityCreateFormDialog<CouponFormSchema, Coupon>
+    <EntityCreateFormDialog<CouponFormSchema, Partial<Coupon>, Coupon>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

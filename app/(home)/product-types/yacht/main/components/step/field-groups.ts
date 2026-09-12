@@ -152,26 +152,39 @@ export const yachtFieldGroups: Record<string, readonly YachtFieldPath[]> = {
   // ======================================================
   // PRICING (giá tổng quát cấp root — khác trips.0.price.amount theo chuyến)
   // ======================================================
-  pricing: [
-    "price.pricingType",
+ pricing: [
+  "price.pricingType",
+  "price.effectiveFrom",
+  "price.effectiveTo",
 
-    "price.basePrices.0.name",
-    "price.basePrices.0.duration",
-    "price.basePrices.0.durationType",
-    "price.basePrices.0.minGuests",
-    "price.basePrices.0.maxGuests",
-    "price.basePrices.0.originalPrice",
-    "price.basePrices.0.includedItems.0",
+  "price.basePrices.0.name",
+  "price.basePrices.0.duration",
+  "price.basePrices.0.durationType",
+  "price.basePrices.0.minGuests",
+  "price.basePrices.0.maxGuests",
+  "price.basePrices.0.originalPrice",
+  "price.basePrices.0.includedItems.0",
 
-    "price.discounts.0.percentage",
-    "price.discounts.0.amount",
-    "price.discounts.0.startDate",
-    "price.discounts.0.endDate",
-    "price.discounts.0.active",
+  "price.breakdown.basePrice",
+  "price.breakdown.originalPrice",
+  "price.breakdown.taxes",
+  "price.breakdown.serviceFee",
+  "price.breakdown.bookingFee",
+  "price.breakdown.discount",
+  "price.breakdown.finalPrice",
+  "price.breakdown.includedItems.0",
 
-    // "price.fees.*" — KHÔNG tồn tại trên YachtPriceSchema (chỉ có
-    // pricingType/basePrices/discounts), xem ghi chú (4) ở trên.
-  ],
+  "price.breakdown.extraFees.0.extraFeeTypeId",
+  "price.breakdown.extraFees.0.amount",
+  "price.breakdown.extraFees.0.calculationType",
+  "price.breakdown.extraFees.0.active",
+
+  "price.priceRules.0.percentage",
+  "price.priceRules.0.amount",
+  "price.priceRules.0.startDate",
+  "price.priceRules.0.endDate",
+  "price.priceRules.0.active",
+],
 
   // ======================================================
   // PACKAGES
@@ -196,6 +209,7 @@ export const yachtFieldGroups: Record<string, readonly YachtFieldPath[]> = {
     "crew.0.avatar",
     "crew.0.experienceYears",
     "crew.0.languages.0",
+    "crew.0.active",
   ],
 
   // ======================================================

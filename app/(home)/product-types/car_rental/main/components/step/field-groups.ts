@@ -88,13 +88,18 @@ export const carRentalFieldGroups: Record<
 
   pricing: [
     "vehicle.0.price.0.pricingType",
-    "vehicle.0.price.0.startDate",
-    "vehicle.0.price.0.endDate",
+    "vehicle.0.price.0.effectiveFrom",
+    "vehicle.0.price.0.effectiveTo",
     "vehicle.0.price.0.pricePerHour",
     "vehicle.0.price.0.pricePerDay",
     "vehicle.0.price.0.pricePerWeek",
     "vehicle.0.price.0.pricePerMonth",
-    "vehicle.0.price.0.originalPrice",
+
+    "vehicle.0.price.0.originalPricePerHour",
+    "vehicle.0.price.0.originalPricePerDay",
+    "vehicle.0.price.0.originalPricePerWeek",
+    "vehicle.0.price.0.originalPricePerMonth",
+
     "vehicle.0.price.0.minimumDays",
     "vehicle.0.price.0.maximumDays",
 

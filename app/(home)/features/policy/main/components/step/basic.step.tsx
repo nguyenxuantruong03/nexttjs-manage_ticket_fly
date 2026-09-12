@@ -5,13 +5,11 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormTextarea } from "@/components/form/form-data";
 
 import { PolicyFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
-    <FormSection
-      title="Policy"
-      description="Basic policy information"
-    >
+    <FormSection title="Policy" description="Basic policy information">
       <div className="grid gap-6 md:grid-cols-2">
         <FormInput<PolicyFormSchema>
           name="name"
@@ -19,7 +17,7 @@ export default function BasicStep() {
           placeholder="Cancellation Policy"
         />
 
-          <FormInput<PolicyFormSchema>
+        <FormIcon<PolicyFormSchema>
           name="icon"
           label="Icon"
           placeholder="https://..."

@@ -3,7 +3,7 @@
 import FormSection from "@/components/form/FormSection";
 
 import { RoomTypeFormSchema } from "../form/schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import RoomCategoryCreateDialog from "../../../room-category/components/RoomCategoryCreateDialog";
 import BathroomTypeCreateDialog from "../../../bathroom-type/components/BathRoomCreateDialog";
 import RoomViewCreateDialog from "../../../room-view/components/RoomViewCreateDialog";

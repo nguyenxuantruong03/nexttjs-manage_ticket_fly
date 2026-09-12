@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreateFlyAircraft } from "@/hooks/product-types/references/airline/aircraft";
 
@@ -24,8 +24,7 @@ import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDia
 // PROPS
 // ======================================================
 
-interface FlyAircraftCreateDialogProps
-  extends EntityCreateDialogProps<FlyAircraft> {}
+interface FlyAircraftCreateDialogProps extends EntityCreateDialogProps<FlyAircraft> {}
 
 // ======================================================
 // COMPONENT
@@ -40,7 +39,11 @@ export default function FlyAircraftCreateDialog({
   const createFlyAircraft = useCreateFlyAircraft();
 
   return (
-    <EntityCreateFormDialog<FlyAircraftFormSchema, FlyAircraft>
+    <EntityCreateFormDialog<
+      FlyAircraftFormSchema,
+      Partial<FlyAircraft>,
+      FlyAircraft
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -48,20 +51,29 @@ export default function FlyAircraftCreateDialog({
       mutation={createFlyAircraft}
       config={{
         schema: FlyAircraftSchema,
+
         defaultValues: flyAircraftDefaultValues,
+
         title: "Create Fly Aircraft",
+
         description: "Create a new fly aircraft",
+
         success: "Fly aircraft created",
+
         submitText: "Create Aircraft",
+
         submittingText: "Creating...",
+
         getResult: (response): EntityCreateResult<FlyAircraft> => ({
           value: response.id,
+
           label:
             response.model ||
             response.registrationNumber ||
             response.code ||
             response.manufacturer ||
             response.id,
+
           data: response,
         }),
       }}
@@ -96,10 +108,7 @@ export default function FlyAircraftCreateDialog({
 
         {/* STATUS */}
         <div className="grid gap-4 md:grid-cols-2">
-          <FormSwitch<FlyAircraftFormSchema>
-            name="active"
-            label="Active"
-          />
+          <FormSwitch<FlyAircraftFormSchema> name="active" label="Active" />
         </div>
       </div>
     </EntityCreateFormDialog>

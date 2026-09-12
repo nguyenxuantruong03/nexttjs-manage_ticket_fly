@@ -5,7 +5,7 @@ import { FormInput } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { SustainabilityFormSchema, SustainabilitySchema } from "./form/schema";
 
@@ -36,7 +36,11 @@ export default function SustainabilityCreateDialog({
   const createSustainability = useCreateHotelSustainability();
 
   return (
-    <EntityCreateFormDialog<SustainabilityFormSchema, Sustainability>
+    <EntityCreateFormDialog<
+      SustainabilityFormSchema,
+      Partial<Sustainability>,
+      Sustainability
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

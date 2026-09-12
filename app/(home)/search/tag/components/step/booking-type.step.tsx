@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 import { SearchTagFormSchema } from "../form/schema";
 
 import { BookingType } from "@/types/common/commerce/booking-type";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import BookingTypeCreateDialog from "@/app/(home)/commerce/booking-type/components/BookingTypeCreateDialog";
 

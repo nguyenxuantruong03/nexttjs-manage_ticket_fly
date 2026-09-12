@@ -10,7 +10,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import {
   BookingItemTypeFormSchema,
@@ -30,13 +30,13 @@ import { BookingItemType } from "@/types/common/commerce/booking-item-type.type"
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
 // ======================================================
 
-interface BookingItemTypeCreateDialogProps
-  extends EntityCreateDialogProps<BookingItemType> {
+interface BookingItemTypeCreateDialogProps extends EntityCreateDialogProps<BookingItemType> {
   bookingTypeData: BookingType[];
 }
 
@@ -53,15 +53,20 @@ export default function BookingItemTypeCreateDialog({
 }: BookingItemTypeCreateDialogProps) {
   const createBookingItemType = useCreateBookingItemType();
 
-  const bookingTypeOptions: EntityOption<BookingType>[] =
-    bookingTypeData.map((bookingType) => ({
+  const bookingTypeOptions: EntityOption<BookingType>[] = bookingTypeData.map(
+    (bookingType) => ({
       value: bookingType.id,
       label: bookingType.name,
       data: bookingType,
-    }));
+    }),
+  );
 
   return (
-    <EntityCreateFormDialog<BookingItemTypeFormSchema, BookingItemType>
+    <EntityCreateFormDialog<
+      BookingItemTypeFormSchema,
+      Partial<BookingItemType>,
+      BookingItemType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -93,7 +98,7 @@ export default function BookingItemTypeCreateDialog({
           placeholder="Hotel, Room, Vehicle..."
         />
 
-        <FormInput<BookingItemTypeFormSchema>
+        <FormIcon<BookingItemTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="hotel"
@@ -122,9 +127,7 @@ export default function BookingItemTypeCreateDialog({
           createText="Create booking type"
           options={bookingTypeOptions}
           enableCreate
-          renderCreateDialog={(props) => (
-            <BookingTypeCreateDialog {...props} />
-          )}
+          renderCreateDialog={(props) => <BookingTypeCreateDialog {...props} />}
         />
       </div>
 
@@ -140,10 +143,7 @@ export default function BookingItemTypeCreateDialog({
           placeholder="0"
         />
 
-        <FormSwitch<BookingItemTypeFormSchema>
-          name="active"
-          label="Active"
-        />
+        <FormSwitch<BookingItemTypeFormSchema> name="active" label="Active" />
       </div>
     </EntityCreateFormDialog>
   );

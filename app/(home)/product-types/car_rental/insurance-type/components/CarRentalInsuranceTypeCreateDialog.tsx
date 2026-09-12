@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreateCarRentalInsuranceType } from "@/hooks/product-types/car-rental/insurance-type";
 
@@ -19,6 +19,7 @@ import { carRentalInsuranceTypeDefaultValues } from "./form/default-values";
 import { InsuranceType } from "@/types/product-types/car_rental/insurance-type.type";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -39,7 +40,11 @@ export default function CarRentalInsuranceTypeCreateDialog({
   const createCarRentalInsuranceType = useCreateCarRentalInsuranceType();
 
   return (
-    <EntityCreateFormDialog<CarRentalInsuranceTypeFormSchema, InsuranceType>
+    <EntityCreateFormDialog<
+      CarRentalInsuranceTypeFormSchema,
+      Partial<InsuranceType>,
+      InsuranceType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -71,7 +76,7 @@ export default function CarRentalInsuranceTypeCreateDialog({
           placeholder="Full Coverage"
         />
 
-        <FormInput<CarRentalInsuranceTypeFormSchema>
+        <FormIcon<CarRentalInsuranceTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="https://..."

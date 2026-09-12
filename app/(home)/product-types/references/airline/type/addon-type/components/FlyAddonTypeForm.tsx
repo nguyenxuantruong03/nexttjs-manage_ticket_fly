@@ -13,7 +13,7 @@ import { FlyAddonType } from "@/types/product-types/references/airline/fly-addon
 
 import { FlyAddonTypeFormSchema } from "./form/schema";
 
-import { flyAddonTypeFormConfig } from "./config";
+import { flyAddonTypeFormConfig, FlyAddonTypeCreateInput, FlyAddonTypeUpdateInput } from "./config";
 
 import BasicStep from "./step/basic.step";
 
@@ -34,7 +34,12 @@ export default function FlyAddonTypeForm({
   const updateFlyAddonType = useUpdateFlyAddonType();
 
   return (
-    <EntityFormWizard<FlyAddonTypeFormSchema, FlyAddonType>
+    <EntityFormWizard<
+      FlyAddonTypeFormSchema,
+      FlyAddonType,
+      FlyAddonTypeCreateInput,
+      FlyAddonTypeUpdateInput
+    >
       initialData={initialData}
       redirect={redirect}
       config={flyAddonTypeFormConfig}

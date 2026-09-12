@@ -11,7 +11,7 @@ import {
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -76,7 +76,11 @@ export default function ProviderBookingCreateDialog({
   const createProviderBooking = useCreateProviderBooking();
 
   return (
-    <EntityCreateFormDialog<ProviderBookingFormSchema, ProviderBooking>
+    <EntityCreateFormDialog<
+      ProviderBookingFormSchema,
+      Partial<ProviderBooking>,
+      ProviderBooking
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

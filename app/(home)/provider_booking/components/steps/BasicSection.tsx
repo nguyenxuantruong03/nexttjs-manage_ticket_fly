@@ -9,7 +9,7 @@ import {
 
 import FormSection from "@/components/form/FormSection";
 import { ProviderBookingFormSchema } from "../form/schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";
 import { User } from "@/types/users/auth/users";

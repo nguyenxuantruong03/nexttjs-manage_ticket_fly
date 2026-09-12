@@ -8,7 +8,7 @@ import { useCreateBus, useUpdateBus } from "@/hooks/product-types/bus";
 
 import { BusFormSchema } from "./form/schema/core/bus.schema";
 
-import { ticketBusFormConfig } from "./config";
+import { BusUpdateInput, BusCreateInput, ticketBusFormConfig } from "./config";
 
 import { Bus } from "@/types/product-types/bus/core/bus.types";
 
@@ -79,6 +79,8 @@ import MediaStep from "./step/media.step";
 import PoliciesStep from "./step/policies.step";
 
 import VehiclesStep from "./step/vehicles.step";
+import { MediaCategory } from "@/types/common/catalog/media-category";
+import { MediaAsset } from "@/types/common/catalog/media-asset";
 
 interface TicketBusFormProps {
   initialData?: Bus;
@@ -130,6 +132,8 @@ interface TicketBusFormProps {
   bookingItemTypeData: BookingItemType[];
 
   serviceTypeData: ServiceType[];
+  mediaCategoryData: MediaCategory[];
+  mediaAssetData: MediaAsset[];
 }
 
 export default function TicketBusForm({
@@ -182,13 +186,15 @@ export default function TicketBusForm({
   bookingItemTypeData,
 
   serviceTypeData,
+  mediaCategoryData,
+  mediaAssetData,
 }: TicketBusFormProps) {
   const createBus = useCreateBus();
 
   const updateBus = useUpdateBus();
 
   return (
-    <EntityFormWizard<BusFormSchema, Bus>
+    <EntityFormWizard<BusFormSchema, Bus, BusCreateInput, BusUpdateInput>
       initialData={initialData}
       config={ticketBusFormConfig}
       createMutation={createBus}
@@ -220,6 +226,8 @@ export default function TicketBusForm({
 
       <FormWizardStep index={2}>
         <VehiclesStep
+          mediaCategoryData={mediaCategoryData}
+          mediaAssetData={mediaAssetData}
           fuelTypeData={fuelTypeData}
           facilityData={facilityData}
           facilityCategoryData={facilityCategoryData}
@@ -250,7 +258,11 @@ export default function TicketBusForm({
       </FormWizardStep>
 
       <FormWizardStep index={6}>
-        <MediaStep />
+        <MediaStep
+          mediaCategoryData={mediaCategoryData}
+          mediaAssetData={mediaAssetData}
+          bookingTypeData={bookingTypeData}
+        />
       </FormWizardStep>
 
       <FormWizardStep index={7}>

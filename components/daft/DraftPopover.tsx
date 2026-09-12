@@ -71,7 +71,7 @@ export default function DraftPopover({ entity, createPath }: Props) {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent align="end" className="w-[360px] p-0">
+      <PopoverContent align="end" className="w-[360px] p-0 bg-white border rounded-md shadow-md">
         <div className="border-b p-4">
           <h3 className="font-semibold">Drafts</h3>
         </div>

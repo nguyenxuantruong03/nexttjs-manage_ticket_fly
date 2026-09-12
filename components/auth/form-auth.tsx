@@ -4,7 +4,7 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { UseFormReturn, FieldValues } from "react-hook-form";
-import Social from "@/components/auth/card/social";
+import Social from "@/components/auth/social";
 
 interface AuthFormProps<TFormValues extends FieldValues> {
   children: React.ReactNode;
@@ -152,7 +152,11 @@ export default function AuthForm<TFormValues extends FieldValues>({
                       )}
                     </div>
                   )}
-                  {showSocial && (
+                  
+                </form>
+              </Form>
+
+              {showSocial && (
                     <>
                       {/* OR Divider */}
                       <div className="flex items-center justify-center space-x-2 my-5">
@@ -165,8 +169,6 @@ export default function AuthForm<TFormValues extends FieldValues>({
                       {socialButton && <Social loading={loading} />}
                     </>
                   )}
-                </form>
-              </Form>
             </>
           ) : (
             <>{children}</>

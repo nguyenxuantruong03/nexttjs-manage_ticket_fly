@@ -13,7 +13,11 @@ import { FlyAlliance } from "@/types/product-types/references/alliance/alliance.
 
 import { FlyAllianceFormSchema } from "./schema/alliance.schema";
 
-import { flyAllianceFormConfig } from "./config";
+import {
+  flyAllianceFormConfig,
+  FlyAllianceCreateInput,
+  FlyAllianceUpdateInput,
+} from "./config";
 
 import BasicStep from "./step/basic.step";
 
@@ -34,7 +38,12 @@ export default function FlyAllianceForm({
   const updateFlyAlliance = useUpdateFlyAlliance();
 
   return (
-    <EntityFormWizard<FlyAllianceFormSchema, FlyAlliance>
+    <EntityFormWizard<
+      FlyAllianceFormSchema,
+      FlyAlliance,
+      FlyAllianceCreateInput,
+      FlyAllianceUpdateInput
+    >
       initialData={initialData}
       redirect={redirect}
       config={flyAllianceFormConfig}

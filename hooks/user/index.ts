@@ -36,24 +36,33 @@ export function useUser(id: string, enabled = true) {
   });
 }
 
+export function useUserMe(enabled = true) {
+  return useQuery({
+    queryKey: userQueryKeys.me(),
+    queryFn: () => UserService.getMe(),
+    enabled: enabled && !!UserService.getMe,
+    staleTime: 1000 * 60 * 5,
+  });
+}
+
 // ======================================================
 // Create
 // ======================================================
 
-export function useCreateUser() {
-  const queryClient = useQueryClient();
+// export function useCreateUser() {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (data: Parameters<typeof UserService.create>[0]) =>
-      UserService.create(data),
+//   return useMutation({
+//     mutationFn: (data: Parameters<typeof UserService.create>[0]) =>
+//       UserService.create(data),
 
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: userQueryKeys.list(),
-      });
-    },
-  });
-}
+//     onSuccess: async () => {
+//       await queryClient.invalidateQueries({
+//         queryKey: userQueryKeys.list(),
+//       });
+//     },
+//   });
+// }
 
 // ======================================================
 // Update

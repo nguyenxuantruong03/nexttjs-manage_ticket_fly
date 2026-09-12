@@ -25,6 +25,8 @@ import { PackageService } from "@/services/commerce/package/client";
 import { PolicyService } from "@/services/features/policy/client";
 import { PolicyTypeService } from "@/services/features/policy-type/client";
 import { LanguageService } from "@/services/location/language/client";
+import { MediaAssetService } from "@/services/catalog/media-asset/client";
+import { MediaCategoryService } from "@/services/catalog/media-category/client";
 
 export const useAirportTransferUpdateFormData = (
   airportTransferId: string,
@@ -34,6 +36,7 @@ export const useAirportTransferUpdateFormData = (
     queryKey: ["airport-transfer-form", airportTransferId],
     enabled: enabled && !!airportTransferId,
     staleTime: 1000 * 60 * 5,
+
     queryFn: async () => {
       const [
         initialData,
@@ -59,6 +62,8 @@ export const useAirportTransferUpdateFormData = (
         policyData,
         policyTypeData,
         languageData,
+        mediaAssetData,
+        mediaCategoryData,
       ] = await Promise.all([
         AirportTransferService.getOne(airportTransferId),
         SearchTagService.getMany(),
@@ -83,6 +88,8 @@ export const useAirportTransferUpdateFormData = (
         PolicyService.getMany(),
         PolicyTypeService.getMany(),
         LanguageService.getMany(),
+        MediaAssetService.getMany(),
+        MediaCategoryService.getMany(),
       ]);
 
       return {
@@ -109,19 +116,18 @@ export const useAirportTransferUpdateFormData = (
         policyData,
         policyTypeData,
         languageData,
+        mediaAssetData,
+        mediaCategoryData,
       };
     },
   });
 
   return {
     data: query.data,
-
     isLoading: query.isLoading,
     isFetching: query.isFetching,
-
     isError: query.isError,
-    // Chỉ có 1 nguồn dữ liệu (Promise.all gộp chung, gồm cả initialData)
-    // nên chỉ có 1 key, đặt tên "airportTransfer" cho nhất quán với entity.
+
     errors: {
       airportTransfer: query.error as Error | null,
     },

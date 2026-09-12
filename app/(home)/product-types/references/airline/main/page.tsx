@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { flyAirlineColumns } from "./components/columns";
 
@@ -37,8 +37,7 @@ const FlyAirlinePage = () => {
     handlers,
     createActions: createFlyAirlineActions,
     deleteTitle: "Delete fly airline",
-    deleteDescription:
-      "Are you sure you want to delete this fly airline?",
+    deleteDescription: "Are you sure you want to delete this fly airline?",
   });
 
   if (isPending) {

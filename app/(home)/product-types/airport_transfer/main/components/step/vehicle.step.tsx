@@ -7,7 +7,7 @@ import { FormInput, FormSwitch, FormSelect } from "@/components/form/form-data";
 import { AirportTransferFormSchema } from "../form/schema/core/schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import VehicleTypeCreateDialog from "@/app/(home)/catalog/vehicle-type/components/VehicleTypeCreateDialog";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import { VehicleType } from "@/types/common/catalog/vehicle-type.type";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import {
@@ -18,6 +18,10 @@ import { FuelType } from "@/types/common/catalog/fuel-type";
 import FuelTypeCreateDialog from "@/app/(home)/catalog/fuel-type/components/FuelTypeCreateDialog";
 import { Language } from "@/types/location/language";
 import LanguageCreateDialog from "@/app/(home)/location/language/components/LanguageCreateDialog";
+import MediaCategoryCreateDialog from "@/app/(home)/catalog/media-category/components/MediaCategoryCreateDialog";
+import MediaAssetCreateDialog from "@/app/(home)/catalog/media-asset/components/MediaAssetCreateDialog";
+import { MediaCategory } from "@/types/common/catalog/media-category";
+import { MediaAsset } from "@/types/common/catalog/media-asset";
 
 const transmissionOptions = Object.values(AirportTransferTransmission).map(
   (value) => ({
@@ -38,6 +42,8 @@ interface VehicleStepProps {
   bookingTypeData: BookingType[];
   fuelTypeData: FuelType[];
   languageData: Language[];
+  mediaCategoryData: MediaCategory[];
+  mediaAssetData: MediaAsset[];
 }
 
 export default function VehicleStep({
@@ -45,6 +51,8 @@ export default function VehicleStep({
   bookingTypeData,
   fuelTypeData,
   languageData,
+  mediaCategoryData,
+  mediaAssetData,
 }: VehicleStepProps) {
   const vehicleTypeOptions: EntityOption<VehicleType>[] = vehicleTypeData.map(
     (vehicleType) => ({
@@ -69,6 +77,22 @@ export default function VehicleStep({
       label: language.name,
       description: language.code ?? undefined,
       data: language,
+    }),
+  );
+
+  const mediaCategoryOptions: EntityOption<MediaCategory>[] =
+    mediaCategoryData.map((mediaCategory) => ({
+      value: mediaCategory.id,
+      label: mediaCategory.name,
+      description: mediaCategory.description ?? undefined,
+      data: mediaCategory,
+    }));
+
+  const mediaAssetOptions: EntityOption<MediaAsset>[] = mediaAssetData.map(
+    (mediaAsset) => ({
+      value: mediaAsset.id,
+      label: mediaAsset.caption ?? "",
+      data: mediaAsset,
     }),
   );
 
@@ -255,16 +279,39 @@ export default function VehicleStep({
         description="Vehicle image information"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<AirportTransferFormSchema>
-            name="vehicle.0.images.0.mediaId"
-            label="Media ID"
-            placeholder="Enter media ID"
+          <FormEntitySelector<AirportTransferFormSchema, MediaCategory>
+            name="vehicle.0.images.0.categoryId"
+            label="Media Category"
+            placeholder="Search media category..."
+            searchPlaceholder="Search media category..."
+            emptyText="No media category found"
+            createText="Create media category"
+            options={mediaCategoryOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <MediaCategoryCreateDialog
+                bookingTypeData={bookingTypeData}
+                {...props}
+              />
+            )}
           />
 
-          <FormInput<AirportTransferFormSchema>
-            name="vehicle.0.images.0.categoryId"
-            label="Image Category ID"
-            placeholder="Enter image category ID"
+          <FormEntitySelector<AirportTransferFormSchema, MediaAsset>
+            name="vehicle.0.images.0.mediaId"
+            label="Media Asset"
+            placeholder="Search media asset..."
+            searchPlaceholder="Search media asset..."
+            emptyText="No media asset found"
+            createText="Create media asset"
+            options={mediaAssetOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <MediaAssetCreateDialog
+                folder="airportTransfer"
+                bookingTypeData={bookingTypeData}
+                {...props}
+              />
+            )}
           />
 
           <FormSwitch<AirportTransferFormSchema>

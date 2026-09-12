@@ -6,7 +6,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -122,7 +122,7 @@ export default function CountryCreateDialog({
   }));
 
   return (
-    <EntityCreateFormDialog<CountryFormSchema, Country>
+    <EntityCreateFormDialog<CountryFormSchema, Partial<Country>, Country>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

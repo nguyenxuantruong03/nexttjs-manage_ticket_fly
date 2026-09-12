@@ -3,27 +3,53 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { YachtService } from "@/services/product-types/yacht/client";
+
 import { SearchTagService } from "@/services/search/tag/client";
+
 import { useLocationFormData } from "../../location/useLocationFormData";
+
 import { ExtraFeeTypeService } from "@/services/commerce/extra-fee-type/client";
+
 import { BookingTypeService } from "@/services/commerce/booking-type/client";
+
 import { FuelTypeService } from "@/services/catalog/fuel-type/client";
+
 import { YachtConditionService } from "@/services/product-types/yacht/condition/client";
+
 import { YachtCrewRoleService } from "@/services/product-types/yacht/crew-role/client";
+
 import { FacilityService } from "@/services/features/facility/client";
+
 import { FacilityCategoryService } from "@/services/features/facility-category/client";
+
 import { ProviderBookingService } from "@/services/provider-booking/client";
+
 import { ServiceTypeService } from "@/services/catalog/service-type/client";
+
 import { BookingItemTypeService } from "@/services/commerce/booking-item-type/client";
+
 import { RouteTypeService } from "@/services/catalog/route-type/client";
+
 import { PackageService } from "@/services/commerce/package/client";
+
 import { CurrencyService } from "@/services/location/currency/client";
+
 import { PolicyService } from "@/services/features/policy/client";
+
 import { PolicyTypeService } from "@/services/features/policy-type/client";
+
 import { ExtraService } from "@/services/commerce/extra/client";
+
 import { ExtraTypeService } from "@/services/commerce/extra-type/client";
 
-export const useYachtUpdateFormData = (yachtId: string, enabled = true) => {
+import { MediaAssetService } from "@/services/catalog/media-asset/client";
+
+import { MediaCategoryService } from "@/services/catalog/media-category/client";
+
+export const useYachtUpdateFormData = (
+  yachtId: string,
+  enabled = true,
+) => {
   const locationQuery = useLocationFormData(
     ["yacht-location-data"],
     enabled && !!yachtId,
@@ -33,6 +59,7 @@ export const useYachtUpdateFormData = (yachtId: string, enabled = true) => {
     queryKey: ["yacht-update-form-data", yachtId],
     enabled: enabled && !!yachtId,
     staleTime: 1000 * 60 * 5,
+
     queryFn: async () => {
       const [
         initialData,
@@ -54,6 +81,8 @@ export const useYachtUpdateFormData = (yachtId: string, enabled = true) => {
         policyTypeData,
         extraData,
         extraTypeData,
+        mediaAssetData,
+        mediaCategoryData,
       ] = await Promise.all([
         YachtService.getOne(yachtId),
         SearchTagService.getMany(),
@@ -74,6 +103,8 @@ export const useYachtUpdateFormData = (yachtId: string, enabled = true) => {
         PolicyTypeService.getMany(),
         ExtraService.getMany(),
         ExtraTypeService.getMany(),
+        MediaAssetService.getMany(),
+        MediaCategoryService.getMany(),
       ]);
 
       return {
@@ -96,6 +127,8 @@ export const useYachtUpdateFormData = (yachtId: string, enabled = true) => {
         policyTypeData,
         extraData,
         extraTypeData,
+        mediaAssetData,
+        mediaCategoryData,
       };
     },
   });
@@ -110,16 +143,21 @@ export const useYachtUpdateFormData = (yachtId: string, enabled = true) => {
         : undefined,
 
     isLoading: locationQuery.isLoading || yachtQuery.isLoading,
+
     isFetching: locationQuery.isFetching || yachtQuery.isFetching,
 
     isError: locationQuery.isError || yachtQuery.isError,
+
     errors: {
       yacht: yachtQuery.error as Error | null,
       location: locationQuery.error as Error | null,
     },
 
     refetch: async () => {
-      await Promise.all([locationQuery.refetch(), yachtQuery.refetch()]);
+      await Promise.all([
+        locationQuery.refetch(),
+        yachtQuery.refetch(),
+      ]);
     },
   };
 };

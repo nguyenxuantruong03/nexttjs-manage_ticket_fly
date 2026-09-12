@@ -1,5 +1,5 @@
 "use client";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { useDeleteHotel, useHotels } from "@/hooks/product-types/hotel";
 import { useRouter } from "next/navigation";
 import { createHotelHandlers } from "./features/handlers";

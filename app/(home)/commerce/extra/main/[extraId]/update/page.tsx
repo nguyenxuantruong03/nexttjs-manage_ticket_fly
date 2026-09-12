@@ -45,6 +45,7 @@ export default function ExtraEditPage() {
       bookingTypeData={data.bookingTypeData}
       extraTypeData={data.extraTypeData}
       currencyData={data.currencyData}
+      mediaAssetData={data.mediaAssetData}
     />
   );
 }

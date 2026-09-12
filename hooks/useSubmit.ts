@@ -1,11 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
 import toast from "react-hot-toast";
-
 import { AxiosError } from "axios";
-
 import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 
 type ServerErrors = Record<string, string | string[]>;
@@ -32,7 +29,7 @@ function getErrorMessage(
       return data.message.filter(Boolean).map(String).join(", ");
     }
 
-    // Nếu không có message thì lấy errors
+    // errors
     if (data?.errors && typeof data.errors === "object") {
       const messages = Object.values(data.errors as ServerErrors).flatMap(
         (value) => (Array.isArray(value) ? value : [value]),
@@ -91,14 +88,39 @@ export function useSubmit() {
     onSuccess,
     form,
   }: {
-    mutation: Promise<T>;
+    /**
+     * IMPORTANT:
+     * Mutation phải là function.
+     *
+     * Không truyền:
+     * mutateAsync(...)
+     *
+     * Mà truyền:
+     * () => mutateAsync(...)
+     */
+    mutation: () => Promise<T>;
+
     success: string;
+
     redirect?: string;
+
     onSuccess?: (data: T) => void | Promise<void>;
+
     form?: UseFormReturn<TFieldValues>;
   }): Promise<T> => {
     try {
-      const response = await toast.promise(mutation, {
+      /**
+       * Mutation chỉ được gọi tại đây.
+       *
+       * Vì mutation là function nên:
+       *
+       * submit({
+       *   mutation: () => mutateAsync(...)
+       * })
+       *
+       * sẽ KHÔNG submit trước khi submit() chạy.
+       */
+      const response = await toast.promise(mutation(), {
         loading: "Saving...",
         success,
         error: (error) => getErrorMessage(error),

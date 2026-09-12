@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -16,6 +16,7 @@ import { FlyMealTypeFormSchema, FlyMealTypeSchema } from "./form/schema";
 import { flyMealTypeDefaultValues } from "./form/default-values";
 
 import { FlyMealType } from "@/types/product-types/ticket-fly/fly-meal-type";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -36,7 +37,11 @@ export default function FlyMealTypeCreateDialog({
   const createFlyMealType = useCreateFlyMealType();
 
   return (
-    <EntityCreateFormDialog<FlyMealTypeFormSchema, FlyMealType>
+    <EntityCreateFormDialog<
+      FlyMealTypeFormSchema,
+      Partial<FlyMealType>,
+      FlyMealType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -66,7 +71,7 @@ export default function FlyMealTypeCreateDialog({
             placeholder="Vegetarian"
           />
 
-          <FormInput<FlyMealTypeFormSchema>
+          <FormIcon<FlyMealTypeFormSchema>
             name="icon"
             label="Icon"
             placeholder="https://..."

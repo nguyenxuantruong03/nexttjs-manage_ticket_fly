@@ -4,6 +4,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 
 import { RoomViewFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
@@ -24,7 +25,7 @@ export default function BasicStep() {
           placeholder="Rooms overlooking the ocean"
         />
 
-        <FormInput<RoomViewFormSchema>
+        <FormIcon<RoomViewFormSchema>
           name="icon"
           label="Icon"
           placeholder="mountain"

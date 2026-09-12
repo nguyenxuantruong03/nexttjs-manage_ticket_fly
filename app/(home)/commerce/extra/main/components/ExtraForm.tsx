@@ -16,7 +16,7 @@ import { Currency } from "@/types/location/currency";
 
 import { ExtraFormSchema } from "./form/schema";
 
-import { extraFormConfig } from "./config";
+import { ExtraCreateInput, extraFormConfig, ExtraUpdateInput } from "./config";
 
 import BasicStep from "./step/basic.step";
 
@@ -27,6 +27,8 @@ import ExtraStep from "./step/extra.step";
 import PricingStep from "./step/pricing.step";
 
 import StatusStep from "./step/status.step";
+import MediaStep from "./step/media.step";
+import { MediaAsset } from "@/types/common/catalog/media-asset";
 
 interface ExtraFormProps {
   initialData?: Extra;
@@ -36,7 +38,7 @@ interface ExtraFormProps {
   extraTypeData: ExtraType[];
 
   currencyData: Currency[];
-
+  mediaAssetData: MediaAsset[];
   redirect?: boolean;
 }
 
@@ -45,6 +47,7 @@ export default function ExtraForm({
   bookingTypeData,
   extraTypeData,
   currencyData,
+  mediaAssetData,
   redirect = true,
 }: ExtraFormProps) {
   const createExtra = useCreateExtra();
@@ -52,7 +55,12 @@ export default function ExtraForm({
   const updateExtra = useUpdateExtra();
 
   return (
-    <EntityFormWizard<ExtraFormSchema, Extra>
+    <EntityFormWizard<
+      ExtraFormSchema,
+      Extra,
+      ExtraCreateInput,
+      ExtraUpdateInput
+    >
       initialData={initialData}
       redirect={redirect}
       config={extraFormConfig}
@@ -79,6 +87,13 @@ export default function ExtraForm({
       </FormWizardStep>
 
       <FormWizardStep index={4}>
+        <MediaStep
+          mediaAssetData={mediaAssetData}
+          bookingTypeData={bookingTypeData}
+        />
+      </FormWizardStep>
+
+      <FormWizardStep index={5}>
         <StatusStep />
       </FormWizardStep>
     </EntityFormWizard>

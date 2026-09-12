@@ -10,12 +10,9 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
-import {
-  ExtraTypeFormSchema,
-  schema as ExtraTypeSchema,
-} from "./form/schema";
+import { ExtraTypeFormSchema, schema as ExtraTypeSchema } from "./form/schema";
 
 import { extraTypeDefaultValues } from "./form/default-values";
 
@@ -30,13 +27,13 @@ import { BookingType } from "@/types/common/commerce/booking-type";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
 // ======================================================
 
-interface ExtraTypeCreateDialogProps
-  extends EntityCreateDialogProps<ExtraType> {
+interface ExtraTypeCreateDialogProps extends EntityCreateDialogProps<ExtraType> {
   bookingTypeData: BookingType[];
 }
 
@@ -57,15 +54,16 @@ export default function ExtraTypeCreateDialog({
   // BOOKING TYPE OPTIONS
   // ======================================================
 
-  const bookingTypeOptions: EntityOption<BookingType>[] =
-    bookingTypeData.map((bookingType) => ({
+  const bookingTypeOptions: EntityOption<BookingType>[] = bookingTypeData.map(
+    (bookingType) => ({
       value: bookingType.id,
       label: bookingType.name,
       data: bookingType,
-    }));
+    }),
+  );
 
   return (
-    <EntityCreateFormDialog<ExtraTypeFormSchema, ExtraType>
+    <EntityCreateFormDialog<ExtraTypeFormSchema, Partial<ExtraType>, ExtraType>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -97,7 +95,7 @@ export default function ExtraTypeCreateDialog({
           placeholder="Enter extra type name"
         />
 
-        <FormInput<ExtraTypeFormSchema>
+        <FormIcon<ExtraTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="https://..."
@@ -126,9 +124,7 @@ export default function ExtraTypeCreateDialog({
           createText="Create booking type"
           options={bookingTypeOptions}
           enableCreate
-          renderCreateDialog={(props) => (
-            <BookingTypeCreateDialog {...props} />
-          )}
+          renderCreateDialog={(props) => <BookingTypeCreateDialog {...props} />}
         />
       </div>
 
@@ -137,10 +133,7 @@ export default function ExtraTypeCreateDialog({
       ====================================================== */}
 
       <div className="grid gap-4 md:grid-cols-2">
-        <FormSwitch<ExtraTypeFormSchema>
-          name="active"
-          label="Active"
-        />
+        <FormSwitch<ExtraTypeFormSchema> name="active" label="Active" />
 
         <FormInput<ExtraTypeFormSchema>
           name="sortOrder"

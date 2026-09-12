@@ -33,5 +33,12 @@ export default function FlyAirlineEditPage() {
     );
   }
 
-  return <FlyAirlineForm initialData={data} />;
+  return (
+    <FlyAirlineForm
+      initialData={data.initialData}
+      mediaCategoryData={data.mediaCategoryData}
+      mediaAssetData={data.mediaAssetData}
+      bookingTypeData={data.bookingTypeData}
+    />
+  );
 }

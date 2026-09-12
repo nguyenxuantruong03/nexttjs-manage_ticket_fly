@@ -24,12 +24,15 @@ import { PackageService } from "@/services/commerce/package/client";
 import { PolicyService } from "@/services/features/policy/client";
 import { PolicyTypeService } from "@/services/features/policy-type/client";
 import { LanguageService } from "@/services/location/language/client";
+import { MediaAssetService } from "@/services/catalog/media-asset/client";
+import { MediaCategoryService } from "@/services/catalog/media-category/client";
 
 export const useAirportTransferCreateFormData = (enabled = true) => {
   const query = useQuery({
     queryKey: ["airport-transfer-create-form-data"],
     enabled,
     staleTime: 1000 * 60 * 5,
+
     queryFn: async () => {
       const [
         searchTagData,
@@ -54,6 +57,8 @@ export const useAirportTransferCreateFormData = (enabled = true) => {
         policyData,
         policyTypeData,
         languageData,
+        mediaAssetData,
+        mediaCategoryData,
       ] = await Promise.all([
         SearchTagService.getMany(),
         AddressService.getMany(),
@@ -77,6 +82,8 @@ export const useAirportTransferCreateFormData = (enabled = true) => {
         PolicyService.getMany(),
         PolicyTypeService.getMany(),
         LanguageService.getMany(),
+        MediaAssetService.getMany(),
+        MediaCategoryService.getMany(),
       ]);
 
       return {
@@ -102,22 +109,18 @@ export const useAirportTransferCreateFormData = (enabled = true) => {
         policyData,
         policyTypeData,
         languageData,
+        mediaAssetData,
+        mediaCategoryData,
       };
     },
   });
 
   return {
     data: query.data,
-
     isLoading: query.isLoading,
     isFetching: query.isFetching,
-
-    // isError là field bool duy nhất dùng để check "có lỗi hay không"
-    // ở component (if (isError || !data) ...). "errors" bên dưới chỉ
-    // dùng khi cần hiển thị message/nguồn lỗi cụ thể, không thay thế
-    // isError.
     isError: query.isError,
-    // Chỉ có 1 nguồn dữ liệu (Promise.all gộp chung) nên chỉ có 1 key.
+
     errors: {
       airportTransfer: query.error as Error | null,
     },

@@ -11,7 +11,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreateWard } from "@/hooks/location/ward";
 
@@ -67,7 +67,7 @@ export default function WardCreateDialog({
   }));
 
   return (
-    <EntityCreateFormDialog<WardFormSchema, Ward>
+    <EntityCreateFormDialog<WardFormSchema, Partial<Ward>, Ward>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

@@ -1,6 +1,6 @@
 "use client";
 
-import ConfirmDialog from "@/components/common/confirm-dialog";
+import ConfirmDialog from "@/components/common/confirm/confirm-dialog";
 import { useConfirmDelete } from "./useConfirmDelete";
 
 export function useConfirmDeleteDialog(

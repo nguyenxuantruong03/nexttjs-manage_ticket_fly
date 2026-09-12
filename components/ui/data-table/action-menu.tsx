@@ -33,20 +33,42 @@ interface Props<T> {
 export function ActionMenu<T>({ row, actions }: Props<T>) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
+      <DropdownMenuTrigger
+        asChild
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
+      >
+        <Button
+          variant="ghost"
+          size="icon"
+          data-table-interactive
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+        >
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent
+        align="end"
+        data-table-interactive
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
+      >
         {actions.map((action, index) => (
           <div key={index}>
             {action.separator && <DropdownMenuSeparator />}
 
             <DropdownMenuItem
+              data-table-interactive
+              onClick={(event) => {
+                event.stopPropagation();
+                action.onClick?.(row);
+              }}
               className={action.danger ? "text-destructive" : ""}
-              onClick={() => action.onClick?.(row)}
             >
               {action.icon && (
                 <action.icon

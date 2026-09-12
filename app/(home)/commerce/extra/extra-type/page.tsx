@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { extraTypeColumns } from "./components/columns";
 import { useRouter } from "next/navigation";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
@@ -11,10 +11,7 @@ import { createExtraTypeHandlers } from "./features/handlers";
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
-import {
-  useDeleteExtraType,
-  useExtraTypes,
-} from "@/hooks/commerce/extra-type";
+import { useDeleteExtraType, useExtraTypes } from "@/hooks/commerce/extra-type";
 
 const ExtraType = () => {
   const router = useRouter();

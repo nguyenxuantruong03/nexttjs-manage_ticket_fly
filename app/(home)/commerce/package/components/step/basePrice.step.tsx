@@ -6,7 +6,7 @@ import { FormInput } from "@/components/form/form-data";
 
 import { PackageFormSchema } from "../form/schema";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import { Currency } from "@/types/location/currency";
 

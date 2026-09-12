@@ -5,7 +5,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 import { FlyAircraftFormSchema } from "../schema/aircraft.schema";
 import { FlyAirline } from "@/types/product-types/references/airline/airline.types";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import FlyAirlineCreateDialog from "../../../../main/components/FlyAirlineCreateDialog";
 

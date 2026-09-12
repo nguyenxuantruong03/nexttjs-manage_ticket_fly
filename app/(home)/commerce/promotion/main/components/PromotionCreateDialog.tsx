@@ -10,7 +10,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { PromotionFormSchema, schema as PromotionSchema } from "./form/schema";
 
@@ -65,7 +65,7 @@ export default function PromotionCreateDialog({
   );
 
   return (
-    <EntityCreateFormDialog<PromotionFormSchema, Promotion>
+    <EntityCreateFormDialog<PromotionFormSchema, Partial<Promotion>, Promotion>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import { Package } from "@/types/common/commerce/package/package.type";
 

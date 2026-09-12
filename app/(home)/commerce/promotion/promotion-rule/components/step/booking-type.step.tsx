@@ -6,7 +6,7 @@ import { PromotionRuleFormSchema } from "../form/schema";
 
 import { BookingType } from "@/types/common/commerce/booking-type";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import BookingTypeCreateDialog from "@/app/(home)/commerce/booking-type/components/BookingTypeCreateDialog";

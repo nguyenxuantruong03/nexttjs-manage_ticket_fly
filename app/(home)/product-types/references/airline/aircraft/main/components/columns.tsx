@@ -2,9 +2,15 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 
 import { RowActions } from "@/components/ui/data-table/row-actions";
+
 import { FlyAircraft } from "@/types/product-types/references/airline/aircraft/aircraft.types";
 
 export function flyAircraftColumns(
@@ -12,37 +18,43 @@ export function flyAircraftColumns(
 ): ColumnDef<FlyAircraft>[] {
   return [
     // ======================================================
+    // SELECTION
+    // ======================================================
+
+    createSelectionColumn<FlyAircraft>(),
+
+    // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<FlyAircraft>({
       accessorKey: "id",
       header: "ID",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyAircraft>({
       accessorKey: "manufacturer",
       header: "Manufacturer",
-      cell: ({ row }) => row.original.manufacturer ?? "-",
-    },
+      cell: (row) => row.manufacturer ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyAircraft>({
       accessorKey: "model",
       header: "Model",
-      cell: ({ row }) => row.original.model ?? "-",
-    },
+      cell: (row) => row.model ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyAircraft>({
       accessorKey: "code",
       header: "Code",
-      cell: ({ row }) => row.original.code ?? "-",
-    },
+      cell: (row) => row.code ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyAircraft>({
       accessorKey: "registrationNumber",
       header: "Registration Number",
-      cell: ({ row }) => row.original.registrationNumber ?? "-",
-    },
+      cell: (row) => row.registrationNumber ?? "-",
+    }),
 
     // ======================================================
     // RELATIONS
@@ -88,27 +100,27 @@ export function flyAircraftColumns(
     // STATUS
     // ======================================================
 
-    {
+    createDataTableColumn<FlyAircraft>({
       accessorKey: "active",
       header: "Active",
-      cell: ({ row }) => (row.original.active ? "Yes" : "No"),
-    },
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
 
     // ======================================================
     // TIMESTAMP
     // ======================================================
 
-    {
+    createDataTableColumn<FlyAircraft>({
       accessorKey: "createdAt",
       header: "Created At",
-      cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
-    },
+      cell: (row) => new Date(row.createdAt).toLocaleString(),
+    }),
 
-    {
+    createDataTableColumn<FlyAircraft>({
       accessorKey: "updatedAt",
       header: "Updated At",
-      cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString(),
-    },
+      cell: (row) => new Date(row.updatedAt).toLocaleString(),
+    }),
 
     // ======================================================
     // ACTIONS

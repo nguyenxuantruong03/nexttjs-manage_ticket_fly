@@ -2,7 +2,7 @@
 
 import FormSection from "@/components/form/FormSection";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import { ExtraType } from "@/types/common/commerce/extra/extra-type.type";
 

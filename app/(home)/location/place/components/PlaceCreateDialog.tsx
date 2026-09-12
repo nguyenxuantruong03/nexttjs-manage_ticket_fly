@@ -11,7 +11,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreatePlace } from "@/hooks/location/place";
 
@@ -86,7 +86,7 @@ export default function PlaceCreateDialog({
     })) ?? [];
 
   return (
-    <EntityCreateFormDialog<PlaceFormSchema, Place>
+    <EntityCreateFormDialog<PlaceFormSchema, Partial<Place>, Place>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

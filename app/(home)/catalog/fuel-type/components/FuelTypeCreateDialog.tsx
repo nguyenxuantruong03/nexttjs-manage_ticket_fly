@@ -6,7 +6,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { FuelTypeFormSchema, schema as FuelTypeSchema } from "./form/schema";
 
@@ -22,6 +22,7 @@ import { FuelType } from "@/types/common/catalog/fuel-type";
 
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -53,7 +54,7 @@ export default function FuelTypeCreateDialog({
   );
 
   return (
-    <EntityCreateFormDialog<FuelTypeFormSchema, FuelType>
+    <EntityCreateFormDialog<FuelTypeFormSchema, Partial<FuelType>, FuelType>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -89,7 +90,7 @@ export default function FuelTypeCreateDialog({
           placeholder="Enter fuel type name"
         />
 
-        <FormInput<FuelTypeFormSchema>
+        <FormIcon<FuelTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="Enter fuel type icon"

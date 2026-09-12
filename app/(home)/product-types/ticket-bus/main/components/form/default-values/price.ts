@@ -9,34 +9,32 @@ export const busPriceDefaultValues = {
       toPrice: 0,
       originalFromPrice: 0,
       originalToPrice: 0,
-      effectiveFrom: "",
-      effectiveTo: "",
+      effectiveFrom: new Date(),
+      effectiveTo: new Date(),
 
-      breakdowns: [
-        {
-          seatTypeId: "",
-          basePrice: 0,
-          originalPrice: 0,
-          taxes: 0,
-          serviceFee: 0,
-          bookingFee: 0,
-          discount: 0,
-          finalPrice: 0,
-          availableSeats: 0,
-          includedItems: [],
+      breakdown: {
+        seatTypeId: "",
+        basePrice: 0,
+        originalPrice: 0,
+        taxes: 0,
+        serviceFee: 0,
+        bookingFee: 0,
+        discount: 0,
+        finalPrice: 0,
+        availableSeats: 0,
+        includedItems: [],
 
-          extraFees: [
-            {
-              extraFeeTypeId: "",
-              amount: 0,
-              calculationType: PriceCalculationType.FIXED,
-              active: true,
-            },
-          ],
-        },
-      ],
+        extraFees: [
+          {
+            extraFeeTypeId: "",
+            amount: 0,
+            calculationType: PriceCalculationType.FIXED,
+            active: true,
+          },
+        ],
+      },
 
-      rules: [
+      priceRules: [
         {
           name: "",
           priceRuleTypeId: "",

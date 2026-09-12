@@ -1,5 +1,6 @@
 interface ChangeMainProps {
   setMainStep: (value: string) => void;
+
   setSubStep: (value: string) => void;
 }
 
@@ -16,6 +17,14 @@ export function changeMainStep(
 
     case "vehicle":
       setSubStep("vehicle-type");
+      break;
+
+    case "media":
+      setSubStep("media-asset");
+      break;
+
+    case "reason":
+      setSubStep("reason-code");
       break;
   }
 }

@@ -9,7 +9,7 @@ import {
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import {
   DiningServiceTypeFormSchema,
@@ -23,6 +23,7 @@ import { useCreateHotelDiningServiceType } from "@/hooks/product-types/hotel/hot
 import { DiningServiceType } from "@/types/product-types/hotel/service/dinner-option.type";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -43,7 +44,11 @@ export default function DiningServiceTypeCreateDialog({
   const createDiningServiceType = useCreateHotelDiningServiceType();
 
   return (
-    <EntityCreateFormDialog<DiningServiceTypeFormSchema, DiningServiceType>
+    <EntityCreateFormDialog<
+      DiningServiceTypeFormSchema,
+      Partial<DiningServiceType>,
+      DiningServiceType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -71,7 +76,7 @@ export default function DiningServiceTypeCreateDialog({
           placeholder="Dining service type name"
         />
 
-        <FormInput<DiningServiceTypeFormSchema>
+        <FormIcon<DiningServiceTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="Icon"

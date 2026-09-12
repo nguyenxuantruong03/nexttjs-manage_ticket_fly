@@ -8,8 +8,22 @@ export const yachtPriceDefaultValues = {
   // =========================
 
   price: {
+    effectiveFrom: new Date(),
+    effectiveTo: new Date(),
     pricingType: YachtPricingType.custom,
     basePrices: [],
-    discounts: [],
+    priceRules: [],
+
+    breakdown: {
+      basePrice: 0,
+      originalPrice: null,
+      taxes: 0,
+      serviceFee: 0,
+      bookingFee: 0,
+      discount: 0,
+      finalPrice: 0,
+      includedItems: [],
+      extraFees: [],
+    },
   },
 } satisfies Pick<YachtFormSchema, "price">;

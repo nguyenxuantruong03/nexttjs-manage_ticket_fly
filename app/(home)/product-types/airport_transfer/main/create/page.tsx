@@ -51,6 +51,8 @@ export default function AirportTransferCreatePage() {
       policyData={data.policyData}
       policyTypeData={data.policyTypeData}
       languageData={data.languageData}
+      mediaCategoryData={data.mediaCategoryData}
+      mediaAssetData={data.mediaAssetData}
     />
   );
 }

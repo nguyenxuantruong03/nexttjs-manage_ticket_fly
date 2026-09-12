@@ -4,12 +4,13 @@ import { AirportTransferFormSchema } from "../schema/core/schema";
 
 export const airportTransferPriceDefaultValues = {
   fromPrice: 0,
-
   toPrice: undefined,
 
   originalFromPrice: undefined,
-
   originalToPrice: undefined,
+
+  effectiveFrom: new Date(),
+  effectiveTo: new Date(),
 
   routePrices: [
     {
@@ -65,7 +66,7 @@ export const airportTransferPriceDefaultValues = {
     },
   ],
 
-  rules: [
+  priceRules: [
     {
       name: "",
 

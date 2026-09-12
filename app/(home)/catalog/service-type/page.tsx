@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { serviceTypeColumns } from "./components/columns";
 
@@ -37,8 +37,7 @@ const ServiceType = () => {
     handlers,
     createActions: createServiceTypeActions,
     deleteTitle: "Delete service type",
-    deleteDescription:
-      "Are you sure you want to delete this service type?",
+    deleteDescription: "Are you sure you want to delete this service type?",
   });
 
   if (isPending) return <LoadingPage />;

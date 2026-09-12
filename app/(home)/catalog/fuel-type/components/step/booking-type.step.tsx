@@ -1,7 +1,7 @@
 "use client";
 
 import FormSection from "@/components/form/FormSection";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import { FuelTypeFormSchema } from "../form/schema";
 import BookingTypeCreateDialog from "@/app/(home)/commerce/booking-type/components/BookingTypeCreateDialog";

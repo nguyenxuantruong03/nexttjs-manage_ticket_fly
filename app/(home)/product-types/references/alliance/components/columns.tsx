@@ -2,8 +2,15 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
 import { RowActions } from "@/components/ui/data-table/row-actions";
+
 import { FlyAlliance } from "@/types/product-types/references/alliance/alliance.types";
 
 export function flyAllianceColumns(
@@ -11,33 +18,39 @@ export function flyAllianceColumns(
 ): ColumnDef<FlyAlliance>[] {
   return [
     // ======================================================
+    // SELECTION
+    // ======================================================
+
+    createSelectionColumn<FlyAlliance>(),
+
+    // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<FlyAlliance>({
       accessorKey: "id",
       header: "ID",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyAlliance>({
       accessorKey: "name",
       header: "Name",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyAlliance>({
       accessorKey: "code",
       header: "Code",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyAlliance>({
       accessorKey: "logo",
       header: "Logo",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyAlliance>({
       accessorKey: "description",
       header: "Description",
-    },
+    }),
 
     // ======================================================
     // AIRLINES
@@ -62,15 +75,15 @@ export function flyAllianceColumns(
     // TIMESTAMP
     // ======================================================
 
-    {
+    createDataTableColumn<FlyAlliance>({
       accessorKey: "createdAt",
       header: "Created At",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyAlliance>({
       accessorKey: "updatedAt",
       header: "Updated At",
-    },
+    }),
 
     // ======================================================
     // ACTIONS

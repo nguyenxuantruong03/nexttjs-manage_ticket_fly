@@ -6,7 +6,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
@@ -90,7 +90,11 @@ export default function PromotionRuleCreateDialog({
   ];
 
   return (
-    <EntityCreateFormDialog<PromotionRuleFormSchema, PromotionRule>
+    <EntityCreateFormDialog<
+      PromotionRuleFormSchema,
+      Partial<PromotionRule>,
+      PromotionRule
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

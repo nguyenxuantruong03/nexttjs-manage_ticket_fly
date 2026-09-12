@@ -13,10 +13,21 @@ import { initFlyAddonTypeFormValues } from "./form/init-value";
 import { flyAddonTypeSteps } from "./step/steps";
 
 import { FlyAddonType } from "@/types/product-types/references/airline/fly-addon-type";
+import { FlyAddonTypeService } from "@/services/product-types/references/airline/addon-type/client";
+
+export type FlyAddonTypeCreateInput = Parameters<
+  typeof FlyAddonTypeService.create
+>[0];
+
+export type FlyAddonTypeUpdateInput = Parameters<
+  typeof FlyAddonTypeService.update
+>[1];
 
 export const flyAddonTypeFormConfig: EntityFormWizardConfig<
   FlyAddonTypeFormSchema,
-  FlyAddonType
+  FlyAddonType,
+  FlyAddonTypeCreateInput,
+  FlyAddonTypeUpdateInput
 > = {
   schema: FlyAddonTypeSchema,
 

@@ -4,7 +4,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import { Extra } from "@/types/common/commerce/extra/extra.type";
 

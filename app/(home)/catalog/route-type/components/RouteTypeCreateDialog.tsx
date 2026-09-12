@@ -10,7 +10,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { RouteTypeFormSchema, schema as RouteTypeSchema } from "./form/schema";
 
@@ -26,6 +26,7 @@ import { RouteType } from "@/types/common/catalog/route-type.type";
 
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -57,7 +58,7 @@ export default function RouteTypeCreateDialog({
   );
 
   return (
-    <EntityCreateFormDialog<RouteTypeFormSchema, RouteType>
+    <EntityCreateFormDialog<RouteTypeFormSchema, Partial<RouteType>, RouteType>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -99,7 +100,7 @@ export default function RouteTypeCreateDialog({
           placeholder="Enter route type description"
         />
 
-        <FormInput<RouteTypeFormSchema>
+        <FormIcon<RouteTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="Enter route type icon"

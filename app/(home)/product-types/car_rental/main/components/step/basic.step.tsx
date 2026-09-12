@@ -11,7 +11,7 @@ import { SearchTag } from "@/types/searchs/search/tag.types";
 import { DriverOption } from "@/types/product-types/car_rental/enums";
 import { SEARCH_PRIORITY_OPTIONS } from "@/types/searchs/search-prioty-score";
 import { ProviderBooking } from "@/types/users/provider-bookings";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import ProviderBookingCreateDialog from "@/app/(home)/provider_booking/components/ProviderBookingCreateDialog";
 import { BookingType } from "@/types/common/commerce/booking-type";

@@ -1,20 +1,64 @@
 "use client";
 
 import { useFieldArray, useFormContext } from "react-hook-form";
+
 import { Plus, Trash2 } from "lucide-react";
 
 import FormSection from "@/components/form/FormSection";
-import { FormInput, FormSwitch } from "@/components/form/form-data";
+
+import { FormSwitch } from "@/components/form/form-data";
+
 import { Button } from "@/components/ui/button";
+
 import { FlyAircraftFormSchema } from "../schema/aircraft.schema";
 
-export default function ImagesStep() {
+import { EntityOption } from "@/components/form/entity-selector";
+
+import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+
+import { MediaCategory } from "@/types/common/catalog/media-category";
+
+import { MediaAsset } from "@/types/common/catalog/media-asset";
+
+import { BookingType } from "@/types/common/commerce/booking-type";
+
+import MediaAssetCreateDialog from "@/app/(home)/catalog/media-asset/components/MediaAssetCreateDialog";
+
+import MediaCategoryCreateDialog from "@/app/(home)/catalog/media-category/components/MediaCategoryCreateDialog";
+
+interface ImagesStepProps {
+  mediaCategoryData: MediaCategory[];
+  mediaAssetData: MediaAsset[];
+  bookingTypeData: BookingType[];
+}
+
+export default function ImagesStep({
+  mediaCategoryData,
+  mediaAssetData,
+  bookingTypeData,
+}: ImagesStepProps) {
   const { control } = useFormContext<FlyAircraftFormSchema>();
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "images",
   });
+
+  const mediaCategoryOptions: EntityOption<MediaCategory>[] =
+    mediaCategoryData.map((mediaCategory) => ({
+      value: mediaCategory.id,
+      label: mediaCategory.name,
+      description: mediaCategory.description ?? undefined,
+      data: mediaCategory,
+    }));
+
+  const mediaAssetOptions: EntityOption<MediaAsset>[] = mediaAssetData.map(
+    (mediaAsset) => ({
+      value: mediaAsset.id,
+      label: mediaAsset.caption ?? "",
+      data: mediaAsset,
+    }),
+  );
 
   return (
     <FormSection title="Images" description="Aircraft images and gallery">
@@ -24,27 +68,39 @@ export default function ImagesStep() {
             key={field.id}
             className="grid items-end gap-4 rounded-lg border p-4 md:grid-cols-[1fr_1fr_auto_auto_auto]"
           >
-            {/* TODO: mediaId should come from the media library picker
-                (upload/select component) once shared */}
-            <FormInput<FlyAircraftFormSchema>
+            <FormEntitySelector<FlyAircraftFormSchema, MediaAsset>
               name={`images.${index}.mediaId`}
               label="Media"
-              placeholder="Media ID"
+              placeholder="Search media asset..."
+              searchPlaceholder="Search media asset..."
+              emptyText="No media asset found"
+              createText="Create media asset"
+              options={mediaAssetOptions}
+              enableCreate
+              renderCreateDialog={(props) => (
+                <MediaAssetCreateDialog
+                  folder="aircraft"
+                  bookingTypeData={bookingTypeData}
+                  {...props}
+                />
+              )}
             />
 
-            {/* TODO: categoryId is a relation - replace with a Select
-                populated from the image category list once shared */}
-            <FormInput<FlyAircraftFormSchema>
+            <FormEntitySelector<FlyAircraftFormSchema, MediaCategory>
               name={`images.${index}.categoryId`}
               label="Category"
-              placeholder="Exterior"
-            />
-
-            <FormInput<FlyAircraftFormSchema>
-              name={`images.${index}.sortOrder`}
-              label="Sort Order"
-              type="number"
-              placeholder="0"
+              placeholder="Search media category..."
+              searchPlaceholder="Search media category..."
+              emptyText="No media category found"
+              createText="Create media category"
+              options={mediaCategoryOptions}
+              enableCreate
+              renderCreateDialog={(props) => (
+                <MediaCategoryCreateDialog
+                  bookingTypeData={bookingTypeData}
+                  {...props}
+                />
+              )}
             />
 
             <FormSwitch<FlyAircraftFormSchema>

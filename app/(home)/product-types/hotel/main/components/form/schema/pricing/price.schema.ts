@@ -19,15 +19,15 @@ export const HotelRoomPriceSchema = z.object({
   // ====================================================
 
   originalPrice: z.number().nullable().optional(),
-
   averageNightlyPrice: z.number().nullable().optional(),
 
+  effectiveFrom: z.date().nullable().optional(),
+  effectiveTo: z.date().nullable().optional(),
   // ====================================================
   // PAYMENT
   // ====================================================
 
   taxesIncluded: z.boolean().default(false),
-
   payAtHotel: z.boolean().default(false),
 
   // ====================================================
@@ -40,7 +40,7 @@ export const HotelRoomPriceSchema = z.object({
   // RULES
   // ====================================================
 
-  rules: z.array(HotelRoomPriceRuleSchema).default([]),
+  priceRules: z.array(HotelRoomPriceRuleSchema).default([]),
 });
 
 export type HotelRoomPriceInput = z.infer<typeof HotelRoomPriceSchema>;

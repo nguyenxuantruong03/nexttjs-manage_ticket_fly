@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreateCurrency } from "@/hooks/location/currency";
 
@@ -36,7 +36,7 @@ export default function CurrencyCreateDialog({
   const createCurrency = useCreateCurrency();
 
   return (
-    <EntityCreateFormDialog<CurrencyFormSchema, Currency>
+    <EntityCreateFormDialog<CurrencyFormSchema, Partial<Currency>, Currency>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

@@ -7,7 +7,7 @@ import { FormCombobox, FormInput } from "@/components/form/form-data";
 import { PlaceFormSchema } from "../form/schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import AddressCreateDialog from "../../../address/components/AddressCreateDialog";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import { Address } from "@/types/location/address";
 import { Country } from "@/types/location/country/country";
 import { City } from "@/types/location/city";

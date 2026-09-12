@@ -24,6 +24,7 @@ export function initPackageFormValues(
     // ======================================================
 
     name: packageData.name ?? "",
+
     description: packageData.description ?? null,
 
     // ======================================================
@@ -31,6 +32,7 @@ export function initPackageFormValues(
     // ======================================================
 
     duration: packageData.duration ?? null,
+
     durationType: packageData.durationType ?? null,
 
     // ======================================================
@@ -44,6 +46,7 @@ export function initPackageFormValues(
     // ======================================================
 
     price: packageData.price ?? 0,
+
     currencyId: packageData.currencyId ?? "",
 
     // ======================================================
@@ -53,10 +56,21 @@ export function initPackageFormValues(
     includedItems: packageData.includedItems ?? [],
 
     // ======================================================
+    // MEDIA
+    // ======================================================
+
+    images:
+      packageData.images?.map((image) => ({
+        mediaId: image.mediaId,
+        sortOrder: image.sortOrder,
+      })) ?? [],
+
+    // ======================================================
     // STATUS
     // ======================================================
 
     active: packageData.active ?? true,
+
     sortOrder: packageData.sortOrder ?? 0,
   };
 }

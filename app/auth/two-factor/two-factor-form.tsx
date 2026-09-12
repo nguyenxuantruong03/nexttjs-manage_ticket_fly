@@ -13,8 +13,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import FormError from "@/components/form-notification/form-error";
-import FormSuccess from "@/components/form-notification/form-success";
+import FormError from "@/components/form/form-notification/form-error";
+import FormSuccess from "@/components/form/form-notification/form-success";
 import axios from "axios";
 import {
   InputOTP,
@@ -68,7 +68,7 @@ const TwoFactorForm = () => {
           email,
           code: data.code,
           turnstileToken: turnstileToken,
-        }
+        },
       );
 
       const result = response.data;

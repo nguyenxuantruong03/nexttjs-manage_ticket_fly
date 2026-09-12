@@ -1,7 +1,6 @@
 "use client";
 
 import EntityFormWizard from "@/components/form/wizard/EntityFormWizard";
-
 import FormWizardStep from "@/components/form/wizard/FormWizardStep";
 
 import {
@@ -9,194 +8,141 @@ import {
   useUpdateCarRental,
 } from "@/hooks/product-types/car-rental";
 
+import { CarRentalService } from "@/services/product-types/car-rental/client";
+
 import { CarRental } from "@/types/product-types/car_rental/core/car-rental.types";
-
 import { SearchTag } from "@/types/searchs/search/tag.types";
-
 import { Country } from "@/types/location/country/country";
-
 import { City } from "@/types/location/city";
-
 import { District } from "@/types/location/district";
-
 import { Ward } from "@/types/location/ward";
-
 import { BookingType } from "@/types/common/commerce/booking-type";
-
 import { VehicleType } from "@/types/common/catalog/vehicle-type.type";
-
 import { Address } from "@/types/location/address";
-
 import { ExtraType } from "@/types/common/commerce/extra/extra-type.type";
-
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
-
 import {
   InsuranceBenefitType,
   InsuranceType,
 } from "@/types/product-types/car_rental/insurance-type.type";
-
 import { ProviderBooking } from "@/types/users/provider-bookings";
-
 import { ServiceType } from "@/types/common/catalog/service-type.type";
-
 import { BookingItemType } from "@/types/common/commerce/booking-item-type.type";
-
 import { Package } from "@/types/common/commerce/package/package.type";
-
 import { Currency } from "@/types/location/currency";
-
 import { PolicyType } from "@/types/common/features/policy/policy-type";
-
 import { Policy } from "@/types/common/features/policy/policy";
-
 import { Extra } from "@/types/common/commerce/extra/extra.type";
-
 import { CarRentalDocumentType } from "@/types/product-types/car_rental/policies/required-documents.types";
-
 import { Facility } from "@/types/common/features/facility/facility";
-
 import { FacilityCategory } from "@/types/common/features/facility/facility-category";
 
 import { CarRentalFormSchema } from "./form/schema/core/car-rental.schema";
-
-import { carRentalFormConfig } from "./config";
+import {
+  CarRentalCreateInput,
+  carRentalFormConfig,
+  CarRentalUpdateInput,
+} from "./config";
 
 import AvailabilityStep from "./step/availability.step";
-
 import BasicStep from "./step/basic.step";
-
 import DriversStep from "./step/driver.step";
-
 import InsuranceStep from "./step/insurance.step";
-
 import MediasStep from "./step/media.step";
-
 import OperationStep from "./step/operation.step";
-
 import PackageStep from "./step/package.step";
-
 import PickupInstructionsStep from "./step/pickup-instructions.step";
-
 import PoliciesStep from "./step/policties.step";
-
 import PricingStep from "./step/pricing.step";
-
 import RequiredDocumentsStep from "./step/required-documents.step";
-
 import TripStep from "./step/trip.step";
-
 import VehiclesStep from "./step/vehicles.step";
+import { MediaCategory } from "@/types/common/catalog/media-category";
+import { MediaAsset } from "@/types/common/catalog/media-asset";
 
 interface CarRentalFormProps {
   initialData?: CarRental;
 
   searchTagData: SearchTag[];
-
   addresses: Address[];
-
   countries: Country[];
-
   cities: City[];
-
   districts: District[];
-
   wards: Ward[];
 
   bookingTypeData: BookingType[];
-
   vehicleTypeData: VehicleType[];
 
   priceRuleTypeData: PriceRuleType[];
 
   insuranceBenefitTypeData: InsuranceBenefitType[];
-
   insuranceTypeData: InsuranceType[];
 
   extraTypeData: ExtraType[];
-
   extraData: Extra[];
 
   providerBookingData: ProviderBooking[];
-
   serviceTypeData: ServiceType[];
-
   bookingItemTypeData: BookingItemType[];
 
   packageData: Package[];
-
   currencyData: Currency[];
 
   policyData: Policy[];
-
   policyTypeData: PolicyType[];
 
   documentTypeData: CarRentalDocumentType[];
 
   facilityData: Facility[];
-
   facilityCategoryData: FacilityCategory[];
-
+  mediaCategoryData: MediaCategory[]
+  mediaAssetData: MediaAsset[]
   redirect?: boolean;
 }
 
+// ======================================================
+// COMPONENT
+// ======================================================
+
 export default function CarRentalForm({
   initialData,
-
   searchTagData,
-
   addresses,
-
   countries,
-
   cities,
-
   districts,
-
   wards,
-
   bookingTypeData,
-
   vehicleTypeData,
-
   priceRuleTypeData,
-
   insuranceBenefitTypeData,
-
   insuranceTypeData,
-
   extraTypeData,
-
   providerBookingData,
-
   serviceTypeData,
-
   extraData,
-
   bookingItemTypeData,
-
   packageData,
-
   currencyData,
-
   policyData,
-
   policyTypeData,
-
   documentTypeData,
-
   facilityData,
-
   facilityCategoryData,
-
+  mediaCategoryData,
+  mediaAssetData,
   redirect = true,
 }: CarRentalFormProps) {
   const createCarRental = useCreateCarRental();
-
   const updateCarRental = useUpdateCarRental();
 
   return (
-    <EntityFormWizard<CarRentalFormSchema, CarRental>
+    <EntityFormWizard<
+      CarRentalFormSchema,
+      CarRental,
+      CarRentalCreateInput,
+      CarRentalUpdateInput
+    >
       initialData={initialData}
       redirect={redirect}
       config={carRentalFormConfig}
@@ -236,7 +182,11 @@ export default function CarRentalForm({
       </FormWizardStep>
 
       <FormWizardStep index={4}>
-        <MediasStep />
+        <MediasStep
+          bookingTypeData={bookingTypeData}
+          mediaCategoryData={mediaCategoryData}
+          mediaAssetData={mediaAssetData}
+        />
       </FormWizardStep>
 
       <FormWizardStep index={5}>
@@ -293,6 +243,8 @@ export default function CarRentalForm({
           facilityCategoryData={facilityCategoryData}
           bookingTypeData={bookingTypeData}
           vehicleTypeData={vehicleTypeData}
+          mediaCategoryData={mediaCategoryData}
+          mediaAssetData={mediaAssetData}
         />
       </FormWizardStep>
     </EntityFormWizard>

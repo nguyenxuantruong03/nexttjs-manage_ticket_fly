@@ -8,7 +8,7 @@ import { FormInput, FormSwitch, FormSelect } from "@/components/form/form-data";
 import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import AddressCreateDialog from "@/app/(home)/location/address/components/AddressCreateDialog";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import { Address } from "@/types/location/address";
 import { Country } from "@/types/location/country/country";
 import { City } from "@/types/location/city";

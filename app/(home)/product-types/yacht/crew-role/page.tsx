@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { createYachtCrewRoleHandlers } from "./features/handlers";
 import { createYachtCrewRoleActions } from "./features/actions";
@@ -28,8 +28,7 @@ const YachtCrewRolePage = () => {
     handlers,
     createActions: createYachtCrewRoleActions,
     deleteTitle: "Delete yacht crew role",
-    deleteDescription:
-      "Are you sure you want to delete this yacht crew role?",
+    deleteDescription: "Are you sure you want to delete this yacht crew role?",
   });
 
   if (isPending) {

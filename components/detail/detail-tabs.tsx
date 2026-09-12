@@ -3,10 +3,10 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { DetailSection } from "./detail-section";
+import { resolveDataKey } from "./utils/field-alias";
 
 type Props = {
   groups: Record<string, readonly string[]>;
-
   data: any;
 };
 
@@ -25,7 +25,12 @@ export function DetailTabs({ groups, data }: Props) {
 
       {tabs.map((tab) => (
         <TabsContent key={tab} value={tab}>
-          <DetailSection fields={groups[tab].map((key) => [key, data[key]])} />
+          <DetailSection
+            fields={groups[tab].map((key) => [
+              key,
+              data[resolveDataKey(key, data)],
+            ])}
+          />
         </TabsContent>
       ))}
     </Tabs>

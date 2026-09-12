@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { promotionRuleColumns } from "./components/columns";
 
@@ -37,8 +37,7 @@ const PromotionRule = () => {
     handlers,
     createActions: createPromotionRuleActions,
     deleteTitle: "Delete promotion rule",
-    deleteDescription:
-      "Are you sure you want to delete this promotion rule?",
+    deleteDescription: "Are you sure you want to delete this promotion rule?",
   });
 
   if (isPending) return <LoadingPage />;

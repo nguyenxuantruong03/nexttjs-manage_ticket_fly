@@ -2,6 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
 import { RowActions } from "@/components/ui/data-table/row-actions";
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 
@@ -11,53 +15,54 @@ export function extraColumns(
   actions: (row: Extra) => ActionMenuItem<Extra>[],
 ): ColumnDef<Extra>[] {
   return [
-    {
+    createSelectionColumn<Extra>(),
+
+    createDataTableColumn<Extra>({
       accessorKey: "id",
       header: "ID",
-    },
+    }),
 
     // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<Extra>({
       accessorKey: "name",
       header: "Name",
-    },
+    }),
 
-    {
+    createDataTableColumn<Extra>({
       accessorKey: "slug",
       header: "Slug",
-    },
+    }),
 
-    {
+    createDataTableColumn<Extra>({
       accessorKey: "description",
       header: "Description",
-      cell: ({ row }) => row.original.description ?? "-",
-    },
+      cell: (row) => row.description ?? "-",
+    }),
 
-    {
+    createDataTableColumn<Extra>({
       accessorKey: "icon",
       header: "Icon",
-      cell: ({ row }) => row.original.icon ?? "-",
-    },
+      cell: (row) => row.icon ?? "-",
+    }),
 
     // ======================================================
     // RELATIONS
     // ======================================================
 
-    {
+    createDataTableColumn<Extra>({
       accessorKey: "bookingTypes",
       header: "Booking Types",
-
-      cell: ({ row }) => {
-        const bookingTypes = row.original.bookingTypes;
+      cell: (row) => {
+        const bookingTypes = row.bookingTypes;
 
         return bookingTypes?.length
           ? bookingTypes.map((item) => item.name).join(", ")
           : "-";
       },
-    },
+    }),
 
     {
       id: "type",
@@ -69,11 +74,11 @@ export function extraColumns(
     // PRICING
     // ======================================================
 
-    {
+    createDataTableColumn<Extra>({
       accessorKey: "price",
       header: "Price",
-      cell: ({ row }) => row.original.price.toLocaleString(),
-    },
+      cell: (row) => row.price.toLocaleString(),
+    }),
 
     {
       id: "currency",
@@ -85,32 +90,32 @@ export function extraColumns(
     // STATUS
     // ======================================================
 
-    {
+    createDataTableColumn<Extra>({
       accessorKey: "active",
       header: "Active",
-      cell: ({ row }) => (row.original.active ? "Yes" : "No"),
-    },
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
 
-    {
+    createDataTableColumn<Extra>({
       accessorKey: "sortOrder",
       header: "Sort Order",
-    },
+    }),
 
     // ======================================================
     // TIMESTAMPS
     // ======================================================
 
-    {
+    createDataTableColumn<Extra>({
       accessorKey: "createdAt",
       header: "Created At",
-      cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
-    },
+      cell: (row) => new Date(row.createdAt).toLocaleString(),
+    }),
 
-    {
+    createDataTableColumn<Extra>({
       accessorKey: "updatedAt",
       header: "Updated At",
-      cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString(),
-    },
+      cell: (row) => new Date(row.updatedAt).toLocaleString(),
+    }),
 
     // ======================================================
     // ACTIONS

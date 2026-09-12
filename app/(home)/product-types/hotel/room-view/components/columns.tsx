@@ -2,66 +2,83 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
-import { RowActions } from "@/components/ui/data-table/row-actions";
-import { RoomView } from "@/types/product-types/hotel/room/room.types";
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
 
+import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
+import { RowActions } from "@/components/ui/data-table/row-actions";
+
+import { RoomView } from "@/types/product-types/hotel/room/room.types";
 
 export function roomViewColumns(
   actions: (row: RoomView) => ActionMenuItem<RoomView>[],
 ): ColumnDef<RoomView>[] {
   return [
     // ======================================================
+    // SELECTION
+    // ======================================================
+
+    createSelectionColumn<RoomView>(),
+
+    // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<RoomView>({
       accessorKey: "id",
       header: "ID",
-    },
-    {
+    }),
+
+    createDataTableColumn<RoomView>({
       accessorKey: "name",
       header: "Name",
-    },
-    {
+    }),
+
+    createDataTableColumn<RoomView>({
       accessorKey: "description",
       header: "Description",
-      cell: ({ row }) => row.original.description ?? "-",
-    },
-    {
+      cell: (row) => row.description ?? "-",
+    }),
+
+    createDataTableColumn<RoomView>({
       accessorKey: "icon",
       header: "Icon",
-      cell: ({ row }) => row.original.icon ?? "-",
-    },
+      cell: (row) => row.icon ?? "-",
+    }),
 
     // ======================================================
     // SETTINGS
     // ======================================================
 
-    {
+    createDataTableColumn<RoomView>({
       accessorKey: "active",
       header: "Active",
-      cell: ({ row }) => (row.original.active ? "Yes" : "No"),
-    },
-    {
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
+
+    createDataTableColumn<RoomView>({
       accessorKey: "sortOrder",
       header: "Sort Order",
-    },
+    }),
 
     // ======================================================
     // TIMESTAMPS
     // ======================================================
 
-    {
+    createDataTableColumn<RoomView>({
       accessorKey: "createdAt",
       header: "Created At",
-      cell: ({ row }) => row.original.createdAt.toLocaleString(),
-    },
-    {
+      cell: (row) => row.createdAt.toLocaleString(),
+    }),
+
+    createDataTableColumn<RoomView>({
       accessorKey: "updatedAt",
       header: "Updated At",
-      cell: ({ row }) => row.original.updatedAt.toLocaleString(),
-    },
+      cell: (row) => row.updatedAt.toLocaleString(),
+    }),
 
     // ======================================================
     // ACTIONS

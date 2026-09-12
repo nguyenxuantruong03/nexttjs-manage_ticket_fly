@@ -16,13 +16,12 @@ export interface BusPrice {
 
   originalToPrice: number | null;
 
-  breakdowns: BusPriceBreakdown[];
+  breakdown: BusPriceBreakdown;
 
-  rules: BusPriceRule[];
+  priceRules: BusPriceRule[];
 
-  effectiveFrom: string | null;
-
-  effectiveTo: string | null;
+  effectiveFrom?: Date ;
+  effectiveTo?: Date ;
 
   createdAt: string;
 

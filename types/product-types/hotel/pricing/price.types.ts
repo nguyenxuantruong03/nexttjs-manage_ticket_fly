@@ -14,7 +14,13 @@ export interface HotelRoomPrice {
   taxesIncluded: boolean;
   payAtHotel: boolean;
 
+  effectiveFrom?: Date;
+  effectiveTo?: Date;
+
   breakdown: HotelRoomPriceBreakdown | null;
 
-  rules: HotelRoomPriceRule[];
+  priceRules: HotelRoomPriceRule[];
+
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -13,10 +13,21 @@ import { initFlyAirportFormValues } from "./form/init-value";
 import { flyAirportSteps } from "./step/steps";
 
 import { FlyAirport } from "@/types/product-types/references/airport/airport.types";
+import { FlyAirportService } from "@/services/product-types/references/airport/client";
+
+export type FlyAirportCreateInput = Parameters<
+  typeof FlyAirportService.create
+>[0];
+
+export type FlyAirportUpdateInput = Parameters<
+  typeof FlyAirportService.update
+>[1];
 
 export const flyAirportFormConfig: EntityFormWizardConfig<
   FlyAirportFormSchema,
-  FlyAirport
+  FlyAirport,
+  FlyAirportCreateInput,
+  FlyAirportUpdateInput
 > = {
   schema: FlyAirportSchema,
 

@@ -6,12 +6,13 @@ import FormSection from "@/components/form/FormSection";
 
 import {
   FormCombobox,
+  FormDatePicker,
   FormInput,
   FormSwitch,
 } from "@/components/form/form-data";
 
 import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import MealPlanCreateDialog from "../../../meal-plan/components/MealPlanCreateDialog";
@@ -131,6 +132,16 @@ export default function PricingStep({
             label="Pay At Hotel"
             description="Guest pays at property"
           />
+
+          <FormDatePicker<HotelSchemaForm>
+            name="inventories.0.ratePlans.0.price.effectiveFrom"
+            label="Effective From"
+          />
+
+          <FormDatePicker<HotelSchemaForm>
+            name="inventories.0.ratePlans.0.price.effectiveTo"
+            label="Effective To"
+          />
         </div>
       </FormSection>
 
@@ -203,13 +214,13 @@ export default function PricingStep({
       >
         <div className="grid gap-6 md:grid-cols-2">
           <FormInput<HotelSchemaForm>
-            name="inventories.0.ratePlans.0.price.rules.0.name"
+            name="inventories.0.ratePlans.0.price.priceRules.0.name"
             label="Rule Name"
             placeholder="Weekend discount"
           />
 
           <FormEntitySelector<HotelSchemaForm, PriceRuleType>
-            name="inventories.0.ratePlans.0.price.rules.0.priceRuleTypeId"
+            name="inventories.0.ratePlans.0.price.priceRules.0.priceRuleTypeId"
             label="Rule Type"
             placeholder="Search rule type..."
             searchPlaceholder="Search rule type..."
@@ -226,49 +237,49 @@ export default function PricingStep({
           />
 
           <FormCombobox<HotelSchemaForm>
-            name="inventories.0.ratePlans.0.price.rules.0.adjustmentType"
+            name="inventories.0.ratePlans.0.price.priceRules.0.adjustmentType"
             label="Adjustment Type"
             options={ADJUSTMENT_TYPE_OPTIONS}
           />
 
           <FormInput<HotelSchemaForm>
-            name="inventories.0.ratePlans.0.price.rules.0.value"
+            name="inventories.0.ratePlans.0.price.priceRules.0.value"
             label="Value"
             type="number"
           />
 
           <FormInput<HotelSchemaForm>
-            name="inventories.0.ratePlans.0.price.rules.0.minimumNights"
+            name="inventories.0.ratePlans.0.price.priceRules.0.minimumNights"
             label="Minimum Nights"
             type="number"
           />
 
           <FormInput<HotelSchemaForm>
-            name="inventories.0.ratePlans.0.price.rules.0.maximumNights"
+            name="inventories.0.ratePlans.0.price.priceRules.0.maximumNights"
             label="Maximum Nights"
             type="number"
           />
 
           <FormInput<HotelSchemaForm>
-            name="inventories.0.ratePlans.0.price.rules.0.validFrom"
+            name="inventories.0.ratePlans.0.price.priceRules.0.validFrom"
             label="Valid From"
             type="date"
           />
 
           <FormInput<HotelSchemaForm>
-            name="inventories.0.ratePlans.0.price.rules.0.validTo"
+            name="inventories.0.ratePlans.0.price.priceRules.0.validTo"
             label="Valid To"
             type="date"
           />
 
           <FormInput<HotelSchemaForm>
-            name="inventories.0.ratePlans.0.price.rules.0.priority"
+            name="inventories.0.ratePlans.0.price.priceRules.0.priority"
             label="Priority"
             type="number"
           />
 
           <FormMultiCombobox<HotelSchemaForm>
-            name="inventories.0.ratePlans.0.price.rules.0.daysOfWeek"
+            name="inventories.0.ratePlans.0.price.priceRules.0.daysOfWeek"
             label="Days Of Week"
             options={DAYS_OF_WEEK_OPTIONS}
           />
@@ -276,13 +287,13 @@ export default function PricingStep({
 
         <div className="grid gap-6 md:grid-cols-2 mt-6">
           <FormSwitch<HotelSchemaForm>
-            name="inventories.0.ratePlans.0.price.rules.0.combinable"
+            name="inventories.0.ratePlans.0.price.priceRules.0.combinable"
             label="Combinable"
             description="Allow combining with other rules"
           />
 
           <FormSwitch<HotelSchemaForm>
-            name="inventories.0.ratePlans.0.price.rules.0.active"
+            name="inventories.0.ratePlans.0.price.priceRules.0.active"
             label="Active"
             description="Enable this price rule"
           />

@@ -69,22 +69,6 @@ export async function getSession(): Promise<Session | null> {
 
 /**
  * ------------------------------------------------------------------
- * Require Session
- * Redirect nếu chưa login
- * ------------------------------------------------------------------
- */
-export async function requireSession(): Promise<Session> {
-  const session = await getSession();
-
-  if (!session) {
-    redirect("/auth/login");
-  }
-
-  return session;
-}
-
-/**
- * ------------------------------------------------------------------
  * Delete Session
  * ------------------------------------------------------------------
  */
@@ -100,14 +84,22 @@ export async function deleteSession() {
 export async function updateSessionToken(
   accessToken: string,
   refreshToken?: string,
-) {
-  const session = await requireSession();
+): Promise<boolean> {
+  const session = await getSession();
+
+  console.log("[Auth] updateSessionToken - session exists:", Boolean(session));
+
+  if (!session) {
+    return false;
+  }
 
   await createSession({
     ...session,
     accessToken,
     refreshToken: refreshToken ?? session.refreshToken,
   });
+
+  return true;
 }
 
 /**
@@ -119,6 +111,10 @@ export async function refreshToken(
   currentRefreshToken: string,
 ): Promise<string | null> {
   try {
+    console.log("[Auth] Refresh started");
+
+    console.log("[Auth] Has refresh token:", Boolean(currentRefreshToken));
+
     const response = await fetch(
       `${process.env.BACKEND_INTERNAL_URL}/auth/refresh`,
       {
@@ -129,22 +125,49 @@ export async function refreshToken(
         body: JSON.stringify({
           refresh: currentRefreshToken,
         }),
+        cache: "no-store",
       },
     );
 
+    console.log("[Auth] Refresh response:", response.status);
+
     if (!response.ok) {
+      const errorText = await response.text();
+
+      console.error("[Auth] Refresh failed:", response.status, errorText);
+
       await deleteSession();
+
       return null;
     }
 
-    const { accessToken, refreshToken: newRefreshToken } =
-      await response.json();
+    const data = await response.json();
 
-    await updateSessionToken(accessToken, newRefreshToken);
+    const { accessToken, refreshToken: newRefreshToken } = data;
+
+    console.log("[Auth] New access token:", Boolean(accessToken));
+
+    console.log("[Auth] New refresh token:", Boolean(newRefreshToken));
+
+    if (!accessToken) {
+      console.error("[Auth] Backend did not return accessToken");
+
+      await deleteSession();
+
+      return null;
+    }
+
+    const updated = await updateSessionToken(accessToken, newRefreshToken);
+
+    console.log("[Auth] Session updated:", updated);
+
+    if (!updated) {
+      return null;
+    }
 
     return accessToken;
   } catch (error) {
-    console.error("Refresh token failed:", error);
+    console.error("[Auth] Refresh token exception:", error);
 
     await deleteSession();
 

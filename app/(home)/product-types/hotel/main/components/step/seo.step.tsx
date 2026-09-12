@@ -6,7 +6,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { FormSelect, FormSwitch } from "@/components/form/form-data";
 import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import SearchTagCreateDialog from "@/app/(home)/search/tag/components/SearchTagCreateDialog";
 import { SearchTag } from "@/types/searchs/search/tag.types";

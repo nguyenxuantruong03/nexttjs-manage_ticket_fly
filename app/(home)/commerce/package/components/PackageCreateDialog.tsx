@@ -13,7 +13,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { PackageFormSchema, schema as PackageSchema } from "./form/schema";
 
@@ -99,7 +99,7 @@ export default function PackageCreateDialog({
   );
 
   return (
-    <EntityCreateFormDialog<PackageFormSchema, Package>
+    <EntityCreateFormDialog<PackageFormSchema, Partial<Package>, Package>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

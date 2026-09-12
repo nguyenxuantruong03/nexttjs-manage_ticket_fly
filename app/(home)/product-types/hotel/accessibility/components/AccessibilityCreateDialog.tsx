@@ -5,7 +5,7 @@ import { FormInput, FormTextarea } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { AccessibilityFormSchema, AccessibilitySchema } from "./form/schema";
 
@@ -36,7 +36,11 @@ export default function AccessibilityCreateDialog({
   const createAccessibility = useCreateHotelAccessibility();
 
   return (
-    <EntityCreateFormDialog<AccessibilityFormSchema, Accessibility>
+    <EntityCreateFormDialog<
+      AccessibilityFormSchema,
+      Partial<Accessibility>,
+      Accessibility
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

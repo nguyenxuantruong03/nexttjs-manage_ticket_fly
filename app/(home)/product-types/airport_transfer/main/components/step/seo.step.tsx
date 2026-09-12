@@ -5,7 +5,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 import { AirportTransferFormSchema } from "../form/schema/core/schema";
 import { SearchTag } from "@/types/searchs/search/tag.types";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import SearchTagCreateDialog from "@/app/(home)/search/tag/components/SearchTagCreateDialog";
 import { BookingType } from "@/types/common/commerce/booking-type";

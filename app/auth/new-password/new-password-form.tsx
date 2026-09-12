@@ -12,8 +12,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import FormError from "@/components/form-notification/form-error";
-import FormSuccess from "@/components/form-notification/form-success";
+import FormError from "@/components/form/form-notification/form-error";
+import FormSuccess from "@/components/form/form-notification/form-success";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import AuthForm from "@/components/auth/form-auth";
@@ -58,15 +58,15 @@ const NewPasswordForm = () => {
           token,
           password: data.password,
           turnstileToken: turnstileToken,
-        }
+        },
       );
 
       if (response.data.success) {
-        setLoading(true)
+        setLoading(true);
         setSuccess(response.data.success);
       }
     } catch (err) {
-      setLoading(false)
+      setLoading(false);
       if (axios.isAxiosError(err)) {
         const { message } = err.response?.data || {};
         setError(message || "Đã có lỗi xảy ra, vui lòng thử lại sau");

@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -16,6 +16,7 @@ import { FlyCabinClassFormSchema, FlyCabinClassSchema } from "./form/schema";
 import { flyCabinClassDefaultValues } from "./form/default-values";
 
 import { FlyCabinClass } from "@/types/product-types/ticket-fly/fly-cabin-class";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -36,7 +37,11 @@ export default function FlyCabinClassCreateDialog({
   const createFlyCabinClass = useCreateFlyCabinClass();
 
   return (
-    <EntityCreateFormDialog<FlyCabinClassFormSchema, FlyCabinClass>
+    <EntityCreateFormDialog<
+      FlyCabinClassFormSchema,
+      Partial<FlyCabinClass>,
+      FlyCabinClass
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -67,7 +72,7 @@ export default function FlyCabinClassCreateDialog({
             placeholder="Business Class"
           />
 
-          <FormInput<FlyCabinClassFormSchema>
+          <FormIcon<FlyCabinClassFormSchema>
             name="icon"
             label="Icon"
             placeholder="https://..."

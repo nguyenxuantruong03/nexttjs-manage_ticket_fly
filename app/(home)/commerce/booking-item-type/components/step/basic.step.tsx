@@ -8,6 +8,7 @@ import {
 } from "@/components/form/form-data";
 
 import { BookingItemTypeFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
@@ -22,7 +23,7 @@ export default function BasicStep() {
           placeholder="Enter booking item type name"
         />
 
-        <FormInput<BookingItemTypeFormSchema>
+        <FormIcon<BookingItemTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="Enter icon"

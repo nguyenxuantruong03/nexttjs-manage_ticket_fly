@@ -11,7 +11,7 @@ import FlyCabinClassCreateDialog from "../../../cabin-class/components/FlyCabinC
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import PriceRuleTypeCreateDialog from "@/app/(home)/commerce/price-rule-type/components/PriceRuleTypeCreateDialog";
 import { PriceRuleType } from "@/types/common/commerce/price-rule-type.type";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import { FlyCabinClass } from "@/types/product-types/ticket-fly/fly-cabin-class";
 import { BookingType } from "@/types/common/commerce/booking-type";
 

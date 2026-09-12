@@ -1,184 +1,295 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { RowActions } from "@/components/ui/data-table/row-actions";
-import { Yacht } from "@/types/product-types/yacht/core/yacht.types";
+
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
+import { RowActions } from "@/components/ui/data-table/row-actions";
+
+import { Yacht } from "@/types/product-types/yacht/core/yacht.types";
 
 export function yachtColumns(
   actions: (row: Yacht) => ActionMenuItem<Yacht>[],
 ): ColumnDef<Yacht>[] {
   return [
-    {
+    // ======================================================
+    // SELECTION
+    // ======================================================
+
+    createSelectionColumn<Yacht>(),
+
+    // ======================================================
+    // BASIC
+    // ======================================================
+
+    createDataTableColumn<Yacht>({
       accessorKey: "id",
       header: "ID",
-    },
-    {
-      accessorKey: "driverOption",
-      header: "Driver Option",
-    },
-    {
+    }),
+
+    createDataTableColumn<Yacht>({
+      accessorKey: "name",
+      header: "Name",
+    }),
+
+    createDataTableColumn<Yacht>({
+      accessorKey: "slug",
+      header: "Slug",
+    }),
+
+    createDataTableColumn<Yacht>({
       accessorKey: "providerBookingId",
       header: "Provider Booking",
-    },
+    }),
 
-    // Vehicle
-    {
-      accessorKey: "vehicle.brand",
-      header: "Brand",
-    },
-    {
-      accessorKey: "vehicle.model",
-      header: "Model",
-    },
-    {
-      accessorKey: "vehicle.type",
-      header: "Vehicle Type",
-    },
-    {
-      accessorKey: "vehicle.status",
-      header: "Status",
-    },
-    {
-      accessorKey: "vehicle.year",
-      header: "Year",
-    },
-    {
-      accessorKey: "vehicle.color",
-      header: "Color",
-    },
-    {
-      accessorKey: "vehicle.transmission",
-      header: "Transmission",
-    },
-    {
-      accessorKey: "vehicle.fuelType",
-      header: "Fuel Type",
-    },
-    {
-      accessorKey: "vehicle.licensePlate",
-      header: "License Plate",
-    },
-    {
-      accessorKey: "vehicle.images.0",
-      header: "Image",
-    },
+    createDataTableColumn<Yacht>({
+      accessorKey: "serviceTypeId",
+      header: "Service Type",
+    }),
 
-    // Capacity
-    {
-      accessorKey: "vehicle.capacity.seatCount",
-      header: "Seats",
-    },
-    {
-      accessorKey: "vehicle.capacity.luggageCount",
-      header: "Luggage",
-    },
-    {
-      accessorKey: "vehicle.capacity.doorCount",
-      header: "Doors",
-    },
+    createDataTableColumn<Yacht>({
+      accessorKey: "bookingItemTypeId",
+      header: "Booking Item Type",
+    }),
 
-    // Pickup
-    {
-      accessorKey: "trip.pickupLocation.pickup",
-      header: "Pickup",
-    },
-    {
-      accessorKey: "trip.pickupLocation.type",
-      header: "Pickup Type",
-    },
+    // ======================================================
+    // STATUS
+    // ======================================================
 
-    // Dropoff
-    {
-      accessorKey: "trip.dropoffLocation.dropoff",
-      header: "Dropoff",
-    },
-    {
-      accessorKey: "trip.dropoffLocation.type",
-      header: "Dropoff Type",
-    },
+    createDataTableColumn<Yacht>({
+      accessorKey: "active",
+      header: "Active",
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
 
-    // Schedule
-    {
-      accessorKey: "trip.schedule.durationType",
-      header: "Duration",
-    },
-    {
-      accessorKey: "trip.schedule.pickupTime",
-      header: "Pickup Time",
-    },
-    {
-      accessorKey: "trip.schedule.returnTime",
-      header: "Return Time",
-    },
+    // ======================================================
+    // SEARCH METADATA
+    // ======================================================
 
-    // Price
-    {
-      accessorKey: "price.pricePerHour",
-      header: "Price / Hour",
-    },
-    {
-      accessorKey: "price.pricePerDay",
-      header: "Price / Day",
-    },
-    {
-      accessorKey: "price.pricePerWeek",
-      header: "Price / Week",
-    },
-    {
-      accessorKey: "price.pricePerMonth",
-      header: "Price / Month",
-    },
-    {
-      accessorKey: "price.originalPrice",
-      header: "Original Price",
-    },
-    {
-      accessorKey: "price.finalPrice",
-      header: "Final Price",
-    },
+    createDataTableColumn<Yacht>({
+      accessorKey: "featured",
+      header: "Featured",
+      cell: (row) => (row.featured ? "Yes" : "No"),
+    }),
 
-    // Policy
-    {
-      accessorKey: "policies.fuelPolicy",
-      header: "Fuel Policy",
-    },
-    {
-      accessorKey: "policies.mileage.unlimited",
-      header: "Unlimited Mileage",
-    },
-    {
-      accessorKey: "policies.rules.minimumAge",
-      header: "Minimum Age",
-    },
-    {
-      accessorKey: "policies.rules.additionalDriverAllowed",
-      header: "Additional Driver",
-    },
+    createDataTableColumn<Yacht>({
+      accessorKey: "searchable",
+      header: "Searchable",
+      cell: (row) => (row.searchable ? "Yes" : "No"),
+    }),
 
-    // Review (ví dụ lấy review đầu tiên)
-    {
-      accessorKey: "review.0.overallRating",
+    createDataTableColumn<Yacht>({
+      accessorKey: "searchPriority",
+      header: "Search Priority",
+    }),
+
+    createDataTableColumn<Yacht>({
+      accessorKey: "ratingAverage",
       header: "Rating",
-    },
+    }),
+
+    createDataTableColumn<Yacht>({
+      accessorKey: "reviewCount",
+      header: "Reviews",
+    }),
+
+    createDataTableColumn<Yacht>({
+      accessorKey: "bookingCount",
+      header: "Bookings",
+    }),
+
+    createDataTableColumn<Yacht>({
+      accessorKey: "favoriteCount",
+      header: "Favorites",
+    }),
+
+    // ======================================================
+    // VEHICLE
+    // ======================================================
+
     {
-      accessorKey: "review.0.comment",
-      header: "Review",
-    },
-    {
-      accessorKey: "review.0.verified",
-      header: "Verified",
+      id: "vehicle",
+      header: "Vehicle",
+      cell: ({ row }) => (row.original.vehicle ? "Yes" : "No"),
     },
 
-    // Time
+    // ======================================================
+    // MARINA
+    // ======================================================
+
     {
+      id: "marina",
+      header: "Marina",
+      cell: ({ row }) => row.original.marina?.length ?? 0,
+    },
+
+    // ======================================================
+    // EXTRAS
+    // ======================================================
+
+    {
+      id: "extras",
+      header: "Extras",
+      cell: ({ row }) => row.original.yachtExtraMapper?.length ?? 0,
+    },
+
+    // ======================================================
+    // PACKAGES
+    // ======================================================
+
+    {
+      id: "packages",
+      header: "Packages",
+      cell: ({ row }) => row.original.yachtPackageMapper?.length ?? 0,
+    },
+
+    // ======================================================
+    // ROUTES
+    // ======================================================
+
+    {
+      id: "routes",
+      header: "Routes",
+      cell: ({ row }) => row.original.routes?.length ?? 0,
+    },
+
+    // ======================================================
+    // AVAILABILITY
+    // ======================================================
+
+    {
+      id: "availability",
+      header: "Availability",
+      cell: ({ row }) => (row.original.availability ? "Yes" : "No"),
+    },
+
+    // ======================================================
+    // PRICE
+    // ======================================================
+
+    {
+      id: "price",
+      header: "Price",
+      cell: ({ row }) => (row.original.price ? "Yes" : "No"),
+    },
+
+    // ======================================================
+    // POLICIES
+    // ======================================================
+
+    {
+      id: "policies",
+      header: "Policies",
+      cell: ({ row }) => row.original.policies?.length ?? 0,
+    },
+
+    // ======================================================
+    // NOTICE
+    // ======================================================
+
+    {
+      id: "notice",
+      header: "Notice",
+      cell: ({ row }) => (row.original.notice ? "Yes" : "No"),
+    },
+
+    // ======================================================
+    // BOOKINGS
+    // ======================================================
+
+    {
+      id: "bookings",
+      header: "Bookings",
+      cell: ({ row }) => row.original.bookings?.length ?? 0,
+    },
+
+    // ======================================================
+    // INVENTORY LOCKS
+    // ======================================================
+
+    {
+      id: "locks",
+      header: "Locks",
+      cell: ({ row }) => row.original.locks?.length ?? 0,
+    },
+
+    // ======================================================
+    // REVIEWS
+    // ======================================================
+
+    {
+      id: "reviews",
+      header: "Reviews",
+      cell: ({ row }) => row.original.reviews?.length ?? 0,
+    },
+
+    // ======================================================
+    // IMAGES
+    // ======================================================
+
+    {
+      id: "image",
+      header: "Images",
+      cell: ({ row }) => row.original.image?.length ?? 0,
+    },
+
+    // ======================================================
+    // FAVORITES
+    // ======================================================
+
+    {
+      id: "favorites",
+      header: "Favorites",
+      cell: ({ row }) => row.original.favorites?.length ?? 0,
+    },
+
+    // ======================================================
+    // RATING SUMMARY
+    // ======================================================
+
+    {
+      id: "ratingSummary",
+      header: "Rating Summary",
+      cell: ({ row }) => (row.original.ratingSummary ? "Yes" : "No"),
+    },
+
+    // ======================================================
+    // CREW
+    // ======================================================
+
+    {
+      id: "crew",
+      header: "Crew",
+      cell: ({ row }) => row.original.crew?.length ?? 0,
+    },
+
+    // ======================================================
+    // TIMESTAMPS
+    // ======================================================
+
+    createDataTableColumn<Yacht>({
       accessorKey: "createdAt",
       header: "Created At",
-    },
-    {
+      cell: (row) =>
+        row.createdAt ? new Date(row.createdAt).toLocaleString() : "-",
+    }),
+
+    createDataTableColumn<Yacht>({
       accessorKey: "updatedAt",
       header: "Updated At",
-    },
+      cell: (row) =>
+        row.updatedAt ? new Date(row.updatedAt).toLocaleString() : "-",
+    }),
+
+    // ======================================================
+    // ACTIONS
+    // ======================================================
+
     {
       id: "actions",
       header: "",

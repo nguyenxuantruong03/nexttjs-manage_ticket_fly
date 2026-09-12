@@ -2,36 +2,48 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
 import { RowActions } from "@/components/ui/data-table/row-actions";
+
 import { DiningMealType } from "@/types/product-types/hotel/service/dinner-option.type";
 
 export function diningMealTypeColumns(
   actions: (row: DiningMealType) => ActionMenuItem<DiningMealType>[],
 ): ColumnDef<DiningMealType>[] {
   return [
+    createSelectionColumn<DiningMealType>(),
+
     // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<DiningMealType>({
       accessorKey: "id",
       header: "ID",
-    },
-    {
+    }),
+
+    createDataTableColumn<DiningMealType>({
       accessorKey: "name",
       header: "Name",
-    },
-    {
+    }),
+
+    createDataTableColumn<DiningMealType>({
       accessorKey: "description",
       header: "Description",
-      cell: ({ row }) => row.original.description ?? "-",
-    },
-    {
+      cell: (row) => row.description ?? "-",
+    }),
+
+    createDataTableColumn<DiningMealType>({
       accessorKey: "icon",
       header: "Icon",
-      cell: ({ row }) => row.original.icon ?? "-",
-    },
+      cell: (row) => row.icon ?? "-",
+    }),
 
     // ======================================================
     // RELATIONS
@@ -47,30 +59,32 @@ export function diningMealTypeColumns(
     // SETTINGS
     // ======================================================
 
-    {
+    createDataTableColumn<DiningMealType>({
       accessorKey: "active",
       header: "Active",
-      cell: ({ row }) => (row.original.active ? "Yes" : "No"),
-    },
-    {
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
+
+    createDataTableColumn<DiningMealType>({
       accessorKey: "sortOrder",
       header: "Sort Order",
-    },
+    }),
 
     // ======================================================
     // TIMESTAMPS
     // ======================================================
 
-    {
+    createDataTableColumn<DiningMealType>({
       accessorKey: "createdAt",
       header: "Created At",
-      cell: ({ row }) => row.original.createdAt.toLocaleString(),
-    },
-    {
+      cell: (row) => row.createdAt.toLocaleString(),
+    }),
+
+    createDataTableColumn<DiningMealType>({
       accessorKey: "updatedAt",
       header: "Updated At",
-      cell: ({ row }) => row.original.updatedAt.toLocaleString(),
-    },
+      cell: (row) => row.updatedAt.toLocaleString(),
+    }),
 
     // ======================================================
     // ACTIONS

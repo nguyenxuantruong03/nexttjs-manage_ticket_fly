@@ -1,5 +1,5 @@
 "use client";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { usersColumns } from "./components/columns";
 import { useDeleteUser, useUsers } from "@/hooks/user";
 import { useRouter } from "next/navigation";

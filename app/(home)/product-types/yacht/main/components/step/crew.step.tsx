@@ -1,10 +1,10 @@
 import FormSection from "@/components/form/FormSection";
 
-import { FormInput } from "@/components/form/form-data";
+import { FormInput, FormSwitch } from "@/components/form/form-data";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import { YachtFormSchema } from "../form/schema/core/yacht.schema";
 import { YachtCrewRole } from "@/types/product-types/yacht/yacht-crew-role";
@@ -56,6 +56,7 @@ export default function CrewStep({ crewRoleData }: CrewStepProps) {
             name="crew.0.languages.0"
             label="Language"
           />
+          <FormSwitch<YachtFormSchema> name="crew.0.active" label="Active" />
         </div>
       </FormSection>
     </>

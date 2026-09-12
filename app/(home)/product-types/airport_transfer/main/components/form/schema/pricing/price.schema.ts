@@ -10,12 +10,13 @@ export const AirportTransferPriceSchema = z.object({
   // ======================================================
 
   fromPrice: z.number(),
-
   toPrice: z.number().optional(),
 
   originalFromPrice: z.number().optional(),
-
   originalToPrice: z.number().optional(),
+
+  effectiveFrom: z.date().nullable().optional(),
+  effectiveTo: z.date().nullable().optional(),
 
   // ======================================================
   // ROUTE PRICES
@@ -33,7 +34,7 @@ export const AirportTransferPriceSchema = z.object({
   // PRICE RULES
   // ======================================================
 
-  rules: z.array(AirportTransferPriceRuleSchema).default([]),
+  priceRules: z.array(AirportTransferPriceRuleSchema).default([]),
 });
 
 export type AirportTransferPriceFormSchema = z.infer<

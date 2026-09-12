@@ -62,6 +62,8 @@ export function AppForm<TFieldValues extends FieldValues>({
   // ======================================================
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (stopSubmitPropagation) {
       event.stopPropagation();
     }

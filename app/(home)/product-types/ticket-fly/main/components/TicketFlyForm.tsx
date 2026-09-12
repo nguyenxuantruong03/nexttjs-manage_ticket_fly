@@ -9,7 +9,7 @@ import {
   useUpdateTicketFly,
 } from "@/hooks/product-types/ticket-fly";
 
-import { FlyFormSchema } from "./form/schema/core/fly.schema"
+import { FlyFormSchema } from "./form/schema/core/fly.schema";
 
 import { Fly } from "@/types/product-types/ticket-fly/core/fly.types";
 
@@ -57,7 +57,7 @@ import { PolicyType } from "@/types/common/features/policy/policy-type";
 
 import { Policy } from "@/types/common/features/policy/policy";
 
-import { ticketFlyFormConfig } from "./config";
+import { ticketFlyFormConfig, FlyCreateInput, FlyUpdateInput } from "./config";
 
 import BasicStep from "./step/basic.step";
 
@@ -82,6 +82,8 @@ import ImagesStep from "./step/images.step";
 import ScheduleStep from "./step/schedule.step";
 
 import SeoStep from "./step/seo.step";
+import { MediaAsset } from "@/types/common/catalog/media-asset";
+import { MediaCategory } from "@/types/common/catalog/media-category";
 
 interface TicketFlyFormProps {
   initialData?: Fly;
@@ -129,6 +131,8 @@ interface TicketFlyFormProps {
   policyData: Policy[];
 
   policyTypeData: PolicyType[];
+  mediaCategoryData: MediaCategory[];
+  mediaAssetData: MediaAsset[];
 }
 
 export default function TicketFlyForm({
@@ -155,13 +159,15 @@ export default function TicketFlyForm({
   packageData,
   policyData,
   policyTypeData,
+  mediaCategoryData,
+  mediaAssetData,
 }: TicketFlyFormProps) {
   const createTicket = useCreateTicketFly();
 
   const updateTicket = useUpdateTicketFly();
 
   return (
-    <EntityFormWizard<FlyFormSchema, Fly>
+    <EntityFormWizard<FlyFormSchema, Fly, FlyCreateInput, FlyUpdateInput>
       initialData={initialData}
       config={ticketFlyFormConfig}
       createMutation={createTicket}
@@ -236,7 +242,11 @@ export default function TicketFlyForm({
       </FormWizardStep>
 
       <FormWizardStep index={9}>
-        <ImagesStep />
+        <ImagesStep
+          mediaCategoryData={mediaCategoryData}
+          mediaAssetData={mediaAssetData}
+          bookingTypeData={bookingTypeData}
+        />
       </FormWizardStep>
 
       <FormWizardStep index={10}>

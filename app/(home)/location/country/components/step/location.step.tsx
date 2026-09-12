@@ -8,7 +8,7 @@ import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntity
 import TimezoneCreateDialog from "../../../timezone/components/TimezoneCreateDialog";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import CurrencyCreateDialog from "../../../currency/components/CurrencyCreateDialog";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import { Currency } from "@/types/location/currency";
 import { Language } from "@/types/location/language";
 import { Timezone } from "@/types/location/timezone";

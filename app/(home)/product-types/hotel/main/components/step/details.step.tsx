@@ -7,25 +7,40 @@ import {
   FormSwitch,
   FormTextarea,
 } from "@/components/form/form-data";
+
 import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
-import { EntityOption } from "@/components/entity-selector";
+
+import { EntityOption } from "@/components/form/entity-selector";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+
 import SustainabilityCreateDialog from "../../../sustainability/components/SustainabilityCreateDialog";
+
 import AccessibilityCreateDialog from "../../../accessibility/components/AccessibilityCreateDialog";
+
 import {
   Accessibility,
   Sustainability,
 } from "@/types/product-types/hotel/hotel-detail";
 
+import { MediaAsset } from "@/types/common/catalog/media-asset";
+
+import { BookingType } from "@/types/common/commerce/booking-type";
+
+import MediaAssetCreateDialog from "@/app/(home)/catalog/media-asset/components/MediaAssetCreateDialog";
+
 interface DetailsStepProps {
   sustainabilityData: Sustainability[];
   accessibilityData: Accessibility[];
+  mediaAssetData: MediaAsset[];
+  bookingTypeData: BookingType[];
 }
 
 export default function DetailsStep({
   sustainabilityData,
   accessibilityData,
+  mediaAssetData,
+  bookingTypeData,
 }: DetailsStepProps) {
   const sustainabilityOptions: EntityOption<Sustainability>[] =
     sustainabilityData.map((item) => ({
@@ -43,18 +58,16 @@ export default function DetailsStep({
       data: item,
     }));
 
-  // const mediaOptions: EntityOption<Media>[] = mediaData.map((media) => ({
-  //   value: media.id,
-  //   label: media.name,
-  //   data: media,
-  // }));
+  const mediaAssetOptions: EntityOption<MediaAsset>[] = mediaAssetData.map(
+    (mediaAsset) => ({
+      value: mediaAsset.id,
+      label: mediaAsset.caption ?? "",
+      data: mediaAsset,
+    }),
+  );
 
   return (
     <>
-      {/* ======================================================
-          DESCRIPTIONS
-      ====================================================== */}
-
       <FormSection
         title="Descriptions"
         description="Hotel content and descriptions"
@@ -73,10 +86,6 @@ export default function DetailsStep({
           />
         </div>
       </FormSection>
-
-      {/* ======================================================
-          CONTACT
-      ====================================================== */}
 
       <FormSection
         title="Contact Information"
@@ -102,10 +111,6 @@ export default function DetailsStep({
           />
         </div>
       </FormSection>
-
-      {/* ======================================================
-          OPENING HOURS
-      ====================================================== */}
 
       <FormSection title="Opening Hours" description="Hotel service schedules">
         <div className="grid gap-6 md:grid-cols-2">
@@ -135,10 +140,6 @@ export default function DetailsStep({
         </div>
       </FormSection>
 
-      {/* ======================================================
-          ACCESSIBILITY
-      ====================================================== */}
-
       <FormSection title="Accessibility" description="Accessibility options">
         <FormEntitySelector<HotelSchemaForm, Accessibility>
           name="accessibilities.0.accessibilityId"
@@ -154,10 +155,6 @@ export default function DetailsStep({
           )}
         />
       </FormSection>
-
-      {/* ======================================================
-          AWARDS
-      ====================================================== */}
 
       <FormSection title="Awards" description="Hotel awards and recognition">
         <div className="grid gap-6 md:grid-cols-2">
@@ -200,11 +197,23 @@ export default function DetailsStep({
           <FormSwitch<HotelSchemaForm> name="awards.0.active" label="Active" />
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3 mt-6">
-          <FormInput<HotelSchemaForm>
+        <div className="mt-6 grid gap-6 md:grid-cols-3">
+          <FormEntitySelector<HotelSchemaForm, MediaAsset>
             name="awards.0.medias.0.mediaId"
             label="Award Media"
             placeholder="Search media..."
+            searchPlaceholder="Search media..."
+            emptyText="No media found"
+            createText="Create media"
+            options={mediaAssetOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <MediaAssetCreateDialog
+                folder="hotel/awards"
+                bookingTypeData={bookingTypeData}
+                {...props}
+              />
+            )}
           />
 
           <FormInput<HotelSchemaForm>
@@ -219,10 +228,6 @@ export default function DetailsStep({
           />
         </div>
       </FormSection>
-
-      {/* ======================================================
-          SUSTAINABILITY
-      ====================================================== */}
 
       <FormSection
         title="Sustainability"

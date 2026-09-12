@@ -7,7 +7,7 @@ import { FormCombobox, FormInput } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import {
   HotelCheckInPolicySchema,
@@ -46,7 +46,11 @@ export default function HotelCheckInPolicyCreateDialog({
   const createHotelCheckInPolicy = useCreateHotelCheckInPolicy();
 
   return (
-    <EntityCreateFormDialog<HotelCheckInPolicySchemaForm, HotelCheckInPolicy>
+    <EntityCreateFormDialog<
+      HotelCheckInPolicySchemaForm,
+      Partial<HotelCheckInPolicy>,
+      HotelCheckInPolicy
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

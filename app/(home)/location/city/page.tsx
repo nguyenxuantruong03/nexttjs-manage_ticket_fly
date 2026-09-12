@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { useCountries } from "@/hooks/location/country";
 import { cityColumns } from "./components/columns";
 import { useCities, useDeleteCity } from "@/hooks/location/city";

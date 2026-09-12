@@ -2,36 +2,48 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
 import { RowActions } from "@/components/ui/data-table/row-actions";
+
 import { DiningServiceType } from "@/types/product-types/hotel/service/dinner-option.type";
 
 export function diningServiceTypeColumns(
   actions: (row: DiningServiceType) => ActionMenuItem<DiningServiceType>[],
 ): ColumnDef<DiningServiceType>[] {
   return [
+    createSelectionColumn<DiningServiceType>(),
+
     // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<DiningServiceType>({
       accessorKey: "id",
       header: "ID",
-    },
-    {
+    }),
+
+    createDataTableColumn<DiningServiceType>({
       accessorKey: "name",
       header: "Name",
-    },
-    {
+    }),
+
+    createDataTableColumn<DiningServiceType>({
       accessorKey: "description",
       header: "Description",
-      cell: ({ row }) => row.original.description ?? "-",
-    },
-    {
+      cell: (row) => row.description ?? "-",
+    }),
+
+    createDataTableColumn<DiningServiceType>({
       accessorKey: "icon",
       header: "Icon",
-      cell: ({ row }) => row.original.icon ?? "-",
-    },
+      cell: (row) => row.icon ?? "-",
+    }),
 
     // ======================================================
     // RELATIONS
@@ -47,30 +59,32 @@ export function diningServiceTypeColumns(
     // SETTINGS
     // ======================================================
 
-    {
+    createDataTableColumn<DiningServiceType>({
       accessorKey: "active",
       header: "Active",
-      cell: ({ row }) => (row.original.active ? "Yes" : "No"),
-    },
-    {
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
+
+    createDataTableColumn<DiningServiceType>({
       accessorKey: "sortOrder",
       header: "Sort Order",
-    },
+    }),
 
     // ======================================================
     // TIMESTAMPS
     // ======================================================
 
-    {
+    createDataTableColumn<DiningServiceType>({
       accessorKey: "createdAt",
       header: "Created At",
-      cell: ({ row }) => row.original.createdAt.toLocaleString(),
-    },
-    {
+      cell: (row) => row.createdAt.toLocaleString(),
+    }),
+
+    createDataTableColumn<DiningServiceType>({
       accessorKey: "updatedAt",
       header: "Updated At",
-      cell: ({ row }) => row.original.updatedAt.toLocaleString(),
-    },
+      cell: (row) => row.updatedAt.toLocaleString(),
+    }),
 
     // ======================================================
     // ACTIONS

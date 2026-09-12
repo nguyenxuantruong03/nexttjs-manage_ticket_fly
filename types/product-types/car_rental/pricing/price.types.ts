@@ -13,8 +13,8 @@ export interface CarRentalPrice {
   // VALID TIME
   // =====================
 
-  startDate: string | null;
-  endDate: string | null;
+  effectiveFrom?: Date | null;
+  effectiveTo?: Date | null;
 
   // =====================
   // PRICE TYPE
@@ -30,7 +30,16 @@ export interface CarRentalPrice {
   pricePerDay: number | null;
   pricePerWeek: number | null;
   pricePerMonth: number | null;
-  originalPrice: number | null;
+
+
+    // =====================
+  // ORIGIN PRICE
+  // =====================
+
+  originalPricePerHour: number | null;
+  originalPricePerDay: number | null;
+  originalPricePerWeek: number | null;
+  originalPricePerMonth: number | null;
 
   // =====================
   // RULE

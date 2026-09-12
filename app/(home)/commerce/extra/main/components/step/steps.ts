@@ -1,4 +1,11 @@
-import { Info, Activity, CalendarCheck, Tags, DollarSign } from "lucide-react";
+import {
+  Info,
+  Activity,
+  CalendarCheck,
+  Tags,
+  DollarSign,
+  Image,
+} from "lucide-react";
 
 import { FormWizardStep } from "@/components/form/wizard/types";
 
@@ -53,6 +60,18 @@ export const extraSteps: FormWizardStep<ExtraFormSchema>[] = [
     icon: DollarSign,
 
     fields: extraFieldGroups.pricing,
+  },
+
+  {
+    id: "media",
+
+    title: "Media",
+
+    description: "Manage extra images",
+
+    icon: Image,
+
+    fields: extraFieldGroups.media,
   },
 
   {

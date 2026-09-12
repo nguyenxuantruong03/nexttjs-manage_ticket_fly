@@ -31,15 +31,9 @@ import { FlyAircraftImage } from "@/types/product-types/references/airline/aircr
 export interface MediaAsset {
   id: string;
 
-  // ======================================================
-  // STORAGE
-  // ======================================================
+  thumbnailPath: string[] | null;
 
-  url: string;
-
-  thumbnailUrl: string | null;
-
-  path: string | null;
+  path: string[] | null;
 
   // ======================================================
   // FILE INFO

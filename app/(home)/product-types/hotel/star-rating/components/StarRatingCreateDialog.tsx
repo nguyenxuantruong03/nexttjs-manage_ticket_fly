@@ -5,7 +5,7 @@ import { FormInput } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { StarRatingFormSchema, StarRatingSchema } from "./form/schema";
 
@@ -36,7 +36,11 @@ export default function StarRatingCreateDialog({
   const createStarRating = useCreateHotelStarRating();
 
   return (
-    <EntityCreateFormDialog<StarRatingFormSchema, HotelStarRating>
+    <EntityCreateFormDialog<
+      StarRatingFormSchema,
+      Partial<HotelStarRating>,
+      HotelStarRating
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

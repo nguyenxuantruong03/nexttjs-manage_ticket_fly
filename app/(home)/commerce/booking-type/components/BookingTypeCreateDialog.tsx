@@ -9,7 +9,7 @@ import {
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import {
   BookingTypeFormSchema,
@@ -43,7 +43,11 @@ export default function BookingTypeCreateDialog({
   const createBookingType = useCreateBookingType();
 
   return (
-    <EntityCreateFormDialog<BookingTypeFormSchema, BookingType>
+    <EntityCreateFormDialog<
+      BookingTypeFormSchema,
+      Partial<BookingType>,
+      BookingType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

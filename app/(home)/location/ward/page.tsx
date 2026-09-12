@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createWardHandlers } from "./features/handlers";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
 import { createWardActions } from "./features/actions";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { wardColumns } from "./components/columns";
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";

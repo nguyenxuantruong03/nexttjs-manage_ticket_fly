@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -19,6 +19,7 @@ import {
 import { flyFareRuleTypeDefaultValues } from "./form/default-values";
 
 import { FlyFareRuleType } from "@/types/product-types/ticket-fly/pricing/fare-rule-type";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -39,7 +40,11 @@ export default function FlyFareRuleTypeCreateDialog({
   const createFlyFareRuleType = useCreateFlyFareRuleType();
 
   return (
-    <EntityCreateFormDialog<FlyFareRuleTypeFormSchema, FlyFareRuleType>
+    <EntityCreateFormDialog<
+      FlyFareRuleTypeFormSchema,
+      Partial<FlyFareRuleType>,
+      FlyFareRuleType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -69,7 +74,7 @@ export default function FlyFareRuleTypeCreateDialog({
             placeholder="Refund Policy"
           />
 
-          <FormInput<FlyFareRuleTypeFormSchema>
+          <FormIcon<FlyFareRuleTypeFormSchema>
             name="icon"
             label="Icon"
             placeholder="https://..."

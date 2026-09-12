@@ -7,7 +7,7 @@ import { FormSelect, FormSwitch } from "@/components/form/form-data";
 import { FlyFormSchema } from "../form/schema/core/fly.schema";
 import { SearchTag } from "@/types/searchs/search/tag.types";
 import { SEARCH_PRIORITY_OPTIONS } from "@/types/searchs/search-prioty-score";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import SearchTagCreateDialog from "@/app/(home)/search/tag/components/SearchTagCreateDialog";
 import { BookingType } from "@/types/common/commerce/booking-type";

@@ -60,7 +60,14 @@ export function renderReferencesStepperContent({
   }
 
   if (mainStep === "airline" && subStep === "airline-main") {
-    return <AirlineMainForm redirect={false} />;
+    return (
+      <AirlineMainForm
+        mediaCategoryData={airlineMain.data?.mediaCategoryData ?? []}
+        mediaAssetData={airlineMain.data?.mediaAssetData ?? []}
+        bookingTypeData={airlineMain.data?.bookingTypeData ?? []}
+        redirect={false}
+      />
+    );
   }
 
   if (mainStep === "airline" && subStep === "aircraft-type") {
@@ -70,6 +77,9 @@ export function renderReferencesStepperContent({
   if (mainStep === "airline" && subStep === "aircraft-main") {
     return (
       <AircraftMainForm
+        mediaCategoryData={aircraftMain.data?.mediaCategoryData ?? []}
+        mediaAssetData={aircraftMain.data?.mediaAssetData ?? []}
+        bookingTypeData={aircraftMain.data?.bookingTypeData ?? []}
         airlineData={aircraftMain.data?.airlineData ?? []}
         redirect={false}
       />

@@ -5,7 +5,7 @@ import { AppForm, FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -36,7 +36,11 @@ export default function YachtConditionCreateDialog({
   const createYachtCondition = useCreateYachtCondition();
 
   return (
-    <EntityCreateFormDialog<YachtConditionFormSchema, YachtCondition>
+    <EntityCreateFormDialog<
+      YachtConditionFormSchema,
+      Partial<YachtCondition>,
+      YachtCondition
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

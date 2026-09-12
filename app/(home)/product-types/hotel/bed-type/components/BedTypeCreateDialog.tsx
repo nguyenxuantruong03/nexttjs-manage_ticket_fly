@@ -9,7 +9,7 @@ import {
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { BedTypeFormSchema, BedTypeSchema } from "./form/schema";
 
@@ -20,6 +20,7 @@ import { useCreateHotelBedType } from "@/hooks/product-types/hotel/hotel-bed-typ
 import { BedType } from "@/types/product-types/hotel/room/room.types";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -40,7 +41,7 @@ export default function BedTypeCreateDialog({
   const createBedType = useCreateHotelBedType();
 
   return (
-    <EntityCreateFormDialog<BedTypeFormSchema, BedType>
+    <EntityCreateFormDialog<BedTypeFormSchema, Partial<BedType>, BedType>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -68,7 +69,7 @@ export default function BedTypeCreateDialog({
           placeholder="Bed type name"
         />
 
-        <FormInput<BedTypeFormSchema>
+        <FormIcon<BedTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="Icon"

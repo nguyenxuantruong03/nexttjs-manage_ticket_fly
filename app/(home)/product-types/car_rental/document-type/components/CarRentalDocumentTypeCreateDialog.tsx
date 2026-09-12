@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import {
   CarRentalDocumentTypeFormSchema,
@@ -19,6 +19,7 @@ import { useCreateCarRentalDocumentType } from "@/hooks/product-types/car-rental
 import { CarRentalDocumentType } from "@/types/product-types/car_rental/policies/required-documents.types";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -41,6 +42,7 @@ export default function CarRentalDocumentTypeCreateDialog({
   return (
     <EntityCreateFormDialog<
       CarRentalDocumentTypeFormSchema,
+      Partial<CarRentalDocumentType>,
       CarRentalDocumentType
     >
       open={open}
@@ -74,7 +76,7 @@ export default function CarRentalDocumentTypeCreateDialog({
           placeholder="Driver License"
         />
 
-        <FormInput<CarRentalDocumentTypeFormSchema>
+        <FormIcon<CarRentalDocumentTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="https://..."

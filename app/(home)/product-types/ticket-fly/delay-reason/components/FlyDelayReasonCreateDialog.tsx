@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -16,6 +16,7 @@ import { FlyDelayReasonFormSchema, FlyDelayReasonSchema } from "./form/schema";
 import { flyDelayReasonDefaultValues } from "./form/default-values";
 
 import { FlyDelayReason } from "@/types/product-types/ticket-fly/fly-delay-reason";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -36,7 +37,11 @@ export default function FlyDelayReasonCreateDialog({
   const createFlyDelayReason = useCreateFlyDelayReason();
 
   return (
-    <EntityCreateFormDialog<FlyDelayReasonFormSchema, FlyDelayReason>
+    <EntityCreateFormDialog<
+      FlyDelayReasonFormSchema,
+      Partial<FlyDelayReason>,
+      FlyDelayReason
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -67,7 +72,7 @@ export default function FlyDelayReasonCreateDialog({
             placeholder="Weather Delay"
           />
 
-          <FormInput<FlyDelayReasonFormSchema>
+          <FormIcon<FlyDelayReasonFormSchema>
             name="icon"
             label="Icon"
             placeholder="https://..."

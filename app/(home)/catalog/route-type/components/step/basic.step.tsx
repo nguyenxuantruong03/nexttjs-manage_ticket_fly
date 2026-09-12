@@ -5,6 +5,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 
 import { RouteTypeFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
@@ -25,7 +26,7 @@ export default function BasicStep() {
           placeholder="Enter route type description"
         />
 
-        <FormInput<RouteTypeFormSchema>
+        <FormIcon<RouteTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="route"

@@ -50,6 +50,8 @@ export default function TicketFlyCreatePage() {
       packageData={data.packageData}
       policyData={data.policyData}
       policyTypeData={data.policyTypeData}
+      mediaCategoryData={data.mediaCategoryData}
+      mediaAssetData={data.mediaAssetData}
     />
   );
 }

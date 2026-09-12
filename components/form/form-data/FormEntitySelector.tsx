@@ -13,7 +13,7 @@ import {
   EntityCreateDialogProps,
   EntityOption,
   EntitySelector,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 interface Props<TFieldValues extends FieldValues, TEntity> {
   name: FieldPath<TFieldValues>;

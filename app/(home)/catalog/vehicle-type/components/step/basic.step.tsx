@@ -4,6 +4,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormTextarea } from "@/components/form/form-data";
 
 import { VehicleTypeFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
@@ -18,7 +19,7 @@ export default function BasicStep() {
           placeholder="SUV"
         />
 
-        <FormInput<VehicleTypeFormSchema>
+        <FormIcon<VehicleTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="car"

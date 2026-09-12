@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { couponColumns } from "./components/columns";
 import { useRouter } from "next/navigation";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
@@ -9,10 +9,7 @@ import { createCouponActions } from "./features/actions";
 import { createCouponHandlers } from "./features/handlers";
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
-import {
-  useDeleteCoupon,
-  useCoupons,
-} from "@/hooks/commerce/coupon";
+import { useDeleteCoupon, useCoupons } from "@/hooks/commerce/coupon";
 
 const Coupon = () => {
   const router = useRouter();

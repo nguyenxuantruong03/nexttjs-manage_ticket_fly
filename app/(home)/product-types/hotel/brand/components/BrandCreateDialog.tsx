@@ -9,7 +9,7 @@ import {
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { BrandFormSchema, BrandSchema } from "./form/schema";
 
@@ -40,7 +40,7 @@ export default function BrandCreateDialog({
   const createBrand = useCreateHotelBrand();
 
   return (
-    <EntityCreateFormDialog<BrandFormSchema, HotelBrand>
+    <EntityCreateFormDialog<BrandFormSchema, Partial<HotelBrand>, HotelBrand>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

@@ -5,7 +5,7 @@ import { FormInput } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -21,8 +21,7 @@ import { Continent } from "@/types/location/country/continent.type";
 // PROPS
 // ======================================================
 
-interface ContinentCreateDialogProps
-  extends EntityCreateDialogProps<Continent> {}
+interface ContinentCreateDialogProps extends EntityCreateDialogProps<Continent> {}
 
 // ======================================================
 // COMPONENT
@@ -37,7 +36,7 @@ export default function ContinentCreateDialog({
   const createContinent = useCreateContinent();
 
   return (
-    <EntityCreateFormDialog<ContinentFormSchema, Continent>
+    <EntityCreateFormDialog<ContinentFormSchema, Partial<Continent>, Continent>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

@@ -23,10 +23,10 @@ import {
   TimeUnBanCatch,
 } from "./catch";
 import { createSession } from "@/lib/session";
-import FormWarning from "@/components/form-notification/form-warning";
-import FormHint from "@/components/form-notification/form-hint";
-import FormError from "@/components/form-notification/form-error";
-import FormSuccess from "@/components/form-notification/form-success";
+import FormWarning from "@/components/form/form-notification/form-warning";
+import FormHint from "@/components/form/form-notification/form-hint";
+import FormError from "@/components/form/form-notification/form-error";
+import FormSuccess from "@/components/form/form-notification/form-success";
 import TurnstileWidget from "@/components/TurnstileWidget";
 import { LoginSchema } from "@/schemas/auths/auth";
 
@@ -37,7 +37,7 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(
-    searchParams.get("errorGoogle") || null
+    searchParams.get("errorGoogle") || null,
   );
   const [hint, setHint] = useState<JSX.Element | string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -65,7 +65,7 @@ export default function LoginForm() {
           addSuffix: true,
         });
         setHint(
-          `Tài khoản của bạn đã bị khóa. Hãy quay lại vào ${formattedDate}.`
+          `Tài khoản của bạn đã bị khóa. Hãy quay lại vào ${formattedDate}.`,
         );
       }
     }
@@ -90,7 +90,7 @@ export default function LoginForm() {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/reSendVerificationAccount`,
         {
           email: form.getValues("email"),
-        }
+        },
       );
       setSuccess("Đã gửi lại email xác thực. Vui lòng kiểm tra email của bạn.");
     } catch (err) {
@@ -127,19 +127,19 @@ export default function LoginForm() {
           email: data.email,
           password: data.password,
           turnstileToken: turnstileToken,
-        }
+        },
       );
 
       const result = response.data;
 
-      if(result.success){
-        setLoading(true)
+      if (result.success) {
+        setLoading(true);
       }
 
       // Kiểm tra nếu tài khoản có bật 2FA thì điều hướng đến trang 2FA + email
       if (result.isTwoFactorEnabled) {
         return router.push(
-          `/auth/two-factor?email=${data.email}&redirectfromlogin=${redirect}`
+          `/auth/two-factor?email=${data.email}&redirectfromlogin=${redirect}`,
         );
       } else {
         //Create the session for auth user
@@ -157,7 +157,7 @@ export default function LoginForm() {
         router.push(redirect);
       }
     } catch (err) {
-      setLoading(false)
+      setLoading(false);
       if (axios.isAxiosError(err)) {
         const { countResendEmailVerify, emailNotVerified, timeUnBan, message } =
           err.response?.data || {};
@@ -199,7 +199,7 @@ export default function LoginForm() {
       } else {
         setError("Có lỗi xảy ra!");
       }
-    } 
+    }
   };
   return (
     <AuthForm

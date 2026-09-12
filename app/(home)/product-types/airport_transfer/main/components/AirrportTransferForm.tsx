@@ -11,7 +11,11 @@ import {
 
 import { AirportTransferFormSchema } from "./form/schema/core/schema";
 
-import { airportTransferFormConfig } from "./config";
+import {
+  AirportTransferUpdateInput,
+  AirportTransferCreateInput,
+  airportTransferFormConfig,
+} from "./config";
 
 import { AirportTransfer } from "@/types/product-types/airport-transfer/core/airport-transfer.types";
 
@@ -82,6 +86,9 @@ import ServiceStep from "./step/service.step";
 import TripStep from "./step/trip.step";
 
 import VehicleStep from "./step/vehicle.step";
+import { AirportTransferService } from "@/services/product-types/airport-transfer/client";
+import { MediaCategory } from "@/types/common/catalog/media-category";
+import { MediaAsset } from "@/types/common/catalog/media-asset";
 
 interface AirportTransferFormProps {
   initialData?: AirportTransfer;
@@ -129,6 +136,8 @@ interface AirportTransferFormProps {
   policyTypeData: PolicyType[];
 
   languageData: Language[];
+  mediaCategoryData: MediaCategory[];
+  mediaAssetData: MediaAsset[];
 }
 
 export default function AirportTransferForm({
@@ -177,13 +186,20 @@ export default function AirportTransferForm({
   policyTypeData,
 
   languageData,
+  mediaCategoryData,
+  mediaAssetData,
 }: AirportTransferFormProps) {
   const createAirportTransfer = useCreateAirportTransfer();
 
   const updateAirportTransfer = useUpdateAirportTransfer();
 
   return (
-    <EntityFormWizard<AirportTransferFormSchema, AirportTransfer>
+    <EntityFormWizard<
+      AirportTransferFormSchema,
+      AirportTransfer,
+      AirportTransferCreateInput,
+      AirportTransferUpdateInput
+    >
       initialData={initialData}
       config={airportTransferFormConfig}
       createMutation={createAirportTransfer}
@@ -274,6 +290,8 @@ export default function AirportTransferForm({
           fuelTypeData={fuelTypeData}
           vehicleTypeData={vehicleTypeData}
           bookingTypeData={bookingTypeData}
+          mediaCategoryData={mediaCategoryData}
+          mediaAssetData={mediaAssetData}
         />
       </FormWizardStep>
     </EntityFormWizard>

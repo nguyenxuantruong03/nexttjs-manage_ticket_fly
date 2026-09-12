@@ -13,6 +13,7 @@ export function initYachtCrewValues(
         avatar: member.avatar ?? null,
         experienceYears: member.experienceYears ?? null,
         languages: member.languages ?? [],
+        active: member.active ?? true
       })) ?? [],
   };
 }

@@ -123,13 +123,18 @@ export const carRentalVehicleDefaultValues = {
         {
           vehicleId: "",
           pricingType: RentalDurationType.daily,
-          startDate: "",
-          endDate: "",
+          effectiveFrom: new Date(),
+          effectiveTo: new Date(),
           pricePerHour: 0,
           pricePerDay: 0,
           pricePerWeek: 0,
           pricePerMonth: 0,
-          originalPrice: 0,
+
+          originalPricePerHour: 0,
+          originalPricePerDay: 0,
+          originalPricePerWeek: 0,
+          originalPricePerMonth: 0,
+
           minimumDays: 1,
           maximumDays: 0,
 

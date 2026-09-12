@@ -2,7 +2,13 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
 import { RowActions } from "@/components/ui/data-table/row-actions";
 
 import { FlySeatType } from "@/types/product-types/ticket-fly/fly-seat-type";
@@ -12,45 +18,51 @@ export function flySeatTypeColumns(
 ): ColumnDef<FlySeatType>[] {
   return [
     // ======================================================
+    // SELECTION
+    // ======================================================
+
+    createSelectionColumn<FlySeatType>(),
+
+    // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<FlySeatType>({
       accessorKey: "id",
       header: "ID",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlySeatType>({
       accessorKey: "name",
       header: "Name",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlySeatType>({
       accessorKey: "description",
       header: "Description",
-      cell: ({ row }) => row.original.description ?? "-",
-    },
+      cell: (row) => row.description ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlySeatType>({
       accessorKey: "icon",
       header: "Icon",
-      cell: ({ row }) => row.original.icon ?? "-",
-    },
+      cell: (row) => row.icon ?? "-",
+    }),
 
     // ======================================================
     // STATUS
     // ======================================================
 
-    {
+    createDataTableColumn<FlySeatType>({
       accessorKey: "sortOrder",
       header: "Sort Order",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlySeatType>({
       accessorKey: "active",
       header: "Active",
-      cell: ({ row }) => (row.original.active ? "Yes" : "No"),
-    },
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
 
     // ======================================================
     // RELATIONS
@@ -63,20 +75,22 @@ export function flySeatTypeColumns(
     },
 
     // ======================================================
-    // TIMESTAMP
+    // TIMESTAMPS
     // ======================================================
 
-    {
+    createDataTableColumn<FlySeatType>({
       accessorKey: "createdAt",
       header: "Created At",
-      cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
-    },
+      cell: (row) =>
+        row.createdAt ? new Date(row.createdAt).toLocaleString() : "-",
+    }),
 
-    {
+    createDataTableColumn<FlySeatType>({
       accessorKey: "updatedAt",
       header: "Updated At",
-      cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString(),
-    },
+      cell: (row) =>
+        row.updatedAt ? new Date(row.updatedAt).toLocaleString() : "-",
+    }),
 
     // ======================================================
     // ACTIONS
@@ -85,7 +99,6 @@ export function flySeatTypeColumns(
     {
       id: "actions",
       header: "",
-
       cell: ({ row }) => <RowActions row={row.original} actions={actions} />,
     },
   ];

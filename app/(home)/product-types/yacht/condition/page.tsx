@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { createYachtConditionHandlers } from "./features/handlers";
 import { createYachtConditionActions } from "./features/actions";
@@ -28,8 +28,7 @@ const YachtConditionPage = () => {
     handlers,
     createActions: createYachtConditionActions,
     deleteTitle: "Delete yacht condition",
-    deleteDescription:
-      "Are you sure you want to delete this yacht condition?",
+    deleteDescription: "Are you sure you want to delete this yacht condition?",
   });
 
   if (isPending) {

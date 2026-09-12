@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreateFlyAircraftType } from "@/hooks/product-types/references/airline/aircraft/aircraft-type";
 
@@ -39,7 +39,7 @@ export default function FlyAircraftTypeCreateDialog({
   const createFlyAircraftType = useCreateFlyAircraftType();
 
   return (
-    <EntityCreateFormDialog<FlyAircraftTypeFormSchema, FlyAircraftType>
+    <EntityCreateFormDialog<FlyAircraftTypeFormSchema,Partial<FlyAircraftType>, FlyAircraftType>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

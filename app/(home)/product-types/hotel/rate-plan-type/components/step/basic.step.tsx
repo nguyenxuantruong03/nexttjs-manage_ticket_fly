@@ -4,6 +4,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 
 import { RatePlanTypeFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
@@ -24,7 +25,7 @@ export default function BasicStep() {
           placeholder="Rate plan type description"
         />
 
-        <FormInput<RatePlanTypeFormSchema>
+        <FormIcon<RatePlanTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="badge-percent"

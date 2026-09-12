@@ -7,7 +7,7 @@ import { FormSelect, FormSwitch } from "@/components/form/form-data";
 import { PlaceFormSchema } from "../form/schema";
 
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import SearchTagCreateDialog from "@/app/(home)/search/tag/components/SearchTagCreateDialog";
 import { SearchTag } from "@/types/searchs/search/tag.types";
 import { SEARCH_PRIORITY_OPTIONS } from "@/types/searchs/search-prioty-score";

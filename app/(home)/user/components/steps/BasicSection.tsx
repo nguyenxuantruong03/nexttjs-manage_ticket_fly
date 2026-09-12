@@ -10,7 +10,11 @@ export default function BasicSection() {
     <FormSection title="Basic Information" description="Basic user details">
       <div className="grid gap-6 md:grid-cols-2">
         <div className="md:col-span-2">
-          <FormImageUpload<UserFormSchema> name="image" label="Ảnh đại diện" />
+          <FormImageUpload<UserFormSchema>
+            name="image"
+            label="Ảnh đại diện"
+            folder="storage-image/user-avatar/originals"
+          />
         </div>
 
         <FormInput<UserFormSchema>
@@ -24,6 +28,7 @@ export default function BasicSection() {
           label="Email"
           type="email"
           placeholder="abc@gmail.com"
+          disabled
         />
       </div>
     </FormSection>

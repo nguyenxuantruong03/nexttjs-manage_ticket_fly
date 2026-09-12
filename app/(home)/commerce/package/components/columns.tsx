@@ -2,6 +2,10 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
 import { RowActions } from "@/components/ui/data-table/row-actions";
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 
@@ -11,86 +15,87 @@ export function packageColumns(
   actions: (row: Package) => ActionMenuItem<Package>[],
 ): ColumnDef<Package>[] {
   return [
+    createSelectionColumn<Package>(),
+
     // ======================================================
     // ID
     // ======================================================
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "id",
       header: "ID",
-    },
+    }),
 
     // ======================================================
     // BOOKING TYPE
     // ======================================================
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "bookingTypes",
       header: "Booking Types",
-
-      cell: ({ row }) => {
-        const bookingTypes = row.original.bookingTypes;
+      cell: (row) => {
+        const bookingTypes = row.bookingTypes;
 
         return bookingTypes?.length
           ? bookingTypes.map((item) => item.name).join(", ")
           : "-";
       },
-    },
+    }),
 
     // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "name",
       header: "Name",
-    },
+    }),
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "slug",
       header: "Slug",
-    },
+    }),
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "description",
       header: "Description",
-      cell: ({ row }) => row.original.description ?? "-",
-    },
+      cell: (row) => row.description ?? "-",
+    }),
 
     // ======================================================
     // DURATION
     // ======================================================
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "duration",
       header: "Duration",
-      cell: ({ row }) => row.original.duration ?? "-",
-    },
+      cell: (row) => row.duration ?? "-",
+    }),
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "durationType",
       header: "Duration Type",
-      cell: ({ row }) => row.original.durationType ?? "-",
-    },
+      cell: (row) => row.durationType ?? "-",
+    }),
 
     // ======================================================
     // CAPACITY
     // ======================================================
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "maxGuests",
       header: "Max Guests",
-      cell: ({ row }) => row.original.maxGuests ?? "-",
-    },
+      cell: (row) => row.maxGuests ?? "-",
+    }),
 
     // ======================================================
     // BASE PRICE
     // ======================================================
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "price",
       header: "Price",
-    },
+    }),
 
     {
       id: "currency",
@@ -100,7 +105,9 @@ export function packageColumns(
 
         if (!currency) return "-";
 
-        return `${currency.code}${currency.symbol ? ` (${currency.symbol})` : ""}`;
+        return `${currency.code}${
+          currency.symbol ? ` (${currency.symbol})` : ""
+        }`;
       },
     },
 
@@ -108,32 +115,32 @@ export function packageColumns(
     // CONTENT
     // ======================================================
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "includedItems",
       header: "Included Items",
-      cell: ({ row }) => {
-        const items = row.original.includedItems;
+      cell: (row) => {
+        const items = row.includedItems;
 
         if (!items?.length) return "-";
 
         return items.join(", ");
       },
-    },
+    }),
 
     // ======================================================
     // STATUS
     // ======================================================
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "active",
       header: "Active",
-      cell: ({ row }) => (row.original.active ? "Yes" : "No"),
-    },
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "sortOrder",
       header: "Sort Order",
-    },
+    }),
 
     // ======================================================
     // RELATIONS
@@ -239,17 +246,17 @@ export function packageColumns(
     // TIMESTAMPS
     // ======================================================
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "createdAt",
       header: "Created At",
-      cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
-    },
+      cell: (row) => new Date(row.createdAt).toLocaleString(),
+    }),
 
-    {
+    createDataTableColumn<Package>({
       accessorKey: "updatedAt",
       header: "Updated At",
-      cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString(),
-    },
+      cell: (row) => new Date(row.updatedAt).toLocaleString(),
+    }),
 
     // ======================================================
     // ACTIONS

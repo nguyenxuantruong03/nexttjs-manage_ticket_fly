@@ -1,7 +1,6 @@
 import { User } from "@/types/users/auth/users";
 
 import { userDefaultValues } from "./default-values";
-
 import { UserFormSchema } from "./schema";
 
 export function initUserFormValues(user?: User): UserFormSchema {
@@ -14,7 +13,16 @@ export function initUserFormValues(user?: User): UserFormSchema {
     // BASIC
     // ======================================================
 
-    image: user.image ?? null,
+    image: user.image
+      ? {
+          key: user.image,
+          previewUrl: null,
+        }
+      : {
+          key: null,
+          previewUrl: null,
+        },
+
     name: user.name ?? "",
     email: user.email ?? "",
 
@@ -30,9 +38,13 @@ export function initUserFormValues(user?: User): UserFormSchema {
     // ======================================================
 
     isTwoFactorEnabled: user.isTwoFactorEnabled ?? false,
-    role: user.role,
-    emailVerified: !!user.emailVerified,
+
+    role: user.role ?? userDefaultValues.role,
+
+    emailVerified: user.emailVerified ?? null,
+
     reSendemail: user.reSendemail ?? 0,
+
     banUntil: user.banUntil ?? null,
   };
 }

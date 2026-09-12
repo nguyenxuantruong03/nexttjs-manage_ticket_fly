@@ -6,7 +6,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 
 import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import CarRentalDocumentTypeCreateDialog from "../../../document-type/components/CarRentalDocumentTypeCreateDialog";
 import { CarRentalDocumentType } from "@/types/product-types/car_rental/policies/required-documents.types";

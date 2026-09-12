@@ -31,13 +31,22 @@ import { FlyAircraftFormSchema } from "./schema/aircraft.schema";
 
 import { FlyAirline } from "@/types/product-types/references/airline/airline.types";
 
-import { flyAircraftFormConfig } from "./config";
+import {
+  flyAircraftFormConfig,
+  FlyAircraftCreateInput,
+  FlyAircraftUpdateInput,
+} from "./config";
+import { MediaCategory } from "@/types/common/catalog/media-category";
+import { MediaAsset } from "@/types/common/catalog/media-asset";
+import { BookingType } from "@/types/common/commerce/booking-type";
 
 interface FlyAircraftFormProps {
   initialData?: FlyAircraft;
 
   airlineData: FlyAirline[];
-
+  mediaCategoryData: MediaCategory[];
+  mediaAssetData: MediaAsset[];
+  bookingTypeData: BookingType[];
   redirect?: boolean;
 }
 
@@ -45,7 +54,9 @@ export default function FlyAircraftForm({
   initialData,
 
   airlineData,
-
+  mediaCategoryData,
+  mediaAssetData,
+  bookingTypeData,
   redirect = true,
 }: FlyAircraftFormProps) {
   const createFlyAircraft = useCreateFlyAircraft();
@@ -53,7 +64,12 @@ export default function FlyAircraftForm({
   const updateFlyAircraft = useUpdateFlyAircraft();
 
   return (
-    <EntityFormWizard<FlyAircraftFormSchema, FlyAircraft>
+    <EntityFormWizard<
+      FlyAircraftFormSchema,
+      FlyAircraft,
+      FlyAircraftCreateInput,
+      FlyAircraftUpdateInput
+    >
       initialData={initialData}
       redirect={redirect}
       config={flyAircraftFormConfig}
@@ -77,7 +93,11 @@ export default function FlyAircraftForm({
       </FormWizardStep>
 
       <FormWizardStep index={4}>
-        <ImagesStep />
+        <ImagesStep
+          mediaCategoryData={mediaCategoryData}
+          mediaAssetData={mediaAssetData}
+          bookingTypeData={bookingTypeData}
+        />
       </FormWizardStep>
 
       <FormWizardStep index={5}>

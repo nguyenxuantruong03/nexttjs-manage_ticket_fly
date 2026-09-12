@@ -17,4 +17,5 @@ export interface YachtCrew {
   experienceYears?: number | null;
 
   languages: string[];
+  active: boolean;
 }

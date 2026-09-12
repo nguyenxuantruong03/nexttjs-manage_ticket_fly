@@ -46,12 +46,15 @@ const SettingForm: React.FC<SettingFormProps> = ({ user }) => {
   const onSubmit = async (values: z.infer<typeof SettingSchema>) => {
     try {
       await submit({
-        form, // để useSubmit tự setError field-level nếu BE trả lỗi validation
-        mutation: updateUserMe.mutateAsync({
-          password: values.password,
-          name: values.name,
-          isTwoFactorEnabled: values.isTwoFactorEnabled,
-        }),
+        form,
+
+        mutation: () =>
+          updateUserMe.mutateAsync({
+            password: values.password,
+            name: values.name,
+            isTwoFactorEnabled: values.isTwoFactorEnabled,
+          }),
+
         success: "Thay đổi thành công!",
       });
     } catch {

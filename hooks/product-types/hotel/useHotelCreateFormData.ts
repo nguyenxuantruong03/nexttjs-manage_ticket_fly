@@ -15,11 +15,13 @@ import { HotelBrandService } from "@/services/product-types/hotel/hotel-brand/cl
 import { HotelStarRatingService } from "@/services/product-types/hotel/hotel-star-rating/client";
 
 import { useLocationFormData } from "../../location/useLocationFormData";
+
 import { HotelDiningMealTypeService } from "@/services/product-types/hotel/hotel-dining-meal-type/client";
 import { HotelDiningServiceTypeService } from "@/services/product-types/hotel/hotel-dining-service-type/client";
 import { HotelMealPlanService } from "@/services/product-types/hotel/hotel-meal-plan/client";
 import { HotelSustainabilityService } from "@/services/product-types/hotel/hotel-sustainability/client";
 import { HotelAccessibilityService } from "@/services/product-types/hotel/hotel-accessibility/client";
+
 import { BookingTypeService } from "@/services/commerce/booking-type/client";
 import { FacilityService } from "@/services/features/facility/client";
 import { FacilityCategoryService } from "@/services/features/facility-category/client";
@@ -33,18 +35,24 @@ import { ExtraService } from "@/services/commerce/extra/client";
 import { ServiceTypeService } from "@/services/catalog/service-type/client";
 import { BookingItemTypeService } from "@/services/commerce/booking-item-type/client";
 
+import { MediaAssetService } from "@/services/catalog/media-asset/client";
+import { MediaCategoryService } from "@/services/catalog/media-category/client";
+
 export const useHotelCreateFormData = (enabled = true) => {
-  const locationQuery = useLocationFormData(["hotel-location-data"], enabled);
+  const locationQuery = useLocationFormData(
+    ["hotel-location-data"],
+    enabled,
+  );
 
   const hotelQuery = useQuery({
     queryKey: ["hotel-create-form-data"],
     enabled,
     staleTime: 1000 * 60 * 5,
+
     queryFn: async () => {
       const [
         searchTagData,
         providerBooking,
-
         roomCategoryData,
         bathroomTypeData,
         hotelRoomViewData,
@@ -70,10 +78,11 @@ export const useHotelCreateFormData = (enabled = true) => {
         extraData,
         serviceTypeData,
         bookingItemTypeData,
+        mediaAssetData,
+        mediaCategoryData,
       ] = await Promise.all([
         SearchTagService.getMany(),
         ProviderBookingService.getMany(),
-
         HotelRoomCategoryService.getMany(),
         HotelBathroomTypeService.getMany(),
         HotelRoomViewService.getMany(),
@@ -99,12 +108,13 @@ export const useHotelCreateFormData = (enabled = true) => {
         ExtraService.getMany(),
         ServiceTypeService.getMany(),
         BookingItemTypeService.getMany(),
+        MediaAssetService.getMany(),
+        MediaCategoryService.getMany(),
       ]);
 
       return {
         searchTagData,
         providerBooking,
-
         roomCategoryData,
         bathroomTypeData,
         hotelRoomViewData,
@@ -130,6 +140,8 @@ export const useHotelCreateFormData = (enabled = true) => {
         extraData,
         serviceTypeData,
         bookingItemTypeData,
+        mediaAssetData,
+        mediaCategoryData,
       };
     },
   });
@@ -144,18 +156,21 @@ export const useHotelCreateFormData = (enabled = true) => {
         : undefined,
 
     isLoading: locationQuery.isLoading || hotelQuery.isLoading,
+
     isFetching: locationQuery.isFetching || hotelQuery.isFetching,
 
     isError: locationQuery.isError || hotelQuery.isError,
-    // 2 nguồn dữ liệu độc lập (location, hotel) nên tách riêng để biết
-    // lỗi đến từ nguồn nào khi cần hiển thị message cụ thể.
+
     errors: {
       location: locationQuery.error as Error | null,
       hotel: hotelQuery.error as Error | null,
     },
 
     refetch: async () => {
-      await Promise.all([locationQuery.refetch(), hotelQuery.refetch()]);
+      await Promise.all([
+        locationQuery.refetch(),
+        hotelQuery.refetch(),
+      ]);
     },
   };
 };

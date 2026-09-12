@@ -11,7 +11,7 @@ import ServiceTypeCreateDialog from "@/app/(home)/catalog/service-type/component
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import BookingItemTypeCreateDialog from "@/app/(home)/commerce/booking-item-type/components/BookingItemTypeCreateDialog";
 import ProviderBookingCreateDialog from "@/app/(home)/provider_booking/components/ProviderBookingCreateDialog";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import { ServiceType } from "@/types/common/catalog/service-type.type";
 import { BookingItemType } from "@/types/common/commerce/booking-item-type.type";
 import { ProviderBooking } from "@/types/users/provider-bookings";

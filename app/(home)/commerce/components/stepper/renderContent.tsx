@@ -14,6 +14,13 @@ import {
   PriceRuleTypeForm,
   PromotionMainForm,
   PromotionRuleForm,
+  LegalDocumentForm,
+  RegulationForm,
+  RegulationCategoryForm,
+  TaxRuleForm,
+  BlacklistEntryForm,
+  WhitelistEntryForm,
+  FeatureFlagForm,
 } from "./forms";
 import { useCommerceStepperHooks } from "./hooks";
 
@@ -39,6 +46,13 @@ export function renderCommerceStepperContent({
     priceRuleType,
     promotionMain,
     promotionRule,
+    legalDocument,
+    regulation,
+    regulationCategory,
+    taxRule,
+    blacklistEntry,
+    whitelistEntry,
+    featureFlag,
   } = hooks;
 
   const currentHook = {
@@ -52,6 +66,13 @@ export function renderCommerceStepperContent({
     "price-rule-type": priceRuleType,
     "promotion-main": promotionMain,
     "promotion-rule": promotionRule,
+    "legal-document": legalDocument,
+    regulation: regulation,
+    "regulation-category": regulationCategory,
+    "tax-rule": taxRule,
+    "blacklist-entry": blacklistEntry,
+    "whitelist-entry": whitelistEntry,
+    "feature-flag": featureFlag,
   }[subStep];
 
   if (currentHook?.isLoading) {
@@ -105,6 +126,7 @@ export function renderCommerceStepperContent({
   if (mainStep === "extra" && subStep === "extra-main") {
     return (
       <ExtraMainForm
+        mediaAssetData={extraMain.data?.mediaAssetData ?? []}
         currencyData={extraMain.data?.currencyData ?? []}
         extraTypeData={extraMain.data?.extraTypeData ?? []}
         bookingTypeData={extraMain.data?.bookingTypeData ?? []}
@@ -116,6 +138,7 @@ export function renderCommerceStepperContent({
   if (mainStep === "package" && subStep === "package") {
     return (
       <PackageForm
+        mediaAssetData={packageType.data?.mediaAssetData ?? []}
         currencyData={packageType.data?.currencyData ?? []}
         bookingTypeData={packageType.data?.bookingTypeData ?? []}
         redirect={false}
@@ -149,6 +172,44 @@ export function renderCommerceStepperContent({
         redirect={false}
       />
     );
+  }
+
+  if (mainStep === "compliance-legal" && subStep === "legal-document") {
+    return <LegalDocumentForm redirect={false} />;
+  }
+
+  if (mainStep === "compliance-legal" && subStep === "regulation") {
+    return (
+      <RegulationForm
+        regulationCategoryData={regulation.data?.regulationCategoryData ?? []}
+        redirect={false}
+      />
+    );
+  }
+
+  if (mainStep === "compliance-legal" && subStep === "regulation-category") {
+    return <RegulationCategoryForm redirect={false} />;
+  }
+
+  if (mainStep === "compliance-legal" && subStep === "tax-rule") {
+    return (
+      <TaxRuleForm
+        bookingTypeData={taxRule.data?.bookingTypeData ?? []}
+        redirect={false}
+      />
+    );
+  }
+
+  if (mainStep === "risk-fraud" && subStep === "blacklist-entry") {
+    return <BlacklistEntryForm redirect={false} />;
+  }
+
+  if (mainStep === "risk-fraud" && subStep === "whitelist-entry") {
+    return <WhitelistEntryForm redirect={false} />;
+  }
+
+  if (mainStep === "feature-flag" && subStep === "feature-flag") {
+    return <FeatureFlagForm redirect={false} />;
   }
 
   return null;

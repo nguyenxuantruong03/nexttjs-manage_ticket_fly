@@ -4,6 +4,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 
 import { BedTypeFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
@@ -21,7 +22,7 @@ export default function BasicStep() {
           placeholder="Large bed suitable for two adults"
         />
 
-        <FormInput<BedTypeFormSchema>
+        <FormIcon<BedTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="bed"

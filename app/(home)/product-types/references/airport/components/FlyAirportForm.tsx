@@ -23,7 +23,7 @@ import { Ward } from "@/types/location/ward";
 
 import { FlyAirportFormSchema } from "./schema/schema";
 
-import { flyAirportFormConfig } from "./config";
+import { flyAirportFormConfig,FlyAirportCreateInput, FlyAirportUpdateInput } from "./config";
 
 import BasicStep from "./step/basic.step";
 
@@ -68,7 +68,8 @@ export default function FlyAirportForm({
   const updateFlyAirport = useUpdateFlyAirport();
 
   return (
-    <EntityFormWizard<FlyAirportFormSchema, FlyAirport>
+    <EntityFormWizard<FlyAirportFormSchema, FlyAirport,FlyAirportCreateInput,
+  FlyAirportUpdateInput>
       initialData={initialData}
       redirect={redirect}
       config={flyAirportFormConfig}

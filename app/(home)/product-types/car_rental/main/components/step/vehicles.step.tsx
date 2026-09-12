@@ -3,52 +3,79 @@
 "use client";
 
 import FormSection from "@/components/form/FormSection";
-import { FormInput, FormSwitch, FormSelect } from "@/components/form/form-data";
+
+import {
+  FormInput,
+  FormSwitch,
+  FormSelect,
+} from "@/components/form/form-data";
 
 import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
+
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+
 import VehicleTypeCreateDialog from "@/app/(home)/catalog/vehicle-type/components/VehicleTypeCreateDialog";
+
 import { VehicleType } from "@/types/common/catalog/vehicle-type.type";
+
 import { BookingType } from "@/types/common/commerce/booking-type";
+
 import {
   RentalFuelType,
   RentalTransmission,
   RentalVehicleCondition,
   RentalVehicleStatus,
 } from "@/types/product-types/car_rental/enums";
+
 import { Facility } from "@/types/common/features/facility/facility";
+
 import FacilityCreateDialog from "@/app/(home)/features/facility/main/components/FacilityCreateDialog";
+
 import { FacilityCategory } from "@/types/common/features/facility/facility-category";
+
+import { MediaCategory } from "@/types/common/catalog/media-category";
+
+import { MediaAsset } from "@/types/common/catalog/media-asset";
+
+import MediaAssetCreateDialog from "@/app/(home)/catalog/media-asset/components/MediaAssetCreateDialog";
+
+import MediaCategoryCreateDialog from "@/app/(home)/catalog/media-category/components/MediaCategoryCreateDialog";
 
 const vehicleStatusOptions = Object.values(RentalVehicleStatus).map(
   (value) => ({
-    label: value.replace(/_/g, " ").toUpperCase(),
+    label: value.replace(/\_/g, " ").toUpperCase(),
     value,
   }),
 );
 
-const transmissionOptions = Object.values(RentalTransmission).map((value) => ({
-  label: value.replace(/_/g, " ").toUpperCase(),
-  value,
-}));
+const transmissionOptions = Object.values(RentalTransmission).map(
+  (value) => ({
+    label: value.replace(/\_/g, " ").toUpperCase(),
+    value,
+  }),
+);
 
 const fuelTypeOptions = Object.values(RentalFuelType).map((value) => ({
-  label: value.replace(/_/g, " ").toUpperCase(),
+  label: value.replace(/\_/g, " ").toUpperCase(),
   value,
 }));
 
-const conditionOptions = Object.values(RentalVehicleCondition).map((value) => ({
-  label: value.replace(/_/g, " ").toUpperCase(),
-  value,
-}));
+const conditionOptions = Object.values(RentalVehicleCondition).map(
+  (value) => ({
+    label: value.replace(/\_/g, " ").toUpperCase(),
+    value,
+  }),
+);
 
 interface VehiclesStepProps {
   bookingTypeData: BookingType[];
   vehicleTypeData: VehicleType[];
   facilityData: Facility[];
   facilityCategoryData: FacilityCategory[];
+  mediaCategoryData: MediaCategory[];
+  mediaAssetData: MediaAsset[];
 }
 
 export default function VehiclesStep({
@@ -56,6 +83,8 @@ export default function VehiclesStep({
   vehicleTypeData,
   facilityData,
   facilityCategoryData,
+  mediaCategoryData,
+  mediaAssetData,
 }: VehiclesStepProps) {
   const vehicleTypeEntityOptions: EntityOption<VehicleType>[] =
     vehicleTypeData.map((vehicleType) => ({
@@ -71,6 +100,22 @@ export default function VehiclesStep({
       label: facility.name,
       description: facility.description ?? undefined,
       data: facility,
+    }),
+  );
+
+  const mediaCategoryOptions: EntityOption<MediaCategory>[] =
+    mediaCategoryData.map((mediaCategory) => ({
+      value: mediaCategory.id,
+      label: mediaCategory.name,
+      description: mediaCategory.description ?? undefined,
+      data: mediaCategory,
+    }));
+
+  const mediaAssetOptions: EntityOption<MediaAsset>[] = mediaAssetData.map(
+    (mediaAsset) => ({
+      value: mediaAsset.id,
+      label: mediaAsset.caption ?? "",
+      data: mediaAsset,
     }),
   );
 
@@ -327,14 +372,39 @@ export default function VehiclesStep({
         description="Vehicle photos and media gallery"
       >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<CarRentalFormSchema>
+          <FormEntitySelector<CarRentalFormSchema, MediaAsset>
             name="vehicle.0.medias.0.mediaId"
-            label="Media ID"
+            label="Media Asset"
+            placeholder="Search media asset..."
+            searchPlaceholder="Search media asset..."
+            emptyText="No media asset found"
+            createText="Create media asset"
+            options={mediaAssetOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <MediaAssetCreateDialog
+              folder="carRental/vehicle"
+                bookingTypeData={bookingTypeData}
+                {...props}
+              />
+            )}
           />
 
-          <FormInput<CarRentalFormSchema>
+          <FormEntitySelector<CarRentalFormSchema, MediaCategory>
             name="vehicle.0.medias.0.categoryId"
-            label="Category ID"
+            label="Media Category"
+            placeholder="Search media category..."
+            searchPlaceholder="Search media category..."
+            emptyText="No media category found"
+            createText="Create media category"
+            options={mediaCategoryOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <MediaCategoryCreateDialog
+                bookingTypeData={bookingTypeData}
+                {...props}
+              />
+            )}
           />
 
           <FormInput<CarRentalFormSchema>
@@ -356,7 +426,10 @@ export default function VehiclesStep({
         </div>
       </FormSection>
 
-      <FormSection title="Vehicle Type" description="Select the vehicle type">
+      <FormSection
+        title="Vehicle Type"
+        description="Select the vehicle type"
+      >
         <div className="grid gap-6 md:grid-cols-2">
           <FormEntitySelector<CarRentalFormSchema, VehicleType>
             name="vehicle.0.vehicleTypeId"

@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSwitch } from "@/components/form/form-data";
 import { FlyFormSchema } from "../form/schema/core/fly.schema";
 import { Policy } from "@/types/common/features/policy/policy";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import PolicyCreateDialog from "@/app/(home)/features/policy/main/components/PolicyCreateDialog";
 import { PolicyType } from "@/types/common/features/policy/policy-type";

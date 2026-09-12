@@ -1,6 +1,6 @@
 "use client";
 import { airportTransferColumns } from "./components/columns";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import {
   useAirportTransfers,
   useDeleteAirportTransfer,

@@ -2,196 +2,346 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { RowActions } from "@/components/ui/data-table/row-actions";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
 import { Hotel } from "@/types/product-types/hotel/core/hotel.types";
 
 export function hotelColumns(
   actions: (row: Hotel) => ActionMenuItem<Hotel>[],
 ): ColumnDef<Hotel>[] {
   return [
-    {
+    createSelectionColumn<Hotel>(),
+
+    // ======================================================
+    // BASIC
+    // ======================================================
+
+    createDataTableColumn<Hotel>({
       accessorKey: "id",
       header: "ID",
-    },
-    {
-      accessorKey: "cityId",
-      header: "City",
-    },
+    }),
 
-    // Information
-    {
-      accessorKey: "information.providerBookingId",
+    createDataTableColumn<Hotel>({
+      accessorKey: "serviceTypeId",
+      header: "Service Type ID",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "serviceType",
+      header: "Service Type",
+      cell: (row) => row.serviceType?.name ?? "-",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "bookingItemTypeId",
+      header: "Booking Item Type ID",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "bookingItemType",
+      header: "Booking Item Type",
+      cell: (row) => row.bookingItemType?.name ?? "-",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "name",
+      header: "Name",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "slug",
+      header: "Slug",
+    }),
+
+    // ======================================================
+    // HOTEL INFORMATION
+    // ======================================================
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "information",
       header: "Provider Booking",
-    },
-    {
-      accessorKey: "information.addressId",
+      cell: (row) => row.information?.providerBookingId ?? "-",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "information",
       header: "Address",
-    },
+      cell: (row) => row.information?.addressId ?? "-",
+    }),
 
-    // Room Summary
+    // ======================================================
+    // BRAND / STAR RATING
+    // ======================================================
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "brandId",
+      header: "Brand ID",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "brand",
+      header: "Brand",
+      cell: (row) => row.brand?.name ?? "-",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "starRatingId",
+      header: "Star Rating ID",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "starRating",
+      header: "Star Rating",
+      cell: (row) => row.starRating?.name ?? "-",
+    }),
+
+    // ======================================================
+    // ROOMS
+    // ======================================================
+
     {
-      accessorKey: "inventory.0.roomSummary.name",
-      header: "Room",
-    },
-    {
-      accessorKey: "inventory.0.roomSummary.description",
-      header: "Description",
-    },
-    {
-      accessorKey: "inventory.0.roomSummary.totalRooms",
-      header: "Rooms",
-    },
-    {
-      accessorKey: "inventory.0.roomSummary.totalRoomTypes",
+      id: "roomTypes",
       header: "Room Types",
-    },
-    {
-      accessorKey: "inventory.0.roomSummary.maxGuests",
-      header: "Guests",
-    },
-    {
-      accessorKey: "inventory.0.roomSummary.maxAdults",
-      header: "Adults",
-    },
-    {
-      accessorKey: "inventory.0.roomSummary.maxChildren",
-      header: "Children",
+      cell: ({ row }) => row.original.roomTypes?.length ?? 0,
     },
 
-    // Price
     {
-      accessorKey: "inventory.0.price.originalPrice",
-      header: "Original Price",
-    },
-    {
-      accessorKey: "inventory.0.price.finalPrice",
-      header: "Final Price",
-    },
-    {
-      accessorKey: "inventory.0.price.averageNightlyPrice",
-      header: "Nightly Price",
+      id: "inventories",
+      header: "Inventories",
+      cell: ({ row }) => row.original.inventories?.length ?? 0,
     },
 
-    // Availability
-    {
-      accessorKey: "inventory.0.availability.isAvailable",
-      header: "Available",
-    },
-    {
-      accessorKey: "inventory.0.availability.availableRooms",
-      header: "Available Rooms",
-    },
-    {
-      accessorKey: "inventory.0.availability.lastUpdated",
-      header: "Availability Updated",
-    },
+    // ======================================================
+    // REVIEWS
+    // ======================================================
 
-    // Images
-    {
-      accessorKey: "inventory.0.image.thumbnail",
-      header: "Thumbnail",
-    },
-    {
-      accessorKey: "inventory.0.image.cover",
-      header: "Cover",
-    },
-    {
-      accessorKey: "inventory.0.image.hero",
-      header: "Hero",
-    },
-
-    // Policies
-    {
-      accessorKey: "policies.checkIn.checkInTime",
-      header: "Check In",
-    },
-    {
-      accessorKey: "policies.checkIn.checkOutTime",
-      header: "Check Out",
-    },
-    {
-      accessorKey: "policies.guest.minimumAge",
-      header: "Minimum Age",
-    },
-    {
-      accessorKey: "policies.guest.childrenAllowed",
-      header: "Children",
-    },
-    {
-      accessorKey: "policies.guest.petsAllowed",
-      header: "Pets",
-    },
-    {
-      accessorKey: "policies.cancellation.refundable",
-      header: "Refundable",
-    },
-    {
-      accessorKey: "policies.booking.instantConfirmation",
-      header: "Instant Confirmation",
-    },
-
-    // Facilities
-    {
-      accessorKey: "facilities.wifi.available",
-      header: "WiFi",
-    },
-    {
-      accessorKey: "facilities.parking.available",
-      header: "Parking",
-    },
-    {
-      accessorKey: "facilities.swimmingPool.available",
-      header: "Pool",
-    },
-    {
-      accessorKey: "facilities.gym.available",
-      header: "Gym",
-    },
-    {
-      accessorKey: "facilities.spa.available",
-      header: "Spa",
-    },
-    {
-      accessorKey: "facilities.bar",
-      header: "Bar",
-    },
-    {
-      accessorKey: "facilities.roomService",
-      header: "Room Service",
-    },
-    {
-      accessorKey: "facilities.familyRoom",
-      header: "Family Room",
-    },
-    {
-      accessorKey: "facilities.transportation.airportShuttle",
-      header: "Airport Shuttle",
-    },
-
-    // Review
-    {
-      accessorKey: "reviews.0.overallRating",
+    createDataTableColumn<Hotel>({
+      accessorKey: "ratingAverage",
       header: "Rating",
-    },
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "reviewCount",
+      header: "Reviews",
+    }),
+
     {
-      accessorKey: "reviews.0.comment",
-      header: "Review",
-    },
-    {
-      accessorKey: "reviews.0.verified",
-      header: "Verified",
+      id: "reviews",
+      header: "Review Data",
+      cell: ({ row }) =>
+        row.original.reviews?.length
+          ? row.original.reviews
+              .map((review) => review.overallRating)
+              .join(", ")
+          : "-",
     },
 
-    // Time
+    // ======================================================
+    // POLICIES
+    // ======================================================
+
     {
+      id: "policies",
+      header: "Policies",
+      cell: ({ row }) => row.original.policies?.length ?? 0,
+    },
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "checkinPolicy",
+      header: "Check-In Policy",
+      cell: (row) => row.checkinPolicy?.id ?? "-",
+    }),
+
+    // ======================================================
+    // FACILITIES
+    // ======================================================
+
+    {
+      id: "facilities",
+      header: "Facilities",
+      cell: ({ row }) => row.original.facilities?.length ?? 0,
+    },
+
+    // ======================================================
+    // ACCESSIBILITY / AWARDS
+    // ======================================================
+
+    {
+      id: "accessibilities",
+      header: "Accessibilities",
+      cell: ({ row }) => row.original.accessibilities?.length ?? 0,
+    },
+
+    {
+      id: "awards",
+      header: "Awards",
+      cell: ({ row }) => row.original.awards?.length ?? 0,
+    },
+
+    // ======================================================
+    // MEDIA
+    // ======================================================
+
+    {
+      id: "medias",
+      header: "Media",
+      cell: ({ row }) => row.original.medias?.length ?? 0,
+    },
+
+    // ======================================================
+    // PACKAGE / EXTRA
+    // ======================================================
+
+    {
+      id: "hotelPackageMapper",
+      header: "Packages",
+      cell: ({ row }) => row.original.hotelPackageMapper?.length ?? 0,
+    },
+
+    {
+      id: "hotelExtraMapper",
+      header: "Extras",
+      cell: ({ row }) => row.original.hotelExtraMapper?.length ?? 0,
+    },
+
+    // ======================================================
+    // SERVICES
+    // ======================================================
+
+    {
+      id: "mealOptions",
+      header: "Meal Options",
+      cell: ({ row }) => row.original.mealOptions?.length ?? 0,
+    },
+
+    {
+      id: "openingHours",
+      header: "Opening Hours",
+      cell: ({ row }) => row.original.openingHours?.length ?? 0,
+    },
+
+    {
+      id: "descriptions",
+      header: "Descriptions",
+      cell: ({ row }) => row.original.descriptions?.length ?? 0,
+    },
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "contacts",
+      header: "Contact",
+      cell: (row) => row.contacts?.id ?? "-",
+    }),
+
+    {
+      id: "sustainabilities",
+      header: "Sustainabilities",
+      cell: ({ row }) => row.original.sustainabilities?.length ?? 0,
+    },
+
+    // ======================================================
+    // BOOKINGS / FAVORITES
+    // ======================================================
+
+    {
+      id: "bookings",
+      header: "Bookings",
+      cell: ({ row }) => row.original.bookings?.length ?? 0,
+    },
+
+    {
+      id: "favorites",
+      header: "Favorites",
+      cell: ({ row }) => row.original.favorites?.length ?? 0,
+    },
+
+    // ======================================================
+    // SEARCH
+    // ======================================================
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "searchText",
+      header: "Search Text",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "featured",
+      header: "Featured",
+      cell: (row) => (row.featured ? "Yes" : "No"),
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "searchable",
+      header: "Searchable",
+      cell: (row) => (row.searchable ? "Yes" : "No"),
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "searchPriority",
+      header: "Search Priority",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "tagIds",
+      header: "Tags",
+      cell: (row) => row.tagIds?.length ?? 0,
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "aliases",
+      header: "Aliases",
+      cell: (row) => row.aliases?.join(", ") || "-",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "keywords",
+      header: "Keywords",
+      cell: (row) => row.keywords?.join(", ") || "-",
+    }),
+
+    // ======================================================
+    // STATISTICS
+    // ======================================================
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "bookingCount",
+      header: "Bookings Count",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "favoriteCount",
+      header: "Favorites Count",
+    }),
+
+    createDataTableColumn<Hotel>({
+      accessorKey: "status",
+      header: "Status",
+    }),
+
+    // ======================================================
+    // TIMESTAMPS
+    // ======================================================
+
+    createDataTableColumn<Hotel>({
       accessorKey: "createdAt",
       header: "Created At",
-    },
-    {
+    }),
+
+    createDataTableColumn<Hotel>({
       accessorKey: "updatedAt",
       header: "Updated At",
-    },
+    }),
+
+    // ======================================================
+    // ACTIONS
+    // ======================================================
+
     {
       id: "actions",
       header: "",

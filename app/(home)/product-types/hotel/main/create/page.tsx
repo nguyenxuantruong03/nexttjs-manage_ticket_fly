@@ -64,6 +64,8 @@ export default function HotelCreatePage() {
       extraData={data.extraData}
       serviceTypeData={data.serviceTypeData}
       bookingItemTypeData={data.bookingItemTypeData}
+      mediaAssetData={data.mediaAssetData}
+      mediaCategoryData={data.mediaCategoryData}
     />
   );
 }

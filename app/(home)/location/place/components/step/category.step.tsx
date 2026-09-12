@@ -1,7 +1,7 @@
 import FormSection from "@/components/form/FormSection";
 import PlaceTypeCreateDialog from "../../../place-type/components/PlaceTypeCreateDialog";
 import { PlaceType } from "@/types/location/place/place-type.type";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { PlaceFormSchema } from "../form/schema";
 

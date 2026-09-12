@@ -10,8 +10,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
-
+} from "@/components/form/entity-selector";
 
 import {
   ServiceTypeFormSchema,
@@ -30,6 +29,7 @@ import { ServiceType } from "@/types/common/catalog/service-type.type";
 
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -65,7 +65,11 @@ export default function ServiceTypeCreateDialog({
   );
 
   return (
-    <EntityCreateFormDialog<ServiceTypeFormSchema, ServiceType>
+    <EntityCreateFormDialog<
+      ServiceTypeFormSchema,
+      Partial<ServiceType>,
+      ServiceType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -101,7 +105,7 @@ export default function ServiceTypeCreateDialog({
           placeholder="Enter service type name"
         />
 
-        <FormInput<ServiceTypeFormSchema>
+        <FormIcon<ServiceTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="Enter service type icon"

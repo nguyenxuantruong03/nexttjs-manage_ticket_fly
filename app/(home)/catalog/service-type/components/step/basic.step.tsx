@@ -5,6 +5,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormTextarea } from "@/components/form/form-data";
 
 import { ServiceTypeFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
@@ -19,7 +20,7 @@ export default function BasicStep() {
           placeholder="Airport Transfer"
         />
 
-        <FormInput<ServiceTypeFormSchema>
+        <FormIcon<ServiceTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="car"

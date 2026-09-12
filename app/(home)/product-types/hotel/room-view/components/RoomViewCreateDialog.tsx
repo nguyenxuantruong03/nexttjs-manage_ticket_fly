@@ -5,7 +5,7 @@ import { FormInput } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { RoomViewFormSchema, RoomViewSchema } from "./form/schema";
 
@@ -16,6 +16,7 @@ import { RoomView } from "@/types/product-types/hotel/room/room.types";
 import { useCreateHotelRoomView } from "@/hooks/product-types/hotel/hotel-room-view";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -36,7 +37,7 @@ export default function RoomViewCreateDialog({
   const createRoomView = useCreateHotelRoomView();
 
   return (
-    <EntityCreateFormDialog<RoomViewFormSchema, RoomView>
+    <EntityCreateFormDialog<RoomViewFormSchema, Partial<RoomView>, RoomView>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -64,7 +65,7 @@ export default function RoomViewCreateDialog({
           placeholder="Room view name"
         />
 
-        <FormInput<RoomViewFormSchema>
+        <FormIcon<RoomViewFormSchema>
           name="icon"
           label="Icon"
           placeholder="Icon"

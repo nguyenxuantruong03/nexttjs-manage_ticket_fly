@@ -10,7 +10,7 @@ import { UserFormSchema } from "./form/schema";
 
 import { userFormConfig } from "./config";
 
-import { useCreateUser, useUpdateUser } from "@/hooks/user";
+import { useUpdateUser } from "@/hooks/user";
 
 import BasicSection from "./steps/BasicSection";
 
@@ -23,26 +23,27 @@ interface UserFormProps {
 }
 
 export default function UserForm({ initialData }: UserFormProps) {
-  const createUser = useCreateUser();
-
   const updateUser = useUpdateUser();
+
+  const hasAccount = !!initialData?.account?.id;
 
   return (
     <EntityFormWizard<UserFormSchema, User, Partial<User>, Partial<User>>
       initialData={initialData}
-      config={userFormConfig}
-      createMutation={createUser}
+      config={userFormConfig(initialData)}
       updateMutation={updateUser}
     >
       <FormWizardStep index={0}>
         <BasicSection />
       </FormWizardStep>
 
-      <FormWizardStep index={1}>
-        <SecuritySection isUpdate={!!initialData} />
-      </FormWizardStep>
+      {!hasAccount && (
+        <FormWizardStep index={1}>
+          <SecuritySection isUpdate={!!initialData} />
+        </FormWizardStep>
+      )}
 
-      <FormWizardStep index={2}>
+      <FormWizardStep index={hasAccount ? 1 : 2}>
         <AccountSection />
       </FormWizardStep>
     </EntityFormWizard>

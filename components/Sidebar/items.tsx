@@ -10,6 +10,7 @@ import { featuresSidebar } from "./components/features";
 import { userSidebar } from "./components/service/user";
 import { catalogSidebar } from "./components/catalog";
 import { dashboardSidebar } from "./components/service/dashboard";
+import { systemSidebar } from "./components/system";
 
 export const SIDEBARCONTENTITEMS: SidebarTopic[] = [
   dashboardSidebar,
@@ -21,6 +22,7 @@ export const SIDEBARCONTENTITEMS: SidebarTopic[] = [
   catalogSidebar,
   commerceSidebar,
   featuresSidebar,
+  systemSidebar,
 ];
 
 const findOpenParent = (items: any[], pathname: string): string | undefined => {

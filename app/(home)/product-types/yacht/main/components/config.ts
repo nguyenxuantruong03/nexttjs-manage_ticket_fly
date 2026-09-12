@@ -12,8 +12,18 @@ import { yachtSteps } from "./step/steps";
 
 import { Yacht } from "@/types/product-types/yacht/core/yacht.types";
 import { initYachtFormValues } from "./form/init-values";
+import { YachtService } from "@/services/product-types/yacht/client";
 
-export const yachtFormConfig: EntityFormWizardConfig<YachtFormSchema, Yacht> = {
+export type YachtCreateInput = Parameters<typeof YachtService.create>[0];
+
+export type YachtUpdateInput = Parameters<typeof YachtService.update>[1];
+
+export const yachtFormConfig: EntityFormWizardConfig<
+  YachtFormSchema,
+  Yacht,
+  YachtCreateInput,
+  YachtUpdateInput
+> = {
   schema: YachtSchema,
 
   defaultValues: defaultYachtValues,

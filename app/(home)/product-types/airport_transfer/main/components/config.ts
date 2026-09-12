@@ -12,11 +12,32 @@ import {
 import { airportTransferDefaultValues } from "./form/default-values";
 
 import { airportTransferSteps } from "./step/steps";
+
 import { initAirportTransferFormValues } from "./form/init-values";
+
+import { AirportTransferService } from "@/services/product-types/airport-transfer/client";
+
+// ======================================================
+// API INPUT TYPES
+// ======================================================
+
+export type AirportTransferCreateInput = Parameters<
+  typeof AirportTransferService.create
+>[0];
+
+export type AirportTransferUpdateInput = Parameters<
+  typeof AirportTransferService.update
+>[1];
+
+// ======================================================
+// FORM CONFIG
+// ======================================================
 
 export const airportTransferFormConfig: EntityFormWizardConfig<
   AirportTransferFormSchema,
-  AirportTransfer
+  AirportTransfer,
+  AirportTransferCreateInput,
+  AirportTransferUpdateInput
 > = {
   schema: AirportTransferSchema,
 
@@ -30,7 +51,6 @@ export const airportTransferFormConfig: EntityFormWizardConfig<
 
   messages: {
     create: "Airport Transfer created",
-
     update: "Airport Transfer updated",
   },
 

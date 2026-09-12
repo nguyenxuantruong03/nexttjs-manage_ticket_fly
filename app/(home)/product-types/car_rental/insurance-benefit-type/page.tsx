@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { createCarRentalInsuranceBenefitTypeHandlers } from "./features/handlers";
 import { createCarRentalInsuranceBenefitTypeActions } from "./features/actions";
@@ -16,8 +16,7 @@ import { carRentalInsuranceBenefitTypeColumns } from "./components/columns";
 
 const CarRentalInsuranceBenefitTypePage = () => {
   const deleteMutation = useDeleteCarRentalInsuranceBenefitType();
-  const { data, isPending, error } =
-    useCarRentalInsuranceBenefitTypes();
+  const { data, isPending, error } = useCarRentalInsuranceBenefitTypes();
   const router = useRouter();
 
   const handlers = createCarRentalInsuranceBenefitTypeHandlers({

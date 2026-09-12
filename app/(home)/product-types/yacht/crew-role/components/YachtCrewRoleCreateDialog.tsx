@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -16,6 +16,7 @@ import { yachtCrewRoleDefaultValues } from "./form/default-values";
 import { useCreateYachtCrewRole } from "@/hooks/product-types/yacht/crew-role";
 
 import { YachtCrewRole } from "@/types/product-types/yacht/yacht-crew-role";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -36,7 +37,11 @@ export default function YachtCrewRoleCreateDialog({
   const createYachtCrewRole = useCreateYachtCrewRole();
 
   return (
-    <EntityCreateFormDialog<YachtCrewRoleFormSchema, YachtCrewRole>
+    <EntityCreateFormDialog<
+      YachtCrewRoleFormSchema,
+      Partial<YachtCrewRole>,
+      YachtCrewRole
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -68,7 +73,7 @@ export default function YachtCrewRoleCreateDialog({
             placeholder="Captain"
           />
 
-          <FormInput<YachtCrewRoleFormSchema>
+          <FormIcon<YachtCrewRoleFormSchema>
             name="icon"
             label="Icon"
             placeholder="https://..."

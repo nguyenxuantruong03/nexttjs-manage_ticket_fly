@@ -5,7 +5,7 @@
 import FormSection from "@/components/form/FormSection";
 
 import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 import { Package } from "@/types/common/commerce/package/package.type";
 import PackageCreateDialog from "@/app/(home)/commerce/package/components/PackageCreateDialog";

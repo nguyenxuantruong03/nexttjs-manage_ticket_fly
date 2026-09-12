@@ -57,6 +57,8 @@ export default function CarrentalEditPage() {
       documentTypeData={data.documentTypeData}
       facilityData={data.facilityData}
       facilityCategoryData={data.facilityCategoryData}
+       mediaCategoryData={data.mediaCategoryData}
+      mediaAssetData={data.mediaAssetData}
     />
   );
 }

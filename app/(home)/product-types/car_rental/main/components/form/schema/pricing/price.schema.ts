@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-
 import { CarRentalPriceBreakdownSchema } from "./price-breakdown.schema";
 
 import { CarRentalPriceRuleSchema } from "./price-rule.schema";
@@ -17,9 +16,8 @@ export const CarRentalPriceSchema = z.object({
   // VALID TIME
   // ======================================================
 
-  startDate: z.string().nullable(),
-
-  endDate: z.string().nullable(),
+  effectiveFrom: z.date().nullable(),
+  effectiveTo: z.date().nullable(),
 
   // ======================================================
   // PRICE TYPE
@@ -32,14 +30,18 @@ export const CarRentalPriceSchema = z.object({
   // ======================================================
 
   pricePerHour: z.number().nullable(),
-
   pricePerDay: z.number().nullable(),
-
   pricePerWeek: z.number().nullable(),
-
   pricePerMonth: z.number().nullable(),
 
-  originalPrice: z.number().nullable(),
+  // ======================================================
+  // ORIGIN PRICE
+  // ======================================================
+
+  originalPricePerHour: z.number().nullable(),
+  originalPricePerDay: z.number().nullable(),
+  originalPricePerWeek: z.number().nullable(),
+  originalPricePerMonth: z.number().nullable(),
 
   // ======================================================
   // RULE

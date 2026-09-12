@@ -11,7 +11,6 @@ export function initHotelInventoryValues(
         hotelId: inventory.hotelId ?? "",
 
         roomTypeId: inventory.roomTypeId ?? "",
-
         ratePlans:
           inventory.ratePlans?.map((ratePlan) => ({
             inventoryId: ratePlan.inventoryId ?? "",
@@ -50,13 +49,15 @@ export function initHotelInventoryValues(
                   ratePlanId: ratePlan.price.ratePlanId ?? "",
 
                   originalPrice: ratePlan.price.originalPrice ?? null,
-
                   averageNightlyPrice:
                     ratePlan.price.averageNightlyPrice ?? null,
 
                   taxesIncluded: ratePlan.price.taxesIncluded ?? false,
 
                   payAtHotel: ratePlan.price.payAtHotel ?? false,
+
+                  effectiveFrom: ratePlan.price.effectiveFrom,
+                  effectiveTo: ratePlan.price.effectiveTo,
 
                   breakdown: ratePlan.price.breakdown
                     ? {
@@ -81,8 +82,8 @@ export function initHotelInventoryValues(
                       }
                     : null,
 
-                  rules:
-                    ratePlan.price.rules?.map((rule) => ({
+                  priceRules:
+                    ratePlan.price.priceRules?.map((rule) => ({
                       priceId: rule.priceId ?? "",
 
                       name: rule.name ?? "",

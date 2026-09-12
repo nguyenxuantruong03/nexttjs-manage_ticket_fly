@@ -2,8 +2,15 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
 import { RowActions } from "@/components/ui/data-table/row-actions";
+
 import { FlyAirport } from "@/types/product-types/references/airport/airport.types";
 
 export function flyAirportColumns(
@@ -11,46 +18,58 @@ export function flyAirportColumns(
 ): ColumnDef<FlyAirport>[] {
   return [
     // ======================================================
+    // SELECTION
+    // ======================================================
+
+    createSelectionColumn<FlyAirport>(),
+
+    // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<FlyAirport>({
       accessorKey: "id",
       header: "ID",
-    },
-    {
+    }),
+
+    createDataTableColumn<FlyAirport>({
       accessorKey: "name",
       header: "Name",
-    },
-    {
+    }),
+
+    createDataTableColumn<FlyAirport>({
       accessorKey: "code",
       header: "Code",
-    },
-    {
+    }),
+
+    createDataTableColumn<FlyAirport>({
       accessorKey: "iataCode",
       header: "IATA",
-    },
-    {
+    }),
+
+    createDataTableColumn<FlyAirport>({
       accessorKey: "icaoCode",
       header: "ICAO",
-    },
+    }),
 
     // ======================================================
     // AIRPORT
     // ======================================================
 
-    {
+    createDataTableColumn<FlyAirport>({
       accessorKey: "terminalCount",
       header: "Terminals",
-    },
-    {
+    }),
+
+    createDataTableColumn<FlyAirport>({
       accessorKey: "lat",
       header: "Latitude",
-    },
-    {
+    }),
+
+    createDataTableColumn<FlyAirport>({
       accessorKey: "lng",
       header: "Longitude",
-    },
+    }),
 
     // ======================================================
     // ADDRESS
@@ -78,18 +97,20 @@ export function flyAirportColumns(
           .join(", ");
       },
     },
+
     // ======================================================
     // TIMESTAMP
     // ======================================================
 
-    {
+    createDataTableColumn<FlyAirport>({
       accessorKey: "createdAt",
       header: "Created At",
-    },
-    {
+    }),
+
+    createDataTableColumn<FlyAirport>({
       accessorKey: "updatedAt",
       header: "Updated At",
-    },
+    }),
 
     // ======================================================
     // ACTIONS

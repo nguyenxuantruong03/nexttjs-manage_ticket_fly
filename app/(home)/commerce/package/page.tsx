@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { packageColumns } from "./components/columns";
 
@@ -16,10 +16,7 @@ import LoadingPage from "@/components/ui/loading-page";
 
 import ErrorPage from "@/components/ui/error-page";
 
-import {
-  useDeletePackage,
-  usePackages,
-} from "@/hooks/commerce/package";
+import { useDeletePackage, usePackages } from "@/hooks/commerce/package";
 
 const Package = () => {
   const router = useRouter();

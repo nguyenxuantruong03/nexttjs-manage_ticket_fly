@@ -5,6 +5,9 @@ import { commercePricingSidebar } from "./pricing";
 import { commerceExtraSidebar } from "./extra";
 import { commercePromotionSidebar } from "./promotion";
 import { commerceMarketingSidebar } from "./marketing";
+import { complianceLegalSidebar } from "./compliance-legal";
+import { featureFlagSidebar } from "./feature-flag";
+import { riskFraudSidebar } from "./risk-fraud";
 
 export const commerceSidebar: SidebarTopic = {
   id: 400,
@@ -27,6 +30,9 @@ export const commerceSidebar: SidebarTopic = {
         commerceExtraSidebar,
         commercePromotionSidebar,
         ...commerceMarketingSidebar,
+        complianceLegalSidebar,
+        ...featureFlagSidebar,
+        riskFraudSidebar,
       ],
     },
   ],

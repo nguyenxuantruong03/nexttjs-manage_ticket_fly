@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     req.nextUrl.searchParams.get("redirect") || "/";
 
   const response = await authFetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`,
+    `/auth/logout`,
     { method: "POST" }
   );
 

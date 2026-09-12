@@ -9,7 +9,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import { FlyFormSchema } from "../form/schema/core/fly.schema";
 import FlyAirportCreateDialog from "../../../../references/airport/components/FlyAirportCreateDialog";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import { Country } from "@/types/location/country/country";
 import { City } from "@/types/location/city";
 import { District } from "@/types/location/district";

@@ -1,27 +1,43 @@
-// step/vehicles.step.tsx
-
 "use client";
 
 import FormSection from "@/components/form/FormSection";
-import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
+
+import {
+  FormInput,
+  FormSelect,
+  FormSwitch,
+} from "@/components/form/form-data";
 
 import { BusFormSchema } from "../form/schema/core/bus.schema";
-import { EntityOption } from "@/components/entity-selector";
+
+import { EntityOption } from "@/components/form/entity-selector";
+
 import { VehicleType } from "@/types/common/catalog/vehicle-type.type";
 import { BookingType } from "@/types/common/commerce/booking-type";
-import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
-import VehicleTypeCreateDialog from "@/app/(home)/catalog/vehicle-type/components/VehicleTypeCreateDialog";
-import { BusVehicleStatus } from "@/types/product-types/bus/enums";
 import { FuelType } from "@/types/common/catalog/fuel-type";
-import FuelTypeCreateDialog from "@/app/(home)/catalog/fuel-type/components/FuelTypeCreateDialog";
-import FacilityCreateDialog from "@/app/(home)/features/facility/main/components/FacilityCreateDialog";
+
 import { Facility } from "@/types/common/features/facility/facility";
 import { FacilityCategory } from "@/types/common/features/facility/facility-category";
 
-const vehicleStatusOptions = Object.values(BusVehicleStatus).map((value) => ({
-  label: value.replace(/_/g, " ").toUpperCase(),
-  value,
-}));
+import { MediaCategory } from "@/types/common/catalog/media-category";
+import { MediaAsset } from "@/types/common/catalog/media-asset";
+
+import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
+
+import VehicleTypeCreateDialog from "@/app/(home)/catalog/vehicle-type/components/VehicleTypeCreateDialog";
+import FuelTypeCreateDialog from "@/app/(home)/catalog/fuel-type/components/FuelTypeCreateDialog";
+import FacilityCreateDialog from "@/app/(home)/features/facility/main/components/FacilityCreateDialog";
+import MediaAssetCreateDialog from "@/app/(home)/catalog/media-asset/components/MediaAssetCreateDialog";
+import MediaCategoryCreateDialog from "@/app/(home)/catalog/media-category/components/MediaCategoryCreateDialog";
+
+import { BusVehicleStatus } from "@/types/product-types/bus/enums";
+
+const vehicleStatusOptions = Object.values(BusVehicleStatus).map(
+  (value) => ({
+    label: value.replace(/\_/g, " ").toUpperCase(),
+    value,
+  }),
+);
 
 interface VehiclesStepProps {
   vehicleTypeData: VehicleType[];
@@ -29,6 +45,8 @@ interface VehiclesStepProps {
   fuelTypeData: FuelType[];
   facilityData: Facility[];
   facilityCategoryData: FacilityCategory[];
+  mediaCategoryData: MediaCategory[];
+  mediaAssetData: MediaAsset[];
 }
 
 export default function VehiclesStep({
@@ -37,6 +55,8 @@ export default function VehiclesStep({
   fuelTypeData,
   facilityData,
   facilityCategoryData,
+  mediaCategoryData,
+  mediaAssetData,
 }: VehiclesStepProps) {
   const vehicleTypeEntityOptions: EntityOption<VehicleType>[] =
     vehicleTypeData.map((vehicleType) => ({
@@ -63,9 +83,28 @@ export default function VehiclesStep({
     }),
   );
 
+  const mediaCategoryOptions: EntityOption<MediaCategory>[] =
+    mediaCategoryData.map((mediaCategory) => ({
+      value: mediaCategory.id,
+      label: mediaCategory.name,
+      description: mediaCategory.description ?? undefined,
+      data: mediaCategory,
+    }));
+
+  const mediaAssetOptions: EntityOption<MediaAsset>[] = mediaAssetData.map(
+    (mediaAsset) => ({
+      value: mediaAsset.id,
+      label: mediaAsset.caption ?? "",
+      data: mediaAsset,
+    }),
+  );
+
   return (
     <>
-      <FormSection title="Vehicle" description="General vehicle information">
+      <FormSection
+        title="Vehicle"
+        description="General vehicle information"
+      >
         <div className="grid gap-6 md:grid-cols-2">
           <FormEntitySelector<BusFormSchema, VehicleType>
             name="vehicle.0.vehicleTypeId"
@@ -100,7 +139,10 @@ export default function VehiclesStep({
             label="Manufacturer"
           />
 
-          <FormInput<BusFormSchema> name="vehicle.0.model" label="Model" />
+          <FormInput<BusFormSchema>
+            name="vehicle.0.model"
+            label="Model"
+          />
 
           <FormInput<BusFormSchema>
             name="vehicle.0.year"
@@ -108,11 +150,17 @@ export default function VehiclesStep({
             type="number"
           />
 
-          <FormSwitch<BusFormSchema> name="vehicle.0.active" label="Active" />
+          <FormSwitch<BusFormSchema>
+            name="vehicle.0.active"
+            label="Active"
+          />
         </div>
       </FormSection>
 
-      <FormSection title="Capacity" description="Vehicle capacity">
+      <FormSection
+        title="Capacity"
+        description="Vehicle capacity"
+      >
         <div className="grid gap-6 md:grid-cols-2">
           <FormInput<BusFormSchema>
             name="vehicle.0.capacity.totalSeats"
@@ -140,7 +188,10 @@ export default function VehiclesStep({
         </div>
       </FormSection>
 
-      <FormSection title="Facilities" description="Vehicle facilities">
+      <FormSection
+        title="Facilities"
+        description="Vehicle facilities"
+      >
         <div className="grid gap-6 md:grid-cols-2">
           <FormEntitySelector<BusFormSchema, Facility>
             name="vehicle.0.facilities.0.facilityId"
@@ -167,7 +218,10 @@ export default function VehiclesStep({
         </div>
       </FormSection>
 
-      <FormSection title="Specification" description="Vehicle specifications">
+      <FormSection
+        title="Specification"
+        description="Vehicle specifications"
+      >
         <div className="grid gap-6 md:grid-cols-2">
           <FormInput<BusFormSchema>
             name="vehicle.0.specification.engineType"
@@ -218,16 +272,44 @@ export default function VehiclesStep({
         </div>
       </FormSection>
 
-      <FormSection title="Vehicle Images" description="Vehicle gallery">
+      <FormSection
+        title="Vehicle Images"
+        description="Vehicle gallery"
+      >
         <div className="grid gap-6 md:grid-cols-2">
-          <FormInput<BusFormSchema>
+          <FormEntitySelector<BusFormSchema, MediaAsset>
             name="vehicle.0.images.0.mediaId"
-            label="Media ID"
+            label="Media Asset"
+            placeholder="Search media asset..."
+            searchPlaceholder="Search media asset..."
+            emptyText="No media asset found"
+            createText="Create media asset"
+            options={mediaAssetOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <MediaAssetCreateDialog
+              folder="bus/vehicle"
+                bookingTypeData={bookingTypeData}
+                {...props}
+              />
+            )}
           />
 
-          <FormInput<BusFormSchema>
+          <FormEntitySelector<BusFormSchema, MediaCategory>
             name="vehicle.0.images.0.categoryId"
-            label="Category ID"
+            label="Media Category"
+            placeholder="Search media category..."
+            searchPlaceholder="Search media category..."
+            emptyText="No media category found"
+            createText="Create media category"
+            options={mediaCategoryOptions}
+            enableCreate
+            renderCreateDialog={(props) => (
+              <MediaCategoryCreateDialog
+                bookingTypeData={bookingTypeData}
+                {...props}
+              />
+            )}
           />
 
           <FormInput<BusFormSchema>

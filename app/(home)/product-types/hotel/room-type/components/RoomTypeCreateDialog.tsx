@@ -5,7 +5,7 @@ import { FormInput, FormTextarea } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { HotelRoomType } from "@/types/product-types/hotel/room/room-type.types";
 
@@ -38,7 +38,11 @@ export default function RoomTypeCreateDialog({
   const createRoomType = useCreateHotelRoomType();
 
   return (
-    <EntityCreateFormDialog<RoomTypeFormSchema, HotelRoomType>
+    <EntityCreateFormDialog<
+      RoomTypeFormSchema,
+      Partial<HotelRoomType>,
+      HotelRoomType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

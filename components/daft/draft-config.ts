@@ -92,6 +92,17 @@ export enum DraftEntity {
   PromotionRule = "promotionRule",
   Continent = "continent",
   PlaceType = "place-type",
+  MediaCategory = "mediaCategory",
+  MediaAsset = "mediaAsset",
+  ReasonCode = "reasonCode",
+  ReasonContext = "reasonContext",
+  LegalDocument = "legalDocument",
+  TaxRule = "taxRule",
+  RegulationCategory = "regulationCategory",
+  Regulation = "regulation",
+  FeatureFlag = "featureFlag",
+  BlacklistEntry = "blacklistEntry",
+  WhitelistEntry = "whitelistEntry",
 }
 
 export const draftConfig = {
@@ -381,6 +392,39 @@ export const draftConfig = {
     titleFields: ["name"],
   },
   [DraftEntity.PlaceType]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.MediaCategory]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.MediaAsset]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.ReasonCode]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.ReasonContext]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.LegalDocument]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.TaxRule]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.RegulationCategory]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.Regulation]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.FeatureFlag]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.BlacklistEntry]: {
+    titleFields: ["name"],
+  },
+  [DraftEntity.WhitelistEntry]: {
     titleFields: ["name"],
   },
 } satisfies Record<

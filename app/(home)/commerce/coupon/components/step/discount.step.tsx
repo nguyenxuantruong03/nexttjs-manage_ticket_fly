@@ -6,7 +6,7 @@ import { FormInput, FormSelect } from "@/components/form/form-data";
 import { CouponFormSchema } from "../form/schema";
 import { DiscountType } from "@/types/common/commerce/promotion/promotion";
 import { BookingType } from "@/types/common/commerce/booking-type";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import BookingTypeCreateDialog from "../../../booking-type/components/BookingTypeCreateDialog";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";

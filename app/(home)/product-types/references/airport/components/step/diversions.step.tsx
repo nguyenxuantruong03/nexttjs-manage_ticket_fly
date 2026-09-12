@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 
 import { FlyAirportFormSchema } from "../schema/schema";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { FlyAirport } from "@/types/product-types/references/airport/airport.types";
 

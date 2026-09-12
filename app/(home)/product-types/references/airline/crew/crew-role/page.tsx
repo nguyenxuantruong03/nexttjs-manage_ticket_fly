@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 
 import { flyCrewRoleColumns } from "./components/columns";
 
@@ -37,8 +37,7 @@ const FlyCrewRolePage = () => {
     handlers,
     createActions: createFlyCrewRoleActions,
     deleteTitle: "Delete fly crew role",
-    deleteDescription:
-      "Are you sure you want to delete this fly crew role?",
+    deleteDescription: "Are you sure you want to delete this fly crew role?",
   });
 
   if (isPending) {

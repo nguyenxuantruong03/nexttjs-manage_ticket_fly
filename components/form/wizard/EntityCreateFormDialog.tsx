@@ -4,6 +4,8 @@ import * as React from "react";
 
 import { FieldValues, UseFormReturn } from "react-hook-form";
 
+import { ZodType, ZodTypeDef } from "zod";
+
 import { AppForm } from "@/components/form/form-data";
 
 import { Button } from "@/components/ui/button";
@@ -11,23 +13,23 @@ import { Button } from "@/components/ui/button";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
-import EntityCreateDialog from "@/components/entity-selector/EntityCreateDialog";
+import EntityCreateDialog from "@/components/form/entity-selector/EntityCreateDialog";
 
 import { useSubmit } from "@/hooks/useSubmit";
 
 import { useAppForm } from "@/hooks/useAppForm";
 
 // ======================================================
-// TYPES
+// CONFIG
 // ======================================================
 
 interface EntityCreateFormDialogConfig<
   TFormValues extends FieldValues,
   TEntity,
 > {
-  schema: any;
+  schema: ZodType<TFormValues, ZodTypeDef, unknown>;
 
   defaultValues: TFormValues;
 
@@ -44,13 +46,28 @@ interface EntityCreateFormDialogConfig<
   getResult: (response: TEntity) => EntityCreateResult<TEntity>;
 }
 
+// ======================================================
+// MUTATION
+// ======================================================
+
+export interface EntityCreateMutation<TCreateInput> {
+  mutateAsync: (values: TCreateInput) => Promise<unknown>;
+}
+
+// ======================================================
+// PROPS
+// ======================================================
+
 interface EntityCreateFormDialogProps<
   TFormValues extends FieldValues,
+  TCreateInput,
   TEntity,
 > extends EntityCreateDialogProps<TEntity> {
   config: EntityCreateFormDialogConfig<TFormValues, TEntity>;
 
-  mutation: any;
+  mutation: EntityCreateMutation<TCreateInput>;
+
+  transformValues?: (values: TFormValues) => TCreateInput;
 
   children:
     | React.ReactNode
@@ -63,6 +80,7 @@ interface EntityCreateFormDialogProps<
 
 export default function EntityCreateFormDialog<
   TFormValues extends FieldValues,
+  TCreateInput,
   TEntity,
 >({
   open,
@@ -71,42 +89,60 @@ export default function EntityCreateFormDialog<
   onCreated,
   config,
   mutation,
+  transformValues,
   children,
-}: EntityCreateFormDialogProps<TFormValues, TEntity>) {
+}: EntityCreateFormDialogProps<TFormValues, TCreateInput, TEntity>) {
   const dialogRef = React.useRef<HTMLDivElement>(null);
 
   const submit = useSubmit();
+
+  // ====================================================
+  // FORM
+  // ====================================================
 
   const { form } = useAppForm<TFormValues>({
     schema: config.schema,
     defaultValues: config.defaultValues,
   });
 
-  // ======================================================
+  const isSubmitting = form.formState.isSubmitting;
+
+  // ====================================================
   // RESET
-  // ======================================================
+  // ====================================================
 
   React.useEffect(() => {
     if (!open) return;
 
     form.reset({
       ...config.defaultValues,
-      name: defaultKeyword ?? "",
+
+      ...(defaultKeyword !== undefined
+        ? {
+            name: defaultKeyword,
+          }
+        : {}),
     });
   }, [open, defaultKeyword, form, config.defaultValues]);
 
-  // ======================================================
+  // ====================================================
   // SUBMIT
-  // ======================================================
+  // ====================================================
 
-  const onSubmit = (values: TFormValues) => {
-    submit({
-      mutation: mutation.mutateAsync(values),
+  const onSubmit = async (values: TFormValues) => {
+    const payload = transformValues
+      ? transformValues(values)
+      : (values as unknown as TCreateInput);
+
+    await submit({
+      form,
+
+      mutation: () => mutation.mutateAsync(payload),
 
       success: config.success,
 
-      onSuccess: (response: TEntity) => {
-        const result = config.getResult(response);
+      onSuccess: (response: unknown) => {
+        const result = config.getResult(response as TEntity);
 
         onCreated(result);
 
@@ -117,11 +153,15 @@ export default function EntityCreateFormDialog<
     });
   };
 
-  // ======================================================
-  // RENDER
-  // ======================================================
+  // ====================================================
+  // CHILDREN
+  // ====================================================
 
   const content = typeof children === "function" ? children(form) : children;
+
+  // ====================================================
+  // RENDER
+  // ====================================================
 
   return (
     <EntityCreateDialog
@@ -131,7 +171,7 @@ export default function EntityCreateFormDialog<
       title={config.title}
       description={config.description}
     >
-      <AppForm form={form} onSubmit={onSubmit} loading={mutation.isPending}>
+      <AppForm form={form} onSubmit={onSubmit} loading={isSubmitting}>
         <div className="space-y-6">
           {content}
 
@@ -139,14 +179,14 @@ export default function EntityCreateFormDialog<
             <Button
               type="button"
               variant="outline"
-              disabled={mutation.isPending}
+              disabled={isSubmitting}
               onClick={() => onOpenChange(false)}
             >
               Cancel
             </Button>
 
-            <Button type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? config.submittingText : config.submitText}
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? config.submittingText : config.submitText}
             </Button>
           </div>
         </div>

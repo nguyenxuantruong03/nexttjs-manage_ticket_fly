@@ -1,19 +1,26 @@
 "use client";
 
 import GenericMainStepper from "@/components/stepper/GenericMainStepper";
+
 import GenericSubStepper from "@/components/stepper/GenericSubStepper";
+
 import StepperContainer from "@/components/stepper/StepperContainer";
 
 import { changeMainStep } from "./stepper/changeMain";
+
 import { mainSteps, subSteps } from "./stepper/config";
+
 import { useCatalogStepperHooks } from "./stepper/hooks";
+
 import { renderCatalogStepperContent } from "./stepper/renderContent";
 
 interface Props {
   mainStep: string;
+
   setMainStep: (value: string) => void;
 
   subStep: string;
+
   setSubStep: (value: string) => void;
 }
 

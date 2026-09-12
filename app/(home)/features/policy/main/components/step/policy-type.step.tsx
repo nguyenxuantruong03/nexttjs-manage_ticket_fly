@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 
 import { PolicyFormSchema } from "../form/schema";
 
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 
 import { PolicyType } from "@/types/common/features/policy/policy-type";
 

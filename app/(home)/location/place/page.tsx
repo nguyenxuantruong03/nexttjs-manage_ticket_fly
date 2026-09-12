@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { placeColumns } from "./components/columns";
 import { usePlaces, useDeletePlace } from "@/hooks/location/place";
 import { useRouter } from "next/navigation";

@@ -7,12 +7,13 @@ export function initAirportTransferPriceValues(
 ): Pick<AirportTransferFormSchema, "price">["price"] {
   return {
     fromPrice: airportTransfer.price?.fromPrice ?? 0,
-
     toPrice: airportTransfer.price?.toPrice ?? undefined,
 
     originalFromPrice: airportTransfer.price?.originalFromPrice ?? undefined,
-
     originalToPrice: airportTransfer.price?.originalToPrice ?? undefined,
+
+    effectiveFrom: airportTransfer.price?.effectiveFrom ?? undefined,
+    effectiveTo: airportTransfer.price?.effectiveTo ?? undefined,
 
     routePrices:
       airportTransfer.price?.routePrices?.map((price) => ({
@@ -65,8 +66,8 @@ export function initAirportTransferPriceValues(
         originalPrice: tripPrice.originalPrice ?? 0,
       })) ?? [],
 
-    rules:
-      airportTransfer.price?.rules?.map((rule) => ({
+    priceRules:
+      airportTransfer.price?.priceRules?.map((rule) => ({
         name: rule.name ?? "",
 
         priceRuleTypeId: rule.priceRuleTypeId ?? "",

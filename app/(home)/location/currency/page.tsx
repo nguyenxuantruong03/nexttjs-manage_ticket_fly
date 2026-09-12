@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { currencyColumns } from "./components/columns";
 import { useCurrencies, useDeleteCurrency } from "@/hooks/location/currency";
 import { useRouter } from "next/navigation";

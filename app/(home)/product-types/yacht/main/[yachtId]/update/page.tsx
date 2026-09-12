@@ -58,6 +58,8 @@ export default function YachtEditPage() {
       policyTypeData={data.policyTypeData}
       extraData={data.extraData}
       extraTypeData={data.extraTypeData}
+      mediaCategoryData={data.mediaCategoryData}
+      mediaAssetData={data.mediaAssetData}
     />
   );
 }

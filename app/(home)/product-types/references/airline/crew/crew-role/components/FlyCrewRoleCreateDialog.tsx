@@ -5,7 +5,7 @@ import { FormInput, FormSwitch } from "@/components/form/form-data";
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreateFlyCrewRole } from "@/hooks/product-types/references/airline/crew/crew-role";
 
@@ -16,6 +16,7 @@ import { flyCrewRoleDefaultValues } from "./form/default-values";
 import { FlyCrewRole } from "@/types/product-types/references/airline/crew/crew-role/fly-crew-role";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -36,7 +37,7 @@ export default function FlyCrewRoleCreateDialog({
   const createFlyCrewRole = useCreateFlyCrewRole();
 
   return (
-    <EntityCreateFormDialog<FlyCrewRoleFormSchema, FlyCrewRole>
+    <EntityCreateFormDialog<FlyCrewRoleFormSchema,Partial<FlyCrewRole>, FlyCrewRole>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -66,7 +67,7 @@ export default function FlyCrewRoleCreateDialog({
             placeholder="Captain"
           />
 
-          <FormInput<FlyCrewRoleFormSchema>
+          <FormIcon<FlyCrewRoleFormSchema>
             name="icon"
             label="Icon"
             placeholder="https://..."

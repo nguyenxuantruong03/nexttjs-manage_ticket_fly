@@ -7,7 +7,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput, FormSelect, FormSwitch } from "@/components/form/form-data";
 
 import { HotelSchemaForm } from "../form/schema/core/hotel.schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import { HotelStatus } from "@/types/product-types/hotel/enum/enums";
 import { SEARCH_PRIORITY_OPTIONS } from "@/types/searchs/search-prioty-score";

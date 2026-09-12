@@ -1,191 +1,245 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+
 import {
-  ActionMenu,
-  ActionMenuItem,
-} from "../../../../../../components/ui/data-table/action-menu";
-import { ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
+import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
+
 import { RowActions } from "@/components/ui/data-table/row-actions";
+
 import { CarRental } from "@/types/product-types/car_rental/core/car-rental.types";
 
 export function carRentalColumns(
   actions: (row: CarRental) => ActionMenuItem<CarRental>[],
 ): ColumnDef<CarRental>[] {
   return [
-    {
+    createSelectionColumn<CarRental>(),
+
+    createDataTableColumn<CarRental>({
       accessorKey: "id",
       header: "ID",
-    },
-    {
+    }),
+
+    createDataTableColumn<CarRental>({
       accessorKey: "driverOption",
       header: "Driver Option",
-    },
-    {
+    }),
+
+    createDataTableColumn<CarRental>({
       accessorKey: "providerBookingId",
       header: "Provider Booking",
-    },
+    }),
 
+    // ======================================================
     // Vehicle
-    {
-      accessorKey: "vehicle.brand",
+    // ======================================================
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "vehicle",
       header: "Brand",
-    },
-    {
-      accessorKey: "vehicle.model",
+      cell: (row) =>
+        row.vehicle?.length
+          ? row.vehicle.map((vehicle) => vehicle.brand).join(", ")
+          : "-",
+    }),
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "vehicle",
       header: "Model",
-    },
-    {
-      accessorKey: "vehicle.type",
-      header: "Vehicle Type",
-    },
-    {
-      accessorKey: "vehicle.status",
+      cell: (row) =>
+        row.vehicle?.length
+          ? row.vehicle.map((vehicle) => vehicle.model).join(", ")
+          : "-",
+    }),
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "vehicle",
       header: "Status",
-    },
-    {
-      accessorKey: "vehicle.year",
+      cell: (row) =>
+        row.vehicle?.length
+          ? row.vehicle.map((vehicle) => vehicle.status).join(", ")
+          : "-",
+    }),
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "vehicle",
       header: "Year",
-    },
-    {
-      accessorKey: "vehicle.color",
+      cell: (row) =>
+        row.vehicle?.length
+          ? row.vehicle.map((vehicle) => vehicle.year).join(", ")
+          : "-",
+    }),
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "vehicle",
       header: "Color",
-    },
-    {
-      accessorKey: "vehicle.transmission",
+      cell: (row) =>
+        row.vehicle?.length
+          ? row.vehicle.map((vehicle) => vehicle.color).join(", ")
+          : "-",
+    }),
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "vehicle",
       header: "Transmission",
-    },
-    {
-      accessorKey: "vehicle.fuelType",
+      cell: (row) =>
+        row.vehicle?.length
+          ? row.vehicle.map((vehicle) => vehicle.transmission).join(", ")
+          : "-",
+    }),
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "vehicle",
       header: "Fuel Type",
-    },
-    {
-      accessorKey: "vehicle.licensePlate",
+      cell: (row) =>
+        row.vehicle?.length
+          ? row.vehicle.map((vehicle) => vehicle.fuelType).join(", ")
+          : "-",
+    }),
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "vehicle",
       header: "License Plate",
-    },
+      cell: (row) =>
+        row.vehicle?.length
+          ? row.vehicle.map((vehicle) => vehicle.licensePlate).join(", ")
+          : "-",
+    }),
+
     {
-      accessorKey: "vehicle.images.0",
+      id: "vehicleImage",
       header: "Image",
+      cell: ({ row }) =>
+        row.original.vehicle?.length
+          ? row.original.vehicle
+              .map((vehicle) => vehicle.medias.join("-"))
+              .filter(Boolean)
+              .join(", ") || "-"
+          : "-",
     },
 
+    // ======================================================
     // Capacity
-    {
-      accessorKey: "vehicle.capacity.seatCount",
+    // ======================================================
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "vehicle",
       header: "Seats",
-    },
-    {
-      accessorKey: "vehicle.capacity.luggageCount",
+      cell: (row) =>
+        row.vehicle?.length
+          ? row.vehicle.map((vehicle) => vehicle.capacity?.seatCount).join(", ")
+          : "-",
+    }),
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "vehicle",
       header: "Luggage",
-    },
-    {
-      accessorKey: "vehicle.capacity.doorCount",
+      cell: (row) =>
+        row.vehicle?.length
+          ? row.vehicle
+              .map((vehicle) => vehicle.capacity?.luggageCount)
+              .join(", ")
+          : "-",
+    }),
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "vehicle",
       header: "Doors",
-    },
+      cell: (row) =>
+        row.vehicle?.length
+          ? row.vehicle.map((vehicle) => vehicle.capacity?.doorCount).join(", ")
+          : "-",
+    }),
 
-    // Pickup
-    {
-      accessorKey: "trip.pickupLocation.pickup",
-      header: "Pickup",
-    },
-    {
-      accessorKey: "trip.pickupLocation.type",
-      header: "Pickup Type",
-    },
-
-    // Dropoff
-    {
-      accessorKey: "trip.dropoffLocation.dropoff",
-      header: "Dropoff",
-    },
-    {
-      accessorKey: "trip.dropoffLocation.type",
-      header: "Dropoff Type",
-    },
-
+    // ======================================================
     // Schedule
-    {
-      accessorKey: "trip.schedule.durationType",
+    // ======================================================
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "trip",
       header: "Duration",
-    },
-    {
-      accessorKey: "trip.schedule.pickupTime",
+      cell: (row) => row.trip?.schedule?.durationType ?? "-",
+    }),
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "trip",
       header: "Pickup Time",
-    },
-    {
-      accessorKey: "trip.schedule.returnTime",
+      cell: (row) => row.trip?.schedule?.pickupTime ?? "-",
+    }),
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "trip",
       header: "Return Time",
-    },
+      cell: (row) => row.trip?.schedule?.returnTime ?? "-",
+    }),
 
-    // Price
-    {
-      accessorKey: "price.pricePerHour",
-      header: "Price / Hour",
-    },
-    {
-      accessorKey: "price.pricePerDay",
-      header: "Price / Day",
-    },
-    {
-      accessorKey: "price.pricePerWeek",
-      header: "Price / Week",
-    },
-    {
-      accessorKey: "price.pricePerMonth",
-      header: "Price / Month",
-    },
-    {
-      accessorKey: "price.originalPrice",
-      header: "Original Price",
-    },
-    {
-      accessorKey: "price.finalPrice",
-      header: "Final Price",
-    },
-
+    // ======================================================
     // Policy
-    {
-      accessorKey: "policies.fuelPolicy",
+    // ======================================================
+
+    createDataTableColumn<CarRental>({
+      accessorKey: "policies",
       header: "Fuel Policy",
-    },
-    {
-      accessorKey: "policies.mileage.unlimited",
-      header: "Unlimited Mileage",
-    },
-    {
-      accessorKey: "policies.rules.minimumAge",
-      header: "Minimum Age",
-    },
-    {
-      accessorKey: "policies.rules.additionalDriverAllowed",
-      header: "Additional Driver",
-    },
+      cell: (row) =>
+        row.policies?.length
+          ? row.policies.map((policy) => policy.valueText).join(", ")
+          : "-",
+    }),
 
-    // Review (ví dụ lấy review đầu tiên)
+    // ======================================================
+    // Review
+    // ======================================================
+
     {
-      accessorKey: "review.0.overallRating",
+      id: "reviewRating",
       header: "Rating",
-    },
-    {
-      accessorKey: "review.0.comment",
-      header: "Review",
-    },
-    {
-      accessorKey: "review.0.verified",
-      header: "Verified",
+      cell: ({ row }) =>
+        row.original.reviews?.length
+          ? row.original.reviews
+              .map((review) => review.overallRating)
+              .join(", ")
+          : "-",
     },
 
-    // Time
     {
+      id: "reviewComment",
+      header: "Review",
+      cell: ({ row }) =>
+        row.original.reviews?.length
+          ? row.original.reviews.map((review) => review.comment).join(", ")
+          : "-",
+    },
+
+    {
+      id: "reviewVerified",
+      header: "Verified",
+      cell: ({ row }) =>
+        row.original.reviews?.length
+          ? row.original.reviews.map((review) => review.verified).join(", ")
+          : "-",
+    },
+
+    // ======================================================
+    // Time
+    // ======================================================
+
+    createDataTableColumn<CarRental>({
       accessorKey: "createdAt",
       header: "Created At",
-    },
-    {
+    }),
+
+    createDataTableColumn<CarRental>({
       accessorKey: "updatedAt",
       header: "Updated At",
-    },
+    }),
+
+    // ======================================================
+    // ACTIONS
+    // ======================================================
 
     {
       id: "actions",

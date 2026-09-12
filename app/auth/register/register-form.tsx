@@ -14,8 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import FormError from "@/components/form-notification/form-error";
-import FormSuccess from "@/components/form-notification/form-success";
+import FormError from "@/components/form/form-notification/form-error";
+import FormSuccess from "@/components/form/form-notification/form-success";
 import TurnstileWidget from "@/components/TurnstileWidget";
 import { RegisterSchema } from "@/schemas/auths/auth";
 
@@ -60,7 +60,7 @@ export default function RegisterForm() {
             email: data.email,
             password: data.password,
             turnstileToken: turnstileToken,
-          }
+          },
         );
         if (response.data.success) {
           setLoading(true);
@@ -137,7 +137,12 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="**********" {...field} disabled={loading}/>
+                <Input
+                  type="password"
+                  placeholder="**********"
+                  {...field}
+                  disabled={loading}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

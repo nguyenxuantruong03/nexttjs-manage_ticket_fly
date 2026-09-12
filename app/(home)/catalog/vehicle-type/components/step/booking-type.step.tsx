@@ -2,7 +2,7 @@
 
 import FormSection from "@/components/form/FormSection";
 import { VehicleTypeFormSchema } from "../form/schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import { BookingType } from "@/types/common/commerce/booking-type";
 import BookingTypeCreateDialog from "@/app/(home)/commerce/booking-type/components/BookingTypeCreateDialog";
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";

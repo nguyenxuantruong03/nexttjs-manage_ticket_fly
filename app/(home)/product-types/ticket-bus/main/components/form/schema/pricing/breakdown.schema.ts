@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { BusSeatTypeSchema } from "../bus-seat-type";
-import { BusPriceSchema } from "./price.schema";
 import { BusExtraFeeSchema } from "./extra-fee.schema";
 
 export const BusPriceBreakdownSchema = z.object({

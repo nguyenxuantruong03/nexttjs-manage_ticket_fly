@@ -24,6 +24,20 @@ export const schema = z.object({
   currencyId: z.string().min(1, "Currency is required"),
 
   // ======================================================
+  // MEDIA
+  // ======================================================
+
+  images: z
+    .array(
+      z.object({
+        mediaId: z.string().min(1, "Media is required"),
+        isPrimary: z.boolean().default(false),
+        sortOrder: z.number().int().min(0),
+      }),
+    )
+    .default([]),
+
+  // ======================================================
   // STATUS
   // ======================================================
 

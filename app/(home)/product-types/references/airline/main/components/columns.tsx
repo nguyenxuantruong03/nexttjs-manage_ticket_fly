@@ -2,6 +2,11 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 
 import { RowActions } from "@/components/ui/data-table/row-actions";
@@ -13,82 +18,88 @@ export function flyAirlineColumns(
 ): ColumnDef<FlyAirline>[] {
   return [
     // ======================================================
+    // SELECTION
+    // ======================================================
+
+    createSelectionColumn<FlyAirline>(),
+
+    // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "id",
       header: "ID",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "name",
       header: "Name",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "legalName",
       header: "Legal Name",
-      cell: ({ row }) => row.original.legalName ?? "-",
-    },
+      cell: (row) => row.legalName ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "iataCode",
       header: "IATA",
-      cell: ({ row }) => row.original.iataCode ?? "-",
-    },
+      cell: (row) => row.iataCode ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "icaoCode",
       header: "ICAO",
-      cell: ({ row }) => row.original.icaoCode ?? "-",
-    },
+      cell: (row) => row.icaoCode ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "callsign",
       header: "Callsign",
-      cell: ({ row }) => row.original.callsign ?? "-",
-    },
+      cell: (row) => row.callsign ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "country",
       header: "Country",
-      cell: ({ row }) => row.original.country ?? "-",
-    },
+      cell: (row) => row.country ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "website",
       header: "Website",
-      cell: ({ row }) => row.original.website ?? "-",
-    },
+      cell: (row) => row.website ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "hotline",
       header: "Hotline",
-      cell: ({ row }) => row.original.hotline ?? "-",
-    },
+      cell: (row) => row.hotline ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "email",
       header: "Email",
-      cell: ({ row }) => row.original.email ?? "-",
-    },
+      cell: (row) => row.email ?? "-",
+    }),
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "description",
       header: "Description",
-      cell: ({ row }) => row.original.description ?? "-",
-    },
+      cell: (row) => row.description ?? "-",
+    }),
 
     // ======================================================
     // STATUS
     // ======================================================
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "active",
       header: "Active",
-      cell: ({ row }) => (row.original.active ? "Yes" : "No"),
-    },
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
 
     // ======================================================
     // RELATIONS
@@ -176,17 +187,17 @@ export function flyAirlineColumns(
     // TIMESTAMP
     // ======================================================
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "createdAt",
       header: "Created At",
-      cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
-    },
+      cell: (row) => new Date(row.createdAt).toLocaleString(),
+    }),
 
-    {
+    createDataTableColumn<FlyAirline>({
       accessorKey: "updatedAt",
       header: "Updated At",
-      cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString(),
-    },
+      cell: (row) => new Date(row.updatedAt).toLocaleString(),
+    }),
 
     // ======================================================
     // ACTIONS

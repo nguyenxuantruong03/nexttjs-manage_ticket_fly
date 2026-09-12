@@ -28,7 +28,14 @@ const FlyAircraftCreatePage = () => {
     );
   }
 
-  return <FlyAircraftForm airlineData={data.airlineData} />;
+  return (
+    <FlyAircraftForm
+      airlineData={data.airlineData}
+      mediaCategoryData={data.mediaCategoryData}
+      mediaAssetData={data.mediaAssetData}
+      bookingTypeData={data.bookingTypeData}
+    />
+  );
 };
 
 export default FlyAircraftCreatePage;

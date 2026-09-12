@@ -2,8 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import FormSuccess from "@/components/form-notification/form-success";
-import FormError from "@/components/form-notification/form-error";
+import FormSuccess from "@/components/form/form-notification/form-success";
+import FormError from "@/components/form/form-notification/form-error";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
 import AuthForm from "@/components/auth/form-auth";
@@ -30,7 +30,7 @@ const NewVerificationForm = () => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/verificationAccount`,
-        { token}
+        { token },
       );
 
       // Check if the response contains an error

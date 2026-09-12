@@ -10,7 +10,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
@@ -33,6 +33,7 @@ import PolicyTypeCreateDialog from "../../policy-type/components/PolicyTypeCreat
 import FormEntityMultiSelector from "@/components/form/form-data/FormMultiEntitySelector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -78,7 +79,7 @@ export default function PolicyCreateDialog({
   );
 
   return (
-    <EntityCreateFormDialog<PolicyFormSchema, Policy>
+    <EntityCreateFormDialog<PolicyFormSchema, Partial<Policy>, Policy>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -110,7 +111,7 @@ export default function PolicyCreateDialog({
           placeholder="Cancellation Policy"
         />
 
-        <FormInput<PolicyFormSchema>
+        <FormIcon<PolicyFormSchema>
           name="icon"
           label="Icon"
           placeholder="https://..."

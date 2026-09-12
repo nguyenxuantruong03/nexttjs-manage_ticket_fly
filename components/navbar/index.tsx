@@ -21,8 +21,8 @@ import {
 import { User } from "@/types/users/auth/users";
 import { UserMenu } from "@/components/menuUser/userMenu";
 import { UserButton } from "../menuUser/userButton";
-import { handleLogout } from "@/lib/logout";
 import { SIDEBARCONTENTICONS } from "../Sidebar/icon";
+import { handleLogout } from "@/services/auth/logout";
 interface NavbarProps {
   user: User;
 }

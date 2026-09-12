@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { fuelTypeColumns } from "./components/columns";
 import { useRouter } from "next/navigation";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
@@ -11,10 +11,7 @@ import { createFuelTypeHandlers } from "./features/handlers";
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
 
-import {
-  useDeleteFuelType,
-  useFuelTypes,
-} from "@/hooks/catalog/fuel-type";
+import { useDeleteFuelType, useFuelTypes } from "@/hooks/catalog/fuel-type";
 
 const FuelType = () => {
   const router = useRouter();
@@ -31,8 +28,7 @@ const FuelType = () => {
     handlers,
     createActions: createFuelTypeActions,
     deleteTitle: "Delete fuel type",
-    deleteDescription:
-      "Are you sure you want to delete this fuel type?",
+    deleteDescription: "Are you sure you want to delete this fuel type?",
   });
 
   if (isPending) return <LoadingPage />;

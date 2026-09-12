@@ -6,7 +6,7 @@ import { FlyFormSchema } from "../form/schema/core/fly.schema";
 import { FlyTripStatus } from "@/types/product-types/ticket-fly/enums";
 import FlyAircraftCreateDialog from "@/app/(home)/product-types/references/airline/aircraft/main/components/FlyAircraftCreateDialog";
 import { FlyAircraft } from "@/types/product-types/references/airline/aircraft/aircraft.types";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 
 const tripStatusOptions = Object.values(FlyTripStatus).map((value) => ({

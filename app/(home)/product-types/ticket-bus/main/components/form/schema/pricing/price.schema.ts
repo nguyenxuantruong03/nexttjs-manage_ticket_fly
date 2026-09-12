@@ -20,17 +20,16 @@ export const BusPriceSchema = z.object({
   // RELATIONS
   // ======================================================
 
-  breakdowns: z.array(BusPriceBreakdownSchema),
+  breakdown: BusPriceBreakdownSchema,
 
-  rules: z.array(BusPriceRuleSchema),
+  priceRules: z.array(BusPriceRuleSchema),
 
   // ======================================================
   // EFFECTIVE PERIOD
   // ======================================================
 
-  effectiveFrom: z.string().nullable().optional(),
-
-  effectiveTo: z.string().nullable().optional(),
+  effectiveFrom: z.date().nullable().optional(),
+  effectiveTo: z.date().nullable().optional(),
 });
 
 export type BusPriceFormValues = z.infer<typeof BusPriceSchema>;

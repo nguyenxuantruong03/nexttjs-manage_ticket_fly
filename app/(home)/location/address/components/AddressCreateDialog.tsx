@@ -9,7 +9,7 @@ import {
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { useCreateAddress } from "@/hooks/location/address";
 
@@ -57,7 +57,7 @@ export default function AddressCreateDialog({
   const createAddress = useCreateAddress();
 
   return (
-    <EntityCreateFormDialog<AddressFormSchema, Address>
+    <EntityCreateFormDialog<AddressFormSchema, Partial<Address>, Address>
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

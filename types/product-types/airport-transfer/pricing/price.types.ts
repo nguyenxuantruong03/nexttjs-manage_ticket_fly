@@ -10,20 +10,19 @@ export interface AirportTransferPrice {
   transfer: AirportTransfer;
 
   fromPrice: number;
-
   toPrice?: number;
 
   originalFromPrice?: number;
-
   originalToPrice?: number;
 
-  routePrices: AirportTransferRoutePrice[];
+  effectiveFrom?: Date;
+  effectiveTo?: Date;
 
+  routePrices: AirportTransferRoutePrice[];
   tripPrices: AirportTransferTripPrice[];
 
-  rules: AirportTransferPriceRule[];
+  priceRules: AirportTransferPriceRule[];
 
   createdAt: string;
-
   updatedAt: string;
 }

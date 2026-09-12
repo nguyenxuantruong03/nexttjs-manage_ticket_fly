@@ -1,18 +1,9 @@
 import { SidebarItem } from "@/components/Sidebar/types";
 
 export const catalogTypeSidebar: SidebarItem[] = [
-  {
-    id: 300,
-    title: "Catalog",
-    icon: "folder",
-    categories: [
-      {
-        id: 200,
-        name: "Catalog",
-        link: "/catalog",
-      },
-    ],
-  },
+  // ======================================================
+  // FUEL TYPE
+  // ======================================================
 
   {
     id: 301,
@@ -27,6 +18,10 @@ export const catalogTypeSidebar: SidebarItem[] = [
     ],
   },
 
+  // ======================================================
+  // ROUTE TYPE
+  // ======================================================
+
   {
     id: 302,
     title: "Route Type",
@@ -39,6 +34,10 @@ export const catalogTypeSidebar: SidebarItem[] = [
       },
     ],
   },
+
+  // ======================================================
+  // SERVICE TYPE
+  // ======================================================
 
   {
     id: 303,
@@ -53,6 +52,10 @@ export const catalogTypeSidebar: SidebarItem[] = [
     ],
   },
 
+  // ======================================================
+  // VEHICLE TYPE
+  // ======================================================
+
   {
     id: 304,
     title: "Vehicle Type",
@@ -62,6 +65,83 @@ export const catalogTypeSidebar: SidebarItem[] = [
         id: 204,
         name: "Vehicle Type",
         link: "/catalog/vehicle-type",
+      },
+    ],
+  },
+
+  // ======================================================
+  // MEDIA ASSET
+  // ======================================================
+
+  {
+    id: 305,
+    title: "Media Asset",
+    icon: "image",
+    categories: [
+      {
+        id: 205,
+        name: "Media Asset",
+        link: "/catalog/media-asset",
+      },
+    ],
+  },
+
+  // ======================================================
+  // MEDIA CATEGORY
+  // ======================================================
+
+  {
+    id: 306,
+    title: "Media Category",
+    icon: "images",
+    categories: [
+      {
+        id: 206,
+        name: "Media Category",
+        link: "/catalog/media-category",
+      },
+    ],
+  },
+
+  {
+    id: 307,
+
+    title: "Reason",
+
+    icon: "message_circle_question_mark",
+
+    // categories: [
+    //   {
+    //     id: 308,
+    //     name: "Reason",
+    //     link: "/commerce/extra/main",
+    //   },
+    // ],
+
+    children: [
+      {
+        id: 406,
+        title: "Reason Code",
+        icon: "message_circle_warning",
+        categories: [
+          {
+            id: 306,
+            name: "Reason Code",
+            link: "/catalog/reason/reason-code",
+          },
+        ],
+      },
+      {
+        id: 407,
+        title: "Reason Context",
+        icon: "message_circle_more",
+        categories: [
+          {
+            id: 307,
+            name: "Reason Context",
+            link: "/catalog/reason/reason-context",
+          },
+        ],
       },
     ],
   },

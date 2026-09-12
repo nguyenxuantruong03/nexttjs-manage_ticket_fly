@@ -46,6 +46,19 @@ export const schema = z.object({
   includedItems: z.array(z.string().trim()).default([]),
 
   // ======================================================
+  // MEDIA
+  // ======================================================
+
+  images: z
+    .array(
+      z.object({
+        mediaId: z.string().min(1, "Media is required"),
+        sortOrder: z.number().int().min(0),
+      }),
+    )
+    .default([]),
+
+  // ======================================================
   // STATUS
   // ======================================================
 

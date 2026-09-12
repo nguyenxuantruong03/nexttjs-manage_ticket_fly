@@ -9,7 +9,7 @@ import { CarRentalFormSchema } from "../form/schema/core/car-rental.schema";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import PolicyCreateDialog from "@/app/(home)/features/policy/main/components/PolicyCreateDialog";
 import { Policy } from "@/types/common/features/policy/policy";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import { PolicyType } from "@/types/common/features/policy/policy-type";
 import { BookingType } from "@/types/common/commerce/booking-type";
 interface PoliciesStep {

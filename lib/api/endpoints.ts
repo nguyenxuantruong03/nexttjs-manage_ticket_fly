@@ -5,6 +5,21 @@ export const API = {
 
   PROVIDER_BOOKING: "/provider-booking",
 
+  MEDIA_CATEGORY: "/media-category",
+  MEDIA_ASSET: "/media-asset",
+  AUDIT_LOG: "/audit-log",
+  SYSTEM_SETTING: "/system-setting",
+
+  REASON_CODE: "/reason-code",
+  REASON_CONTEXT: "/reason-context",
+  LEGAL_DOCUMENT: "/legal-document",
+  REGULATION: "/regulation",
+  REGULATION_CATEGORY: "/regulation-category",
+  TAX_RULE: "/tax-rule",
+  FEATURE_FLAG: "/feature-flag",
+  WHITELIST_ENTRY: "/whitelist-entry",
+  BLACKLIST_ENTRY: "/blacklist-entry",
+
   // Hotel
   HOTEL: "/hotel",
   HOTEL_ACCESSIBILITY: "/hotel-accessibility",

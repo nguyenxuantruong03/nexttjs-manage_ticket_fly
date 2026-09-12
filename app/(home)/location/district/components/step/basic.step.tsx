@@ -4,7 +4,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 
 import { DistrictFormSchema } from "../form/schema";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import CityCreateDialog from "../../../city/components/CityCreateDialog";
 import { City } from "@/types/location/city";
@@ -16,12 +16,18 @@ import { SearchTag } from "@/types/searchs/search/tag.types";
 interface BasicStepProps {
   cityData: City[];
   countryData: Country[];
-  timezones: Timezone[]
-  searchTagData: SearchTag[]
-  bookingTypeData: BookingType[]
+  timezones: Timezone[];
+  searchTagData: SearchTag[];
+  bookingTypeData: BookingType[];
 }
 
-export default function BasicStep({ cityData, countryData,timezones,searchTagData,bookingTypeData }: BasicStepProps) {
+export default function BasicStep({
+  cityData,
+  countryData,
+  timezones,
+  searchTagData,
+  bookingTypeData,
+}: BasicStepProps) {
   const cityOptions: EntityOption<City>[] =
     cityData?.map((city) => ({
       value: city.id,

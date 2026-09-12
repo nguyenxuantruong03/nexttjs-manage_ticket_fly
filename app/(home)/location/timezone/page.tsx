@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createTimezoneHandlers } from "./features/handlers";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
 import { createTimezoneActions } from "./features/actions";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { timezoneColumns } from "./components/columns";
 import ErrorPage from "@/components/ui/error-page";
 import LoadingPage from "@/components/ui/loading-page";

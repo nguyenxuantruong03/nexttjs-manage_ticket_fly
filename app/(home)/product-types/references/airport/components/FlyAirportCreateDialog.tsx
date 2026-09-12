@@ -8,7 +8,7 @@ import {
   EntityCreateDialogProps,
   EntityCreateResult,
   EntityOption,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
 
@@ -82,7 +82,11 @@ export default function FlyAirportCreateDialog({
   // ======================================================
 
   return (
-    <EntityCreateFormDialog<FlyAirportFormSchema, FlyAirport>
+    <EntityCreateFormDialog<
+      FlyAirportFormSchema,
+      Partial<FlyAirport>,
+      FlyAirport
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}

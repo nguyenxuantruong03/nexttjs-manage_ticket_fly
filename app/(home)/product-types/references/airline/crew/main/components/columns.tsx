@@ -2,9 +2,15 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 
 import { RowActions } from "@/components/ui/data-table/row-actions";
+
 import { FlyCrew } from "@/types/product-types/references/airline/crew/crew.types";
 
 export function flyCrewColumns(
@@ -12,22 +18,25 @@ export function flyCrewColumns(
 ): ColumnDef<FlyCrew>[] {
   return [
     // ======================================================
+    // SELECTION
+    // ======================================================
+
+    createSelectionColumn<FlyCrew>(),
+
+    // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<FlyCrew>({
       accessorKey: "id",
-
       header: "ID",
-    },
+    }),
 
-    {
+    createDataTableColumn<FlyCrew>({
       accessorKey: "employeeNumber",
-
       header: "Employee Number",
-
-      cell: ({ row }) => row.original.employeeNumber ?? "-",
-    },
+      cell: (row) => row.employeeNumber ?? "-",
+    }),
 
     // ======================================================
     // NAME
@@ -35,38 +44,28 @@ export function flyCrewColumns(
 
     {
       id: "name",
-
       header: "Name",
-
       cell: ({ row }) => `${row.original.firstName} ${row.original.lastName}`,
     },
 
-    {
+    createDataTableColumn<FlyCrew>({
       accessorKey: "gender",
-
       header: "Gender",
+      cell: (row) => row.gender ?? "-",
+    }),
 
-      cell: ({ row }) => row.original.gender ?? "-",
-    },
-
-    {
+    createDataTableColumn<FlyCrew>({
       accessorKey: "birthDate",
-
       header: "Birth Date",
+      cell: (row) =>
+        row.birthDate ? new Date(row.birthDate).toLocaleDateString() : "-",
+    }),
 
-      cell: ({ row }) =>
-        row.original.birthDate
-          ? new Date(row.original.birthDate).toLocaleDateString()
-          : "-",
-    },
-
-    {
+    createDataTableColumn<FlyCrew>({
       accessorKey: "nationality",
-
       header: "Nationality",
-
-      cell: ({ row }) => row.original.nationality ?? "-",
-    },
+      cell: (row) => row.nationality ?? "-",
+    }),
 
     // ======================================================
     // AIRLINE
@@ -74,9 +73,7 @@ export function flyCrewColumns(
 
     {
       id: "airline",
-
       header: "Airline",
-
       cell: ({ row }) => row.original.airline?.name ?? "-",
     },
 
@@ -86,9 +83,7 @@ export function flyCrewColumns(
 
     {
       id: "role",
-
       header: "Role",
-
       cell: ({ row }) => row.original.role?.name ?? "-",
     },
 
@@ -96,33 +91,27 @@ export function flyCrewColumns(
     // CONTACT
     // ======================================================
 
-    {
+    createDataTableColumn<FlyCrew>({
       accessorKey: "email",
-
       header: "Email",
+      cell: (row) => row.email ?? "-",
+    }),
 
-      cell: ({ row }) => row.original.email ?? "-",
-    },
-
-    {
+    createDataTableColumn<FlyCrew>({
       accessorKey: "phone",
-
       header: "Phone",
-
-      cell: ({ row }) => row.original.phone ?? "-",
-    },
+      cell: (row) => row.phone ?? "-",
+    }),
 
     // ======================================================
     // STATUS
     // ======================================================
 
-    {
+    createDataTableColumn<FlyCrew>({
       accessorKey: "active",
-
       header: "Active",
-
-      cell: ({ row }) => (row.original.active ? "Yes" : "No"),
-    },
+      cell: (row) => (row.active ? "Yes" : "No"),
+    }),
 
     // ======================================================
     // RELATIONS
@@ -130,25 +119,19 @@ export function flyCrewColumns(
 
     {
       id: "qualifications",
-
       header: "Qualifications",
-
       cell: ({ row }) => row.original.qualifications?.length ?? 0,
     },
 
     {
       id: "assignments",
-
       header: "Assignments",
-
       cell: ({ row }) => row.original.assignments?.length ?? 0,
     },
 
     {
       id: "crewSchedule",
-
       header: "Schedules",
-
       cell: ({ row }) => row.original.crewSchedule?.length ?? 0,
     },
 
@@ -156,21 +139,17 @@ export function flyCrewColumns(
     // TIMESTAMP
     // ======================================================
 
-    {
+    createDataTableColumn<FlyCrew>({
       accessorKey: "createdAt",
-
       header: "Created At",
+      cell: (row) => new Date(row.createdAt).toLocaleString(),
+    }),
 
-      cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
-    },
-
-    {
+    createDataTableColumn<FlyCrew>({
       accessorKey: "updatedAt",
-
       header: "Updated At",
-
-      cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString(),
-    },
+      cell: (row) => new Date(row.updatedAt).toLocaleString(),
+    }),
 
     // ======================================================
     // ACTIONS
@@ -178,9 +157,7 @@ export function flyCrewColumns(
 
     {
       id: "actions",
-
       header: "",
-
       cell: ({ row }) => <RowActions row={row.original} actions={actions} />,
     },
   ];

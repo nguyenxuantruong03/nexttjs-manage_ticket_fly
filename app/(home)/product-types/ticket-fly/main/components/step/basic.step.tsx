@@ -6,7 +6,7 @@ import { FlyFormSchema } from "../form/schema/core/fly.schema";
 import { ProviderBooking } from "@/types/users/provider-bookings";
 import { ServiceType } from "@/types/common/catalog/service-type.type";
 import { BookingItemType } from "@/types/common/commerce/booking-item-type.type";
-import { EntityOption } from "@/components/entity-selector";
+import { EntityOption } from "@/components/form/entity-selector";
 import FormEntitySelector from "@/components/form/form-data/FormEntitySelector";
 import ProviderBookingCreateDialog from "@/app/(home)/provider_booking/components/ProviderBookingCreateDialog";
 import ServiceTypeCreateDialog from "@/app/(home)/catalog/service-type/components/ServiceTypeCreateDialog";

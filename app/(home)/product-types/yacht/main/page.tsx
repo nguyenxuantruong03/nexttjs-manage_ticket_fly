@@ -1,5 +1,5 @@
 "use client";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { yachtColumns } from "./components/columns";
 import { useDeleteYacht, useYachts } from "@/hooks/product-types/yacht";
 import { useRouter } from "next/navigation";

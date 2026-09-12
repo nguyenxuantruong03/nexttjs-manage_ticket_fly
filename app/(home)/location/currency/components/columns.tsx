@@ -1,86 +1,105 @@
 "use client";
 
+import {
+  createDataTableColumn,
+  createSelectionColumn,
+} from "@/components/ui/data-table";
+
 import { ActionMenuItem } from "@/components/ui/data-table/action-menu";
 import { RowActions } from "@/components/ui/data-table/row-actions";
+
 import { Currency } from "@/types/location/currency";
+
 import { ColumnDef } from "@tanstack/react-table";
 
 export function currencyColumns(
   actions: (row: Currency) => ActionMenuItem<Currency>[],
 ): ColumnDef<Currency>[] {
   return [
+    createSelectionColumn<Currency>(),
+
     // ======================================================
     // BASIC
     // ======================================================
 
-    {
+    createDataTableColumn<Currency>({
       accessorKey: "id",
       header: "ID",
-    },
-    {
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "code",
       header: "Code",
-    },
-    {
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "numericCode",
       header: "Numeric Code",
-      cell: ({ row }) => row.original.numericCode ?? "-",
-    },
-    {
+      cell: (row) => row.numericCode ?? "-",
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "symbol",
       header: "Symbol",
-      cell: ({ row }) => row.original.symbol ?? "-",
-    },
-    {
+      cell: (row) => row.symbol ?? "-",
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "symbolNative",
       header: "Native Symbol",
-      cell: ({ row }) => row.original.symbolNative ?? "-",
-    },
-    {
+      cell: (row) => row.symbolNative ?? "-",
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "name",
       header: "Name",
-    },
-    {
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "nativeName",
       header: "Native Name",
-      cell: ({ row }) => row.original.nativeName ?? "-",
-    },
-    {
+      cell: (row) => row.nativeName ?? "-",
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "decimalDigits",
       header: "Decimal Digits",
-    },
-    {
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "rounding",
       header: "Rounding",
-    },
+    }),
 
     // ======================================================
     // DISPLAY
     // ======================================================
 
-    {
+    createDataTableColumn<Currency>({
       accessorKey: "flagEmoji",
       header: "Flag",
-      cell: ({ row }) => row.original.flagEmoji ?? "-",
-    },
-    {
+      cell: (row) => row.flagEmoji ?? "-",
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "locale",
       header: "Locale",
-      cell: ({ row }) => row.original.locale ?? "-",
-    },
+      cell: (row) => row.locale ?? "-",
+    }),
 
     // ======================================================
     // STATUS
     // ======================================================
 
-    {
+    createDataTableColumn<Currency>({
       accessorKey: "active",
       header: "Active",
-    },
-    {
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "isDefault",
       header: "Default",
-    },
+    }),
 
     // ======================================================
     // RELATIONS
@@ -126,40 +145,45 @@ export function currencyColumns(
     // MEDIA
     // ======================================================
 
-    {
+    createDataTableColumn<Currency>({
       accessorKey: "thumbnail",
       header: "Thumbnail",
-    },
-    {
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "coverImage",
       header: "Cover Image",
-    },
-    {
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "bannerImage",
       header: "Banner Image",
-    },
+    }),
+
     {
       id: "images",
       header: "Images",
       cell: ({ row }) => row.original.images?.length ?? 0,
     },
-    {
+
+    createDataTableColumn<Currency>({
       accessorKey: "video",
       header: "Video",
-    },
+    }),
 
     // ======================================================
     // TIMESTAMPS
     // ======================================================
 
-    {
+    createDataTableColumn<Currency>({
       accessorKey: "createdAt",
       header: "Created At",
-    },
-    {
+    }),
+
+    createDataTableColumn<Currency>({
       accessorKey: "updatedAt",
       header: "Updated At",
-    },
+    }),
 
     // ======================================================
     // ACTIONS

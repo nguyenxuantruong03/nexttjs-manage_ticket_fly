@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createDistrictHandlers } from "./features/handlers";
 import { useCrudTable } from "@/hooks/crud/useCrudTable";
 import { createDistrictActions } from "./features/actions";
-import { DataTable } from "@/components/ui/data-table";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import { districtColumns } from "./components/columns";
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";

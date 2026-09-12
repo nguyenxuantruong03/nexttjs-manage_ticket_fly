@@ -121,8 +121,12 @@ export const airportTransferFieldGroups = {
   pricing: [
     "price.fromPrice",
     "price.toPrice",
+
     "price.originalFromPrice",
     "price.originalToPrice",
+
+    "price.effectiveFrom",
+    "price.effectiveTo",
 
     "price.routePrices.0.routeId",
     "price.routePrices.0.vehicleTypeId",
@@ -148,18 +152,18 @@ export const airportTransferFieldGroups = {
     "price.tripPrices.0.finalPrice",
     "price.tripPrices.0.originalPrice",
 
-    "price.rules.0.name",
-    "price.rules.0.priceRuleTypeId",
-    "price.rules.0.adjustmentType",
-    "price.rules.0.value",
-    "price.rules.0.minimumSpend",
-    "price.rules.0.maximumDiscount",
-    "price.rules.0.couponCode",
-    "price.rules.0.validFrom",
-    "price.rules.0.validTo",
-    "price.rules.0.priority",
-    "price.rules.0.combinable",
-    "price.rules.0.active",
+    "price.priceRules.0.name",
+    "price.priceRules.0.priceRuleTypeId",
+    "price.priceRules.0.adjustmentType",
+    "price.priceRules.0.value",
+    "price.priceRules.0.minimumSpend",
+    "price.priceRules.0.maximumDiscount",
+    "price.priceRules.0.couponCode",
+    "price.priceRules.0.validFrom",
+    "price.priceRules.0.validTo",
+    "price.priceRules.0.priority",
+    "price.priceRules.0.combinable",
+    "price.priceRules.0.active",
   ] as const,
 
   service: [

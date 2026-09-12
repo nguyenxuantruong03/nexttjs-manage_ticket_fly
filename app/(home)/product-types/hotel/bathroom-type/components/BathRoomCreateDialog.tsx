@@ -9,7 +9,7 @@ import {
 import {
   EntityCreateDialogProps,
   EntityCreateResult,
-} from "@/components/entity-selector";
+} from "@/components/form/entity-selector";
 
 import { BathroomTypeFormSchema, BathroomTypeSchema } from "./form/schema";
 
@@ -20,6 +20,7 @@ import { useCreateHotelBathroomType } from "@/hooks/product-types/hotel/hotel-ba
 import { BathroomType } from "@/types/product-types/hotel/room/room.types";
 
 import EntityCreateFormDialog from "@/components/form/wizard/EntityCreateFormDialog";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 // ======================================================
 // PROPS
@@ -40,7 +41,11 @@ export default function BathroomTypeCreateDialog({
   const createBathroomType = useCreateHotelBathroomType();
 
   return (
-    <EntityCreateFormDialog<BathroomTypeFormSchema, BathroomType>
+    <EntityCreateFormDialog<
+      BathroomTypeFormSchema,
+      Partial<BathroomType>,
+      BathroomType
+    >
       open={open}
       onOpenChange={onOpenChange}
       defaultKeyword={defaultKeyword}
@@ -68,7 +73,7 @@ export default function BathroomTypeCreateDialog({
           placeholder="Bathroom type name"
         />
 
-        <FormInput<BathroomTypeFormSchema>
+        <FormIcon<BathroomTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="Icon"

@@ -5,6 +5,7 @@ import FormSection from "@/components/form/FormSection";
 import { FormInput } from "@/components/form/form-data";
 
 import { FlyCrewRoleFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
@@ -19,7 +20,7 @@ export default function BasicStep() {
           placeholder="Captain"
         />
 
-        <FormInput<FlyCrewRoleFormSchema>
+        <FormIcon<FlyCrewRoleFormSchema>
           name="icon"
           label="Icon"
           placeholder="https://..."

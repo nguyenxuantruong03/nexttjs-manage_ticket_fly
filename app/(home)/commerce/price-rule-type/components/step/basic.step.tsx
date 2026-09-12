@@ -8,6 +8,7 @@ import {
 } from "@/components/form/form-data";
 
 import { PriceRuleTypeFormSchema } from "../form/schema";
+import { FormIcon } from "@/components/form/form-data/FormIcon";
 
 export default function BasicStep() {
   return (
@@ -22,7 +23,7 @@ export default function BasicStep() {
           placeholder="Standard Pricing"
         />
 
-        <FormInput<PriceRuleTypeFormSchema>
+        <FormIcon<PriceRuleTypeFormSchema>
           name="icon"
           label="Icon"
           placeholder="tag"

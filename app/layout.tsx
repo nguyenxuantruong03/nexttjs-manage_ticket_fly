@@ -32,7 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProviders>
-          <TooltipProvider>{children}</TooltipProvider>
+            <TooltipProvider>{children}</TooltipProvider>
         </QueryProviders>
 
         <Toaster />
