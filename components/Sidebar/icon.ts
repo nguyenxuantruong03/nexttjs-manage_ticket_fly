@@ -45,6 +45,7 @@ import {
   MessageCircleMore,
   MessageCircleQuestionMark,
   MessageCircleWarning,
+  MonitorCog,
   Mountain,
   Network,
   Package,
@@ -176,5 +177,6 @@ export const SIDEBARCONTENTICONS = {
   flag: Flag,
   settings: Settings,
   history:  History,
-  settings_2: Settings2
+  settings_2: Settings2,
+  monitor_cog: MonitorCog
 } as const;

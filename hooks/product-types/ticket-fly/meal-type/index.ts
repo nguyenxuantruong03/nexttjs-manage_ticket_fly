@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { FlyMealTypeService } from "@/services/product-types/ticket-fly/meal-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -9,20 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const flyMealTypeQueryKeys = {
   all: ["fly-meal-type"] as const,
-  list: () => [...flyMealTypeQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...flyMealTypeQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...flyMealTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...flyMealTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...flyMealTypeQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...flyMealTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useFlyMealTypes(enabled = true) {
+export function useFlyMealTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: flyMealTypeQueryKeys.list(),
-    queryFn: () => FlyMealTypeService.getMany(),
+    queryKey: flyMealTypeQueryKeys.list(page, limit),
+    queryFn: () =>
+      FlyMealTypeService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -30,8 +58,8 @@ export function useFlyMealType(id: string, enabled = true) {
   return useQuery({
     queryKey: flyMealTypeQueryKeys.detail(id),
     queryFn: () => FlyMealTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -48,7 +76,7 @@ export function useCreateFlyMealType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: flyMealTypeQueryKeys.list(),
+        queryKey: flyMealTypeQueryKeys.lists(),
       });
     },
   });
@@ -73,7 +101,7 @@ export function useUpdateFlyMealType() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: flyMealTypeQueryKeys.list(),
+          queryKey: flyMealTypeQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: flyMealTypeQueryKeys.detail(variables.id),
@@ -96,7 +124,7 @@ export function useDeleteFlyMealType() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: flyMealTypeQueryKeys.list(),
+          queryKey: flyMealTypeQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: flyMealTypeQueryKeys.detail(id),

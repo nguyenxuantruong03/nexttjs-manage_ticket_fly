@@ -39,7 +39,7 @@ export default function RouteTypeEditPage() {
   return (
     <RouteTypeForm
       initialData={data.routeTypeData}
-      bookingTypeData={data.bookingTypes}
+      bookingTypeData={data.bookingTypes.data}
     />
   );
 }

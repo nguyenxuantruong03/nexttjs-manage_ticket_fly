@@ -1,34 +1,82 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { BlacklistEntryService } from "@/services/commerce/risk-fraud/blacklist-entry/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
+
+// ======================================================
+// QUERY KEYS
+// ======================================================
 
 export const blacklistEntryQueryKeys = {
   all: ["blacklist-entry"] as const,
 
-  list: () => [...blacklistEntryQueryKeys.all, "list"] as const,
+  lists: () => [...blacklistEntryQueryKeys.all, "list"] as const,
 
-  detail: (id: string) =>
-    [...blacklistEntryQueryKeys.all, "detail", id] as const,
+  list: (page: number, limit: number) =>
+    [...blacklistEntryQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...blacklistEntryQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...blacklistEntryQueryKeys.details(), id] as const,
 };
 
-export function useBlacklistEntries(enabled = true) {
+// ======================================================
+// FIND ALL
+// ======================================================
+
+export function useBlacklistEntries(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: blacklistEntryQueryKeys.list(),
-    queryFn: () => BlacklistEntryService.getMany(),
+    queryKey: blacklistEntryQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      BlacklistEntryService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useBlacklistEntry(id: string, enabled = true) {
   return useQuery({
     queryKey: blacklistEntryQueryKeys.detail(id),
+
     queryFn: () => BlacklistEntryService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
+
+// ======================================================
+// CREATE
+// ======================================================
 
 export function useCreateBlacklistEntry() {
   const queryClient = useQueryClient();
@@ -39,11 +87,15 @@ export function useCreateBlacklistEntry() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: blacklistEntryQueryKeys.list(),
+        queryKey: blacklistEntryQueryKeys.lists(),
       });
     },
   });
 }
+
+// ======================================================
+// UPDATE
+// ======================================================
 
 export function useUpdateBlacklistEntry() {
   const queryClient = useQueryClient();
@@ -60,7 +112,7 @@ export function useUpdateBlacklistEntry() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: blacklistEntryQueryKeys.list(),
+          queryKey: blacklistEntryQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
@@ -71,6 +123,10 @@ export function useUpdateBlacklistEntry() {
   });
 }
 
+// ======================================================
+// DELETE
+// ======================================================
+
 export function useDeleteBlacklistEntry() {
   const queryClient = useQueryClient();
 
@@ -80,7 +136,7 @@ export function useDeleteBlacklistEntry() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: blacklistEntryQueryKeys.list(),
+          queryKey: blacklistEntryQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({

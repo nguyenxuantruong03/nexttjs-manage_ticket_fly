@@ -1,7 +1,10 @@
 "use client";
 
-import { HotelRoomCategoryService } from "@/services/product-types/hotel/hotel-room-category/client";
 import { useQuery } from "@tanstack/react-query";
+
+import { HotelRoomCategoryService } from "@/services/product-types/hotel/hotel-room-category/client";
+
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
 
 export const useHotelRoomCategoryUpdateFormData = (
   id: string,
@@ -9,8 +12,9 @@ export const useHotelRoomCategoryUpdateFormData = (
 ) => {
   const query = useQuery({
     queryKey: ["hotel-room-category-update-form-data", id],
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
     queryFn: async () => {
       const [initialData] = await Promise.all([
         HotelRoomCategoryService.getOne(id),
@@ -24,12 +28,10 @@ export const useHotelRoomCategoryUpdateFormData = (
 
   return {
     data: query.data,
-
     isLoading: query.isLoading,
     isFetching: query.isFetching,
-
     isError: query.isError,
-    // Chỉ có 1 nguồn dữ liệu (roomCategory) nên lấy thẳng message của nó.
+
     errors: {
       roomCategory: query.error as Error | null,
     },

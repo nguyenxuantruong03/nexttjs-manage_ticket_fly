@@ -38,7 +38,7 @@ export default function ExtraFeeTypeEditPage() {
   return (
     <ExtraFeeTypeForm
       initialData={data.extraFeeTypeData}
-      bookingTypeData={data.bookingTypes}
+      bookingTypeData={data.bookingTypes.data}
     />
   );
 }

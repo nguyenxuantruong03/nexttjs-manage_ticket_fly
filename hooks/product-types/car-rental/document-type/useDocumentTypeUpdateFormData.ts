@@ -1,8 +1,10 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+
 import { CarRentalDocumentTypeService } from "@/services/product-types/car-rental/document-type/client";
 
-import { useQuery } from "@tanstack/react-query";
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
 
 export const useCarRentalDocumentTypeUpdateFormData = (
   id: string,
@@ -10,8 +12,10 @@ export const useCarRentalDocumentTypeUpdateFormData = (
 ) => {
   const query = useQuery({
     queryKey: ["car-rental-document-type-update-form-data", id],
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       const [initialData] = await Promise.all([
@@ -28,10 +32,11 @@ export const useCarRentalDocumentTypeUpdateFormData = (
     data: query.data,
 
     isLoading: query.isLoading,
+
     isFetching: query.isFetching,
 
     isError: query.isError,
-    // Chỉ có 1 nguồn dữ liệu (documentType) nên lấy thẳng message của nó.
+
     errors: {
       documentType: query.error as Error | null,
     },

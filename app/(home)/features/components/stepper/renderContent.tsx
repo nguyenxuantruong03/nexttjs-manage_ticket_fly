@@ -42,7 +42,7 @@ export function renderFeaturesStepperContent({
   if (mainStep === "facility" && subStep === "facility-category") {
     return (
       <FacilityCategoryForm
-        bookingTypeData={facilityCategory.data?.bookingTypeData ?? []}
+        bookingTypeData={facilityCategory.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -51,8 +51,8 @@ export function renderFeaturesStepperContent({
   if (mainStep === "facility" && subStep === "facility-main") {
     return (
       <FacilityMainForm
-        facilityCategoryData={facilityMain.data?.facilityCategoryData ?? []}
-        bookingTypeData={facilityMain.data?.bookingTypeData ?? []}
+        facilityCategoryData={facilityMain.data?.facilityCategoryData.data ?? []}
+        bookingTypeData={facilityMain.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -61,8 +61,8 @@ export function renderFeaturesStepperContent({
   if (mainStep === "policy" && subStep === "policy-main") {
     return (
       <PolicyMainForm
-        policyTypeData={policyMain.data?.policyTypeData ?? []}
-        bookingTypeData={policyMain.data?.bookingTypeData ?? []}
+        policyTypeData={policyMain.data?.policyTypeData.data ?? []}
+        bookingTypeData={policyMain.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -71,7 +71,7 @@ export function renderFeaturesStepperContent({
   if (mainStep === "policy" && subStep === "policy-type") {
     return (
       <PolicyTypeForm
-        bookingTypeData={policyType.data?.bookingTypeData ?? []}
+        bookingTypeData={policyType.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );

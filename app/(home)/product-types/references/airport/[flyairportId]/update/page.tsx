@@ -34,12 +34,12 @@ export default function FlyAiportEditPage() {
   return (
     <FlyAirportForm
       initialData={data.initialData}
-      addresses={data.addresses}
-      cities={data.cities}
-      districts={data.districts}
-      wards={data.wards}
-      countries={data.countries}
-      airportData={data.airportData}
+      addresses={data.addresses.data}
+      cities={data.cities.data}
+      districts={data.districts.data}
+      wards={data.wards.data}
+      countries={data.countries.data}
+      airportData={data.airportData.data}
     />
   );
 }

@@ -1,37 +1,67 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { RegulationCategoryService } from "@/services/commerce/compliance-legal/regulation-category/client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const regulationCategoryQueryKeys = {
   all: ["regulation-category"] as const,
 
-  list: () => [...regulationCategoryQueryKeys.all, "list"] as const,
+  lists: () => [...regulationCategoryQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...regulationCategoryQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...regulationCategoryQueryKeys.all, "detail"] as const,
 
   detail: (id: string) =>
-    [...regulationCategoryQueryKeys.all, "detail", id] as const,
+    [...regulationCategoryQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useRegulationCategories(enabled = true) {
+export function useRegulationCategories(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: regulationCategoryQueryKeys.list(),
+    queryKey: regulationCategoryQueryKeys.list(page, limit),
 
-    queryFn: () => RegulationCategoryService.getMany(),
+    queryFn: () =>
+      RegulationCategoryService.getMany({
+        page,
+        limit,
+      }),
 
     enabled,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useRegulationCategory(id: string, enabled = true) {
   return useQuery({
@@ -39,14 +69,14 @@ export function useRegulationCategory(id: string, enabled = true) {
 
     queryFn: () => RegulationCategoryService.getOne(id),
 
-    enabled: enabled && !!id,
+    enabled: enabled && Boolean(id),
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateRegulationCategory() {
@@ -59,14 +89,14 @@ export function useCreateRegulationCategory() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: regulationCategoryQueryKeys.list(),
+        queryKey: regulationCategoryQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateRegulationCategory() {
@@ -84,7 +114,7 @@ export function useUpdateRegulationCategory() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: regulationCategoryQueryKeys.list(),
+          queryKey: regulationCategoryQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
@@ -96,20 +126,19 @@ export function useUpdateRegulationCategory() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteRegulationCategory() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) =>
-      RegulationCategoryService.delete(id),
+    mutationFn: (id: string) => RegulationCategoryService.delete(id),
 
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: regulationCategoryQueryKeys.list(),
+          queryKey: regulationCategoryQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({

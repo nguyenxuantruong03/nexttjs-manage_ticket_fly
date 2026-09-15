@@ -1,34 +1,82 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { WhitelistEntryService } from "@/services/commerce/risk-fraud/whitelist-entry/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
+
+// ======================================================
+// QUERY KEYS
+// ======================================================
 
 export const whitelistEntryQueryKeys = {
   all: ["whitelist-entry"] as const,
 
-  list: () => [...whitelistEntryQueryKeys.all, "list"] as const,
+  lists: () => [...whitelistEntryQueryKeys.all, "list"] as const,
 
-  detail: (id: string) =>
-    [...whitelistEntryQueryKeys.all, "detail", id] as const,
+  list: (page: number, limit: number) =>
+    [...whitelistEntryQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...whitelistEntryQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...whitelistEntryQueryKeys.details(), id] as const,
 };
 
-export function useWhitelistEntries(enabled = true) {
+// ======================================================
+// FIND ALL
+// ======================================================
+
+export function useWhitelistEntries(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: whitelistEntryQueryKeys.list(),
-    queryFn: () => WhitelistEntryService.getMany(),
+    queryKey: whitelistEntryQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      WhitelistEntryService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useWhitelistEntry(id: string, enabled = true) {
   return useQuery({
     queryKey: whitelistEntryQueryKeys.detail(id),
+
     queryFn: () => WhitelistEntryService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
+
+// ======================================================
+// CREATE
+// ======================================================
 
 export function useCreateWhitelistEntry() {
   const queryClient = useQueryClient();
@@ -39,11 +87,15 @@ export function useCreateWhitelistEntry() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: whitelistEntryQueryKeys.list(),
+        queryKey: whitelistEntryQueryKeys.lists(),
       });
     },
   });
 }
+
+// ======================================================
+// UPDATE
+// ======================================================
 
 export function useUpdateWhitelistEntry() {
   const queryClient = useQueryClient();
@@ -60,7 +112,7 @@ export function useUpdateWhitelistEntry() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: whitelistEntryQueryKeys.list(),
+          queryKey: whitelistEntryQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
@@ -71,6 +123,10 @@ export function useUpdateWhitelistEntry() {
   });
 }
 
+// ======================================================
+// DELETE
+// ======================================================
+
 export function useDeleteWhitelistEntry() {
   const queryClient = useQueryClient();
 
@@ -80,7 +136,7 @@ export function useDeleteWhitelistEntry() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: whitelistEntryQueryKeys.list(),
+          queryKey: whitelistEntryQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({

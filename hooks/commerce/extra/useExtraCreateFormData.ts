@@ -1,23 +1,34 @@
 "use client";
 
 import { useBookingTypes } from "@/hooks/commerce/booking-type";
-
 import { useExtraTypes } from "@/hooks/commerce/extra-type";
-
 import { useCurrencies } from "@/hooks/location/currency";
-
 import { useMediaAssets } from "@/hooks/catalog/media-asset";
 
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from "@/config/react-query.config";
+
+// ======================================================
+// CREATE FORM DATA
+// ======================================================
+
 export const useExtraCreateFormData = (enabled = true) => {
-  const bookingTypeQuery = useBookingTypes(enabled);
+  const bookingTypeQuery = useBookingTypes(
+    DEFAULT_PAGE,
+    DEFAULT_LIMIT,
+    enabled,
+  );
 
-  const extraTypeQuery = useExtraTypes(enabled);
+  const extraTypeQuery = useExtraTypes(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
 
-  const currencyQuery = useCurrencies(enabled);
+  const currencyQuery = useCurrencies(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
 
-  const mediaAssetQuery = useMediaAssets(enabled);
+  const mediaAssetQuery = useMediaAssets(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
 
   return {
+    // ==================================================
+    // DATA
+    // ==================================================
+
     data:
       bookingTypeQuery.data &&
       extraTypeQuery.data &&
@@ -31,6 +42,10 @@ export const useExtraCreateFormData = (enabled = true) => {
           }
         : undefined,
 
+    // ==================================================
+    // LOADING
+    // ==================================================
+
     isLoading:
       bookingTypeQuery.isLoading ||
       extraTypeQuery.isLoading ||
@@ -43,6 +58,10 @@ export const useExtraCreateFormData = (enabled = true) => {
       currencyQuery.isFetching ||
       mediaAssetQuery.isFetching,
 
+    // ==================================================
+    // ERROR
+    // ==================================================
+
     isError:
       bookingTypeQuery.isError ||
       extraTypeQuery.isError ||
@@ -51,10 +70,17 @@ export const useExtraCreateFormData = (enabled = true) => {
 
     errors: {
       bookingType: bookingTypeQuery.error as Error | null,
+
       extraType: extraTypeQuery.error as Error | null,
+
       currency: currencyQuery.error as Error | null,
+
       mediaAsset: mediaAssetQuery.error as Error | null,
     },
+
+    // ==================================================
+    // REFETCH
+    // ==================================================
 
     refetch: async () => {
       await Promise.all([

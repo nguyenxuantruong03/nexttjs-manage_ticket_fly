@@ -1,24 +1,36 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table/data-table";
-import { facilityCategoryColumns } from "./components/columns";
+import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useCrudTable } from "@/hooks/crud/useCrudTable";
+import type { PaginationState } from "@tanstack/react-table";
 
-import { createFacilityCategoryActions } from "./features/actions";
-import { createFacilityCategoryHandlers } from "./features/handlers";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
+import { useCrudTable } from "@/hooks/crud/useCrudTable";
 import {
   useDeleteFacilityCategory,
   useFacilityCategories,
 } from "@/hooks/features/facility-category";
 
+import { facilityCategoryColumns } from "./components/columns";
+import { createFacilityCategoryActions } from "./features/actions";
+import { createFacilityCategoryHandlers } from "./features/handlers";
+
 const FacilityCategory = () => {
   const router = useRouter();
 
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+
   const deleteMutation = useDeleteFacilityCategory();
-  const { data, isPending, error } = useFacilityCategories();
+
+  const { data, isPending, isFetching, error } = useFacilityCategories(
+    pagination.pageIndex + 1,
+    pagination.pageSize,
+  );
 
   const handlers = createFacilityCategoryHandlers({
     router,
@@ -42,10 +54,24 @@ const FacilityCategory = () => {
 
       <DataTable
         columns={facilityCategoryColumns(actions)}
-        data={data}
-        onRowClick={({ id }) => handlers.view(id)}
+        data={data?.data ?? []}
+        isLoading={isPending}
+        isFetching={isFetching}
+        manualPagination
+        pageCount={data?.meta.totalPages ?? 0}
+        totalRows={data?.meta.total ?? 0}
+        pagination={pagination}
+        onPaginationChange={setPagination}
         onRowDoubleClick={({ id }) => handlers.update(id)}
         onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
+        pageSizeOptions={[10, 20, 30, 50, 100]}
+        persistKey="facility-category"
+        enableSorting
+        enableColumnFilters
+        enableResizing
+        enablePinning
+        enableExport
+        onRowClick={({ id }) => handlers.view(id)}
       />
     </>
   );

@@ -36,7 +36,7 @@ export default function VehicleTypeEditPage() {
   return (
     <VehicleTypeForm
       initialData={data.vehicleTypeData}
-      bookingTypeData={data.bookingTypes}
+      bookingTypeData={data.bookingTypes.data}
     />
   );
 }

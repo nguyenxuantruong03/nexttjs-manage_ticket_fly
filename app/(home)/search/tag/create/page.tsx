@@ -27,5 +27,5 @@ export default function SearchTagCreatePage() {
     );
   }
 
-  return <SearchTagForm bookingTypeData={data.bookingTypeData} />;
+  return <SearchTagForm bookingTypeData={data.bookingTypeData.data} />;
 }

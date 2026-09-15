@@ -30,10 +30,10 @@ const FlyAircraftCreatePage = () => {
 
   return (
     <FlyAircraftForm
-      airlineData={data.airlineData}
-      mediaCategoryData={data.mediaCategoryData}
-      mediaAssetData={data.mediaAssetData}
-      bookingTypeData={data.bookingTypeData}
+      airlineData={data.airlineData.data}
+      mediaCategoryData={data.mediaCategoryData.data}
+      mediaAssetData={data.mediaAssetData.data}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 };

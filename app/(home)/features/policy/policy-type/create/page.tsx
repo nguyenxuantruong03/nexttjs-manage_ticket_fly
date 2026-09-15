@@ -23,7 +23,7 @@ const PolicyTypeCreatePage = () => {
     );
   }
 
-  return <PolicyTypeForm bookingTypeData={data.bookingTypeData} />;
+  return <PolicyTypeForm bookingTypeData={data.bookingTypeData.data} />;
 };
 
 export default PolicyTypeCreatePage;

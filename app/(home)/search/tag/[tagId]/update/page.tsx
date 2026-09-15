@@ -33,7 +33,7 @@ export default function SearchTagEditPage() {
 
   return (
     <SearchTagForm
-      bookingTypeData={data.bookingTypeData}
+      bookingTypeData={data.bookingTypeData.data}
       initialData={data.initialData}
     />
   );

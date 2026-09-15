@@ -33,8 +33,8 @@ export default function FacilityEditPage() {
   return (
     <FacilityForm
       initialData={data.facilityData}
-      bookingTypeData={data.bookingTypeData}
-      facilityCategoryData={data.facilityCategoryData}
+      bookingTypeData={data.bookingTypeData.data}
+      facilityCategoryData={data.facilityCategoryData.data}
     />
   );
 }

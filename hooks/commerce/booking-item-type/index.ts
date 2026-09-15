@@ -1,43 +1,81 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { BookingItemTypeService } from "@/services/commerce/booking-item-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const bookingItemTypeQueryKeys = {
   all: ["booking-item-type"] as const,
-  list: () => [...bookingItemTypeQueryKeys.all, "list"] as const,
-  detail: (id: string) =>
-    [...bookingItemTypeQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...bookingItemTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...bookingItemTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...bookingItemTypeQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...bookingItemTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useBookingItemTypes(enabled = true) {
+export function useBookingItemTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: bookingItemTypeQueryKeys.list(),
-    queryFn: () => BookingItemTypeService.getMany(),
+    queryKey: bookingItemTypeQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      BookingItemTypeService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useBookingItemType(id: string, enabled = true) {
   return useQuery({
     queryKey: bookingItemTypeQueryKeys.detail(id),
+
     queryFn: () => BookingItemTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateBookingItemType() {
@@ -49,14 +87,14 @@ export function useCreateBookingItemType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: bookingItemTypeQueryKeys.list(),
+        queryKey: bookingItemTypeQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateBookingItemType() {
@@ -74,8 +112,9 @@ export function useUpdateBookingItemType() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: bookingItemTypeQueryKeys.list(),
+          queryKey: bookingItemTypeQueryKeys.lists(),
         }),
+
         queryClient.invalidateQueries({
           queryKey: bookingItemTypeQueryKeys.detail(variables.id),
         }),
@@ -85,7 +124,7 @@ export function useUpdateBookingItemType() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteBookingItemType() {
@@ -97,8 +136,9 @@ export function useDeleteBookingItemType() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: bookingItemTypeQueryKeys.list(),
+          queryKey: bookingItemTypeQueryKeys.lists(),
         }),
+
         queryClient.removeQueries({
           queryKey: bookingItemTypeQueryKeys.detail(id),
         }),

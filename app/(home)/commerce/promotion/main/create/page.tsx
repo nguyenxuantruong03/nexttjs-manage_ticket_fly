@@ -23,5 +23,5 @@ export default function PromotionCreatePage() {
     );
   }
 
-  return <PromotionForm bookingTypeData={data.bookingTypeData} />;
+  return <PromotionForm bookingTypeData={data.bookingTypeData.data} />;
 }

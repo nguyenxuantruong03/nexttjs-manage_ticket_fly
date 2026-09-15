@@ -1,25 +1,41 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table/data-table";
-import { reasonContextColumns } from "./components/columns";
+import * as React from "react";
+
 import { useRouter } from "next/navigation";
-import { useCrudTable } from "@/hooks/crud/useCrudTable";
 
-import { createReasonContextActions } from "./features/actions";
-import { createReasonContextHandlers } from "./features/handlers";
+import type { PaginationState } from "@tanstack/react-table";
 
+import { DataTable } from "@/components/ui/data-table/data-table";
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
+
+import { useCrudTable } from "@/hooks/crud/useCrudTable";
+
 import {
   useDeleteReasonContext,
   useReasonContexts,
 } from "@/hooks/catalog/reason/reason-context";
 
+import { reasonContextColumns } from "./components/columns";
+
+import { createReasonContextActions } from "./features/actions";
+import { createReasonContextHandlers } from "./features/handlers";
+
 const ReasonContext = () => {
   const router = useRouter();
 
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+
   const deleteMutation = useDeleteReasonContext();
-  const { data, isPending, error } = useReasonContexts();
+
+  const { data, isPending, isFetching, error } = useReasonContexts(
+    pagination.pageIndex + 1,
+    pagination.pageSize,
+  );
 
   const handlers = createReasonContextHandlers({
     router,
@@ -33,8 +49,13 @@ const ReasonContext = () => {
     deleteDescription: "Are you sure you want to delete this reason context?",
   });
 
-  if (isPending) return <LoadingPage />;
-  if (error) return <ErrorPage />;
+  if (isPending) {
+    return <LoadingPage />;
+  }
+
+  if (error) {
+    return <ErrorPage />;
+  }
 
   return (
     <>
@@ -42,10 +63,25 @@ const ReasonContext = () => {
 
       <DataTable
         columns={reasonContextColumns(actions)}
-        data={data}
-        onRowClick={({ id }) => handlers.view(id)}
+        data={data?.data ?? []}
+        isLoading={isPending}
+        isFetching={isFetching}
+        manualPagination
+        pageCount={data?.meta.totalPages ?? 0}
+        totalRows={data?.meta.total ?? 0}
+        pagination={pagination}
+        onPaginationChange={setPagination}
         onRowDoubleClick={({ id }) => handlers.update(id)}
         onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
+        pageSizeOptions={[10, 20, 30, 50, 100]}
+        persistKey="reason-context"
+        searchableFields={["name", "code"]}
+        enableSorting
+        enableColumnFilters
+        enableResizing
+        enablePinning
+        enableExport
+        onRowClick={({ id }) => handlers.view(id)}
       />
     </>
   );

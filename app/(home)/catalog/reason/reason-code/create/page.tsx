@@ -29,7 +29,7 @@ const ReasonCodeCreatePage = () => {
     );
   }
 
-  return <ReasonCodeForm contextData={data.reasonContexts} />;
+  return <ReasonCodeForm contextData={data.reasonContexts.data} />;
 };
 
 export default ReasonCodeCreatePage;

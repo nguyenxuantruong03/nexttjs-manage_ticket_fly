@@ -1,6 +1,19 @@
 "use client";
+
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { HotelDiningServiceTypeService } from "@/services/product-types/hotel/hotel-dining-service-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -8,21 +21,37 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const hotelDiningServiceTypeQueryKeys = {
   all: ["hotel-dining-service-type"] as const,
-  list: () => [...hotelDiningServiceTypeQueryKeys.all, "list"] as const,
+
+  lists: () => [...hotelDiningServiceTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...hotelDiningServiceTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...hotelDiningServiceTypeQueryKeys.all, "detail"] as const,
+
   detail: (id: string) =>
-    [...hotelDiningServiceTypeQueryKeys.all, "detail", id] as const,
+    [...hotelDiningServiceTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useHotelDiningServiceTypes(enabled = true) {
+export function useHotelDiningServiceTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: hotelDiningServiceTypeQueryKeys.list(),
-    queryFn: () => HotelDiningServiceTypeService.getMany(),
+    queryKey: hotelDiningServiceTypeQueryKeys.list(page, limit),
+    queryFn: () =>
+      HotelDiningServiceTypeService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -30,8 +59,8 @@ export function useHotelDiningServiceType(id: string, enabled = true) {
   return useQuery({
     queryKey: hotelDiningServiceTypeQueryKeys.detail(id),
     queryFn: () => HotelDiningServiceTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -49,7 +78,7 @@ export function useCreateHotelDiningServiceType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: hotelDiningServiceTypeQueryKeys.list(),
+        queryKey: hotelDiningServiceTypeQueryKeys.lists(),
       });
     },
   });
@@ -74,7 +103,7 @@ export function useUpdateHotelDiningServiceType() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelDiningServiceTypeQueryKeys.list(),
+          queryKey: hotelDiningServiceTypeQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: hotelDiningServiceTypeQueryKeys.detail(variables.id),
@@ -97,7 +126,7 @@ export function useDeleteHotelDiningServiceType() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelDiningServiceTypeQueryKeys.list(),
+          queryKey: hotelDiningServiceTypeQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: hotelDiningServiceTypeQueryKeys.detail(id),

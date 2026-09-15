@@ -1,6 +1,19 @@
 "use client";
+
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { HotelRoomCategoryService } from "@/services/product-types/hotel/hotel-room-category/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -8,21 +21,37 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const hotelRoomCategoryQueryKeys = {
   all: ["hotel-room-category"] as const,
-  list: () => [...hotelRoomCategoryQueryKeys.all, "list"] as const,
+
+  lists: () => [...hotelRoomCategoryQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...hotelRoomCategoryQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...hotelRoomCategoryQueryKeys.all, "detail"] as const,
+
   detail: (id: string) =>
-    [...hotelRoomCategoryQueryKeys.all, "detail", id] as const,
+    [...hotelRoomCategoryQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useHotelRoomCategories(enabled = true) {
+export function useHotelRoomCategories(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: hotelRoomCategoryQueryKeys.list(),
-    queryFn: () => HotelRoomCategoryService.getMany(),
+    queryKey: hotelRoomCategoryQueryKeys.list(page, limit),
+    queryFn: () =>
+      HotelRoomCategoryService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -30,8 +59,8 @@ export function useHotelRoomCategory(id: string, enabled = true) {
   return useQuery({
     queryKey: hotelRoomCategoryQueryKeys.detail(id),
     queryFn: () => HotelRoomCategoryService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -48,7 +77,7 @@ export function useCreateHotelRoomCategory() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: hotelRoomCategoryQueryKeys.list(),
+        queryKey: hotelRoomCategoryQueryKeys.lists(),
       });
     },
   });
@@ -73,7 +102,7 @@ export function useUpdateHotelRoomCategory() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelRoomCategoryQueryKeys.list(),
+          queryKey: hotelRoomCategoryQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: hotelRoomCategoryQueryKeys.detail(variables.id),
@@ -96,7 +125,7 @@ export function useDeleteHotelRoomCategory() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelRoomCategoryQueryKeys.list(),
+          queryKey: hotelRoomCategoryQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: hotelRoomCategoryQueryKeys.detail(id),

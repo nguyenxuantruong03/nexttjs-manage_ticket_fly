@@ -23,7 +23,7 @@ const FacilityCategoryCreatePage = () => {
     );
   }
 
-  return <FacilityCategoryForm bookingTypeData={data.bookingTypeData} />;
+  return <FacilityCategoryForm bookingTypeData={data.bookingTypeData.data} />;
 };
 
 export default FacilityCategoryCreatePage;

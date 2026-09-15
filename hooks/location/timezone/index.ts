@@ -1,31 +1,82 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { TimezoneService } from "@/services/location/timezone/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
+
+// ======================================================
+// QUERY KEYS
+// ======================================================
 
 export const timezoneQueryKeys = {
   all: ["timezone"] as const,
-  list: () => [...timezoneQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...timezoneQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...timezoneQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...timezoneQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...timezoneQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...timezoneQueryKeys.details(), id] as const,
 };
 
-export function useTimezones(enabled = true) {
+// ======================================================
+// FIND ALL
+// ======================================================
+
+export function useTimezones(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: timezoneQueryKeys.list(),
-    queryFn: () => TimezoneService.getMany(),
+    queryKey: timezoneQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      TimezoneService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useTimezone(id: string, enabled = true) {
   return useQuery({
     queryKey: timezoneQueryKeys.detail(id),
+
     queryFn: () => TimezoneService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
+
+// ======================================================
+// CREATE
+// ======================================================
 
 export function useCreateTimezone() {
   const queryClient = useQueryClient();
@@ -33,13 +84,18 @@ export function useCreateTimezone() {
   return useMutation({
     mutationFn: (data: Parameters<typeof TimezoneService.create>[0]) =>
       TimezoneService.create(data),
+
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: timezoneQueryKeys.list(),
+        queryKey: timezoneQueryKeys.lists(),
       });
     },
   });
 }
+
+// ======================================================
+// UPDATE
+// ======================================================
 
 export function useUpdateTimezone() {
   const queryClient = useQueryClient();
@@ -52,9 +108,13 @@ export function useUpdateTimezone() {
       id: string;
       data: Parameters<typeof TimezoneService.update>[1];
     }) => TimezoneService.update(id, data),
+
     onSuccess: async (_, variables) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: timezoneQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: timezoneQueryKeys.lists(),
+        }),
+
         queryClient.invalidateQueries({
           queryKey: timezoneQueryKeys.detail(variables.id),
         }),
@@ -63,15 +123,25 @@ export function useUpdateTimezone() {
   });
 }
 
+// ======================================================
+// DELETE
+// ======================================================
+
 export function useDeleteTimezone() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (id: string) => TimezoneService.delete(id),
+
     onSuccess: async (_, id) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: timezoneQueryKeys.list() }),
-        queryClient.removeQueries({ queryKey: timezoneQueryKeys.detail(id) }),
+        queryClient.invalidateQueries({
+          queryKey: timezoneQueryKeys.lists(),
+        }),
+
+        queryClient.removeQueries({
+          queryKey: timezoneQueryKeys.detail(id),
+        }),
       ]);
     },
   });

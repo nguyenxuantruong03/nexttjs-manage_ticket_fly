@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { HotelSustainabilityService } from "@/services/product-types/hotel/hotel-sustainability/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -9,21 +21,37 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const hotelSustainabilityQueryKeys = {
   all: ["hotel-sustainability"] as const,
-  list: () => [...hotelSustainabilityQueryKeys.all, "list"] as const,
+
+  lists: () => [...hotelSustainabilityQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...hotelSustainabilityQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...hotelSustainabilityQueryKeys.all, "detail"] as const,
+
   detail: (id: string) =>
-    [...hotelSustainabilityQueryKeys.all, "detail", id] as const,
+    [...hotelSustainabilityQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useHotelSustainabilities(enabled = true) {
+export function useHotelSustainabilities(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: hotelSustainabilityQueryKeys.list(),
-    queryFn: () => HotelSustainabilityService.getMany(),
+    queryKey: hotelSustainabilityQueryKeys.list(page, limit),
+    queryFn: () =>
+      HotelSustainabilityService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -31,8 +59,8 @@ export function useHotelSustainability(id: string, enabled = true) {
   return useQuery({
     queryKey: hotelSustainabilityQueryKeys.detail(id),
     queryFn: () => HotelSustainabilityService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -50,7 +78,7 @@ export function useCreateHotelSustainability() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: hotelSustainabilityQueryKeys.list(),
+        queryKey: hotelSustainabilityQueryKeys.lists(),
       });
     },
   });
@@ -75,7 +103,7 @@ export function useUpdateHotelSustainability() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelSustainabilityQueryKeys.list(),
+          queryKey: hotelSustainabilityQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: hotelSustainabilityQueryKeys.detail(variables.id),
@@ -98,7 +126,7 @@ export function useDeleteHotelSustainability() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelSustainabilityQueryKeys.list(),
+          queryKey: hotelSustainabilityQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: hotelSustainabilityQueryKeys.detail(id),

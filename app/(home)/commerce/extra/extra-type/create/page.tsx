@@ -26,5 +26,5 @@ export default function ExtraTypeCreatePage() {
     );
   }
 
-  return <ExtraTypeForm bookingTypeData={data.bookingTypeData} />;
+  return <ExtraTypeForm bookingTypeData={data.bookingTypeData.data} />;
 }

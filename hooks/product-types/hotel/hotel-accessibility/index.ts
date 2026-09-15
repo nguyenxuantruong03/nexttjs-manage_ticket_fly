@@ -1,6 +1,19 @@
 "use client";
+
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { HotelAccessibilityService } from "@/services/product-types/hotel/hotel-accessibility/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -8,30 +21,53 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const hotelAccessibilityQueryKeys = {
   all: ["hotel-accessibility"] as const,
-  list: () => [...hotelAccessibilityQueryKeys.all, "list"] as const,
+
+  lists: () => [...hotelAccessibilityQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...hotelAccessibilityQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...hotelAccessibilityQueryKeys.all, "detail"] as const,
+
   detail: (id: string) =>
-    [...hotelAccessibilityQueryKeys.all, "detail", id] as const,
+    [...hotelAccessibilityQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useHotelAccessibilities(enabled = true) {
+export function useHotelAccessibilities(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: hotelAccessibilityQueryKeys.list(),
-    queryFn: () => HotelAccessibilityService.getMany(),
+    queryKey: hotelAccessibilityQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      HotelAccessibilityService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
 
 export function useHotelAccessibility(id: string, enabled = true) {
   return useQuery({
     queryKey: hotelAccessibilityQueryKeys.detail(id),
+
     queryFn: () => HotelAccessibilityService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -49,7 +85,7 @@ export function useCreateHotelAccessibility() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: hotelAccessibilityQueryKeys.list(),
+        queryKey: hotelAccessibilityQueryKeys.lists(),
       });
     },
   });
@@ -74,8 +110,9 @@ export function useUpdateHotelAccessibility() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelAccessibilityQueryKeys.list(),
+          queryKey: hotelAccessibilityQueryKeys.lists(),
         }),
+
         queryClient.invalidateQueries({
           queryKey: hotelAccessibilityQueryKeys.detail(variables.id),
         }),
@@ -97,8 +134,9 @@ export function useDeleteHotelAccessibility() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelAccessibilityQueryKeys.list(),
+          queryKey: hotelAccessibilityQueryKeys.lists(),
         }),
+
         queryClient.removeQueries({
           queryKey: hotelAccessibilityQueryKeys.detail(id),
         }),

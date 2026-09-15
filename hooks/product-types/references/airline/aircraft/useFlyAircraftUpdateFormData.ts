@@ -3,14 +3,16 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { FlyAircraftService } from "@/services/product-types/references/airline/aircraft/client";
-
 import { FlyAirlineService } from "@/services/product-types/references/airline/client";
-
 import { BookingTypeService } from "@/services/commerce/booking-type/client";
-
 import { MediaAssetService } from "@/services/catalog/media-asset/client";
-
 import { MediaCategoryService } from "@/services/catalog/media-category/client";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 export const useFlyAircraftUpdateFormData = (
   flyAircraftId: string,
@@ -18,8 +20,8 @@ export const useFlyAircraftUpdateFormData = (
 ) => {
   const query = useQuery({
     queryKey: ["fly-aircraft-update-form-data", flyAircraftId],
-    enabled: enabled && !!flyAircraftId,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(flyAircraftId),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       const [
@@ -30,10 +32,22 @@ export const useFlyAircraftUpdateFormData = (
         mediaCategoryData,
       ] = await Promise.all([
         FlyAircraftService.getOne(flyAircraftId),
-        FlyAirlineService.getMany(),
-        BookingTypeService.getMany(),
-        MediaAssetService.getMany(),
-        MediaCategoryService.getMany(),
+        FlyAirlineService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        BookingTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        MediaAssetService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        MediaCategoryService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
       ]);
 
       return {

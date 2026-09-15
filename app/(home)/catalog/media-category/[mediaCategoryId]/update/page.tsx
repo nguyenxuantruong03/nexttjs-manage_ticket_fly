@@ -38,7 +38,7 @@ export default function MediaCategoryEditPage() {
   return (
     <MediaCategoryForm
       initialData={data.mediaCategoryData}
-      bookingTypeData={data.bookingTypes}
+      bookingTypeData={data.bookingTypes.data}
     />
   );
 }

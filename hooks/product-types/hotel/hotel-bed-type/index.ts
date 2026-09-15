@@ -1,6 +1,19 @@
 "use client";
+
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { HotelBedTypeService } from "@/services/product-types/hotel/hotel-bed-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -8,20 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const hotelBedTypeQueryKeys = {
   all: ["hotel-bed-type"] as const,
-  list: () => [...hotelBedTypeQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...hotelBedTypeQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...hotelBedTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...hotelBedTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...hotelBedTypeQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...hotelBedTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useHotelBedTypes(enabled = true) {
+export function useHotelBedTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: hotelBedTypeQueryKeys.list(),
-    queryFn: () => HotelBedTypeService.getMany(),
+    queryKey: hotelBedTypeQueryKeys.list(page, limit),
+    queryFn: () =>
+      HotelBedTypeService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -29,8 +58,8 @@ export function useHotelBedType(id: string, enabled = true) {
   return useQuery({
     queryKey: hotelBedTypeQueryKeys.detail(id),
     queryFn: () => HotelBedTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -47,7 +76,7 @@ export function useCreateHotelBedType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: hotelBedTypeQueryKeys.list(),
+        queryKey: hotelBedTypeQueryKeys.lists(),
       });
     },
   });
@@ -72,7 +101,7 @@ export function useUpdateHotelBedType() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelBedTypeQueryKeys.list(),
+          queryKey: hotelBedTypeQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: hotelBedTypeQueryKeys.detail(variables.id),
@@ -81,8 +110,6 @@ export function useUpdateHotelBedType() {
     },
   });
 }
-
-// ============================================
 
 // ======================================================
 // Delete
@@ -97,7 +124,7 @@ export function useDeleteHotelBedType() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelBedTypeQueryKeys.list(),
+          queryKey: hotelBedTypeQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: hotelBedTypeQueryKeys.detail(id),

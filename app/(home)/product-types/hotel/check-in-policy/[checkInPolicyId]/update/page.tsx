@@ -35,7 +35,7 @@ export default function HotelCheckInPolicyEditPage() {
   return (
     <HotelCheckInPolicyForm
       initialData={data.initialData}
-      hotelData={data.hotels}
+      hotelData={data.hotels.data}
     />
   );
 }

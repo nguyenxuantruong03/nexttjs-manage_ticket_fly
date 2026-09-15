@@ -28,14 +28,22 @@ import { LanguageService } from "@/services/location/language/client";
 import { MediaAssetService } from "@/services/catalog/media-asset/client";
 import { MediaCategoryService } from "@/services/catalog/media-category/client";
 
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
+
+// ======================================================
+// Update Form Data
+// ======================================================
+
 export const useAirportTransferUpdateFormData = (
   airportTransferId: string,
   enabled = true,
 ) => {
   const query = useQuery({
     queryKey: ["airport-transfer-form", airportTransferId],
-    enabled: enabled && !!airportTransferId,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(airportTransferId),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       const [
@@ -124,8 +132,11 @@ export const useAirportTransferUpdateFormData = (
 
   return {
     data: query.data,
+
     isLoading: query.isLoading,
+
     isFetching: query.isFetching,
+
     isError: query.isError,
 
     errors: {

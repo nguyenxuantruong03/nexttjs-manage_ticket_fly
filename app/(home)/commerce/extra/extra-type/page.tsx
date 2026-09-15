@@ -1,23 +1,33 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table/data-table";
-import { extraTypeColumns } from "./components/columns";
+import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useCrudTable } from "@/hooks/crud/useCrudTable";
+import type { PaginationState } from "@tanstack/react-table";
 
-import { createExtraTypeActions } from "./features/actions";
-import { createExtraTypeHandlers } from "./features/handlers";
-
+import { DataTable } from "@/components/ui/data-table/data-table";
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
-
+import { useCrudTable } from "@/hooks/crud/useCrudTable";
 import { useDeleteExtraType, useExtraTypes } from "@/hooks/commerce/extra-type";
+
+import { extraTypeColumns } from "./components/columns";
+import { createExtraTypeActions } from "./features/actions";
+import { createExtraTypeHandlers } from "./features/handlers";
 
 const ExtraType = () => {
   const router = useRouter();
 
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+
   const deleteMutation = useDeleteExtraType();
-  const { data, isPending, error } = useExtraTypes();
+
+  const { data, isPending, isFetching, error } = useExtraTypes(
+    pagination.pageIndex + 1,
+    pagination.pageSize,
+  );
 
   const handlers = createExtraTypeHandlers({
     router,
@@ -40,10 +50,24 @@ const ExtraType = () => {
 
       <DataTable
         columns={extraTypeColumns(actions)}
-        data={data}
-        onRowClick={({ id }) => handlers.view(id)}
+        data={data?.data ?? []}
+        isLoading={isPending}
+        isFetching={isFetching}
+        manualPagination
+        pageCount={data?.meta.totalPages ?? 0}
+        totalRows={data?.meta.total ?? 0}
+        pagination={pagination}
+        onPaginationChange={setPagination}
         onRowDoubleClick={({ id }) => handlers.update(id)}
         onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
+        pageSizeOptions={[10, 20, 30, 50, 100]}
+        persistKey="extra-type"
+        enableSorting
+        enableColumnFilters
+        enableResizing
+        enablePinning
+        enableExport
+        onRowClick={({ id }) => handlers.view(id)}
       />
     </>
   );

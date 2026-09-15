@@ -26,8 +26,8 @@ export default function FacilityCreatePage() {
 
   return (
     <FacilityForm
-      bookingTypeData={data.bookingTypeData}
-      facilityCategoryData={data.facilityCategoryData}
+      bookingTypeData={data.bookingTypeData.data}
+      facilityCategoryData={data.facilityCategoryData.data}
     />
   );
 }

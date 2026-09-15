@@ -33,13 +33,13 @@ export default function ProviderBookingEditPage() {
   return (
     <ProviderBookingForm
       initialData={data.initialData}
-      userDatas={data.userDatas}
-      addresses={data.addresses}
-      countries={data.countries}
-      cities={data.cities}
-      districts={data.districts}
-      wards={data.wards}
-      bookingTypeData={data.bookingTypeData}
+      userDatas={data.userDatas.data}
+      addresses={data.addresses.data}
+      countries={data.countries.data}
+      cities={data.cities.data}
+      districts={data.districts.data}
+      wards={data.wards.data}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

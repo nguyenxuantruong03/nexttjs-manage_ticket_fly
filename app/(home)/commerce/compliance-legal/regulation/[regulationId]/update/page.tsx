@@ -38,7 +38,7 @@ export default function RegulationEditPage() {
   return (
     <RegulationForm
       initialData={data.regulationData}
-      regulationCategoryData={data.regulationCategoryData}
+      regulationCategoryData={data.regulationCategoryData.data}
     />
   );
 }

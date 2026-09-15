@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { CarRentalInsuranceBenefitTypeService } from "@/services/product-types/car-rental/insurance-benefit-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -9,30 +21,57 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const carRentalInsuranceBenefitTypeQueryKeys = {
   all: ["car-rental-insurance-benefit-type"] as const,
-  list: () => [...carRentalInsuranceBenefitTypeQueryKeys.all, "list"] as const,
+
+  lists: () => [...carRentalInsuranceBenefitTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [
+      ...carRentalInsuranceBenefitTypeQueryKeys.lists(),
+      { page, limit },
+    ] as const,
+
+  details: () =>
+    [...carRentalInsuranceBenefitTypeQueryKeys.all, "detail"] as const,
+
   detail: (id: string) =>
-    [...carRentalInsuranceBenefitTypeQueryKeys.all, "detail", id] as const,
+    [...carRentalInsuranceBenefitTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useCarRentalInsuranceBenefitTypes(enabled = true) {
+export function useCarRentalInsuranceBenefitTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: carRentalInsuranceBenefitTypeQueryKeys.list(),
-    queryFn: () => CarRentalInsuranceBenefitTypeService.getMany(),
+    queryKey: carRentalInsuranceBenefitTypeQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      CarRentalInsuranceBenefitTypeService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
 
 export function useCarRentalInsuranceBenefitType(id: string, enabled = true) {
   return useQuery({
     queryKey: carRentalInsuranceBenefitTypeQueryKeys.detail(id),
+
     queryFn: () => CarRentalInsuranceBenefitTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -50,7 +89,7 @@ export function useCreateCarRentalInsuranceBenefitType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: carRentalInsuranceBenefitTypeQueryKeys.list(),
+        queryKey: carRentalInsuranceBenefitTypeQueryKeys.lists(),
       });
     },
   });
@@ -75,8 +114,9 @@ export function useUpdateCarRentalInsuranceBenefitType() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: carRentalInsuranceBenefitTypeQueryKeys.list(),
+          queryKey: carRentalInsuranceBenefitTypeQueryKeys.lists(),
         }),
+
         queryClient.invalidateQueries({
           queryKey: carRentalInsuranceBenefitTypeQueryKeys.detail(variables.id),
         }),
@@ -98,8 +138,9 @@ export function useDeleteCarRentalInsuranceBenefitType() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: carRentalInsuranceBenefitTypeQueryKeys.list(),
+          queryKey: carRentalInsuranceBenefitTypeQueryKeys.lists(),
         }),
+
         queryClient.removeQueries({
           queryKey: carRentalInsuranceBenefitTypeQueryKeys.detail(id),
         }),

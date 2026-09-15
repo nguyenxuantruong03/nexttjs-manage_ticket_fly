@@ -27,5 +27,5 @@ export default function ExtraFeeTypeCreatePage() {
     );
   }
 
-  return <ExtraFeeTypeForm bookingTypeData={data.bookingTypes} />;
+  return <ExtraFeeTypeForm bookingTypeData={data.bookingTypes.data} />;
 }

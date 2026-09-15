@@ -26,9 +26,9 @@ const FlyAirlineCreatePage = () => {
     );
   }
 
-  return <FlyAirlineForm mediaCategoryData={data.mediaCategoryData}
-      mediaAssetData={data.mediaAssetData}
-      bookingTypeData={data.bookingTypeData}/>;
+  return <FlyAirlineForm mediaCategoryData={data.mediaCategoryData.data}
+      mediaAssetData={data.mediaAssetData.data}
+      bookingTypeData={data.bookingTypeData.data}/>;
 };
 
 export default FlyAirlineCreatePage;

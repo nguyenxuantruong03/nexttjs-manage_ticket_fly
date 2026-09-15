@@ -1,6 +1,19 @@
 "use client";
+
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { HotelBathroomTypeService } from "@/services/product-types/hotel/hotel-bathroom-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -8,21 +21,37 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const hotelBathroomTypeQueryKeys = {
   all: ["hotel-bathroom-type"] as const,
-  list: () => [...hotelBathroomTypeQueryKeys.all, "list"] as const,
+
+  lists: () => [...hotelBathroomTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...hotelBathroomTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...hotelBathroomTypeQueryKeys.all, "detail"] as const,
+
   detail: (id: string) =>
-    [...hotelBathroomTypeQueryKeys.all, "detail", id] as const,
+    [...hotelBathroomTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useHotelBathroomTypes(enabled = true) {
+export function useHotelBathroomTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: hotelBathroomTypeQueryKeys.list(),
-    queryFn: () => HotelBathroomTypeService.getMany(),
+    queryKey: hotelBathroomTypeQueryKeys.list(page, limit),
+    queryFn: () =>
+      HotelBathroomTypeService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -30,8 +59,8 @@ export function useHotelBathroomType(id: string, enabled = true) {
   return useQuery({
     queryKey: hotelBathroomTypeQueryKeys.detail(id),
     queryFn: () => HotelBathroomTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -48,7 +77,7 @@ export function useCreateHotelBathroomType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: hotelBathroomTypeQueryKeys.list(),
+        queryKey: hotelBathroomTypeQueryKeys.lists(),
       });
     },
   });
@@ -73,7 +102,7 @@ export function useUpdateHotelBathroomType() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelBathroomTypeQueryKeys.list(),
+          queryKey: hotelBathroomTypeQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: hotelBathroomTypeQueryKeys.detail(variables.id),
@@ -96,7 +125,7 @@ export function useDeleteHotelBathroomType() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelBathroomTypeQueryKeys.list(),
+          queryKey: hotelBathroomTypeQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: hotelBathroomTypeQueryKeys.detail(id),

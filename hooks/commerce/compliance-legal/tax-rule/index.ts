@@ -1,37 +1,66 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { TaxRuleService } from "@/services/commerce/compliance-legal/tax-rule/client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const taxRuleQueryKeys = {
   all: ["tax-rule"] as const,
 
-  list: () => [...taxRuleQueryKeys.all, "list"] as const,
+  lists: () => [...taxRuleQueryKeys.all, "list"] as const,
 
-  detail: (id: string) =>
-    [...taxRuleQueryKeys.all, "detail", id] as const,
+  list: (page: number, limit: number) =>
+    [...taxRuleQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...taxRuleQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...taxRuleQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useTaxRules(enabled = true) {
+export function useTaxRules(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: taxRuleQueryKeys.list(),
+    queryKey: taxRuleQueryKeys.list(page, limit),
 
-    queryFn: () => TaxRuleService.getMany(),
+    queryFn: () =>
+      TaxRuleService.getMany({
+        page,
+        limit,
+      }),
 
     enabled,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useTaxRule(id: string, enabled = true) {
   return useQuery({
@@ -39,34 +68,33 @@ export function useTaxRule(id: string, enabled = true) {
 
     queryFn: () => TaxRuleService.getOne(id),
 
-    enabled: enabled && !!id,
+    enabled: enabled && Boolean(id),
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateTaxRule() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (
-      data: Parameters<typeof TaxRuleService.create>[0],
-    ) => TaxRuleService.create(data),
+    mutationFn: (data: Parameters<typeof TaxRuleService.create>[0]) =>
+      TaxRuleService.create(data),
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: taxRuleQueryKeys.list(),
+        queryKey: taxRuleQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateTaxRule() {
@@ -84,7 +112,7 @@ export function useUpdateTaxRule() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: taxRuleQueryKeys.list(),
+          queryKey: taxRuleQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
@@ -96,7 +124,7 @@ export function useUpdateTaxRule() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteTaxRule() {
@@ -108,7 +136,7 @@ export function useDeleteTaxRule() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: taxRuleQueryKeys.list(),
+          queryKey: taxRuleQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({

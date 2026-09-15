@@ -76,12 +76,12 @@ export function renderLocationStepperContent({
       return (
         <CountryForm
           redirect={false}
-          currencyData={country.data.currencyData}
-          searchTagData={country.data.searchTagData}
-          timezoneData={country.data.timezoneData}
-          languageData={country.data.languageData}
-          bookingTypeData={country.data.bookingTypeData}
-          continentData={country.data.continentData}
+          currencyData={country.data.currencyData.data}
+          searchTagData={country.data.searchTagData.data}
+          timezoneData={country.data.timezoneData.data}
+          languageData={country.data.languageData.data}
+          bookingTypeData={country.data.bookingTypeData.data}
+          continentData={country.data.continentData.data}
         />
       );
     }
@@ -105,12 +105,12 @@ export function renderLocationStepperContent({
     if (subStep === "district" && district.data) {
       return (
         <DistrictForm
-          timezones={district.data.timezones}
-          bookingTypeData={district.data.bookingTypeData}
-          searchTagData={district.data.searchTagData}
+          timezones={district.data.timezones.data}
+          bookingTypeData={district.data.bookingTypeData.data}
+          searchTagData={district.data.searchTagData.data}
           redirect={false}
-          countryData={district.data.countryData}
-          cityData={district.data.cityData}
+          countryData={district.data.countryData.data}
+          cityData={district.data.cityData.data}
         />
       );
     }
@@ -119,10 +119,10 @@ export function renderLocationStepperContent({
       return (
         <WardForm
           redirect={false}
-          bookingTypeData={ward.data.bookingTypeData}
-          searchTagData={ward.data.searchTagData}
-          districtData={ward.data.districtData}
-          cityData={ward.data.cityData}
+          bookingTypeData={ward.data.bookingTypeData.data}
+          searchTagData={ward.data.searchTagData.data}
+          districtData={ward.data.districtData.data}
+          cityData={ward.data.cityData.data}
         />
       );
     }
@@ -131,13 +131,13 @@ export function renderLocationStepperContent({
       return (
         <CityForm
           redirect={false}
-          bookingTypeData={city.data.bookingTypeData}
-          continentData={city.data.continentData}
-          languageData={city.data.languageData}
-          currencyData={city.data.currencyData}
-          countryData={city.data.countryData}
-          searchTagData={city.data.searchTagData}
-          timezoneData={city.data.timezoneData}
+          bookingTypeData={city.data.bookingTypeData.data}
+          continentData={city.data.continentData.data}
+          languageData={city.data.languageData.data}
+          currencyData={city.data.currencyData.data}
+          countryData={city.data.countryData.data}
+          searchTagData={city.data.searchTagData.data}
+          timezoneData={city.data.timezoneData.data}
         />
       );
     }
@@ -157,15 +157,15 @@ export function renderLocationStepperContent({
     if (subStep === "place" && place.data) {
       return (
         <PlaceForm
-          bookingTypeData={place.data.bookingTypeData}
-          searchTagData={place.data.searchTag}
+          bookingTypeData={place.data.bookingTypeData.data}
+          searchTagData={place.data.searchTag.data}
           redirect={false}
-          cities={place.data.cities}
-          countries={place.data.countries}
-          districts={place.data.districts}
-          wards={place.data.wards}
-          addresses={place.data.addresses}
-          placeTypeData={place.data.placeTypeData}
+          cities={place.data.cities.data}
+          countries={place.data.countries.data}
+          districts={place.data.districts.data}
+          wards={place.data.wards.data}
+          addresses={place.data.addresses.data}
+          placeTypeData={place.data.placeTypeData.data}
         />
       );
     }
@@ -174,16 +174,16 @@ export function renderLocationStepperContent({
       return (
         <AddressForm
           redirect={false}
-          bookingTypeData={address.data.bookingTypeData}
-          continentsData={address.data.continentsData}
-          timezoneData={address.data.timezoneData}
-          currencyData={address.data.currencyData}
-          searchTags={address.data.searchTagData}
-          languageData={address.data.languageData}
-          cityData={address.data.cityData}
-          districtData={address.data.districtData}
-          wardData={address.data.wardData}
-          countryData={address.data.countryData}
+          bookingTypeData={address.data.bookingTypeData.data}
+          continentsData={address.data.continentsData.data}
+          timezoneData={address.data.timezoneData.data}
+          currencyData={address.data.currencyData.data}
+          searchTags={address.data.searchTagData.data}
+          languageData={address.data.languageData.data}
+          cityData={address.data.cityData.data}
+          districtData={address.data.districtData.data}
+          wardData={address.data.wardData.data}
+          countryData={address.data.countryData.data}
         />
       );
     }
@@ -192,12 +192,12 @@ export function renderLocationStepperContent({
       return (
         <FlyAirportForm
           redirect={false}
-          airportData={flyairport.data.airportData}
-          addresses={flyairport.data.addresses}
-          cities={flyairport.data.cities}
-          districts={flyairport.data.districts}
-          wards={flyairport.data.wards}
-          countries={flyairport.data.countries}
+          airportData={flyairport.data.airportData.data}
+          addresses={flyairport.data.addresses.data}
+          cities={flyairport.data.cities.data}
+          districts={flyairport.data.districts.data}
+          wards={flyairport.data.wards.data}
+          countries={flyairport.data.countries.data}
         />
       );
     }

@@ -2,8 +2,8 @@
 
 import FuelTypeForm from "../components/FuelTypeForm";
 
-import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
+import LoadingPage from "@/components/ui/loading-page";
 
 import { useFuelTypeCreateFormData } from "@/hooks/catalog/fuel-type/useFuelTypeCreateFormData";
 
@@ -16,9 +16,6 @@ const FuelTypeCreatePage = () => {
   }
 
   if (isError || !data) {
-    // Chỉ có 1 nguồn dữ liệu (bookingType) nên lấy thẳng message của nó.
-    // Fallback về description mặc định của ErrorPage nếu error không có
-    // message (vd lỗi network không phải instance Error chuẩn).
     return (
       <ErrorPage
         description={
@@ -30,7 +27,7 @@ const FuelTypeCreatePage = () => {
     );
   }
 
-  return <FuelTypeForm bookingTypeData={data.bookingTypes} />;
+  return <FuelTypeForm bookingTypeData={data.bookingTypes.data} />;
 };
 
 export default FuelTypeCreatePage;

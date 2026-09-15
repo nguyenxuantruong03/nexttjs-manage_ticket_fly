@@ -1,42 +1,81 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { RouteTypeService } from "@/services/catalog/route-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const routeTypeQueryKeys = {
   all: ["route-type"] as const,
-  list: () => [...routeTypeQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...routeTypeQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...routeTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...routeTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...routeTypeQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...routeTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useRouteTypes(enabled = true) {
+export function useRouteTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: routeTypeQueryKeys.list(),
-    queryFn: () => RouteTypeService.getMany(),
+    queryKey: routeTypeQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      RouteTypeService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useRouteType(id: string, enabled = true) {
   return useQuery({
     queryKey: routeTypeQueryKeys.detail(id),
+
     queryFn: () => RouteTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateRouteType() {
@@ -48,14 +87,14 @@ export function useCreateRouteType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: routeTypeQueryKeys.list(),
+        queryKey: routeTypeQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateRouteType() {
@@ -72,7 +111,10 @@ export function useUpdateRouteType() {
 
     onSuccess: async (_, variables) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: routeTypeQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: routeTypeQueryKeys.lists(),
+        }),
+
         queryClient.invalidateQueries({
           queryKey: routeTypeQueryKeys.detail(variables.id),
         }),
@@ -82,7 +124,7 @@ export function useUpdateRouteType() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteRouteType() {
@@ -93,8 +135,13 @@ export function useDeleteRouteType() {
 
     onSuccess: async (_, id) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: routeTypeQueryKeys.list() }),
-        queryClient.removeQueries({ queryKey: routeTypeQueryKeys.detail(id) }),
+        queryClient.invalidateQueries({
+          queryKey: routeTypeQueryKeys.lists(),
+        }),
+
+        queryClient.removeQueries({
+          queryKey: routeTypeQueryKeys.detail(id),
+        }),
       ]);
     },
   });

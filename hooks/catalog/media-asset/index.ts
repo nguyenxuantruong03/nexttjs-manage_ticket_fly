@@ -1,37 +1,66 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { MediaAssetService } from "@/services/catalog/media-asset/client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const mediaAssetQueryKeys = {
   all: ["media-asset"] as const,
 
-  list: () => [...mediaAssetQueryKeys.all, "list"] as const,
+  lists: () => [...mediaAssetQueryKeys.all, "list"] as const,
 
-  detail: (id: string) =>
-    [...mediaAssetQueryKeys.all, "detail", id] as const,
+  list: (page: number, limit: number) =>
+    [...mediaAssetQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...mediaAssetQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...mediaAssetQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useMediaAssets(enabled = true) {
+export function useMediaAssets(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: mediaAssetQueryKeys.list(),
+    queryKey: mediaAssetQueryKeys.list(page, limit),
 
-    queryFn: () => MediaAssetService.getMany(),
+    queryFn: () =>
+      MediaAssetService.getMany({
+        page,
+        limit,
+      }),
 
     enabled,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useMediaAsset(id: string, enabled = true) {
   return useQuery({
@@ -39,34 +68,33 @@ export function useMediaAsset(id: string, enabled = true) {
 
     queryFn: () => MediaAssetService.getOne(id),
 
-    enabled: enabled && !!id,
+    enabled: enabled && Boolean(id),
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateMediaAsset() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (
-      data: Parameters<typeof MediaAssetService.create>[0],
-    ) => MediaAssetService.create(data),
+    mutationFn: (data: Parameters<typeof MediaAssetService.create>[0]) =>
+      MediaAssetService.create(data),
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: mediaAssetQueryKeys.list(),
+        queryKey: mediaAssetQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateMediaAsset() {
@@ -84,7 +112,7 @@ export function useUpdateMediaAsset() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: mediaAssetQueryKeys.list(),
+          queryKey: mediaAssetQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
@@ -96,7 +124,7 @@ export function useUpdateMediaAsset() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteMediaAsset() {
@@ -108,7 +136,7 @@ export function useDeleteMediaAsset() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: mediaAssetQueryKeys.list(),
+          queryKey: mediaAssetQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({

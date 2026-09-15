@@ -31,12 +31,12 @@ export default function CountryEditPage() {
   return (
     <CountryForm
       initialData={data.initialData}
-      currencyData={data.currencyData}
-      searchTagData={data.searchTagData}
-      timezoneData={data.timezoneData}
-      languageData={data.languageData}
-      continentData={data.continentData}
-      bookingTypeData={data.bookingTypeData}
+      currencyData={data.currencyData.data}
+      searchTagData={data.searchTagData.data}
+      timezoneData={data.timezoneData.data}
+      languageData={data.languageData.data}
+      continentData={data.continentData.data}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

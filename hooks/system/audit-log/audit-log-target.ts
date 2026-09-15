@@ -1,9 +1,10 @@
-// ======================================================
-// Target
-// ======================================================
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
 
 import { AuditLogService } from "@/services/system/audit-log/client";
-import { useQuery } from "@tanstack/react-query";
 
 export function useAuditLogTarget(
   targetType: string,
@@ -12,21 +13,8 @@ export function useAuditLogTarget(
 ) {
   return useQuery({
     queryKey: ["audit-log", "target", targetType, targetId],
-
-    queryFn: async () => {
-      const data = await AuditLogService.findByTarget(targetType, targetId);
-
-      return data;
-    },
-
-    enabled: enabled && !!targetType && !!targetId,
-
-    staleTime: 5 * 60 * 1000,
-
-    gcTime: 30 * 60 * 1000,
-
-    retry: 1,
-
-    refetchOnWindowFocus: false,
+    queryFn: () => AuditLogService.findByTarget(targetType, targetId),
+    enabled: enabled && Boolean(targetType) && Boolean(targetId),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }

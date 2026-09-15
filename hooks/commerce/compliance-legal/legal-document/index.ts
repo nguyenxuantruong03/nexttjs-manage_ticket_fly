@@ -1,37 +1,66 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import { LegalDocumentService } from "@/services/commerce/compliance-legal/legal-document/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const legalDocumentQueryKeys = {
   all: ["legal-document"] as const,
 
-  list: () => [...legalDocumentQueryKeys.all, "list"] as const,
+  lists: () => [...legalDocumentQueryKeys.all, "list"] as const,
 
-  detail: (id: string) =>
-    [...legalDocumentQueryKeys.all, "detail", id] as const,
+  list: (page: number, limit: number) =>
+    [...legalDocumentQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...legalDocumentQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...legalDocumentQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useLegalDocuments(enabled = true) {
+export function useLegalDocuments(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: legalDocumentQueryKeys.list(),
+    queryKey: legalDocumentQueryKeys.list(page, limit),
 
-    queryFn: () => LegalDocumentService.getMany(),
+    queryFn: () =>
+      LegalDocumentService.getMany({
+        page,
+        limit,
+      }),
 
     enabled,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useLegalDocument(id: string, enabled = true) {
   return useQuery({
@@ -39,34 +68,33 @@ export function useLegalDocument(id: string, enabled = true) {
 
     queryFn: () => LegalDocumentService.getOne(id),
 
-    enabled: enabled && !!id,
+    enabled: enabled && Boolean(id),
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateLegalDocument() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (
-      data: Parameters<typeof LegalDocumentService.create>[0],
-    ) => LegalDocumentService.create(data),
+    mutationFn: (data: Parameters<typeof LegalDocumentService.create>[0]) =>
+      LegalDocumentService.create(data),
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: legalDocumentQueryKeys.list(),
+        queryKey: legalDocumentQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateLegalDocument() {
@@ -84,7 +112,7 @@ export function useUpdateLegalDocument() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: legalDocumentQueryKeys.list(),
+          queryKey: legalDocumentQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
@@ -96,7 +124,7 @@ export function useUpdateLegalDocument() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteLegalDocument() {
@@ -108,7 +136,7 @@ export function useDeleteLegalDocument() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: legalDocumentQueryKeys.list(),
+          queryKey: legalDocumentQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({

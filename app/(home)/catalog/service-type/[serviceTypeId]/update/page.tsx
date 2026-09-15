@@ -38,7 +38,7 @@ export default function ServiceTypeEditPage() {
   return (
     <ServiceTypeForm
       initialData={data.serviceTypeData}
-      bookingTypeData={data.bookingTypes}
+      bookingTypeData={data.bookingTypes.data}
     />
   );
 }

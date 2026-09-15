@@ -8,14 +8,30 @@ import { useLanguages } from "@/hooks/location/language";
 import { useBookingTypes } from "@/hooks/commerce/booking-type";
 import { useContinents } from "@/hooks/location/country/continent";
 
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from "@/config/react-query.config";
+
+// ======================================================
+// UPDATE FORM DATA
+// ======================================================
+
 export const useCountryUpdateFormData = (countryId: string, enabled = true) => {
   const countryQuery = useCountry(countryId, enabled);
-  const currencyQuery = useCurrencies(enabled);
-  const searchTagQuery = useSearchTags(enabled);
-  const timezoneQuery = useTimezones(enabled);
-  const languageQuery = useLanguages(enabled);
-  const bookingTypeQuery = useBookingTypes(enabled);
-  const continentQuery = useContinents(enabled);
+
+  const currencyQuery = useCurrencies(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const searchTagQuery = useSearchTags(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const timezoneQuery = useTimezones(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const languageQuery = useLanguages(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const bookingTypeQuery = useBookingTypes(
+    DEFAULT_PAGE,
+    DEFAULT_LIMIT,
+    enabled,
+  );
+
+  const continentQuery = useContinents(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
 
   const queries = [
     countryQuery,
@@ -28,6 +44,10 @@ export const useCountryUpdateFormData = (countryId: string, enabled = true) => {
   ];
 
   return {
+    // ==================================================
+    // DATA
+    // ==================================================
+
     data:
       countryQuery.data &&
       currencyQuery.data &&
@@ -47,22 +67,42 @@ export const useCountryUpdateFormData = (countryId: string, enabled = true) => {
           }
         : undefined,
 
-    isLoading: queries.some((q) => q.isLoading),
-    isFetching: queries.some((q) => q.isFetching),
-    isError: queries.some((q) => q.isError),
+    // ==================================================
+    // LOADING
+    // ==================================================
+
+    isLoading: queries.some((query) => query.isLoading),
+
+    isFetching: queries.some((query) => query.isFetching),
+
+    // ==================================================
+    // ERROR
+    // ==================================================
+
+    isError: queries.some((query) => query.isError),
 
     errors: {
       country: countryQuery.error as Error | null,
+
       currency: currencyQuery.error as Error | null,
+
       searchTag: searchTagQuery.error as Error | null,
+
       timezone: timezoneQuery.error as Error | null,
+
       language: languageQuery.error as Error | null,
+
       bookingType: bookingTypeQuery.error as Error | null,
+
       continent: continentQuery.error as Error | null,
     },
 
+    // ==================================================
+    // REFETCH
+    // ==================================================
+
     refetch: async () => {
-      await Promise.all(queries.map((q) => q.refetch()));
+      await Promise.all(queries.map((query) => query.refetch()));
     },
   };
 };

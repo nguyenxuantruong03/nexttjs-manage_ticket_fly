@@ -27,7 +27,7 @@ const RouteTypeCreatePage = () => {
     );
   }
 
-  return <RouteTypeForm bookingTypeData={data.bookingTypes} />;
+  return <RouteTypeForm bookingTypeData={data.bookingTypes.data} />;
 };
 
 export default RouteTypeCreatePage;

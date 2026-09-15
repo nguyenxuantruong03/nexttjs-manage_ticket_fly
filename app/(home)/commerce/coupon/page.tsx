@@ -1,21 +1,33 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table/data-table";
-import { couponColumns } from "./components/columns";
+import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useCrudTable } from "@/hooks/crud/useCrudTable";
+import type { PaginationState } from "@tanstack/react-table";
 
-import { createCouponActions } from "./features/actions";
-import { createCouponHandlers } from "./features/handlers";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
+import { useCrudTable } from "@/hooks/crud/useCrudTable";
 import { useDeleteCoupon, useCoupons } from "@/hooks/commerce/coupon";
+
+import { couponColumns } from "./components/columns";
+import { createCouponActions } from "./features/actions";
+import { createCouponHandlers } from "./features/handlers";
 
 const Coupon = () => {
   const router = useRouter();
 
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+
   const deleteMutation = useDeleteCoupon();
-  const { data, isPending, error } = useCoupons();
+
+  const { data, isPending, isFetching, error } = useCoupons(
+    pagination.pageIndex + 1,
+    pagination.pageSize,
+  );
 
   const handlers = createCouponHandlers({
     router,
@@ -38,10 +50,24 @@ const Coupon = () => {
 
       <DataTable
         columns={couponColumns(actions)}
-        data={data}
-        onRowClick={({ id }) => handlers.view(id)}
+        data={data?.data ?? []}
+        isLoading={isPending}
+        isFetching={isFetching}
+        manualPagination
+        pageCount={data?.meta.totalPages ?? 0}
+        totalRows={data?.meta.total ?? 0}
+        pagination={pagination}
+        onPaginationChange={setPagination}
         onRowDoubleClick={({ id }) => handlers.update(id)}
         onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
+        pageSizeOptions={[10, 20, 30, 50, 100]}
+        persistKey="coupon"
+        enableSorting
+        enableColumnFilters
+        enableResizing
+        enablePinning
+        enableExport
+        onRowClick={({ id }) => handlers.view(id)}
       />
     </>
   );

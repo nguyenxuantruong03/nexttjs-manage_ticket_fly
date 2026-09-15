@@ -1,6 +1,12 @@
 "use client";
 
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
+
 import { useQuery } from "@tanstack/react-query";
+
+// ======================================================
+// CREATE FORM DATA
+// ======================================================
 
 export const useContinentCreateFormData = (enabled = true) => {
   return useQuery({
@@ -8,7 +14,7 @@ export const useContinentCreateFormData = (enabled = true) => {
 
     enabled,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       return {};

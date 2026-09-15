@@ -38,14 +38,12 @@ export function FormIcon<T extends FieldValues>({
         <FormItem className="w-full">
           {label && <FormLabel>{label}</FormLabel>}
 
-          <FormControl>
             <IconPicker
               value={field.value ?? null}
               onChange={field.onChange}
               placeholder={placeholder}
               disabled={disabled}
             />
-          </FormControl>
 
           <FormMessage />
         </FormItem>

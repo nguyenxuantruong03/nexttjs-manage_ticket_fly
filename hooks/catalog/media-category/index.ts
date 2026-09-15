@@ -1,37 +1,66 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { MediaCategoryService } from "@/services/catalog/media-category/client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const mediaCategoryQueryKeys = {
   all: ["media-category"] as const,
 
-  list: () => [...mediaCategoryQueryKeys.all, "list"] as const,
+  lists: () => [...mediaCategoryQueryKeys.all, "list"] as const,
 
-  detail: (id: string) =>
-    [...mediaCategoryQueryKeys.all, "detail", id] as const,
+  list: (page: number, limit: number) =>
+    [...mediaCategoryQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...mediaCategoryQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...mediaCategoryQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useMediaCategories(enabled = true) {
+export function useMediaCategories(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: mediaCategoryQueryKeys.list(),
+    queryKey: mediaCategoryQueryKeys.list(page, limit),
 
-    queryFn: () => MediaCategoryService.getMany(),
+    queryFn: () =>
+      MediaCategoryService.getMany({
+        page,
+        limit,
+      }),
 
     enabled,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useMediaCategory(id: string, enabled = true) {
   return useQuery({
@@ -39,14 +68,14 @@ export function useMediaCategory(id: string, enabled = true) {
 
     queryFn: () => MediaCategoryService.getOne(id),
 
-    enabled: enabled && !!id,
+    enabled: enabled && Boolean(id),
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateMediaCategory() {
@@ -58,14 +87,14 @@ export function useCreateMediaCategory() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: mediaCategoryQueryKeys.list(),
+        queryKey: mediaCategoryQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateMediaCategory() {
@@ -83,7 +112,7 @@ export function useUpdateMediaCategory() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: mediaCategoryQueryKeys.list(),
+          queryKey: mediaCategoryQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
@@ -95,7 +124,7 @@ export function useUpdateMediaCategory() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteMediaCategory() {
@@ -107,7 +136,7 @@ export function useDeleteMediaCategory() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: mediaCategoryQueryKeys.list(),
+          queryKey: mediaCategoryQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({

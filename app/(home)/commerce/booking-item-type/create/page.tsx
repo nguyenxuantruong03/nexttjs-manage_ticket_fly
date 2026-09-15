@@ -26,5 +26,5 @@ export default function BookingItemTypeCreatePage() {
     );
   }
 
-  return <BookingItemTypeForm bookingTypeData={data.bookingTypeData} />;
+  return <BookingItemTypeForm bookingTypeData={data.bookingTypeData.data} />;
 }

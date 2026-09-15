@@ -2,13 +2,17 @@
 
 import { useQuery } from "@tanstack/react-query";
 
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
+
 export const useCarRentalInsuranceBenefitTypeCreateFormData = (
   enabled = true,
 ) => {
   const query = useQuery({
     queryKey: ["car-rental-insurance-benefit-type-create-form-data"],
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       await Promise.all([]);
@@ -21,16 +25,11 @@ export const useCarRentalInsuranceBenefitTypeCreateFormData = (
     data: query.data,
 
     isLoading: query.isLoading,
+
     isFetching: query.isFetching,
 
-    // isError là field bool duy nhất dùng để check "có lỗi hay không"
-    // ở component (if (isError || !data) ...). "errors" bên dưới chỉ
-    // dùng khi cần hiển thị message/nguồn lỗi cụ thể, không thay thế
-    // isError.
     isError: query.isError,
-    // Trang create hiện chưa gọi service nào (Promise.all rỗng), giữ
-    // key "insuranceBenefitType" để đồng bộ với update, phòng khi thêm
-    // nguồn dữ liệu về sau.
+
     errors: {
       insuranceBenefitType: query.error as Error | null,
     },

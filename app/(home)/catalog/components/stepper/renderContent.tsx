@@ -67,7 +67,7 @@ export function renderCatalogStepperContent({
   if (mainStep === "service" && subStep === "route-type") {
     return (
       <RouteTypeForm
-        bookingTypeData={routeType.data?.bookingTypes ?? []}
+        bookingTypeData={routeType.data?.bookingTypes.data ?? []}
         redirect={false}
       />
     );
@@ -76,7 +76,7 @@ export function renderCatalogStepperContent({
   if (mainStep === "service" && subStep === "service-type") {
     return (
       <ServiceTypeForm
-        bookingTypeData={serviceType.data?.bookingTypes ?? []}
+        bookingTypeData={serviceType.data?.bookingTypes.data ?? []}
         redirect={false}
       />
     );
@@ -89,7 +89,7 @@ export function renderCatalogStepperContent({
   if (mainStep === "vehicle" && subStep === "vehicle-type") {
     return (
       <VehicleTypeForm
-        bookingTypeData={vehicleType.data?.bookingTypes ?? []}
+        bookingTypeData={vehicleType.data?.bookingTypes.data ?? []}
         redirect={false}
       />
     );
@@ -98,7 +98,7 @@ export function renderCatalogStepperContent({
   if (mainStep === "vehicle" && subStep === "fuel-type") {
     return (
       <FuelTypeForm
-        bookingTypeData={fuelType.data?.bookingTypes ?? []}
+        bookingTypeData={fuelType.data?.bookingTypes.data ?? []}
         redirect={false}
       />
     );
@@ -111,7 +111,7 @@ export function renderCatalogStepperContent({
   if (mainStep === "media" && subStep === "media-asset") {
     return (
       <MediaAssetForm
-        bookingTypeData={mediaAsset.data?.bookingTypes ?? []}
+        bookingTypeData={mediaAsset.data?.bookingTypes.data ?? []}
         redirect={false}
       />
     );
@@ -120,7 +120,7 @@ export function renderCatalogStepperContent({
   if (mainStep === "media" && subStep === "media-category") {
     return (
       <MediaCategoryForm
-        bookingTypeData={mediaCategory.data?.bookingTypes ?? []}
+        bookingTypeData={mediaCategory.data?.bookingTypes.data ?? []}
         redirect={false}
       />
     );
@@ -133,7 +133,7 @@ export function renderCatalogStepperContent({
   if (mainStep === "reason" && subStep === "reason-code") {
     return (
       <ReasonCodeForm
-        contextData={reasonCode.data?.reasonContexts ?? []}
+        contextData={reasonCode.data?.reasonContexts.data ?? []}
         redirect={false}
       />
     );

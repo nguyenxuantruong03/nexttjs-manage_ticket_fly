@@ -1,4 +1,10 @@
 import type { RowData } from "@tanstack/react-table";
+import type {
+  ColumnOrderState,
+  ColumnPinningState,
+  ColumnSizingState,
+  VisibilityState,
+} from "@tanstack/react-table";
 
 export type FilterVariant = "text" | "number" | "boolean" | "select";
 
@@ -287,10 +293,17 @@ export interface ServerSideState {
 
 /** Trạng thái view của bảng, có thể lưu vào localStorage theo persistKey */
 export interface DataTableViewState {
-  columnVisibility: Record<string, boolean>;
-  columnPinning: { left?: string[]; right?: string[] };
-  density: TableDensity;
   pageSize: number;
+
+  density: TableDensity;
+
+  columnVisibility: VisibilityState;
+
+  columnPinning: ColumnPinningState;
+
+  columnSizing: ColumnSizingState;
+
+  columnOrder: ColumnOrderState;
 }
 
 /** Padding dọc cho mỗi mật độ dòng — dùng cn()/twMerge nên sẽ ghi đè class mặc định của TableCell */

@@ -28,7 +28,7 @@ const ServiceTypeCreatePage = () => {
     );
   }
 
-  return <ServiceTypeForm bookingTypeData={data.bookingTypes} />;
+  return <ServiceTypeForm bookingTypeData={data.bookingTypes.data} />;
 };
 
 export default ServiceTypeCreatePage;

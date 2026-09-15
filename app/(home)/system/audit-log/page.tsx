@@ -1,18 +1,16 @@
 "use client";
 
+import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import type { PaginationState } from "@tanstack/react-table";
 
 import ErrorPage from "@/components/ui/error-page";
 import LoadingPage from "@/components/ui/loading-page";
-
 import { useAuditLogs } from "@/hooks/system/audit-log";
-
 import { AuditLog } from "@/types/system/system-governance.type";
 
 import { AuditLogTable } from "./components/audit-log-table";
 import { auditLogColumns } from "./components/columns";
-
 import { createAuditLogActions } from "./features/actions";
 import { createAuditLogHandlers } from "./features/handlers";
 import { UserQuickViewDialog } from "./components/user-quick-view/user-quick-view-dialog";
@@ -21,14 +19,23 @@ import { AuditLogTargetDialog } from "./components/audit-log-target-dialog/audit
 const AuditLogPage = () => {
   const router = useRouter();
 
-  const auditLogsQuery = useAuditLogs();
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
 
-  const [actorId, setActorId] = useState<string | null>(null);
+  const auditLogsQuery = useAuditLogs(
+    pagination.pageIndex + 1,
+    pagination.pageSize,
+  );
 
-  const [actorDialogOpen, setActorDialogOpen] = useState(false);
+  const [actorId, setActorId] = React.useState<string | null>(null);
 
-  const [targetRow, setTargetRow] = useState<AuditLog | null>(null);
-  const [targetDialogOpen, setTargetDialogOpen] = useState(false);
+  const [actorDialogOpen, setActorDialogOpen] = React.useState(false);
+
+  const [targetRow, setTargetRow] = React.useState<AuditLog | null>(null);
+
+  const [targetDialogOpen, setTargetDialogOpen] = React.useState(false);
 
   const handlers = createAuditLogHandlers({
     router,
@@ -49,7 +56,6 @@ const AuditLogPage = () => {
     }
 
     setActorId(row.actorId);
-
     setActorDialogOpen(true);
   };
 
@@ -73,12 +79,17 @@ const AuditLogPage = () => {
 
       <AuditLogTable
         columns={auditLogColumns(actions)}
-        data={auditLogsQuery.data ?? []}
+        data={auditLogsQuery.data?.data ?? []}
         onRowClick={(row) => handlers.view(row.id)}
         onRowDoubleClick={handleActorClick}
         onRowTripleClick={handlers.viewTarget}
+        manualPagination
+        pageCount={auditLogsQuery.data?.meta.totalPages ?? 0}
+        totalRows={auditLogsQuery.data?.meta.total ?? 0}
+        pagination={pagination}
+        onPaginationChange={setPagination}
       />
-      {/* ========================Dialog============================ */}
+
       <UserQuickViewDialog
         actorId={actorId}
         open={actorDialogOpen}

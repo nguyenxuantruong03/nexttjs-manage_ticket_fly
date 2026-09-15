@@ -1,42 +1,81 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { PackageService } from "@/services/commerce/package/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const packageQueryKeys = {
   all: ["package"] as const,
-  list: () => [...packageQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...packageQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...packageQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...packageQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...packageQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...packageQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function usePackages(enabled = true) {
+export function usePackages(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: packageQueryKeys.list(),
-    queryFn: () => PackageService.getMany(),
+    queryKey: packageQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      PackageService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function usePackage(id: string, enabled = true) {
   return useQuery({
     queryKey: packageQueryKeys.detail(id),
+
     queryFn: () => PackageService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreatePackage() {
@@ -48,14 +87,14 @@ export function useCreatePackage() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: packageQueryKeys.list(),
+        queryKey: packageQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdatePackage() {
@@ -73,8 +112,9 @@ export function useUpdatePackage() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: packageQueryKeys.list(),
+          queryKey: packageQueryKeys.lists(),
         }),
+
         queryClient.invalidateQueries({
           queryKey: packageQueryKeys.detail(variables.id),
         }),
@@ -84,7 +124,7 @@ export function useUpdatePackage() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeletePackage() {
@@ -96,8 +136,9 @@ export function useDeletePackage() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: packageQueryKeys.list(),
+          queryKey: packageQueryKeys.lists(),
         }),
+
         queryClient.removeQueries({
           queryKey: packageQueryKeys.detail(id),
         }),

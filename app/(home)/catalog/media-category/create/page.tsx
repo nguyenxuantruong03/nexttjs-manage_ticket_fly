@@ -28,7 +28,7 @@ const MediaCategoryCreatePage = () => {
     );
   }
 
-  return <MediaCategoryForm bookingTypeData={data.bookingTypes} />;
+  return <MediaCategoryForm bookingTypeData={data.bookingTypes.data} />;
 };
 
 export default MediaCategoryCreatePage;

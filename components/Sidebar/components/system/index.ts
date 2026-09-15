@@ -1,6 +1,7 @@
 import { SidebarTopic } from "@/components/Sidebar/types";
 import { auditLogSidebar } from "./audit-log";
 import { systemSettingSidebar } from "./system-setting";
+import { metricsSidebar } from "./metrics";
 
 export const systemSidebar: SidebarTopic = {
   id: 600,
@@ -11,7 +12,7 @@ export const systemSidebar: SidebarTopic = {
       title: "System Management",
       icon: "settings",
 
-      children: [systemSettingSidebar, auditLogSidebar],
+      children: [systemSettingSidebar, auditLogSidebar, metricsSidebar],
     },
   ],
 };

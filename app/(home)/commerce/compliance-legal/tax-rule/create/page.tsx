@@ -28,7 +28,7 @@ const TaxRuleCreatePage = () => {
     );
   }
 
-  return <TaxRuleForm bookingTypeData={data.bookingTypeData} />;
+  return <TaxRuleForm bookingTypeData={data.bookingTypeData.data} />;
 };
 
 export default TaxRuleCreatePage;

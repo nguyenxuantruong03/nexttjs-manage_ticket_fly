@@ -1,6 +1,19 @@
 "use client";
+
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { ProviderBookingService } from "@/services/provider-booking/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -8,21 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const providerBookingQueryKeys = {
   all: ["provider-booking"] as const,
-  list: () => [...providerBookingQueryKeys.all, "list"] as const,
-  detail: (id: string) =>
-    [...providerBookingQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...providerBookingQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...providerBookingQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...providerBookingQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...providerBookingQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useProviderBookings(enabled = true) {
+export function useProviderBookings(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: providerBookingQueryKeys.list(),
-    queryFn: () => ProviderBookingService.getMany(),
+    queryKey: providerBookingQueryKeys.list(page, limit),
+    queryFn: () =>
+      ProviderBookingService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -30,8 +58,8 @@ export function useProviderBooking(id: string, enabled = true) {
   return useQuery({
     queryKey: providerBookingQueryKeys.detail(id),
     queryFn: () => ProviderBookingService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -48,7 +76,7 @@ export function useCreateProviderBooking() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: providerBookingQueryKeys.list(),
+        queryKey: providerBookingQueryKeys.lists(),
       });
     },
   });
@@ -73,7 +101,7 @@ export function useUpdateProviderBooking() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: providerBookingQueryKeys.list(),
+          queryKey: providerBookingQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: providerBookingQueryKeys.detail(variables.id),
@@ -96,7 +124,7 @@ export function useDeleteProviderBooking() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: providerBookingQueryKeys.list(),
+          queryKey: providerBookingQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: providerBookingQueryKeys.detail(id),

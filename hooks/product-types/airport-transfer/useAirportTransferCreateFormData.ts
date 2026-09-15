@@ -27,11 +27,19 @@ import { LanguageService } from "@/services/location/language/client";
 import { MediaAssetService } from "@/services/catalog/media-asset/client";
 import { MediaCategoryService } from "@/services/catalog/media-category/client";
 
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
+
+// ======================================================
+// Create Form Data
+// ======================================================
+
 export const useAirportTransferCreateFormData = (enabled = true) => {
   const query = useQuery({
     queryKey: ["airport-transfer-create-form-data"],
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       const [
@@ -117,8 +125,11 @@ export const useAirportTransferCreateFormData = (enabled = true) => {
 
   return {
     data: query.data,
+
     isLoading: query.isLoading,
+
     isFetching: query.isFetching,
+
     isError: query.isError,
 
     errors: {

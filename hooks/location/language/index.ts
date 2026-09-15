@@ -1,31 +1,82 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { LanguageService } from "@/services/location/language/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
+
+// ======================================================
+// QUERY KEYS
+// ======================================================
 
 export const languageQueryKeys = {
   all: ["language"] as const,
-  list: () => [...languageQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...languageQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...languageQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...languageQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...languageQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...languageQueryKeys.details(), id] as const,
 };
 
-export function useLanguages(enabled = true) {
+// ======================================================
+// FIND ALL
+// ======================================================
+
+export function useLanguages(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: languageQueryKeys.list(),
-    queryFn: () => LanguageService.getMany(),
+    queryKey: languageQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      LanguageService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useLanguage(id: string, enabled = true) {
   return useQuery({
     queryKey: languageQueryKeys.detail(id),
+
     queryFn: () => LanguageService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
+
+// ======================================================
+// CREATE
+// ======================================================
 
 export function useCreateLanguage() {
   const queryClient = useQueryClient();
@@ -33,13 +84,18 @@ export function useCreateLanguage() {
   return useMutation({
     mutationFn: (data: Parameters<typeof LanguageService.create>[0]) =>
       LanguageService.create(data),
+
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: languageQueryKeys.list(),
+        queryKey: languageQueryKeys.lists(),
       });
     },
   });
 }
+
+// ======================================================
+// UPDATE
+// ======================================================
 
 export function useUpdateLanguage() {
   const queryClient = useQueryClient();
@@ -52,9 +108,13 @@ export function useUpdateLanguage() {
       id: string;
       data: Parameters<typeof LanguageService.update>[1];
     }) => LanguageService.update(id, data),
+
     onSuccess: async (_, variables) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: languageQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: languageQueryKeys.lists(),
+        }),
+
         queryClient.invalidateQueries({
           queryKey: languageQueryKeys.detail(variables.id),
         }),
@@ -63,15 +123,25 @@ export function useUpdateLanguage() {
   });
 }
 
+// ======================================================
+// DELETE
+// ======================================================
+
 export function useDeleteLanguage() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (id: string) => LanguageService.delete(id),
+
     onSuccess: async (_, id) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: languageQueryKeys.list() }),
-        queryClient.removeQueries({ queryKey: languageQueryKeys.detail(id) }),
+        queryClient.invalidateQueries({
+          queryKey: languageQueryKeys.lists(),
+        }),
+
+        queryClient.removeQueries({
+          queryKey: languageQueryKeys.detail(id),
+        }),
       ]);
     },
   });

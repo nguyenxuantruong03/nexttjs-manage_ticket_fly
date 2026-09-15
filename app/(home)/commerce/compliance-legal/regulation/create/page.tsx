@@ -30,7 +30,7 @@ const RegulationCreatePage = () => {
   }
 
   return (
-    <RegulationForm regulationCategoryData={data.regulationCategoryData} />
+    <RegulationForm regulationCategoryData={data.regulationCategoryData.data} />
   );
 };
 

@@ -21,24 +21,6 @@ export function fuelTypeColumns(
     createSelectionColumn<FuelType>(),
 
     // ======================================================
-    // ID
-    // ======================================================
-
-    createDataTableColumn<FuelType>({
-      accessorKey: "id",
-      header: "ID",
-      meta: {
-        align: "right",
-        filterVariant: "number",
-        exportLabel: "ID",
-      },
-      summary: {
-        type: "count",
-        label: "Số dòng",
-      },
-    }),
-
-    // ======================================================
     // BASIC
     // ======================================================
 
@@ -105,25 +87,6 @@ export function fuelTypeColumns(
       },
       cell: (row) => (row.active ? "Yes" : "No"),
       exportValue: (row) => row.active,
-    }),
-
-    // ======================================================
-    // SORT ORDER
-    // ======================================================
-
-    createDataTableColumn<FuelType>({
-      accessorKey: "sortOrder",
-      header: "Sort Order",
-      meta: {
-        align: "right",
-        filterVariant: "number",
-        exportLabel: "Sort Order",
-      },
-      summary: {
-        type: "sum",
-        value: (row) => row.sortOrder ?? 0,
-        label: "Tổng thứ tự",
-      },
     }),
 
     // ======================================================

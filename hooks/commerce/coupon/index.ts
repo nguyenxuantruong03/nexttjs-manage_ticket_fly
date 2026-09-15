@@ -1,42 +1,81 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { CouponService } from "@/services/commerce/coupon/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const couponQueryKeys = {
   all: ["coupon"] as const,
-  list: () => [...couponQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...couponQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...couponQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...couponQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...couponQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...couponQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useCoupons(enabled = true) {
+export function useCoupons(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: couponQueryKeys.list(),
-    queryFn: () => CouponService.getMany(),
+    queryKey: couponQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      CouponService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useCoupon(id: string, enabled = true) {
   return useQuery({
     queryKey: couponQueryKeys.detail(id),
+
     queryFn: () => CouponService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateCoupon() {
@@ -48,14 +87,14 @@ export function useCreateCoupon() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: couponQueryKeys.list(),
+        queryKey: couponQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateCoupon() {
@@ -72,7 +111,10 @@ export function useUpdateCoupon() {
 
     onSuccess: async (_, variables) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: couponQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: couponQueryKeys.lists(),
+        }),
+
         queryClient.invalidateQueries({
           queryKey: couponQueryKeys.detail(variables.id),
         }),
@@ -82,7 +124,7 @@ export function useUpdateCoupon() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteCoupon() {
@@ -93,8 +135,13 @@ export function useDeleteCoupon() {
 
     onSuccess: async (_, id) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: couponQueryKeys.list() }),
-        queryClient.removeQueries({ queryKey: couponQueryKeys.detail(id) }),
+        queryClient.invalidateQueries({
+          queryKey: couponQueryKeys.lists(),
+        }),
+
+        queryClient.removeQueries({
+          queryKey: couponQueryKeys.detail(id),
+        }),
       ]);
     },
   });

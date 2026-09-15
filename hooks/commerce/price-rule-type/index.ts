@@ -1,62 +1,108 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { PriceRuleTypeService } from "@/services/commerce/price-rule-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const priceRuleTypeQueryKeys = {
   all: ["price-rule-type"] as const,
-  list: () => [...priceRuleTypeQueryKeys.all, "list"] as const,
+
+  lists: () => [...priceRuleTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...priceRuleTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...priceRuleTypeQueryKeys.all, "detail"] as const,
+
   detail: (id: string) =>
-    [...priceRuleTypeQueryKeys.all, "detail", id] as const,
+    [...priceRuleTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function usePriceRuleTypes(enabled = true) {
+export function usePriceRuleTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: priceRuleTypeQueryKeys.list(),
-    queryFn: () => PriceRuleTypeService.getMany(),
+    queryKey: priceRuleTypeQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      PriceRuleTypeService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
 
-export function usePriceRuleType(id: string, enabled = true) {
+// ======================================================
+// FIND ONE
+// ======================================================
+
+export function usePriceRuleType(
+  id: string,
+  enabled = true,
+) {
   return useQuery({
     queryKey: priceRuleTypeQueryKeys.detail(id),
-    queryFn: () => PriceRuleTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    queryFn: () =>
+      PriceRuleTypeService.getOne(id),
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreatePriceRuleType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: Parameters<typeof PriceRuleTypeService.create>[0]) =>
-      PriceRuleTypeService.create(data),
+    mutationFn: (
+      data: Parameters<
+        typeof PriceRuleTypeService.create
+      >[0]
+    ) => PriceRuleTypeService.create(data),
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: priceRuleTypeQueryKeys.list(),
+        queryKey: priceRuleTypeQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdatePriceRuleType() {
@@ -68,16 +114,21 @@ export function useUpdatePriceRuleType() {
       data,
     }: {
       id: string;
-      data: Parameters<typeof PriceRuleTypeService.update>[1];
+      data: Parameters<
+        typeof PriceRuleTypeService.update
+      >[1];
     }) => PriceRuleTypeService.update(id, data),
 
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: priceRuleTypeQueryKeys.list(),
+          queryKey: priceRuleTypeQueryKeys.lists(),
         }),
+
         queryClient.invalidateQueries({
-          queryKey: priceRuleTypeQueryKeys.detail(variables.id),
+          queryKey: priceRuleTypeQueryKeys.detail(
+            variables.id,
+          ),
         }),
       ]);
     },
@@ -85,20 +136,22 @@ export function useUpdatePriceRuleType() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeletePriceRuleType() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => PriceRuleTypeService.delete(id),
+    mutationFn: (id: string) =>
+      PriceRuleTypeService.delete(id),
 
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: priceRuleTypeQueryKeys.list(),
+          queryKey: priceRuleTypeQueryKeys.lists(),
         }),
+
         queryClient.removeQueries({
           queryKey: priceRuleTypeQueryKeys.detail(id),
         }),

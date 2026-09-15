@@ -43,7 +43,7 @@ export default function MediaAssetEditPage() {
   return (
     <MediaAssetForm
       initialData={data.mediaAssetData}
-      bookingTypeData={data.bookingTypes}
+      bookingTypeData={data.bookingTypes.data}
     />
   );
 }

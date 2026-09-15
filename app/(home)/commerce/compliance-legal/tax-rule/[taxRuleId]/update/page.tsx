@@ -41,7 +41,7 @@ export default function TaxRuleEditPage() {
   return (
     <TaxRuleForm
       initialData={data.taxRuleData}
-      bookingTypeData={data.bookingTypeData}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

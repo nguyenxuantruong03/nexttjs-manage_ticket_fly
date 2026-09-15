@@ -92,9 +92,9 @@ export function renderHotelStepperContent({ mainStep, subStep, hooks }: Props) {
       return (
         <RoomTypeForm
           redirect={false}
-          roomCategoryData={roomType.data?.roomCategories ?? []}
-          roomViewData={roomType.data?.roomViews ?? []}
-          bathroomTypeData={roomType.data?.bathroomTypes ?? []}
+          roomCategoryData={roomType.data?.roomCategories.data ?? []}
+          roomViewData={roomType.data?.roomViews.data ?? []}
+          bathroomTypeData={roomType.data?.bathroomTypes.data ?? []}
         />
       );
     }
@@ -115,7 +115,7 @@ export function renderHotelStepperContent({ mainStep, subStep, hooks }: Props) {
       return (
         <HotelCheckInPolicyForm
           redirect={false}
-          hotelData={checkInPolicy.data?.hotels ?? []}
+          hotelData={checkInPolicy.data?.hotels.data ?? []}
         />
       );
     }

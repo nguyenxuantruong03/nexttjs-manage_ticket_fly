@@ -1,35 +1,66 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { FeatureFlagService } from "@/services/commerce/feature-flag/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const featureFlagQueryKeys = {
   all: ["feature-flag"] as const,
 
-  list: () => [...featureFlagQueryKeys.all, "list"] as const,
+  lists: () => [...featureFlagQueryKeys.all, "list"] as const,
 
-  detail: (id: string) => [...featureFlagQueryKeys.all, "detail", id] as const,
+  list: (page: number, limit: number) =>
+    [...featureFlagQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...featureFlagQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...featureFlagQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useFeatureFlags(enabled = true) {
+export function useFeatureFlags(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: featureFlagQueryKeys.list(),
+    queryKey: featureFlagQueryKeys.list(page, limit),
 
-    queryFn: () => FeatureFlagService.getMany(),
+    queryFn: () =>
+      FeatureFlagService.getMany({
+        page,
+        limit,
+      }),
 
     enabled,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useFeatureFlag(id: string, enabled = true) {
   return useQuery({
@@ -37,14 +68,14 @@ export function useFeatureFlag(id: string, enabled = true) {
 
     queryFn: () => FeatureFlagService.getOne(id),
 
-    enabled: enabled && !!id,
+    enabled: enabled && Boolean(id),
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateFeatureFlag() {
@@ -56,14 +87,14 @@ export function useCreateFeatureFlag() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: featureFlagQueryKeys.list(),
+        queryKey: featureFlagQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateFeatureFlag() {
@@ -81,7 +112,7 @@ export function useUpdateFeatureFlag() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: featureFlagQueryKeys.list(),
+          queryKey: featureFlagQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
@@ -93,7 +124,7 @@ export function useUpdateFeatureFlag() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteFeatureFlag() {
@@ -105,7 +136,7 @@ export function useDeleteFeatureFlag() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: featureFlagQueryKeys.list(),
+          queryKey: featureFlagQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({

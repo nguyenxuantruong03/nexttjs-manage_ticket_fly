@@ -38,9 +38,9 @@ export default function PackageEditPage() {
   return (
     <PackageForm
       initialData={data.packageData}
-      bookingTypeData={data.bookingTypeData}
-      currencyData={data.currencyData}
-      mediaAssetData={data.mediaAssetData}
+      bookingTypeData={data.bookingTypeData.data}
+      currencyData={data.currencyData.data}
+      mediaAssetData={data.mediaAssetData.data}
     />
   );
 }

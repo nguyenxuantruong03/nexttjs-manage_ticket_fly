@@ -34,20 +34,22 @@ import { ExtraTypeService } from "@/services/commerce/extra-type/client";
 import { ExtraService } from "@/services/commerce/extra/client";
 import { ServiceTypeService } from "@/services/catalog/service-type/client";
 import { BookingItemTypeService } from "@/services/commerce/booking-item-type/client";
-
 import { MediaAssetService } from "@/services/catalog/media-asset/client";
 import { MediaCategoryService } from "@/services/catalog/media-category/client";
 
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
+
 export const useHotelCreateFormData = (enabled = true) => {
-  const locationQuery = useLocationFormData(
-    ["hotel-location-data"],
-    enabled,
-  );
+  const locationQuery = useLocationFormData(["hotel-location-data"], enabled);
 
   const hotelQuery = useQuery({
     queryKey: ["hotel-create-form-data"],
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       const [
@@ -81,35 +83,122 @@ export const useHotelCreateFormData = (enabled = true) => {
         mediaAssetData,
         mediaCategoryData,
       ] = await Promise.all([
-        SearchTagService.getMany(),
-        ProviderBookingService.getMany(),
-        HotelRoomCategoryService.getMany(),
-        HotelBathroomTypeService.getMany(),
-        HotelRoomViewService.getMany(),
-        HotelBedTypeService.getMany(),
-        HotelRoomTypeService.getMany(),
-        HotelDiningMealTypeService.getMany(),
-        HotelDiningServiceTypeService.getMany(),
-        HotelRatePlanTypeService.getMany(),
-        HotelMealPlanService.getMany(),
-        HotelSustainabilityService.getMany(),
-        HotelAccessibilityService.getMany(),
-        HotelBrandService.getMany(),
-        HotelStarRatingService.getMany(),
-        BookingTypeService.getMany(),
-        FacilityService.getMany(),
-        FacilityCategoryService.getMany(),
-        PackageService.getMany(),
-        PriceRuleTypeService.getMany(),
-        PolicyService.getMany(),
-        PolicyTypeService.getMany(),
-        CurrencyService.getMany(),
-        ExtraTypeService.getMany(),
-        ExtraService.getMany(),
-        ServiceTypeService.getMany(),
-        BookingItemTypeService.getMany(),
-        MediaAssetService.getMany(),
-        MediaCategoryService.getMany(),
+        SearchTagService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        ProviderBookingService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelRoomCategoryService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelBathroomTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelRoomViewService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelBedTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelRoomTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelDiningMealTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelDiningServiceTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelRatePlanTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelMealPlanService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelSustainabilityService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelAccessibilityService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelBrandService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        HotelStarRatingService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        BookingTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        FacilityService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        FacilityCategoryService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        PackageService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        PriceRuleTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        PolicyService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        PolicyTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        CurrencyService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        ExtraTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        ExtraService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        ServiceTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        BookingItemTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        MediaAssetService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        MediaCategoryService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
       ]);
 
       return {
@@ -167,10 +256,7 @@ export const useHotelCreateFormData = (enabled = true) => {
     },
 
     refetch: async () => {
-      await Promise.all([
-        locationQuery.refetch(),
-        hotelQuery.refetch(),
-      ]);
+      await Promise.all([locationQuery.refetch(), hotelQuery.refetch()]);
     },
   };
 };

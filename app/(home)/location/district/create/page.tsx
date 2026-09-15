@@ -21,11 +21,11 @@ export default function DistrictCreatePage() {
 
   return (
     <DistrictForm
-      cityData={data.cityData}
-      countryData={data.countryData}
-      bookingTypeData={data.bookingTypeData}
-      searchTagData={data.searchTagData}
-      timezones={data.timezones}
+      cityData={data.cityData.data}
+      countryData={data.countryData.data}
+      bookingTypeData={data.bookingTypeData.data}
+      searchTagData={data.searchTagData.data}
+      timezones={data.timezones.data}
     />
   );
 }

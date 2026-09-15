@@ -4,11 +4,13 @@ import { useQuery } from "@tanstack/react-query";
 
 import { HotelRoomViewService } from "@/services/product-types/hotel/hotel-room-view/client";
 
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
+
 export const useHotelRoomViewUpdateFormData = (id: string, enabled = true) => {
   const query = useQuery({
     queryKey: ["hotel-room-view-update-form-data", id],
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       const [initialData] = await Promise.all([
@@ -23,14 +25,10 @@ export const useHotelRoomViewUpdateFormData = (id: string, enabled = true) => {
 
   return {
     data: query.data,
-
     isLoading: query.isLoading,
     isFetching: query.isFetching,
-
     isError: query.isError,
-    // Chỉ có 1 nguồn dữ liệu (Promise.all gộp chung, gồm cả
-    // initialData) nên chỉ có 1 key, đặt tên "roomView" cho nhất
-    // quán với entity.
+
     errors: {
       roomView: query.error as Error | null,
     },

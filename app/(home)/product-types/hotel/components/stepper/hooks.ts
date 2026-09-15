@@ -5,7 +5,6 @@ import { useHotelBathroomTypeCreateFormData } from "@/hooks/product-types/hotel/
 import { useHotelBedTypeCreateFormData } from "@/hooks/product-types/hotel/hotel-bed-type/useHotelBedTypeCreateFormData";
 import { useHotelBrandCreateFormData } from "@/hooks/product-types/hotel/hotel-brand/useHotelBrandCreateFormData";
 import { useHotelCheckInPolicyCreateFormData } from "@/hooks/product-types/hotel/hotel-check-in-policy/useHotelCheckInPolicyCreateFormData";
-import { useHotelDiningMealTypeCreateFormData } from "@/hooks/product-types/hotel/hotel-dining-meal-type/useHotelDiningMealTypeCreateFormData";
 import { useHotelMealPlanCreateFormData } from "@/hooks/product-types/hotel/hotel-meal-plan/useHotelMealPlanCreateFormData";
 import { useHotelRatePlanTypeCreateFormData } from "@/hooks/product-types/hotel/hotel-rate-plan-type/useHotelRatePlanTypeCreateFormData";
 import { useHotelRoomCategoryCreateFormData } from "@/hooks/product-types/hotel/hotel-room-category/useHotelRoomCategoryCreateFormData";
@@ -14,6 +13,7 @@ import { useHotelRoomViewCreateFormData } from "@/hooks/product-types/hotel/hote
 import { useHotelStarRatingCreateFormData } from "@/hooks/product-types/hotel/hotel-star-rating/useHotelStarRatingCreateFormData";
 import { useHotelSustainabilityCreateFormData } from "@/hooks/product-types/hotel/hotel-sustainability/useHotelSustainabilityCreateFormData";
 import { useHotelDiningServiceTypeCreateFormData } from "@/hooks/product-types/hotel/hotel-dining-service-type/useHotelDiningServiceTypeCreateFormData";
+import { useHotelDiningMealTypeCreateFormData } from "@/hooks/product-types/hotel/hotel-dining-meal-type/useHotelDiningMealTypeCreateFormData";
 
 export function useHotelStepperHooks(subStep: string) {
   /**

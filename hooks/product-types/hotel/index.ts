@@ -1,6 +1,19 @@
 "use client";
+
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { HotelService } from "@/services/product-types/hotel/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -8,20 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const hotelQueryKeys = {
   all: ["hotel"] as const,
-  list: () => [...hotelQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...hotelQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...hotelQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...hotelQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...hotelQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...hotelQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useHotels(enabled = true) {
+export function useHotels(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: hotelQueryKeys.list(),
-    queryFn: () => HotelService.getMany(),
+    queryKey: hotelQueryKeys.list(page, limit),
+    queryFn: () =>
+      HotelService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -29,8 +58,8 @@ export function useHotel(id: string, enabled = true) {
   return useQuery({
     queryKey: hotelQueryKeys.detail(id),
     queryFn: () => HotelService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -47,7 +76,7 @@ export function useCreateHotel() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: hotelQueryKeys.list(),
+        queryKey: hotelQueryKeys.lists(),
       });
     },
   });
@@ -71,7 +100,9 @@ export function useUpdateHotel() {
 
     onSuccess: async (_, variables) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: hotelQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: hotelQueryKeys.lists(),
+        }),
         queryClient.invalidateQueries({
           queryKey: hotelQueryKeys.detail(variables.id),
         }),
@@ -92,8 +123,12 @@ export function useDeleteHotel() {
 
     onSuccess: async (_, id) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: hotelQueryKeys.list() }),
-        queryClient.removeQueries({ queryKey: hotelQueryKeys.detail(id) }),
+        queryClient.invalidateQueries({
+          queryKey: hotelQueryKeys.lists(),
+        }),
+        queryClient.removeQueries({
+          queryKey: hotelQueryKeys.detail(id),
+        }),
       ]);
     },
   });

@@ -28,11 +28,19 @@ import { FacilityCategoryService } from "@/services/features/facility-category/c
 import { MediaAssetService } from "@/services/catalog/media-asset/client";
 import { MediaCategoryService } from "@/services/catalog/media-category/client";
 
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
+
 export const useCarrentalCreateFormData = (enabled = true) => {
   const query = useQuery({
     queryKey: ["carrental-create-form-data"],
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       const [
@@ -62,31 +70,106 @@ export const useCarrentalCreateFormData = (enabled = true) => {
         mediaAssetData,
         mediaCategoryData,
       ] = await Promise.all([
-        SearchTagService.getMany(),
-        AddressService.getMany(),
-        CountryService.getMany(),
-        CityService.getMany(),
-        DistrictService.getMany(),
-        WardService.getMany(),
-        VehicleTypeService.getMany(),
-        BookingTypeService.getMany(),
-        PriceRuleTypeService.getMany(),
-        CarRentalInsuranceBenefitTypeService.getMany(),
-        CarRentalInsuranceTypeService.getMany(),
-        ExtraTypeService.getMany(),
-        ProviderBookingService.getMany(),
-        ServiceTypeService.getMany(),
-        ExtraService.getMany(),
-        BookingItemTypeService.getMany(),
-        PackageService.getMany(),
-        CurrencyService.getMany(),
-        PolicyService.getMany(),
-        PolicyTypeService.getMany(),
-        CarRentalDocumentTypeService.getMany(),
-        FacilityService.getMany(),
-        FacilityCategoryService.getMany(),
-        MediaAssetService.getMany(),
-        MediaCategoryService.getMany(),
+        SearchTagService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        AddressService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        CountryService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        CityService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        DistrictService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        WardService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        VehicleTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        BookingTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        PriceRuleTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        CarRentalInsuranceBenefitTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        CarRentalInsuranceTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        ExtraTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        ProviderBookingService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        ServiceTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        ExtraService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        BookingItemTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        PackageService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        CurrencyService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        PolicyService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        PolicyTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        CarRentalDocumentTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        FacilityService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        FacilityCategoryService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        MediaAssetService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        MediaCategoryService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
       ]);
 
       return {

@@ -31,10 +31,10 @@ export default function ExtraCreatePage() {
 
   return (
     <ExtraForm
-      bookingTypeData={data.bookingTypeData}
-      extraTypeData={data.extraTypeData}
-      currencyData={data.currencyData}
-      mediaAssetData={data.mediaAssetData}
+      bookingTypeData={data.bookingTypeData.data}
+      extraTypeData={data.extraTypeData.data}
+      currencyData={data.currencyData.data}
+      mediaAssetData={data.mediaAssetData.data}
     />
   );
 }

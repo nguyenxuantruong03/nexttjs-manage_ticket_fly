@@ -2,19 +2,26 @@
 
 import { useQuery } from "@tanstack/react-query";
 
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
+
 import { BookingTypeService } from "@/services/commerce/booking-type/client";
 
 export const useSearchTagCreateFormData = (enabled = true) => {
   const query = useQuery({
     queryKey: ["search-tag-create-form-data"],
-
     enabled,
-
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       const [bookingTypeData] = await Promise.all([
-        BookingTypeService.getMany(),
+        BookingTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
       ]);
 
       return {
@@ -25,11 +32,10 @@ export const useSearchTagCreateFormData = (enabled = true) => {
 
   return {
     data: query.data,
-
     isLoading: query.isLoading,
     isFetching: query.isFetching,
-
     isError: query.isError,
+
     errors: {
       searchTag: query.error as Error | null,
     },

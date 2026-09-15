@@ -31,14 +31,14 @@ export default function PlaceEditPage() {
   return (
     <PlaceForm
       initialData={data.initialData}
-      addresses={data.addresses}
-      cities={data.cities}
-      countries={data.countries}
-      districts={data.districts}
-      wards={data.wards}
-      searchTagData={data.searchTag}
-      placeTypeData={data.placeTypeData}
-      bookingTypeData={data.bookingTypeData}
+      addresses={data.addresses.data}
+      cities={data.cities.data}
+      countries={data.countries.data}
+      districts={data.districts.data}
+      wards={data.wards.data}
+      searchTagData={data.searchTag.data}
+      placeTypeData={data.placeTypeData.data}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

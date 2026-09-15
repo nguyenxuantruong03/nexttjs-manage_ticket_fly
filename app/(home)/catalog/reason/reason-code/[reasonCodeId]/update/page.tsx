@@ -38,7 +38,7 @@ export default function ReasonCodeEditPage() {
   return (
     <ReasonCodeForm
       initialData={data.reasonCodeData}
-      contextData={data.reasonContexts}
+      contextData={data.reasonContexts.data}
     />
   );
 }

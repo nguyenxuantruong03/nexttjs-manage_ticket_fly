@@ -1,31 +1,36 @@
 "use client";
 
+import * as React from "react";
 import { useRouter } from "next/navigation";
-
-import { useCrudTable } from "@/hooks/crud/useCrudTable";
+import type { PaginationState } from "@tanstack/react-table";
 
 import { DataTable } from "@/components/ui/data-table/data-table";
-
-import { flyAircraftTypeColumns } from "./components/columns";
-
-import { createFlyAircraftTypeActions } from "./features/actions";
-
-import { createFlyAircraftTypeHandlers } from "./features/handlers";
-
 import ErrorPage from "@/components/ui/error-page";
-
 import LoadingPage from "@/components/ui/loading-page";
+import { useCrudTable } from "@/hooks/crud/useCrudTable";
 import {
   useDeleteFlyAircraftType,
   useFlyAircraftTypes,
 } from "@/hooks/product-types/references/airline/aircraft/aircraft-type";
 
+import { flyAircraftTypeColumns } from "./components/columns";
+import { createFlyAircraftTypeActions } from "./features/actions";
+import { createFlyAircraftTypeHandlers } from "./features/handlers";
+
 const FlyAircraftTypePage = () => {
+  const router = useRouter();
+
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+
   const deleteMutation = useDeleteFlyAircraftType();
 
-  const { data, isPending, error } = useFlyAircraftTypes();
-
-  const router = useRouter();
+  const { data, isPending, isFetching, error } = useFlyAircraftTypes(
+    pagination.pageIndex + 1,
+    pagination.pageSize,
+  );
 
   const handlers = createFlyAircraftTypeHandlers({
     router,
@@ -40,13 +45,8 @@ const FlyAircraftTypePage = () => {
       "Are you sure you want to delete this fly aircraft type?",
   });
 
-  if (isPending) {
-    return <LoadingPage />;
-  }
-
-  if (error) {
-    return <ErrorPage />;
-  }
+  if (isPending) return <LoadingPage />;
+  if (error) return <ErrorPage />;
 
   return (
     <>
@@ -54,10 +54,24 @@ const FlyAircraftTypePage = () => {
 
       <DataTable
         columns={flyAircraftTypeColumns(actions)}
-        data={data}
-        onRowClick={({ id }) => handlers.view(id)}
+        data={data?.data ?? []}
+        isLoading={isPending}
+        isFetching={isFetching}
+        manualPagination
+        pageCount={data?.meta.totalPages ?? 0}
+        totalRows={data?.meta.total ?? 0}
+        pagination={pagination}
+        onPaginationChange={setPagination}
         onRowDoubleClick={({ id }) => handlers.update(id)}
         onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
+        pageSizeOptions={[10, 20, 30, 50, 100]}
+        persistKey="fly-aircraft-type"
+        enableSorting
+        enableColumnFilters
+        enableResizing
+        enablePinning
+        enableExport
+        onRowClick={({ id }) => handlers.view(id)}
       />
     </>
   );

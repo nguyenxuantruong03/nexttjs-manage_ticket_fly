@@ -32,7 +32,7 @@ export default function PromotionEditPage() {
   return (
     <PromotionForm
       initialData={data.promotionData}
-      bookingTypeData={data.bookingTypeData}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

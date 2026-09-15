@@ -25,5 +25,5 @@ export default function CouponCreatePage() {
     );
   }
 
-  return <CouponForm bookingTypeData={data.bookingTypeData} />;
+  return <CouponForm bookingTypeData={data.bookingTypeData.data} />;
 }

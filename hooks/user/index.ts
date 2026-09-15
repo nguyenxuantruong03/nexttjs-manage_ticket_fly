@@ -1,7 +1,18 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 import { UserService } from "@/services/users/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // ======================================================
 // Query Keys
@@ -9,8 +20,16 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const userQueryKeys = {
   all: ["user"] as const,
-  list: () => [...userQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...userQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...userQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...userQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...userQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...userQueryKeys.details(), id] as const,
+
   me: () => [...userQueryKeys.all, "me"] as const,
 };
 
@@ -18,12 +37,21 @@ export const userQueryKeys = {
 // Queries
 // ======================================================
 
-export function useUsers(enabled = true) {
+export function useUsers(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: userQueryKeys.list(),
-    queryFn: () => UserService.getMany(),
+    queryKey: userQueryKeys.list(page, limit),
+    queryFn: () =>
+      UserService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -31,8 +59,8 @@ export function useUser(id: string, enabled = true) {
   return useQuery({
     queryKey: userQueryKeys.detail(id),
     queryFn: () => UserService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -40,29 +68,10 @@ export function useUserMe(enabled = true) {
   return useQuery({
     queryKey: userQueryKeys.me(),
     queryFn: () => UserService.getMe(),
-    enabled: enabled && !!UserService.getMe,
-    staleTime: 1000 * 60 * 5,
+    enabled,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
-
-// ======================================================
-// Create
-// ======================================================
-
-// export function useCreateUser() {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: (data: Parameters<typeof UserService.create>[0]) =>
-//       UserService.create(data),
-
-//     onSuccess: async () => {
-//       await queryClient.invalidateQueries({
-//         queryKey: userQueryKeys.list(),
-//       });
-//     },
-//   });
-// }
 
 // ======================================================
 // Update
@@ -83,8 +92,9 @@ export function useUpdateUser() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: userQueryKeys.list(),
+          queryKey: userQueryKeys.lists(),
         }),
+
         queryClient.invalidateQueries({
           queryKey: userQueryKeys.detail(variables.id),
         }),
@@ -106,8 +116,9 @@ export function useDeleteUser() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: userQueryKeys.list(),
+          queryKey: userQueryKeys.lists(),
         }),
+
         queryClient.removeQueries({
           queryKey: userQueryKeys.detail(id),
         }),
@@ -115,6 +126,10 @@ export function useDeleteUser() {
     },
   });
 }
+
+// ======================================================
+// Update Me
+// ======================================================
 
 export function useUpdateUserMe() {
   const queryClient = useQueryClient();

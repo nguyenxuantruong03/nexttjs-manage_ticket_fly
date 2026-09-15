@@ -1,42 +1,81 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { ExtraFeeTypeService } from "@/services/commerce/extra-fee-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const extraFeeTypeQueryKeys = {
   all: ["extra-fee-type"] as const,
-  list: () => [...extraFeeTypeQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...extraFeeTypeQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...extraFeeTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...extraFeeTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...extraFeeTypeQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...extraFeeTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useExtraFeeTypes(enabled = true) {
+export function useExtraFeeTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: extraFeeTypeQueryKeys.list(),
-    queryFn: () => ExtraFeeTypeService.getMany(),
+    queryKey: extraFeeTypeQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      ExtraFeeTypeService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useExtraFeeType(id: string, enabled = true) {
   return useQuery({
     queryKey: extraFeeTypeQueryKeys.detail(id),
+
     queryFn: () => ExtraFeeTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateExtraFeeType() {
@@ -48,14 +87,14 @@ export function useCreateExtraFeeType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: extraFeeTypeQueryKeys.list(),
+        queryKey: extraFeeTypeQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateExtraFeeType() {
@@ -73,8 +112,9 @@ export function useUpdateExtraFeeType() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: extraFeeTypeQueryKeys.list(),
+          queryKey: extraFeeTypeQueryKeys.lists(),
         }),
+
         queryClient.invalidateQueries({
           queryKey: extraFeeTypeQueryKeys.detail(variables.id),
         }),
@@ -84,7 +124,7 @@ export function useUpdateExtraFeeType() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteExtraFeeType() {
@@ -96,8 +136,9 @@ export function useDeleteExtraFeeType() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: extraFeeTypeQueryKeys.list(),
+          queryKey: extraFeeTypeQueryKeys.lists(),
         }),
+
         queryClient.removeQueries({
           queryKey: extraFeeTypeQueryKeys.detail(id),
         }),

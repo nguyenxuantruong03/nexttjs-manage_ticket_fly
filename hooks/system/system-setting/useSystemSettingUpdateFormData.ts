@@ -1,7 +1,10 @@
 "use client";
 
-import { SystemSettingService } from "@/services/system/system-setting/client";
 import { useQuery } from "@tanstack/react-query";
+
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
+
+import { SystemSettingService } from "@/services/system/system-setting/client";
 
 export const useSystemSettingUpdateFormData = (
   settingId: string,
@@ -9,13 +12,13 @@ export const useSystemSettingUpdateFormData = (
 ) => {
   const query = useQuery({
     queryKey: ["system-setting-update-form-data", settingId],
-
-    enabled: enabled && !!settingId,
-
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(settingId),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
-      const initialData = await SystemSettingService.getOne(settingId);
+      const [initialData] = await Promise.all([
+        SystemSettingService.getOne(settingId),
+      ]);
 
       return {
         initialData,
@@ -25,11 +28,8 @@ export const useSystemSettingUpdateFormData = (
 
   return {
     data: query.data,
-
     isLoading: query.isLoading,
-
     isFetching: query.isFetching,
-
     isError: query.isError,
 
     errors: {

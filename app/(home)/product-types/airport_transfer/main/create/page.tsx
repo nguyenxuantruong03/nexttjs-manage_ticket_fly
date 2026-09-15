@@ -29,30 +29,30 @@ export default function AirportTransferCreatePage() {
 
   return (
     <AirportTransferForm
-      addresses={data.addresses}
-      countries={data.countries}
-      cities={data.cities}
-      districts={data.districts}
-      wards={data.wards}
-      searchTagData={data.searchTagData}
-      vehicleTypeData={data.vehicleTypeData}
-      bookingTypeData={data.bookingTypeData}
-      fuelTypeData={data.fuelTypeData}
-      serviceTypeData={data.serviceTypeData}
-      routeTypeData={data.routeTypeData}
-      extraFeeTypeData={data.extraFeeTypeData}
-      priceRuleTypeData={data.priceRuleTypeData}
-      providerBookingData={data.providerBookingData}
-      bookingItemTypeData={data.bookingItemTypeData}
-      extraData={data.extraData}
-      extraTypeData={data.extraTypeData}
-      currencyData={data.currencyData}
-      packageData={data.packageData}
-      policyData={data.policyData}
-      policyTypeData={data.policyTypeData}
-      languageData={data.languageData}
-      mediaCategoryData={data.mediaCategoryData}
-      mediaAssetData={data.mediaAssetData}
+      searchTagData={data.searchTagData.data}
+      addresses={data.addresses.data}
+      countries={data.countries.data}
+      cities={data.cities.data}
+      districts={data.districts.data}
+      wards={data.wards.data}
+      vehicleTypeData={data.vehicleTypeData.data}
+      bookingTypeData={data.bookingTypeData.data}
+      fuelTypeData={data.fuelTypeData.data}
+      serviceTypeData={data.serviceTypeData.data}
+      routeTypeData={data.routeTypeData.data}
+      extraFeeTypeData={data.extraFeeTypeData.data}
+      priceRuleTypeData={data.priceRuleTypeData.data}
+      providerBookingData={data.providerBookingData.data}
+      bookingItemTypeData={data.bookingItemTypeData.data}
+      extraData={data.extraData.data}
+      extraTypeData={data.extraTypeData.data}
+      currencyData={data.currencyData.data}
+      packageData={data.packageData.data}
+      policyData={data.policyData.data}
+      policyTypeData={data.policyTypeData.data}
+      languageData={data.languageData.data}
+      mediaCategoryData={data.mediaCategoryData.data}
+      mediaAssetData={data.mediaAssetData.data}
     />
   );
 }

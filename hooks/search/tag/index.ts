@@ -1,6 +1,19 @@
 "use client";
+
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { SearchTagService } from "@/services/search/tag/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -8,20 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const searchTagQueryKeys = {
   all: ["search-tag"] as const,
-  list: () => [...searchTagQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...searchTagQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...searchTagQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...searchTagQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...searchTagQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...searchTagQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useSearchTags(enabled = true) {
+export function useSearchTags(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: searchTagQueryKeys.list(),
-    queryFn: () => SearchTagService.getMany(),
+    queryKey: searchTagQueryKeys.list(page, limit),
+    queryFn: () =>
+      SearchTagService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -29,8 +58,8 @@ export function useSearchTag(id: string, enabled = true) {
   return useQuery({
     queryKey: searchTagQueryKeys.detail(id),
     queryFn: () => SearchTagService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -47,7 +76,7 @@ export function useCreateSearchTag() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: searchTagQueryKeys.list(),
+        queryKey: searchTagQueryKeys.lists(),
       });
     },
   });
@@ -72,7 +101,7 @@ export function useUpdateSearchTag() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: searchTagQueryKeys.list(),
+          queryKey: searchTagQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: searchTagQueryKeys.detail(variables.id),
@@ -95,7 +124,7 @@ export function useDeleteSearchTag() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: searchTagQueryKeys.list(),
+          queryKey: searchTagQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: searchTagQueryKeys.detail(id),

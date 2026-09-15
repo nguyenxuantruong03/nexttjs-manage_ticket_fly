@@ -2,6 +2,10 @@
 
 import { useLanguage } from "@/hooks/location/language";
 
+// ======================================================
+// UPDATE FORM DATA
+// ======================================================
+
 export const useLanguageUpdateFormData = (
   languageId: string,
   enabled = true,
@@ -9,15 +13,37 @@ export const useLanguageUpdateFormData = (
   const languageQuery = useLanguage(languageId, enabled);
 
   return {
-    data: languageQuery.data ? { initialData: languageQuery.data } : undefined,
+    // ==================================================
+    // DATA
+    // ==================================================
+
+    data: languageQuery.data
+      ? {
+          initialData: languageQuery.data,
+        }
+      : undefined,
+
+    // ==================================================
+    // LOADING
+    // ==================================================
 
     isLoading: languageQuery.isLoading,
+
     isFetching: languageQuery.isFetching,
 
+    // ==================================================
+    // ERROR
+    // ==================================================
+
     isError: languageQuery.isError,
+
     errors: {
       language: languageQuery.error as Error | null,
     },
+
+    // ==================================================
+    // REFETCH
+    // ==================================================
 
     refetch: languageQuery.refetch,
   };

@@ -25,7 +25,7 @@ const HotelCheckInPolicyCreatePage = () => {
     );
   }
 
-  return <HotelCheckInPolicyForm hotelData={data.hotels} />;
+  return <HotelCheckInPolicyForm hotelData={data.hotels.data} />;
 };
 
 export default HotelCheckInPolicyCreatePage;

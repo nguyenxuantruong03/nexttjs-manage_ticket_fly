@@ -1,35 +1,66 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { ReasonCodeService } from "@/services/catalog/reason/reason-code/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const reasonCodeQueryKeys = {
   all: ["reason-code"] as const,
 
-  list: () => [...reasonCodeQueryKeys.all, "list"] as const,
+  lists: () => [...reasonCodeQueryKeys.all, "list"] as const,
 
-  detail: (id: string) => [...reasonCodeQueryKeys.all, "detail", id] as const,
+  list: (page: number, limit: number) =>
+    [...reasonCodeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...reasonCodeQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...reasonCodeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useReasonCodes(enabled = true) {
+export function useReasonCodes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: reasonCodeQueryKeys.list(),
+    queryKey: reasonCodeQueryKeys.list(page, limit),
 
-    queryFn: () => ReasonCodeService.getMany(),
+    queryFn: () =>
+      ReasonCodeService.getMany({
+        page,
+        limit,
+      }),
 
     enabled,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useReasonCode(id: string, enabled = true) {
   return useQuery({
@@ -37,14 +68,14 @@ export function useReasonCode(id: string, enabled = true) {
 
     queryFn: () => ReasonCodeService.getOne(id),
 
-    enabled: enabled && !!id,
+    enabled: enabled && Boolean(id),
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateReasonCode() {
@@ -56,14 +87,14 @@ export function useCreateReasonCode() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: reasonCodeQueryKeys.list(),
+        queryKey: reasonCodeQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateReasonCode() {
@@ -81,7 +112,7 @@ export function useUpdateReasonCode() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: reasonCodeQueryKeys.list(),
+          queryKey: reasonCodeQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
@@ -93,7 +124,7 @@ export function useUpdateReasonCode() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteReasonCode() {
@@ -105,7 +136,7 @@ export function useDeleteReasonCode() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: reasonCodeQueryKeys.list(),
+          queryKey: reasonCodeQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({

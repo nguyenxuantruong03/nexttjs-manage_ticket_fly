@@ -22,16 +22,16 @@ const AddressCreatePage = () => {
 
   return (
     <AddressForm
-      cityData={data.cityData}
-      districtData={data.districtData}
-      wardData={data.wardData}
-      countryData={data.countryData}
-      currencyData={data.currencyData}
-      languageData={data.languageData}
-      timezoneData={data.timezoneData}
-      searchTags={data.searchTagData}
-      bookingTypeData={data.bookingTypeData}
-      continentsData={data.continentsData}
+      cityData={data.cityData.data}
+      districtData={data.districtData.data}
+      wardData={data.wardData.data}
+      countryData={data.countryData.data}
+      currencyData={data.currencyData.data}
+      languageData={data.languageData.data}
+      timezoneData={data.timezoneData.data}
+      searchTags={data.searchTagData.data}
+      bookingTypeData={data.bookingTypeData.data}
+      continentsData={data.continentsData.data}
     />
   );
 };

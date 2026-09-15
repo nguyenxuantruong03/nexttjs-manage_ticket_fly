@@ -4,6 +4,7 @@ export const API = {
   USER: "/user",
 
   PROVIDER_BOOKING: "/provider-booking",
+  METRICS:"/metrics",
 
   MEDIA_CATEGORY: "/media-category",
   MEDIA_ASSET: "/media-asset",

@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { FlyCrewService } from "@/services/product-types/references/airline/crew/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -9,20 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const flyCrewQueryKeys = {
   all: ["fly-crew"] as const,
-  list: () => [...flyCrewQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...flyCrewQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...flyCrewQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...flyCrewQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...flyCrewQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...flyCrewQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useFlyCrews(enabled = true) {
+export function useFlyCrews(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: flyCrewQueryKeys.list(),
-    queryFn: () => FlyCrewService.getMany(),
+    queryKey: flyCrewQueryKeys.list(page, limit),
+    queryFn: () =>
+      FlyCrewService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -30,8 +58,8 @@ export function useFlyCrew(id: string, enabled = true) {
   return useQuery({
     queryKey: flyCrewQueryKeys.detail(id),
     queryFn: () => FlyCrewService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -48,7 +76,7 @@ export function useCreateFlyCrew() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: flyCrewQueryKeys.list(),
+        queryKey: flyCrewQueryKeys.lists(),
       });
     },
   });
@@ -73,7 +101,7 @@ export function useUpdateFlyCrew() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: flyCrewQueryKeys.list(),
+          queryKey: flyCrewQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: flyCrewQueryKeys.detail(variables.id),
@@ -96,7 +124,7 @@ export function useDeleteFlyCrew() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: flyCrewQueryKeys.list(),
+          queryKey: flyCrewQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: flyCrewQueryKeys.detail(id),

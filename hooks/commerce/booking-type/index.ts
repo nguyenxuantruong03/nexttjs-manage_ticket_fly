@@ -1,42 +1,81 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { BookingTypeService } from "@/services/commerce/booking-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const bookingTypeQueryKeys = {
   all: ["booking-type"] as const,
-  list: () => [...bookingTypeQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...bookingTypeQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...bookingTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...bookingTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...bookingTypeQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...bookingTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useBookingTypes(enabled = true) {
+export function useBookingTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: bookingTypeQueryKeys.list(),
-    queryFn: () => BookingTypeService.getMany(),
+    queryKey: bookingTypeQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      BookingTypeService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useBookingType(id: string, enabled = true) {
   return useQuery({
     queryKey: bookingTypeQueryKeys.detail(id),
+
     queryFn: () => BookingTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateBookingType() {
@@ -48,14 +87,14 @@ export function useCreateBookingType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: bookingTypeQueryKeys.list(),
+        queryKey: bookingTypeQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateBookingType() {
@@ -73,8 +112,9 @@ export function useUpdateBookingType() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: bookingTypeQueryKeys.list(),
+          queryKey: bookingTypeQueryKeys.lists(),
         }),
+
         queryClient.invalidateQueries({
           queryKey: bookingTypeQueryKeys.detail(variables.id),
         }),
@@ -84,7 +124,7 @@ export function useUpdateBookingType() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteBookingType() {
@@ -96,8 +136,9 @@ export function useDeleteBookingType() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: bookingTypeQueryKeys.list(),
+          queryKey: bookingTypeQueryKeys.lists(),
         }),
+
         queryClient.removeQueries({
           queryKey: bookingTypeQueryKeys.detail(id),
         }),

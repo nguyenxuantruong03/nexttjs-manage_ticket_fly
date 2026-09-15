@@ -59,12 +59,12 @@ export function renderTicketFlyStepperContent({
     if (subStep === "airport") {
       return (
         <AirportForm
-          airportData={airport.data?.airportData ?? []}
-          addresses={airport.data?.addresses ?? []}
-          countries={airport.data?.countries ?? []}
-          cities={airport.data?.cities ?? []}
-          districts={airport.data?.districts ?? []}
-          wards={airport.data?.wards ?? []}
+          airportData={airport.data?.airportData.data ?? []}
+          addresses={airport.data?.addresses.data ?? []}
+          countries={airport.data?.countries.data ?? []}
+          cities={airport.data?.cities.data ?? []}
+          districts={airport.data?.districts.data ?? []}
+          wards={airport.data?.wards.data ?? []}
           redirect={false}
         />
       );

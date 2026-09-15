@@ -26,7 +26,7 @@ const VehicleTypeCreatePage = () => {
     );
   }
 
-  return <VehicleTypeForm bookingTypeData={data.bookingTypes} />;
+  return <VehicleTypeForm bookingTypeData={data.bookingTypes.data} />;
 };
 
 export default VehicleTypeCreatePage;

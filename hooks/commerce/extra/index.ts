@@ -1,42 +1,81 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { ExtraService } from "@/services/commerce/extra/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const extraQueryKeys = {
   all: ["extra"] as const,
-  list: () => [...extraQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...extraQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...extraQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...extraQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...extraQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...extraQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useExtras(enabled = true) {
+export function useExtras(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: extraQueryKeys.list(),
-    queryFn: () => ExtraService.getMany(),
+    queryKey: extraQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      ExtraService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useExtra(id: string, enabled = true) {
   return useQuery({
     queryKey: extraQueryKeys.detail(id),
+
     queryFn: () => ExtraService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateExtra() {
@@ -48,14 +87,14 @@ export function useCreateExtra() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: extraQueryKeys.list(),
+        queryKey: extraQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateExtra() {
@@ -72,7 +111,10 @@ export function useUpdateExtra() {
 
     onSuccess: async (_, variables) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: extraQueryKeys.list() }),
+        queryClient.invalidateQueries({
+          queryKey: extraQueryKeys.lists(),
+        }),
+
         queryClient.invalidateQueries({
           queryKey: extraQueryKeys.detail(variables.id),
         }),
@@ -82,7 +124,7 @@ export function useUpdateExtra() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteExtra() {
@@ -93,8 +135,13 @@ export function useDeleteExtra() {
 
     onSuccess: async (_, id) => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: extraQueryKeys.list() }),
-        queryClient.removeQueries({ queryKey: extraQueryKeys.detail(id) }),
+        queryClient.invalidateQueries({
+          queryKey: extraQueryKeys.lists(),
+        }),
+
+        queryClient.removeQueries({
+          queryKey: extraQueryKeys.detail(id),
+        }),
       ]);
     },
   });

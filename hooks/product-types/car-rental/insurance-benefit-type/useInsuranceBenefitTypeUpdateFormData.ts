@@ -1,7 +1,10 @@
 "use client";
 
-import { CarRentalInsuranceBenefitTypeService } from "@/services/product-types/car-rental/insurance-benefit-type/client";
 import { useQuery } from "@tanstack/react-query";
+
+import { CarRentalInsuranceBenefitTypeService } from "@/services/product-types/car-rental/insurance-benefit-type/client";
+
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
 
 export const useCarRentalInsuranceBenefitTypeUpdateFormData = (
   id: string,
@@ -9,8 +12,10 @@ export const useCarRentalInsuranceBenefitTypeUpdateFormData = (
 ) => {
   const query = useQuery({
     queryKey: ["car-rental-insurance-benefit-type-update-form-data", id],
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       const [initialData] = await Promise.all([
@@ -27,11 +32,11 @@ export const useCarRentalInsuranceBenefitTypeUpdateFormData = (
     data: query.data,
 
     isLoading: query.isLoading,
+
     isFetching: query.isFetching,
 
     isError: query.isError,
-    // Chỉ có 1 nguồn dữ liệu (insuranceBenefitType) nên lấy thẳng
-    // message của nó.
+
     errors: {
       insuranceBenefitType: query.error as Error | null,
     },

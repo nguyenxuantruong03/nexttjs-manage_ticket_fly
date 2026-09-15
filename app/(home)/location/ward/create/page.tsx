@@ -21,10 +21,10 @@ export default function WardCreatePage() {
 
   return (
     <WardForm
-      cityData={data.cityData}
-      districtData={data.districtData}
-      bookingTypeData={data.bookingTypeData}
-      searchTagData={data.searchTagData}
+      cityData={data.cityData.data}
+      districtData={data.districtData.data}
+      bookingTypeData={data.bookingTypeData.data}
+      searchTagData={data.searchTagData.data}
     />
   );
 }

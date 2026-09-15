@@ -1,37 +1,66 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { RegulationService } from "@/services/commerce/compliance-legal/regulation/client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const regulationQueryKeys = {
   all: ["regulation"] as const,
 
-  list: () => [...regulationQueryKeys.all, "list"] as const,
+  lists: () => [...regulationQueryKeys.all, "list"] as const,
 
-  detail: (id: string) =>
-    [...regulationQueryKeys.all, "detail", id] as const,
+  list: (page: number, limit: number) =>
+    [...regulationQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...regulationQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...regulationQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useRegulations(enabled = true) {
+export function useRegulations(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: regulationQueryKeys.list(),
+    queryKey: regulationQueryKeys.list(page, limit),
 
-    queryFn: () => RegulationService.getMany(),
+    queryFn: () =>
+      RegulationService.getMany({
+        page,
+        limit,
+      }),
 
     enabled,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useRegulation(id: string, enabled = true) {
   return useQuery({
@@ -39,34 +68,33 @@ export function useRegulation(id: string, enabled = true) {
 
     queryFn: () => RegulationService.getOne(id),
 
-    enabled: enabled && !!id,
+    enabled: enabled && Boolean(id),
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateRegulation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (
-      data: Parameters<typeof RegulationService.create>[0],
-    ) => RegulationService.create(data),
+    mutationFn: (data: Parameters<typeof RegulationService.create>[0]) =>
+      RegulationService.create(data),
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: regulationQueryKeys.list(),
+        queryKey: regulationQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateRegulation() {
@@ -84,7 +112,7 @@ export function useUpdateRegulation() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: regulationQueryKeys.list(),
+          queryKey: regulationQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
@@ -96,7 +124,7 @@ export function useUpdateRegulation() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteRegulation() {
@@ -108,7 +136,7 @@ export function useDeleteRegulation() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: regulationQueryKeys.list(),
+          queryKey: regulationQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({

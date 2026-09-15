@@ -62,9 +62,9 @@ export function renderReferencesStepperContent({
   if (mainStep === "airline" && subStep === "airline-main") {
     return (
       <AirlineMainForm
-        mediaCategoryData={airlineMain.data?.mediaCategoryData ?? []}
-        mediaAssetData={airlineMain.data?.mediaAssetData ?? []}
-        bookingTypeData={airlineMain.data?.bookingTypeData ?? []}
+        mediaCategoryData={airlineMain.data?.mediaCategoryData.data ?? []}
+        mediaAssetData={airlineMain.data?.mediaAssetData.data ?? []}
+        bookingTypeData={airlineMain.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -77,10 +77,10 @@ export function renderReferencesStepperContent({
   if (mainStep === "airline" && subStep === "aircraft-main") {
     return (
       <AircraftMainForm
-        mediaCategoryData={aircraftMain.data?.mediaCategoryData ?? []}
-        mediaAssetData={aircraftMain.data?.mediaAssetData ?? []}
-        bookingTypeData={aircraftMain.data?.bookingTypeData ?? []}
-        airlineData={aircraftMain.data?.airlineData ?? []}
+        mediaCategoryData={aircraftMain.data?.mediaCategoryData.data ?? []}
+        mediaAssetData={aircraftMain.data?.mediaAssetData.data ?? []}
+        bookingTypeData={aircraftMain.data?.bookingTypeData.data ?? []}
+        airlineData={aircraftMain.data?.airlineData.data ?? []}
         redirect={false}
       />
     );
@@ -97,10 +97,10 @@ export function renderReferencesStepperContent({
   if (mainStep === "airline" && subStep === "crew-main") {
     return (
       <CrewMainForm
-        airlineData={crewMain.data?.airlines ?? []}
-        roleData={crewMain.data?.roles ?? []}
-        dutyData={crewMain.data?.duties ?? []}
-        aircraftTypeData={crewMain.data?.aircraftTypeData ?? []}
+        airlineData={crewMain.data?.airlines.data ?? []}
+        roleData={crewMain.data?.roles.data ?? []}
+        dutyData={crewMain.data?.duties.data ?? []}
+        aircraftTypeData={crewMain.data?.aircraftTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -113,12 +113,12 @@ export function renderReferencesStepperContent({
   if (mainStep === "airport" && subStep === "airport") {
     return (
       <AirportForm
-        addresses={airport.data?.addresses ?? []}
-        countries={airport.data?.countries ?? []}
-        cities={airport.data?.cities ?? []}
-        districts={airport.data?.districts ?? []}
-        wards={airport.data?.wards ?? []}
-        airportData={airport.data?.airportData ?? []}
+        addresses={airport.data?.addresses.data ?? []}
+        countries={airport.data?.countries.data ?? []}
+        cities={airport.data?.cities.data ?? []}
+        districts={airport.data?.districts.data ?? []}
+        wards={airport.data?.wards.data ?? []}
+        airportData={airport.data?.airportData.data ?? []}
         redirect={false}
       />
     );

@@ -32,7 +32,7 @@ export default function FacilityCategoryEditPage() {
   return (
     <FacilityCategoryForm
       initialData={data.facilityCategoryData}
-      bookingTypeData={data.bookingTypeData}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

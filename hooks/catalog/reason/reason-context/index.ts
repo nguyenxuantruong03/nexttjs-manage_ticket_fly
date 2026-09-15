@@ -1,36 +1,66 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { ReasonContextService } from "@/services/catalog/reason/reason-context/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const reasonContextQueryKeys = {
   all: ["reason-context"] as const,
 
-  list: () => [...reasonContextQueryKeys.all, "list"] as const,
+  lists: () => [...reasonContextQueryKeys.all, "list"] as const,
 
-  detail: (id: string) =>
-    [...reasonContextQueryKeys.all, "detail", id] as const,
+  list: (page: number, limit: number) =>
+    [...reasonContextQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...reasonContextQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...reasonContextQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useReasonContexts(enabled = true) {
+export function useReasonContexts(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: reasonContextQueryKeys.list(),
+    queryKey: reasonContextQueryKeys.list(page, limit),
 
-    queryFn: () => ReasonContextService.getMany(),
+    queryFn: () =>
+      ReasonContextService.getMany({
+        page,
+        limit,
+      }),
 
     enabled,
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useReasonContext(id: string, enabled = true) {
   return useQuery({
@@ -38,14 +68,14 @@ export function useReasonContext(id: string, enabled = true) {
 
     queryFn: () => ReasonContextService.getOne(id),
 
-    enabled: enabled && !!id,
+    enabled: enabled && Boolean(id),
 
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateReasonContext() {
@@ -57,14 +87,14 @@ export function useCreateReasonContext() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: reasonContextQueryKeys.list(),
+        queryKey: reasonContextQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateReasonContext() {
@@ -82,7 +112,7 @@ export function useUpdateReasonContext() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: reasonContextQueryKeys.list(),
+          queryKey: reasonContextQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
@@ -94,7 +124,7 @@ export function useUpdateReasonContext() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteReasonContext() {
@@ -106,7 +136,7 @@ export function useDeleteReasonContext() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: reasonContextQueryKeys.list(),
+          queryKey: reasonContextQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({

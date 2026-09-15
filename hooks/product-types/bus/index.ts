@@ -1,6 +1,19 @@
 "use client";
+
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { TicketBusService } from "@/services/product-types/ticket-bus/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -8,29 +21,52 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const busQueryKeys = {
   all: ["bus"] as const,
-  list: () => [...busQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...busQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...busQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...busQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...busQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...busQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useBuses(enabled = true) {
+export function useBuses(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: busQueryKeys.list(),
-    queryFn: () => TicketBusService.getMany(),
+    queryKey: busQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      TicketBusService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
 
 export function useBus(id: string, enabled = true) {
   return useQuery({
     queryKey: busQueryKeys.detail(id),
+
     queryFn: () => TicketBusService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -47,7 +83,7 @@ export function useCreateBus() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: busQueryKeys.list(),
+        queryKey: busQueryKeys.lists(),
       });
     },
   });
@@ -72,8 +108,9 @@ export function useUpdateBus() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: busQueryKeys.list(),
+          queryKey: busQueryKeys.lists(),
         }),
+
         queryClient.invalidateQueries({
           queryKey: busQueryKeys.detail(variables.id),
         }),
@@ -95,8 +132,9 @@ export function useDeleteBus() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: busQueryKeys.list(),
+          queryKey: busQueryKeys.lists(),
         }),
+
         queryClient.removeQueries({
           queryKey: busQueryKeys.detail(id),
         }),

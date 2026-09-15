@@ -39,7 +39,7 @@ export default function FuelTypeEditPage() {
   return (
     <FuelTypeForm
       initialData={data.fuelTypeData}
-      bookingTypeData={data.bookingTypes}
+      bookingTypeData={data.bookingTypes.data}
     />
   );
 }

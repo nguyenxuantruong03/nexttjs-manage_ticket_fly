@@ -2,6 +2,10 @@
 
 import { useMemo } from "react";
 
+// ======================================================
+// CREATE FORM DATA
+// ======================================================
+
 export const useRegulationCategoryCreateFormData = (_enabled = true) => {
   return useMemo(
     () => ({
@@ -13,7 +17,9 @@ export const useRegulationCategoryCreateFormData = (_enabled = true) => {
 
       isError: false,
 
-      errors: { message: "" } as Record<string, unknown>,
+      errors: {
+        message: "",
+      } as Record<string, unknown>,
 
       refetch: async () => {},
     }),

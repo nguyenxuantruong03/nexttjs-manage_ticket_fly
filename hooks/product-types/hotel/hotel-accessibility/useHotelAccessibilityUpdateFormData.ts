@@ -1,7 +1,10 @@
 "use client";
 
-import { HotelAccessibilityService } from "@/services/product-types/hotel/hotel-accessibility/client";
 import { useQuery } from "@tanstack/react-query";
+
+import { HotelAccessibilityService } from "@/services/product-types/hotel/hotel-accessibility/client";
+
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
 
 export const useHotelAccessibilityUpdateFormData = (
   id: string,
@@ -9,8 +12,11 @@ export const useHotelAccessibilityUpdateFormData = (
 ) => {
   const query = useQuery({
     queryKey: ["hotel-accessibility-update-form-data", id],
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
     queryFn: async () => {
       const [initialData] = await Promise.all([
         HotelAccessibilityService.getOne(id),
@@ -26,10 +32,11 @@ export const useHotelAccessibilityUpdateFormData = (
     data: query.data,
 
     isLoading: query.isLoading,
+
     isFetching: query.isFetching,
 
     isError: query.isError,
-    // Chỉ có 1 nguồn dữ liệu (accessibility) nên lấy thẳng message của nó.
+
     errors: {
       accessibility: query.error as Error | null,
     },

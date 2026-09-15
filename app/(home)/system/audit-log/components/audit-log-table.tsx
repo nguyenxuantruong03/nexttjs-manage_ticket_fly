@@ -3,6 +3,7 @@
 import * as React from "react";
 import {
   ColumnDef,
+  PaginationState,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -23,9 +24,16 @@ import { AuditLog } from "@/types/system/system-governance.type";
 interface Props {
   columns: ColumnDef<AuditLog>[];
   data: AuditLog[];
+
   onRowClick: (row: AuditLog) => void;
   onRowDoubleClick: (row: AuditLog) => void;
   onRowTripleClick: (row: AuditLog) => void;
+
+  manualPagination?: boolean;
+  pageCount?: number;
+  totalRows?: number;
+  pagination?: PaginationState;
+  onPaginationChange?: React.Dispatch<React.SetStateAction<PaginationState>>;
 }
 
 const CLICK_DELAY = 300;
@@ -36,6 +44,10 @@ export function AuditLogTable({
   onRowClick,
   onRowDoubleClick,
   onRowTripleClick,
+  manualPagination = false,
+  pageCount = 0,
+  pagination,
+  onPaginationChange,
 }: Props) {
   const clickCountRef = React.useRef(0);
   const clickedRowIdRef = React.useRef<string | null>(null);
@@ -107,31 +119,16 @@ export function AuditLogTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+
+    manualPagination,
+    pageCount,
+
+    state: {
+      pagination,
+    },
+
+    onPaginationChange,
   });
-
-  const handleRowInteraction = (
-    event: React.MouseEvent<HTMLTableRowElement>,
-  ) => {
-    const target = event.target;
-
-    if (!(target instanceof HTMLElement)) {
-      return;
-    }
-
-    const interactiveElement = target.closest("[data-table-interactive]");
-
-    if (interactiveElement) {
-      event.stopPropagation();
-      return;
-    }
-
-    handleRowClick(
-      table
-        .getRowModel()
-        .rows.find((row) => row.id === event.currentTarget.dataset.rowId)
-        ?.original as AuditLog,
-    );
-  };
 
   return (
     <div className="w-full overflow-x-auto rounded-lg border">

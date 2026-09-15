@@ -1,35 +1,58 @@
-import { AxiosInstance } from "axios";
+import { PaginatedResult, PaginationParams } from "@/types/common/panigation";
+import type { AxiosInstance } from "axios";
 
 export function createCrudApi<T, TCreate = Partial<T>, TUpdate = Partial<T>>(
   api: AxiosInstance,
   endpoint: string,
 ) {
   return {
-    async getMany() {
-      const { data } = await api.get<T[]>(endpoint);
+    // ======================================================
+    // FIND ALL
+    // ======================================================
+
+    async getMany(params?: PaginationParams): Promise<PaginatedResult<T>> {
+      const { data } = await api.get<PaginatedResult<T>>(endpoint, {
+        params,
+      });
 
       return data;
     },
 
-    async getOne(id: string) {
+    // ======================================================
+    // FIND ONE
+    // ======================================================
+
+    async getOne(id: string): Promise<T> {
       const { data } = await api.get<T>(`${endpoint}/${id}`);
 
       return data;
     },
 
-    async create(body: TCreate) {
+    // ======================================================
+    // CREATE
+    // ======================================================
+
+    async create(body: TCreate): Promise<T> {
       const { data } = await api.post<T>(endpoint, body);
 
       return data;
     },
 
-    async update(id: string, body: TUpdate) {
+    // ======================================================
+    // UPDATE
+    // ======================================================
+
+    async update(id: string, body: TUpdate): Promise<T> {
       const { data } = await api.patch<T>(`${endpoint}/${id}`, body);
 
       return data;
     },
 
-    async delete(id: string) {
+    // ======================================================
+    // DELETE
+    // ======================================================
+
+    async delete(id: string): Promise<void> {
       await api.delete(`${endpoint}/${id}`);
     },
   };

@@ -26,8 +26,8 @@ export default function PromotionRuleCreatePage() {
 
   return (
     <PromotionRuleForm
-      promotionData={data.promotionData}
-      bookingTypeData={data.bookingTypeData}
+      promotionData={data.promotionData.data}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

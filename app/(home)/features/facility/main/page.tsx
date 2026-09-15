@@ -1,21 +1,33 @@
 "use client";
 
-import { DataTable } from "@/components/ui/data-table/data-table";
-import { facilityColumns } from "./components/columns";
+import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useCrudTable } from "@/hooks/crud/useCrudTable";
+import type { PaginationState } from "@tanstack/react-table";
 
-import { createFacilityActions } from "./features/actions";
-import { createFacilityHandlers } from "./features/handlers";
+import { DataTable } from "@/components/ui/data-table/data-table";
 import LoadingPage from "@/components/ui/loading-page";
 import ErrorPage from "@/components/ui/error-page";
+import { useCrudTable } from "@/hooks/crud/useCrudTable";
 import { useDeleteFacility, useFacilities } from "@/hooks/features/facility";
+
+import { facilityColumns } from "./components/columns";
+import { createFacilityActions } from "./features/actions";
+import { createFacilityHandlers } from "./features/handlers";
 
 const Facility = () => {
   const router = useRouter();
 
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
+  });
+
   const deleteMutation = useDeleteFacility();
-  const { data, isPending, error } = useFacilities();
+
+  const { data, isPending, isFetching, error } = useFacilities(
+    pagination.pageIndex + 1,
+    pagination.pageSize,
+  );
 
   const handlers = createFacilityHandlers({
     router,
@@ -38,10 +50,24 @@ const Facility = () => {
 
       <DataTable
         columns={facilityColumns(actions)}
-        data={data}
-        onRowClick={({ id }) => handlers.view(id)}
+        data={data?.data ?? []}
+        isLoading={isPending}
+        isFetching={isFetching}
+        manualPagination
+        pageCount={data?.meta.totalPages ?? 0}
+        totalRows={data?.meta.total ?? 0}
+        pagination={pagination}
+        onPaginationChange={setPagination}
         onRowDoubleClick={({ id }) => handlers.update(id)}
         onRowRightClick={({ id }) => deleteDialog.openDelete(id)}
+        pageSizeOptions={[10, 20, 30, 50, 100]}
+        persistKey="facility"
+        enableSorting
+        enableColumnFilters
+        enableResizing
+        enablePinning
+        enableExport
+        onRowClick={({ id }) => handlers.view(id)}
       />
     </>
   );

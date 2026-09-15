@@ -37,7 +37,7 @@ export default function BookingItemTypeEditPage() {
   return (
     <BookingItemTypeForm
       initialData={data.bookingItemTypeData}
-      bookingTypeData={data.bookingTypeData}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

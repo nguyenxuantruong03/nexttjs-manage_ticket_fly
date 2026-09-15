@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { YachtConditionService } from "@/services/product-types/yacht/condition/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -9,21 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const yachtConditionQueryKeys = {
   all: ["yacht-condition"] as const,
-  list: () => [...yachtConditionQueryKeys.all, "list"] as const,
-  detail: (id: string) =>
-    [...yachtConditionQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...yachtConditionQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...yachtConditionQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...yachtConditionQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...yachtConditionQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useYachtConditions(enabled = true) {
+export function useYachtConditions(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: yachtConditionQueryKeys.list(),
-    queryFn: () => YachtConditionService.getMany(),
+    queryKey: yachtConditionQueryKeys.list(page, limit),
+    queryFn: () =>
+      YachtConditionService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -31,8 +58,8 @@ export function useYachtCondition(id: string, enabled = true) {
   return useQuery({
     queryKey: yachtConditionQueryKeys.detail(id),
     queryFn: () => YachtConditionService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -49,7 +76,7 @@ export function useCreateYachtCondition() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: yachtConditionQueryKeys.list(),
+        queryKey: yachtConditionQueryKeys.lists(),
       });
     },
   });
@@ -74,7 +101,7 @@ export function useUpdateYachtCondition() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: yachtConditionQueryKeys.list(),
+          queryKey: yachtConditionQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: yachtConditionQueryKeys.detail(variables.id),
@@ -97,7 +124,7 @@ export function useDeleteYachtCondition() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: yachtConditionQueryKeys.list(),
+          queryKey: yachtConditionQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: yachtConditionQueryKeys.detail(id),

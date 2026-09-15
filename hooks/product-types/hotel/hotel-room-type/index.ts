@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { HotelRoomTypeService } from "@/services/product-types/hotel/hotel-room-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -9,21 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const hotelRoomTypeQueryKeys = {
   all: ["hotel-room-type"] as const,
-  list: () => [...hotelRoomTypeQueryKeys.all, "list"] as const,
-  detail: (id: string) =>
-    [...hotelRoomTypeQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...hotelRoomTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...hotelRoomTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...hotelRoomTypeQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...hotelRoomTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useHotelRoomTypes(enabled = true) {
+export function useHotelRoomTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: hotelRoomTypeQueryKeys.list(),
-    queryFn: () => HotelRoomTypeService.getMany(),
+    queryKey: hotelRoomTypeQueryKeys.list(page, limit),
+    queryFn: () =>
+      HotelRoomTypeService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -31,8 +58,8 @@ export function useHotelRoomType(id: string, enabled = true) {
   return useQuery({
     queryKey: hotelRoomTypeQueryKeys.detail(id),
     queryFn: () => HotelRoomTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -49,7 +76,7 @@ export function useCreateHotelRoomType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: hotelRoomTypeQueryKeys.list(),
+        queryKey: hotelRoomTypeQueryKeys.lists(),
       });
     },
   });
@@ -74,7 +101,7 @@ export function useUpdateHotelRoomType() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelRoomTypeQueryKeys.list(),
+          queryKey: hotelRoomTypeQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: hotelRoomTypeQueryKeys.detail(variables.id),
@@ -97,7 +124,7 @@ export function useDeleteHotelRoomType() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelRoomTypeQueryKeys.list(),
+          queryKey: hotelRoomTypeQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: hotelRoomTypeQueryKeys.detail(id),

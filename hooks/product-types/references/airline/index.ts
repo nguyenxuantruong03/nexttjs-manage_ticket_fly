@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { FlyAirlineService } from "@/services/product-types/references/airline/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -9,20 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const flyAirlineQueryKeys = {
   all: ["fly-airline"] as const,
-  list: () => [...flyAirlineQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...flyAirlineQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...flyAirlineQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...flyAirlineQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...flyAirlineQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...flyAirlineQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useFlyAirlines(enabled = true) {
+export function useFlyAirlines(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: flyAirlineQueryKeys.list(),
-    queryFn: () => FlyAirlineService.getMany(),
+    queryKey: flyAirlineQueryKeys.list(page, limit),
+    queryFn: () =>
+      FlyAirlineService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -30,8 +58,8 @@ export function useFlyAirline(id: string, enabled = true) {
   return useQuery({
     queryKey: flyAirlineQueryKeys.detail(id),
     queryFn: () => FlyAirlineService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -48,7 +76,7 @@ export function useCreateFlyAirline() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: flyAirlineQueryKeys.list(),
+        queryKey: flyAirlineQueryKeys.lists(),
       });
     },
   });
@@ -73,7 +101,7 @@ export function useUpdateFlyAirline() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: flyAirlineQueryKeys.list(),
+          queryKey: flyAirlineQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: flyAirlineQueryKeys.detail(variables.id),
@@ -96,7 +124,7 @@ export function useDeleteFlyAirline() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: flyAirlineQueryKeys.list(),
+          queryKey: flyAirlineQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: flyAirlineQueryKeys.detail(id),

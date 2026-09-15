@@ -36,9 +36,9 @@ export default function FlyAirlineEditPage() {
   return (
     <FlyAirlineForm
       initialData={data.initialData}
-      mediaCategoryData={data.mediaCategoryData}
-      mediaAssetData={data.mediaAssetData}
-      bookingTypeData={data.bookingTypeData}
+      mediaCategoryData={data.mediaCategoryData.data}
+      mediaAssetData={data.mediaAssetData.data}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

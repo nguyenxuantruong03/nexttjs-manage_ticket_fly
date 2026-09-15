@@ -31,13 +31,13 @@ export default function CityEditPage() {
   return (
     <CityForm
       initialData={data.initialData}
-      currencyData={data.currencyData}
-      languageData={data.languageData}
-      countryData={data.countryData}
-      searchTagData={data.searchTagData}
-      timezoneData={data.timezoneData}
-      bookingTypeData={data.bookingTypeData}
-      continentData={data.continentData}
+      currencyData={data.currencyData.data}
+      languageData={data.languageData.data}
+      countryData={data.countryData.data}
+      searchTagData={data.searchTagData.data}
+      timezoneData={data.timezoneData.data}
+      bookingTypeData={data.bookingTypeData.data}
+      continentData={data.continentData.data}
     />
   );
 }

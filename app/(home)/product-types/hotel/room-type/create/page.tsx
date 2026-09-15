@@ -27,9 +27,9 @@ const RoomTypeCreatePage = () => {
 
   return (
     <RoomTypeForm
-      roomCategoryData={data.roomCategories}
-      roomViewData={data.roomViews}
-      bathroomTypeData={data.bathroomTypes}
+      roomCategoryData={data.roomCategories.data}
+      roomViewData={data.roomViews.data}
+      bathroomTypeData={data.bathroomTypes.data}
     />
   );
 };

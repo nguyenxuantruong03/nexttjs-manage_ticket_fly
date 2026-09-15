@@ -33,8 +33,8 @@ export default function PromotionRuleEditPage() {
   return (
     <PromotionRuleForm
       initialData={data.promotionRuleData}
-      promotionData={data.promotionData}
-      bookingTypeData={data.bookingTypeData}
+      promotionData={data.promotionData.data}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

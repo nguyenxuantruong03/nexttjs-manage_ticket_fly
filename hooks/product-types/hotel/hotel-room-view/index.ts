@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { HotelRoomViewService } from "@/services/product-types/hotel/hotel-room-view/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -9,21 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const hotelRoomViewQueryKeys = {
   all: ["hotel-room-view"] as const,
-  list: () => [...hotelRoomViewQueryKeys.all, "list"] as const,
-  detail: (id: string) =>
-    [...hotelRoomViewQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...hotelRoomViewQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...hotelRoomViewQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...hotelRoomViewQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...hotelRoomViewQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useHotelRoomViews(enabled = true) {
+export function useHotelRoomViews(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: hotelRoomViewQueryKeys.list(),
-    queryFn: () => HotelRoomViewService.getMany(),
+    queryKey: hotelRoomViewQueryKeys.list(page, limit),
+    queryFn: () =>
+      HotelRoomViewService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -31,8 +58,8 @@ export function useHotelRoomView(id: string, enabled = true) {
   return useQuery({
     queryKey: hotelRoomViewQueryKeys.detail(id),
     queryFn: () => HotelRoomViewService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -49,7 +76,7 @@ export function useCreateHotelRoomView() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: hotelRoomViewQueryKeys.list(),
+        queryKey: hotelRoomViewQueryKeys.lists(),
       });
     },
   });
@@ -74,7 +101,7 @@ export function useUpdateHotelRoomView() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelRoomViewQueryKeys.list(),
+          queryKey: hotelRoomViewQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: hotelRoomViewQueryKeys.detail(variables.id),
@@ -97,7 +124,7 @@ export function useDeleteHotelRoomView() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: hotelRoomViewQueryKeys.list(),
+          queryKey: hotelRoomViewQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: hotelRoomViewQueryKeys.detail(id),

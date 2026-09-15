@@ -2,11 +2,15 @@
 
 import { useQuery } from "@tanstack/react-query";
 
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
+
 export const useBusSeatTypeCreateFormData = (enabled = true) => {
   const query = useQuery({
     queryKey: ["bus-seat-type-create-form-data"],
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       await Promise.all([]);
@@ -19,15 +23,11 @@ export const useBusSeatTypeCreateFormData = (enabled = true) => {
     data: query.data,
 
     isLoading: query.isLoading,
+
     isFetching: query.isFetching,
 
-    // isError là field bool duy nhất dùng để check "có lỗi hay không"
-    // ở component (if (isError || !data) ...). "errors" bên dưới chỉ
-    // dùng khi cần hiển thị message/nguồn lỗi cụ thể, không thay thế
-    // isError.
     isError: query.isError,
-    // Hiện chưa fetch thêm dữ liệu nào khác nên chỉ có 1 key, đặt tên
-    // "seatType" cho nhất quán với entity.
+
     errors: {
       seatType: query.error as Error | null,
     },

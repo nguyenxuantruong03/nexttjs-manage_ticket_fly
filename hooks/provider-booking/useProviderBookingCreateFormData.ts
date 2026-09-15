@@ -2,6 +2,12 @@
 
 import { useQuery } from "@tanstack/react-query";
 
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
+
 import { UserService } from "@/services/users/client";
 import { AddressService } from "@/services/location/address/client";
 import { CountryService } from "@/services/location/country/client";
@@ -14,7 +20,8 @@ export const useProviderBookingCreateFormData = (enabled = true) => {
   const query = useQuery({
     queryKey: ["provider-booking-create-form-data"],
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
     queryFn: async () => {
       const [
         userDatas,
@@ -25,13 +32,34 @@ export const useProviderBookingCreateFormData = (enabled = true) => {
         wards,
         bookingTypeData,
       ] = await Promise.all([
-        UserService.getMany(),
-        AddressService.getMany(),
-        CountryService.getMany(),
-        CityService.getMany(),
-        DistrictService.getMany(),
-        WardService.getMany(),
-        BookingTypeService.getMany(),
+        UserService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        AddressService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        CountryService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        CityService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        DistrictService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        WardService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        BookingTypeService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
       ]);
 
       return {
@@ -48,11 +76,10 @@ export const useProviderBookingCreateFormData = (enabled = true) => {
 
   return {
     data: query.data,
-
     isLoading: query.isLoading,
     isFetching: query.isFetching,
-
     isError: query.isError,
+
     errors: {
       providerBooking: query.error as Error | null,
     },

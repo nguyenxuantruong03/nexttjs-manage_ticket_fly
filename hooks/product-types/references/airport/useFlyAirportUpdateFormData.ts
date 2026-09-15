@@ -6,24 +6,37 @@ import { SearchTagService } from "@/services/search/tag/client";
 import { useLocationFormData } from "@/hooks/location/useLocationFormData";
 import { FlyAirportService } from "@/services/product-types/references/airport/client";
 
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
+
 export const useFlyAirportUpdateFormData = (
   flyAirportId: string,
   enabled = true,
 ) => {
   const locationQuery = useLocationFormData(
     ["fly-airport-location-data"],
-    enabled && !!flyAirportId,
+    enabled && Boolean(flyAirportId),
   );
 
   const flyAirportQuery = useQuery({
     queryKey: ["fly-airport-update-form-data", flyAirportId],
-    enabled: enabled && !!flyAirportId,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(flyAirportId),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
     queryFn: async () => {
       const [initialData, searchTagData, airportData] = await Promise.all([
         FlyAirportService.getOne(flyAirportId),
-        SearchTagService.getMany(),
-        FlyAirportService.getMany(),
+        SearchTagService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
+        FlyAirportService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
       ]);
 
       return {
@@ -45,10 +58,8 @@ export const useFlyAirportUpdateFormData = (
 
     isLoading: locationQuery.isLoading || flyAirportQuery.isLoading,
     isFetching: locationQuery.isFetching || flyAirportQuery.isFetching,
-
     isError: locationQuery.isError || flyAirportQuery.isError,
-    // Có 2 nguồn dữ liệu độc lập (location + airport/search-tag, gồm
-    // cả initialData) nên tách 2 key riêng để biết lỗi đến từ đâu.
+
     errors: {
       location: locationQuery.error as Error | null,
       flyAirport: flyAirportQuery.error as Error | null,

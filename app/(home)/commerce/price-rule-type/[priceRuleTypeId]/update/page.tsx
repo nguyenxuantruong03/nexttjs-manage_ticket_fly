@@ -37,7 +37,7 @@ export default function PriceRuleTypeEditPage() {
   return (
     <PriceRuleTypeForm
       initialData={data.priceRuleTypeData}
-      bookingTypeData={data.bookingTypeData}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

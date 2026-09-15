@@ -28,30 +28,30 @@ export default function TicketFlyCreatePage() {
 
   return (
     <TicketFlyForm
-      searchTagData={data.searchTagData}
-      addresses={data.addresses}
-      airports={data.flyAiport}
-      countries={data.countries}
-      cities={data.cities}
-      districts={data.districts}
-      wards={data.wards}
-      extraTypeData={data.extraTypeData}
-      providerBookingData={data.providerBookingData}
-      serviceTypeData={data.serviceTypeData}
-      bookingItemTypeData={data.bookingItemTypeData}
-      bookingTypeData={data.bookingTypeData}
-      airlineData={data.airlineData}
-      routeTypeData={data.routeTypeData}
-      aircraftData={data.aircraftData}
-      priceRuleTypeData={data.priceRuleTypeData}
-      cabinClassData={data.cabinClassData}
-      extraData={data.extraData}
-      currencyData={data.currencyData}
-      packageData={data.packageData}
-      policyData={data.policyData}
-      policyTypeData={data.policyTypeData}
-      mediaCategoryData={data.mediaCategoryData}
-      mediaAssetData={data.mediaAssetData}
+      airports={data.flyAiport.data}
+      searchTagData={data.searchTagData.data}
+      addresses={data.addresses.data}
+      countries={data.countries.data}
+      cities={data.cities.data}
+      districts={data.districts.data}
+      wards={data.wards.data}
+      extraTypeData={data.extraTypeData.data}
+      providerBookingData={data.providerBookingData.data}
+      serviceTypeData={data.serviceTypeData.data}
+      bookingItemTypeData={data.bookingItemTypeData.data}
+      bookingTypeData={data.bookingTypeData.data}
+      airlineData={data.airlineData.data}
+      routeTypeData={data.routeTypeData.data}
+      aircraftData={data.aircraftData.data}
+      priceRuleTypeData={data.priceRuleTypeData.data}
+      cabinClassData={data.cabinClassData.data}
+      extraData={data.extraData.data}
+      currencyData={data.currencyData.data}
+      packageData={data.packageData.data}
+      policyData={data.policyData.data}
+      policyTypeData={data.policyTypeData.data}
+      mediaCategoryData={data.mediaCategoryData.data}
+      mediaAssetData={data.mediaAssetData.data}
     />
   );
 }

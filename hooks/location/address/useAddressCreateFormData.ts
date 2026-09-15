@@ -11,17 +11,36 @@ import { useSearchTags } from "@/hooks/search/tag";
 import { useBookingTypes } from "@/hooks/commerce/booking-type";
 import { useContinents } from "@/hooks/location/country/continent";
 
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from "@/config/react-query.config";
+
+// ======================================================
+// CREATE FORM DATA
+// ======================================================
+
 export const useAddressCreateFormData = (enabled = true) => {
-  const cityQuery = useCities(enabled);
-  const districtQuery = useDistricts(enabled);
-  const wardQuery = useWards(enabled);
-  const countryQuery = useCountries(enabled);
-  const timezoneQuery = useTimezones(enabled);
-  const languageQuery = useLanguages(enabled);
-  const currencyQuery = useCurrencies(enabled);
-  const searchTagQuery = useSearchTags(enabled);
-  const bookingTypeQuery = useBookingTypes(enabled);
-  const continentQuery = useContinents(enabled);
+  const cityQuery = useCities(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const districtQuery = useDistricts(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const wardQuery = useWards(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const countryQuery = useCountries(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const timezoneQuery = useTimezones(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const languageQuery = useLanguages(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const currencyQuery = useCurrencies(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const searchTagQuery = useSearchTags(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
+
+  const bookingTypeQuery = useBookingTypes(
+    DEFAULT_PAGE,
+    DEFAULT_LIMIT,
+    enabled,
+  );
+
+  const continentQuery = useContinents(DEFAULT_PAGE, DEFAULT_LIMIT, enabled);
 
   const queries = [
     cityQuery,
@@ -37,6 +56,10 @@ export const useAddressCreateFormData = (enabled = true) => {
   ];
 
   return {
+    // ==================================================
+    // DATA
+    // ==================================================
+
     data:
       cityQuery.data &&
       districtQuery.data &&
@@ -62,25 +85,48 @@ export const useAddressCreateFormData = (enabled = true) => {
           }
         : undefined,
 
-    isLoading: queries.some((q) => q.isLoading),
-    isFetching: queries.some((q) => q.isFetching),
-    isError: queries.some((q) => q.isError),
+    // ==================================================
+    // LOADING
+    // ==================================================
+
+    isLoading: queries.some((query) => query.isLoading),
+
+    isFetching: queries.some((query) => query.isFetching),
+
+    // ==================================================
+    // ERROR
+    // ==================================================
+
+    isError: queries.some((query) => query.isError),
 
     errors: {
       city: cityQuery.error as Error | null,
+
       district: districtQuery.error as Error | null,
+
       ward: wardQuery.error as Error | null,
+
       country: countryQuery.error as Error | null,
+
       timezone: timezoneQuery.error as Error | null,
+
       language: languageQuery.error as Error | null,
+
       currency: currencyQuery.error as Error | null,
+
       searchTag: searchTagQuery.error as Error | null,
+
       bookingType: bookingTypeQuery.error as Error | null,
+
       continent: continentQuery.error as Error | null,
     },
 
+    // ==================================================
+    // REFETCH
+    // ==================================================
+
     refetch: async () => {
-      await Promise.all(queries.map((q) => q.refetch()));
+      await Promise.all(queries.map((query) => query.refetch()));
     },
   };
 };

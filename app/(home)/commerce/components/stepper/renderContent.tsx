@@ -86,7 +86,7 @@ export function renderCommerceStepperContent({
   if (mainStep === "booking-item-type" && subStep === "booking-item-type") {
     return (
       <BookingItemTypeForm
-        bookingTypeData={bookingItemType.data?.bookingTypeData ?? []}
+        bookingTypeData={bookingItemType.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -99,7 +99,7 @@ export function renderCommerceStepperContent({
   if (mainStep === "coupon" && subStep === "coupon") {
     return (
       <CouponForm
-        bookingTypeData={coupon.data?.bookingTypeData ?? []}
+        bookingTypeData={coupon.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -108,7 +108,7 @@ export function renderCommerceStepperContent({
   if (mainStep === "extra" && subStep === "extra-fee-type") {
     return (
       <ExtraFeeTypeForm
-        bookingTypeData={extraFeeType.data?.bookingTypes ?? []}
+        bookingTypeData={extraFeeType.data?.bookingTypes.data ?? []}
         redirect={false}
       />
     );
@@ -117,7 +117,7 @@ export function renderCommerceStepperContent({
   if (mainStep === "extra" && subStep === "extra-type") {
     return (
       <ExtraTypeForm
-        bookingTypeData={extraType.data?.bookingTypeData ?? []}
+        bookingTypeData={extraType.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -126,10 +126,10 @@ export function renderCommerceStepperContent({
   if (mainStep === "extra" && subStep === "extra-main") {
     return (
       <ExtraMainForm
-        mediaAssetData={extraMain.data?.mediaAssetData ?? []}
-        currencyData={extraMain.data?.currencyData ?? []}
-        extraTypeData={extraMain.data?.extraTypeData ?? []}
-        bookingTypeData={extraMain.data?.bookingTypeData ?? []}
+        mediaAssetData={extraMain.data?.mediaAssetData.data ?? []}
+        currencyData={extraMain.data?.currencyData.data ?? []}
+        extraTypeData={extraMain.data?.extraTypeData.data ?? []}
+        bookingTypeData={extraMain.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -138,9 +138,9 @@ export function renderCommerceStepperContent({
   if (mainStep === "package" && subStep === "package") {
     return (
       <PackageForm
-        mediaAssetData={packageType.data?.mediaAssetData ?? []}
-        currencyData={packageType.data?.currencyData ?? []}
-        bookingTypeData={packageType.data?.bookingTypeData ?? []}
+        mediaAssetData={packageType.data?.mediaAssetData.data ?? []}
+        currencyData={packageType.data?.currencyData.data ?? []}
+        bookingTypeData={packageType.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -149,7 +149,7 @@ export function renderCommerceStepperContent({
   if (mainStep === "price-rule-type" && subStep === "price-rule-type") {
     return (
       <PriceRuleTypeForm
-        bookingTypeData={priceRuleType.data?.bookingTypeData ?? []}
+        bookingTypeData={priceRuleType.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -158,7 +158,7 @@ export function renderCommerceStepperContent({
   if (mainStep === "promotion" && subStep === "promotion-main") {
     return (
       <PromotionMainForm
-        bookingTypeData={promotionMain.data?.bookingTypeData ?? []}
+        bookingTypeData={promotionMain.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -167,8 +167,8 @@ export function renderCommerceStepperContent({
   if (mainStep === "promotion" && subStep === "promotion-rule") {
     return (
       <PromotionRuleForm
-        promotionData={promotionRule.data?.promotionData ?? []}
-        bookingTypeData={promotionRule.data?.bookingTypeData ?? []}
+        promotionData={promotionRule.data?.promotionData.data ?? []}
+        bookingTypeData={promotionRule.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );
@@ -181,7 +181,7 @@ export function renderCommerceStepperContent({
   if (mainStep === "compliance-legal" && subStep === "regulation") {
     return (
       <RegulationForm
-        regulationCategoryData={regulation.data?.regulationCategoryData ?? []}
+        regulationCategoryData={regulation.data?.regulationCategoryData.data ?? []}
         redirect={false}
       />
     );
@@ -194,7 +194,7 @@ export function renderCommerceStepperContent({
   if (mainStep === "compliance-legal" && subStep === "tax-rule") {
     return (
       <TaxRuleForm
-        bookingTypeData={taxRule.data?.bookingTypeData ?? []}
+        bookingTypeData={taxRule.data?.bookingTypeData.data ?? []}
         redirect={false}
       />
     );

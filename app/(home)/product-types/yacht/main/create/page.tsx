@@ -28,31 +28,31 @@ export default function YachtCreatePage() {
 
   return (
     <YachtForm
-      searchTagData={data.searchTagData}
-      addresses={data.addresses}
-      countries={data.countries}
-      cities={data.cities}
-      districts={data.districts}
-      wards={data.wards}
-      bookingTypeData={data.bookingTypeData}
-      fuelTypeData={data.fuelTypeData}
-      conditionData={data.conditionData}
-      extraFeeTypeData={data.extraFeeTypeData}
-      crewRoleData={data.crewRoleData}
-      facilityData={data.facilityData}
-      facilityCategoryData={data.facilityCategoryData}
-      providerBookingData={data.providerBookingData}
-      serviceTypeData={data.serviceTypeData}
-      bookingItemTypeData={data.bookingItemTypeData}
-      routeTypeData={data.routeTypeData}
-      packageData={data.packageData}
-      currencyData={data.currencyData}
-      policyData={data.policyData}
-      policyTypeData={data.policyTypeData}
-      extraData={data.extraData}
-      extraTypeData={data.extraTypeData}
-      mediaCategoryData={data.mediaCategoryData}
-      mediaAssetData={data.mediaAssetData}
+      searchTagData={data.searchTagData.data}
+      addresses={data.addresses.data}
+      countries={data.countries.data}
+      cities={data.cities.data}
+      districts={data.districts.data}
+      wards={data.wards.data}
+      bookingTypeData={data.bookingTypeData.data}
+      fuelTypeData={data.fuelTypeData.data}
+      conditionData={data.conditionData.data}
+      extraFeeTypeData={data.extraFeeTypeData.data}
+      crewRoleData={data.crewRoleData.data}
+      facilityData={data.facilityData.data}
+      facilityCategoryData={data.facilityCategoryData.data}
+      providerBookingData={data.providerBookingData.data}
+      serviceTypeData={data.serviceTypeData.data}
+      bookingItemTypeData={data.bookingItemTypeData.data}
+      routeTypeData={data.routeTypeData.data}
+      packageData={data.packageData.data}
+      currencyData={data.currencyData.data}
+      policyData={data.policyData.data}
+      policyTypeData={data.policyTypeData.data}
+      extraData={data.extraData.data}
+      extraTypeData={data.extraTypeData.data}
+      mediaCategoryData={data.mediaCategoryData.data}
+      mediaAssetData={data.mediaAssetData.data}
     />
   );
 }

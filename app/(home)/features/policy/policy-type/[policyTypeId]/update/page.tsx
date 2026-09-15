@@ -32,7 +32,7 @@ export default function PolicyTypeEditPage() {
   return (
     <PolicyTypeForm
       initialData={data.policyTypeData}
-      bookingTypeData={data.bookingTypeData}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

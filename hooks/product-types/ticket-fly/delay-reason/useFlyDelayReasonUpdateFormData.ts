@@ -4,16 +4,16 @@ import { useQuery } from "@tanstack/react-query";
 
 import { FlyDelayReasonService } from "@/services/product-types/ticket-fly/delay-reason/client";
 
+import { DEFAULT_QUERY_STALE_TIME } from "@/config/react-query.config";
+
 export const useFlyDelayReasonUpdateFormData = (
   flyDelayReasonId: string,
   enabled = true,
 ) => {
   const query = useQuery({
     queryKey: ["fly-delay-reason-update-form-data", flyDelayReasonId],
-
-    enabled: enabled && !!flyDelayReasonId,
-
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(flyDelayReasonId),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
 
     queryFn: async () => {
       const [initialData] = await Promise.all([
@@ -28,11 +28,10 @@ export const useFlyDelayReasonUpdateFormData = (
 
   return {
     data: query.data,
-
     isLoading: query.isLoading,
     isFetching: query.isFetching,
-
     isError: query.isError,
+
     errors: {
       delayReason: query.error as Error | null,
     },

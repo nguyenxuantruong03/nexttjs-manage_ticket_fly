@@ -42,10 +42,10 @@ export default function ExtraEditPage() {
   return (
     <ExtraForm
       initialData={data.extraData}
-      bookingTypeData={data.bookingTypeData}
-      extraTypeData={data.extraTypeData}
-      currencyData={data.currencyData}
-      mediaAssetData={data.mediaAssetData}
+      bookingTypeData={data.bookingTypeData.data}
+      extraTypeData={data.extraTypeData.data}
+      currencyData={data.currencyData.data}
+      mediaAssetData={data.mediaAssetData.data}
     />
   );
 }

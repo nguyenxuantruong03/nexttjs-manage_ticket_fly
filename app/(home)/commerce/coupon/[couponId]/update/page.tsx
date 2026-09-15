@@ -35,7 +35,7 @@ export default function CouponEditPage() {
   return (
     <CouponForm
       initialData={data.couponData}
-      bookingTypeData={data.bookingTypeData}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

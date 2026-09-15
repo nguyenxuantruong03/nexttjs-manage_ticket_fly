@@ -35,7 +35,7 @@ export default function ExtraTypeEditPage() {
   return (
     <ExtraTypeForm
       initialData={data.extraTypeData}
-      bookingTypeData={data.bookingTypeData}
+      bookingTypeData={data.bookingTypeData.data}
     />
   );
 }

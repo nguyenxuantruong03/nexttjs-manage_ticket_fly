@@ -35,7 +35,7 @@ const MediaAssetCreatePage = () => {
 
   return (
     <MediaAssetForm
-      bookingTypeData={data.bookingTypes}
+      bookingTypeData={data.bookingTypes.data}
     />
   );
 };

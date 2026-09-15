@@ -30,10 +30,10 @@ const FlyCrewCreatePage = () => {
 
   return (
     <FlyCrewForm
-      roleData={data.roles}
-      dutyData={data.duties}
-      airlineData={data.airlines}
-      aircraftTypeData={data.aircraftTypeData}
+      roleData={data.roles.data}
+      dutyData={data.duties.data}
+      airlineData={data.airlines.data}
+      aircraftTypeData={data.aircraftTypeData.data}
     />
   );
 };

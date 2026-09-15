@@ -2,27 +2,51 @@
 
 import { useBookingTypes } from "@/hooks/commerce/booking-type";
 
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from "@/config/react-query.config";
+
+// ======================================================
+// CREATE FORM DATA
+// ======================================================
+
 export const useFuelTypeCreateFormData = (enabled = true) => {
-  const bookingTypeQuery = useBookingTypes(enabled);
+  const bookingTypeQuery = useBookingTypes(
+    DEFAULT_PAGE,
+    DEFAULT_LIMIT,
+    enabled,
+  );
 
   return {
+    // ==================================================
+    // DATA
+    // ==================================================
+
     data: bookingTypeQuery.data
-      ? { bookingTypes: bookingTypeQuery.data }
+      ? {
+          bookingTypes: bookingTypeQuery.data,
+        }
       : undefined,
 
+    // ==================================================
+    // LOADING
+    // ==================================================
+
     isLoading: bookingTypeQuery.isLoading,
+
     isFetching: bookingTypeQuery.isFetching,
 
-    // isError là field bool duy nhất dùng để check "có lỗi hay không"
-    // ở component (if (isError || !data) ...). "errors" bên dưới chỉ
-    // dùng khi cần hiển thị message/nguồn lỗi cụ thể, không thay thế
-    // isError.
+    // ==================================================
+    // ERROR
+    // ==================================================
+
     isError: bookingTypeQuery.isError,
-    // Type rõ ràng (Error | null) thay vì để TS suy ra unknown -
-    // component gọi errors.bookingType?.message không bị báo lỗi type.
+
     errors: {
       bookingType: bookingTypeQuery.error as Error | null,
     },
+
+    // ==================================================
+    // REFETCH
+    // ==================================================
 
     refetch: bookingTypeQuery.refetch,
   };

@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { SystemSettingService } from "@/services/system/system-setting/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -10,10 +22,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 export const systemSettingQueryKeys = {
   all: ["system-setting"] as const,
 
-  list: () => [...systemSettingQueryKeys.all, "list"] as const,
+  lists: () => [...systemSettingQueryKeys.all, "list"] as const,
 
-  detail: (id: string) =>
-    [...systemSettingQueryKeys.all, "detail", id] as const,
+  list: (page: number, limit: number) =>
+    [...systemSettingQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...systemSettingQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...systemSettingQueryKeys.details(), id] as const,
 
   key: (key: string) => [...systemSettingQueryKeys.all, "key", key] as const,
 };
@@ -22,27 +38,30 @@ export const systemSettingQueryKeys = {
 // Queries
 // ======================================================
 
-export function useSystemSettings(enabled = true) {
+export function useSystemSettings(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: systemSettingQueryKeys.list(),
-
-    queryFn: () => SystemSettingService.getMany(),
-
+    queryKey: systemSettingQueryKeys.list(page, limit),
+    queryFn: () =>
+      SystemSettingService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
 export function useSystemSetting(id: string, enabled = true) {
   return useQuery({
     queryKey: systemSettingQueryKeys.detail(id),
-
     queryFn: () => SystemSettingService.getOne(id),
-
-    enabled: enabled && !!id,
-
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -53,12 +72,9 @@ export function useSystemSetting(id: string, enabled = true) {
 export function useSystemSettingByKey(key: string, enabled = true) {
   return useQuery({
     queryKey: systemSettingQueryKeys.key(key),
-
     queryFn: () => SystemSettingService.getByKey(key),
-
-    enabled: enabled && !!key,
-
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(key),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -81,11 +97,15 @@ export function useUpdateSystemSetting() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: systemSettingQueryKeys.list(),
+          queryKey: systemSettingQueryKeys.lists(),
         }),
 
         queryClient.invalidateQueries({
           queryKey: systemSettingQueryKeys.detail(variables.id),
+        }),
+
+        queryClient.invalidateQueries({
+          queryKey: systemSettingQueryKeys.all,
         }),
       ]);
     },
@@ -105,11 +125,15 @@ export function useDeleteSystemSetting() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: systemSettingQueryKeys.list(),
+          queryKey: systemSettingQueryKeys.lists(),
         }),
 
         queryClient.removeQueries({
           queryKey: systemSettingQueryKeys.detail(id),
+        }),
+
+        queryClient.invalidateQueries({
+          queryKey: systemSettingQueryKeys.all,
         }),
       ]);
     },

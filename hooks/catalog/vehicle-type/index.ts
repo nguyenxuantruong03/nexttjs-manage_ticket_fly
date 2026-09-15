@@ -1,42 +1,81 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { VehicleTypeService } from "@/services/catalog/vehicle-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
-// Query Keys
+// QUERY KEYS
 // ======================================================
 
 export const vehicleTypeQueryKeys = {
   all: ["vehicle-type"] as const,
-  list: () => [...vehicleTypeQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...vehicleTypeQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...vehicleTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...vehicleTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...vehicleTypeQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...vehicleTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
-// Queries
+// FIND ALL
 // ======================================================
 
-export function useVehicleTypes(enabled = true) {
+export function useVehicleTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: vehicleTypeQueryKeys.list(),
-    queryFn: () => VehicleTypeService.getMany(),
+    queryKey: vehicleTypeQueryKeys.list(page, limit),
+
+    queryFn: () =>
+      VehicleTypeService.getMany({
+        page,
+        limit,
+      }),
+
     enabled,
-    staleTime: 1000 * 60 * 5,
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
+    placeholderData: keepPreviousData,
   });
 }
+
+// ======================================================
+// FIND ONE
+// ======================================================
 
 export function useVehicleType(id: string, enabled = true) {
   return useQuery({
     queryKey: vehicleTypeQueryKeys.detail(id),
+
     queryFn: () => VehicleTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+
+    enabled: enabled && Boolean(id),
+
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
 // ======================================================
-// Create
+// CREATE
 // ======================================================
 
 export function useCreateVehicleType() {
@@ -48,14 +87,14 @@ export function useCreateVehicleType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: vehicleTypeQueryKeys.list(),
+        queryKey: vehicleTypeQueryKeys.lists(),
       });
     },
   });
 }
 
 // ======================================================
-// Update
+// UPDATE
 // ======================================================
 
 export function useUpdateVehicleType() {
@@ -73,8 +112,9 @@ export function useUpdateVehicleType() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: vehicleTypeQueryKeys.list(),
+          queryKey: vehicleTypeQueryKeys.lists(),
         }),
+
         queryClient.invalidateQueries({
           queryKey: vehicleTypeQueryKeys.detail(variables.id),
         }),
@@ -84,7 +124,7 @@ export function useUpdateVehicleType() {
 }
 
 // ======================================================
-// Delete
+// DELETE
 // ======================================================
 
 export function useDeleteVehicleType() {
@@ -96,8 +136,9 @@ export function useDeleteVehicleType() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: vehicleTypeQueryKeys.list(),
+          queryKey: vehicleTypeQueryKeys.lists(),
         }),
+
         queryClient.removeQueries({
           queryKey: vehicleTypeQueryKeys.detail(id),
         }),

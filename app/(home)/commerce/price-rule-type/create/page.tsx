@@ -27,5 +27,5 @@ export default function PriceRuleTypeCreatePage() {
     );
   }
 
-  return <PriceRuleTypeForm bookingTypeData={data.bookingTypeData} />;
+  return <PriceRuleTypeForm bookingTypeData={data.bookingTypeData.data} />;
 }

@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { TicketFlyService } from "@/services/product-types/ticket-fly/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -9,20 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const ticketFlyQueryKeys = {
   all: ["ticket-fly"] as const,
-  list: () => [...ticketFlyQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...ticketFlyQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...ticketFlyQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...ticketFlyQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...ticketFlyQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...ticketFlyQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useTicketsFly(enabled = true) {
+export function useTicketsFly(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: ticketFlyQueryKeys.list(),
-    queryFn: () => TicketFlyService.getMany(),
+    queryKey: ticketFlyQueryKeys.list(page, limit),
+    queryFn: () =>
+      TicketFlyService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -30,8 +58,8 @@ export function useTicketFly(id: string, enabled = true) {
   return useQuery({
     queryKey: ticketFlyQueryKeys.detail(id),
     queryFn: () => TicketFlyService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -48,7 +76,7 @@ export function useCreateTicketFly() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ticketFlyQueryKeys.list(),
+        queryKey: ticketFlyQueryKeys.lists(),
       });
     },
   });
@@ -73,7 +101,7 @@ export function useUpdateTicketFly() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ticketFlyQueryKeys.list(),
+          queryKey: ticketFlyQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: ticketFlyQueryKeys.detail(variables.id),
@@ -96,7 +124,7 @@ export function useDeleteTicketFly() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: ticketFlyQueryKeys.list(),
+          queryKey: ticketFlyQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: ticketFlyQueryKeys.detail(id),

@@ -1,8 +1,15 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+
 import { HotelService } from "@/services/product-types/hotel/client";
 import { HotelCheckInPolicyService } from "@/services/product-types/hotel/hotel-check-in-policy/client";
-import { useQuery } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 export const useHotelCheckInPolicyUpdateFormData = (
   id: string,
@@ -10,12 +17,16 @@ export const useHotelCheckInPolicyUpdateFormData = (
 ) => {
   const query = useQuery({
     queryKey: ["hotel-check-in-policy-update-form-data", id],
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+
     queryFn: async () => {
       const [initialData, hotels] = await Promise.all([
         HotelCheckInPolicyService.getOne(id),
-        HotelService.getMany(),
+        HotelService.getMany({
+          page: DEFAULT_PAGE,
+          limit: DEFAULT_LIMIT,
+        }),
       ]);
 
       return {
@@ -27,13 +38,10 @@ export const useHotelCheckInPolicyUpdateFormData = (
 
   return {
     data: query.data,
-
     isLoading: query.isLoading,
     isFetching: query.isFetching,
-
     isError: query.isError,
-    // Gộp chung trong 1 Promise.all (initialData + hotels) nên chỉ có
-    // 1 key, đặt tên "checkInPolicy" cho nhất quán với entity.
+
     errors: {
       checkInPolicy: query.error as Error | null,
     },

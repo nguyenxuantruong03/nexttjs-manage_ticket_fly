@@ -26,8 +26,8 @@ export default function PolicyCreatePage() {
 
   return (
     <PolicyForm
-      bookingTypeData={data.bookingTypeData}
-      policyTypeData={data.policyTypeData}
+      bookingTypeData={data.bookingTypeData.data}
+      policyTypeData={data.policyTypeData.data}
     />
   );
 }

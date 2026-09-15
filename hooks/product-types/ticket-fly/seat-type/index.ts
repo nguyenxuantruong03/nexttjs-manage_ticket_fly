@@ -1,7 +1,19 @@
 "use client";
 
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
 import { FlySeatTypeService } from "@/services/product-types/ticket-fly/seat-type/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_PAGE,
+  DEFAULT_QUERY_STALE_TIME,
+} from "@/config/react-query.config";
 
 // ======================================================
 // Query Keys
@@ -9,20 +21,36 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const flySeatTypeQueryKeys = {
   all: ["fly-seat-type"] as const,
-  list: () => [...flySeatTypeQueryKeys.all, "list"] as const,
-  detail: (id: string) => [...flySeatTypeQueryKeys.all, "detail", id] as const,
+
+  lists: () => [...flySeatTypeQueryKeys.all, "list"] as const,
+
+  list: (page: number, limit: number) =>
+    [...flySeatTypeQueryKeys.lists(), { page, limit }] as const,
+
+  details: () => [...flySeatTypeQueryKeys.all, "detail"] as const,
+
+  detail: (id: string) => [...flySeatTypeQueryKeys.details(), id] as const,
 };
 
 // ======================================================
 // Queries
 // ======================================================
 
-export function useFlySeatTypes(enabled = true) {
+export function useFlySeatTypes(
+  page = DEFAULT_PAGE,
+  limit = DEFAULT_LIMIT,
+  enabled = true,
+) {
   return useQuery({
-    queryKey: flySeatTypeQueryKeys.list(),
-    queryFn: () => FlySeatTypeService.getMany(),
+    queryKey: flySeatTypeQueryKeys.list(page, limit),
+    queryFn: () =>
+      FlySeatTypeService.getMany({
+        page,
+        limit,
+      }),
     enabled,
-    staleTime: 1000 * 60 * 5,
+    staleTime: DEFAULT_QUERY_STALE_TIME,
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -30,8 +58,8 @@ export function useFlySeatType(id: string, enabled = true) {
   return useQuery({
     queryKey: flySeatTypeQueryKeys.detail(id),
     queryFn: () => FlySeatTypeService.getOne(id),
-    enabled: enabled && !!id,
-    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(id),
+    staleTime: DEFAULT_QUERY_STALE_TIME,
   });
 }
 
@@ -48,7 +76,7 @@ export function useCreateFlySeatType() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: flySeatTypeQueryKeys.list(),
+        queryKey: flySeatTypeQueryKeys.lists(),
       });
     },
   });
@@ -73,7 +101,7 @@ export function useUpdateFlySeatType() {
     onSuccess: async (_, variables) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: flySeatTypeQueryKeys.list(),
+          queryKey: flySeatTypeQueryKeys.lists(),
         }),
         queryClient.invalidateQueries({
           queryKey: flySeatTypeQueryKeys.detail(variables.id),
@@ -96,7 +124,7 @@ export function useDeleteFlySeatType() {
     onSuccess: async (_, id) => {
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: flySeatTypeQueryKeys.list(),
+          queryKey: flySeatTypeQueryKeys.lists(),
         }),
         queryClient.removeQueries({
           queryKey: flySeatTypeQueryKeys.detail(id),
